@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 devDependencies:
+  '@iconify/json':
+    specifier: ^2.2.154
+    version: 2.2.154
   '@sveltejs/adapter-auto':
     specifier: ^2.0.0
     version: 2.1.1(@sveltejs/kit@1.27.7)
@@ -18,6 +21,9 @@ devDependencies:
     specifier: ^6.0.0
     version: 6.13.2(eslint@8.55.0)(typescript@5.3.3)
   '@unocss/extractor-svelte':
+    specifier: ^0.58.0
+    version: 0.58.0
+  '@unocss/preset-icons':
     specifier: ^0.58.0
     version: 0.58.0
   '@unocss/reset':
@@ -668,6 +674,13 @@ packages:
 
   /@humanwhocodes/object-schema@2.0.1:
     resolution: {integrity: sha512-dvuCeX5fC9dXgJn9t+X5atfmgQAzUOWqS1254Gh0m6i8wKd10ebXkfNKiRK+1GWi/yTvvLDHpoxLr0xxxeslWw==}
+    dev: true
+
+  /@iconify/json@2.2.154:
+    resolution: {integrity: sha512-AafpksywlG0N1vYny+Jjdi79j0URy5HQFCnOcjcr+H24OS1nDZU4udfyQZ1rQsLqzpIOYaWOkpDODsCU9SfHcQ==}
+    dependencies:
+      '@iconify/types': 2.0.0
+      pathe: 1.1.1
     dev: true
 
   /@iconify/types@2.0.0:
