@@ -27,7 +27,7 @@
 				<Navitems />
 			</ul>
 		</div>
-		<a class="btn btn-ghost normal-case text-xl">SAAGAdb</a>
+		<a href="/" class="btn btn-ghost normal-case text-xl">SAAGAdb</a>
 	</div>
 	<div class="navbar-center hidden lg:flex">
 		<ul class="menu menu-horizontal px-1">
