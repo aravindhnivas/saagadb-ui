@@ -7,7 +7,7 @@
 
 <div class="parent w-full h-full">
 	<header><Navbar /></header>
-	<main>
+	<main class="p-5">
 		<slot />
 	</main>
 	<footer><Footer /></footer>

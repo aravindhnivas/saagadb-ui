@@ -1,5 +1,6 @@
 <li><a href="/">Home</a></li>
 <li><a href="/species">Species</a></li>
+<li><a href="/linequery">Line-query</a></li>
 <!-- <li tabindex="0">
 	<details>
 		<summary>Database</summary>
