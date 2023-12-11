@@ -1,15 +1,14 @@
 import type { LayoutServerLoad } from './$types';
-import { DB_URL } from '$lib/utils';
 
 export const load: LayoutServerLoad = async ({ fetch }) => {
 	const fetchLinelist = async () => {
-		const data = await fetch(`${DB_URL}/linelist/`);
+		const data = await fetch(`/api/linelist`);
 		const linelists = await data.json();
 		return linelists;
 	};
 
 	const fetchSpecieslist = async () => {
-		const data = await fetch(`${DB_URL}/species`);
+		const data = await fetch(`/api/species`);
 		const specieslist = await data.json();
 		return specieslist;
 	};
