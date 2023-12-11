@@ -12,7 +12,7 @@
 		{ name: 'mu_a', value: data?.meta?.mu_a ?? '' },
 		{ name: 'mu_b', value: data?.meta?.mu_b ?? '' },
 		{ name: 'mu_c', value: data?.meta?.mu_c ?? '' },
-		{ name: 'Date', value: data?.meta?.data_date },
+		{ name: 'Date_added', value: data?.meta?.data_date },
 		{ name: 'Ref', value: data?.meta?.data_contributor },
 		{ name: 'Notes', value: data?.meta?.notes }
 	];
