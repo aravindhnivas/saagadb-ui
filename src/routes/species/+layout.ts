@@ -1,6 +1,6 @@
-import type { LayoutServerLoad } from './$types';
+import type { LayoutLoad } from './$types';
 
-export const load: LayoutServerLoad = async ({ fetch }) => {
+export const load: LayoutLoad = async ({ fetch }) => {
 	const fetchLinelist = async () => {
 		const data = await fetch(`/api/linelist`);
 		const linelists = await data.json();

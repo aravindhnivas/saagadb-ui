@@ -1,6 +1,6 @@
-import type { PageServerLoad } from './$types';
+import type { PageLoad } from './$types';
 
-export const load: PageServerLoad = async ({ fetch, params }) => {
+export const load: PageLoad = async ({ fetch, params }) => {
 	const fetchSpecies = async (id: string) => {
 		const data = await fetch(`/api/species/${id}`);
 		const linelists = await data.json();
