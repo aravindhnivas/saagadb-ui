@@ -11,14 +11,33 @@
 		{ title: 'Intensity', field: 'intensity' },
 		{ title: 'Formula', field: 'name_formula' },
 		// { title: 'IUPAC', field: 'iupac_name' },
-		{ title: 'Measured', field: 'measured' },
-		{ title: 'Rovibrational', field: 'rovibrational' },
-		{ title: 'Hyperfine', field: 'hyperfine' },
-		// { title: 'Lower State QN', field: 'lower_state_qn' },
-		// { title: 'Upper State QN', field: 'upper_state_qn' },
-		{ title: 'Lower State Energy', field: 'lower_state_energy' },
+		{ title: 'Measured', field: 'measured', formatter: (cell) => (cell.getValue() ? '✔️' : '❌') },
+		{
+			title: 'Rovibrational',
+			field: 'rovibrational',
+			formatter: (cell) => (cell.getValue() ? '✔️' : '❌')
+		},
+		{
+			title: 'Hyperfine',
+			field: 'hyperfine',
+			formatter: (cell) => (cell.getValue() ? '✔️' : '❌')
+		},
+		{
+			title: 'Lower State QN',
+			field: 'lower_state_qn',
+			formatter: (cell) => JSON.stringify(cell.getValue())
+		},
+		{
+			title: 'Upper State QN',
+			field: 'upper_state_qn',
+			formatter: (cell) => JSON.stringify(cell.getValue())
+		},
+		{
+			title: 'Lower State Energy',
+			field: 'lower_state_energy'
+		},
 		{ title: 'Upper State Energy', field: 'upper_state_energy' },
-		// { title: 'S_ij', field: 's_ij' },
+		{ title: 'S_ij', field: 's_ij' },
 		{ title: 'S_ij_mu2', field: 's_ij_mu2' },
 		{ title: 'A_ij', field: 'a_ij' }
 		// {title: 'Name', field: 'name'},
