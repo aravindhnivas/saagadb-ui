@@ -1,10 +1,7 @@
 <script lang="ts">
-	import type { PageServerData } from '../$types';
+	import type { PageData } from '../$types';
 	import Linetable from './linetable.svelte';
-	export let data: PageServerData;
-	// $: if (data?.lines?.length > 0) {
-	// 	console.log(Object.keys(data.lines[0]), data.lines[0]);
-	// }
+	export let data: PageData;
 
 	let min_freq = 600;
 	let max_freq = 2000;

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { PageServerData } from '../$types';
-	export let data: PageServerData;
+	import type { PageData } from '../$types';
+	export let data: PageData;
 	const species = data?.species;
 	console.log(data);
 

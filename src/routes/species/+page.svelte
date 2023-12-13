@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { LayoutServerData } from '../$types';
-	export let data: LayoutServerData;
+	import type { LayoutData } from '../$types';
+	export let data: LayoutData;
 </script>
 
 <div class="grid gap-5">
