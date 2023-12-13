@@ -1,38 +1,16 @@
 <script lang="ts">
+	import { TabulatorFull as Tabulator } from 'tabulator-tables';
 	import { onDestroy } from 'svelte';
-	import { Tabulator } from 'tabulator-tables';
 	export let lines;
-	// console.log(lines);
-	const headers = [
-		'frequency',
-		'uncertainty',
-		'intensity',
-		'name_formula',
-		'iupac_name',
-		'measured',
-		'rovibrational',
-		'hyperfine',
-		'lower_state_qn',
-		'upper_state_qn',
-		'lower_state_energy',
-		'upper_state_energy',
-		's_ij',
-		's_ij_mu2',
-		'a_ij'
-		// 'name',
-		// 'molecule_tag',
-		// 'linelist',
-		// 'meta_id',
-		// 'smiles',
-		// 'selfies'
-	];
-
+	console.log(lines[0]);
+	let status = '';
+	// let tableComponent: Tabulator;
 	const columns = [
 		{ title: 'Frequency', field: 'frequency' },
 		{ title: 'Uncertainty', field: 'uncertainty' },
 		{ title: 'Intensity', field: 'intensity' },
 		{ title: 'Formula', field: 'name_formula' },
-		{ title: 'IUPAC', field: 'iupac_name' },
+		// { title: 'IUPAC', field: 'iupac_name' },
 		{ title: 'Measured', field: 'measured' },
 		{ title: 'Rovibrational', field: 'rovibrational' },
 		{ title: 'Hyperfine', field: 'hyperfine' },
@@ -54,18 +32,27 @@
 	let tablulator_table: Tabulator;
 	let data_loaded = false;
 	const mount = (node: HTMLDivElement) => {
-		// console.log(lines[0]);
 		tablulator_table = new Tabulator(node, {
-			data: [], //assign data to table
-			layout: 'fitDataTable', //fit columns to width of table (optional)
+			// layout: 'fitColumns',
+			index: 'frequency',
+			pagination: true,
+			paginationMode: 'local',
+			paginationSize: 10,
+			paginationSizeSelector: [10, 25, 50, 100],
+			movableColumns: true,
+			paginationCounter: 'rows',
+			// data: lines,
+			// reactiveData: true,
+			// layout: 'fitDataTable', //fit columns to width of table (optional)
 			columns: columns
 		});
-		tablulator_table.on('dataLoading', (data) => {
+		tablulator_table.on('dataLoading', () => {
 			data_loaded = false;
-			console.warn('data loading', data);
+			console.warn('data loading');
 		});
 		tablulator_table.on('dataProcessed', () => {
 			data_loaded = true;
+			status = `Data loaded. ${lines.length} lines found.`;
 			console.log('data processed');
 		});
 	};
@@ -80,7 +67,7 @@
 	});
 </script>
 
-<div role="alert" class="alert alert-info p-1">
-	<span>Total {lines.length} lines queried</span>
+<div role="alert" class="alert alert-link p-1 text-sm">
+	<span>{`Data loaded. ${lines.length} lines found.`}</span>
 </div>
 <div use:mount />
