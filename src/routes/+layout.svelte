@@ -3,7 +3,7 @@
 	import '@unocss/reset/tailwind.css';
 	// import '$lib/styles/global.scss';
 	import 'tabulator-tables/dist/css/tabulator_simple.min.css';
-	// import 'tabulator_simple';
+	import '../global.scss';
 	import Footer from '$lib/layout/footer.svelte';
 	import Navbar from '$lib/layout/navbar.svelte';
 </script>

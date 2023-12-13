@@ -4,15 +4,16 @@
 	export let lines;
 	console.log(lines[0]);
 	let status = '';
-	let search = '';
-	// let tableComponent: Tabulator;
 
 	const columns = [
-		{ title: 'Frequency', field: 'frequency' },
+		{
+			title: 'Frequency',
+			field: 'frequency'
+		},
 		{ title: 'Uncertainty', field: 'uncertainty' },
 		{ title: 'Intensity', field: 'intensity' },
-		{ title: 'Formula', field: 'name_formula', type: 'like', value: search },
-		// { title: 'IUPAC', field: 'iupac_name' },
+		{ title: 'Formula', field: 'name_formula', headerFilter: 'input' },
+		{ title: 'IUPAC', field: 'iupac_name', headerFilter: 'input' },
 		{ title: 'Measured', field: 'measured', formatter: 'tickCross' },
 		{
 			title: 'Rovibrational',
@@ -63,7 +64,7 @@
 			paginationCounter: 'rows',
 			movableColumns: true,
 			// movableRows: true,
-			groupBy: 'iupac_name',
+			groupBy: 'name_formula',
 			// data: lines,
 			// reactiveData: true,
 			// layout: 'fitDataTable', //fit columns to width of table (optional)
@@ -90,8 +91,7 @@
 	});
 </script>
 
-<div role="alert" class="alert alert-link p-1 text-sm">
+<div role="alert" class="alert p-1 text-sm bg-yellow-200">
 	<span>{`Data loaded. ${lines.length} lines found.`}</span>
 </div>
-<input type="text" bind:value={search} placeholder="Search..." />
 <div use:mount />
