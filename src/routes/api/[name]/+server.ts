@@ -4,6 +4,7 @@ import { DB_URL } from '$lib/utils';
 export const GET: RequestHandler = async ({ params, url }) => {
 	const query = url.searchParams.get('query') ?? '';
 	const fetch_url = `${DB_URL}/${params.name}${query ? `?${query}` : ''}`;
+	console.log({ query, fetch_url });
 	const res = await fetch(fetch_url);
 	const data = await res.json();
 	if (data.error) {
