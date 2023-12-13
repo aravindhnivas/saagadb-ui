@@ -2,7 +2,7 @@
 	import type { PageData } from './$types';
 	export let data: PageData;
 	const species = data?.species;
-	console.log(data);
+	console.log(Object.keys(species));
 
 	const metadata = [
 		{ name: 'Category', value: data?.meta?.category },
