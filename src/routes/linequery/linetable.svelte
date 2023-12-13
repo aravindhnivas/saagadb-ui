@@ -1,7 +1,6 @@
 <script>
 	export let lines = [];
 	console.log(lines);
-
 	const headers = [
 		'frequency',
 		'uncertainty',

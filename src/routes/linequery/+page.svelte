@@ -1,6 +1,7 @@
 <script lang="ts">
-	import type { PageData } from '../$types';
+	import type { PageData } from './$types';
 	import Linetable from './linetable.svelte';
+
 	export let data: PageData;
 
 	let min_freq = 600;
@@ -36,6 +37,7 @@
 
 	<a href="/linequery?max_freq={max_freq}&min_freq={min_freq}" class="btn btn-primary">Submit</a>
 </div>
+
 {#if data?.lines?.length > 0}
 	<Linetable lines={data?.lines ?? []} />
 {/if}
