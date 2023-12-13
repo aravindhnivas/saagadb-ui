@@ -4,23 +4,25 @@
 	export let lines;
 	console.log(lines[0]);
 	let status = '';
+	let search = '';
 	// let tableComponent: Tabulator;
+
 	const columns = [
 		{ title: 'Frequency', field: 'frequency' },
 		{ title: 'Uncertainty', field: 'uncertainty' },
 		{ title: 'Intensity', field: 'intensity' },
-		{ title: 'Formula', field: 'name_formula' },
+		{ title: 'Formula', field: 'name_formula', type: 'like', value: search },
 		// { title: 'IUPAC', field: 'iupac_name' },
-		{ title: 'Measured', field: 'measured', formatter: (cell) => (cell.getValue() ? '✔️' : '❌') },
+		{ title: 'Measured', field: 'measured', formatter: 'tickCross' },
 		{
 			title: 'Rovibrational',
 			field: 'rovibrational',
-			formatter: (cell) => (cell.getValue() ? '✔️' : '❌')
+			formatter: 'tickCross'
 		},
 		{
 			title: 'Hyperfine',
 			field: 'hyperfine',
-			formatter: (cell) => (cell.getValue() ? '✔️' : '❌')
+			formatter: 'tickCross'
 		},
 		{
 			title: 'Lower State QN',
@@ -58,8 +60,10 @@
 			paginationMode: 'local',
 			paginationSize: 10,
 			paginationSizeSelector: [10, 25, 50, 100],
-			movableColumns: true,
 			paginationCounter: 'rows',
+			movableColumns: true,
+			// movableRows: true,
+			groupBy: 'iupac_name',
 			// data: lines,
 			// reactiveData: true,
 			// layout: 'fitDataTable', //fit columns to width of table (optional)
@@ -89,4 +93,5 @@
 <div role="alert" class="alert alert-link p-1 text-sm">
 	<span>{`Data loaded. ${lines.length} lines found.`}</span>
 </div>
+<input type="text" bind:value={search} placeholder="Search..." />
 <div use:mount />
