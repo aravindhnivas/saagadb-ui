@@ -1,7 +1,10 @@
 <script lang="ts">
 	import { TabulatorFull as Tabulator } from 'tabulator-tables';
-	export let lines;
+	export let lines: {
+		[k in Line]: string;
+	}[] = [];
 
+	type Line = (typeof columns)[number]['field'];
 	const columns = [
 		{
 			title: 'Frequency',
@@ -46,11 +49,10 @@
 		// {title: 'Meta ID', field: 'meta_id'},
 		// {title: 'SMILES', field: 'smiles'},
 		// {title: 'SELFIES', field: 'selfies'}
-	];
+	] as const;
 
 	const mount = (node: HTMLDivElement) => {
-		const tablulator_table = new Tabulator(node, {
-			// layout: 'fitColumns',
+		new Tabulator(node, {
 			index: 'frequency',
 			pagination: true,
 			paginationMode: 'local',
@@ -58,12 +60,12 @@
 			paginationSizeSelector: [10, 25, 50, 100],
 			paginationCounter: 'rows',
 			movableColumns: true,
-			// movableRows: true,
 			groupBy: 'name_formula',
 			data: lines,
+			columns: columns
+			// movableRows: true,
 			// reactiveData: true,
 			// layout: 'fitDataTable', //fit columns to width of table (optional)
-			columns: columns
 		});
 	};
 </script>
