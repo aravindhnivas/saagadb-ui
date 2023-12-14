@@ -1,9 +1,6 @@
 <script lang="ts">
 	import { TabulatorFull as Tabulator } from 'tabulator-tables';
-	import { onDestroy } from 'svelte';
 	export let lines;
-	console.log(lines[0]);
-	let status = '';
 
 	const columns = [
 		{
@@ -51,10 +48,8 @@
 		// {title: 'SELFIES', field: 'selfies'}
 	];
 
-	let tablulator_table: Tabulator;
-	let data_loaded = false;
 	const mount = (node: HTMLDivElement) => {
-		tablulator_table = new Tabulator(node, {
+		const tablulator_table = new Tabulator(node, {
 			// layout: 'fitColumns',
 			index: 'frequency',
 			pagination: true,
@@ -65,30 +60,12 @@
 			movableColumns: true,
 			// movableRows: true,
 			groupBy: 'name_formula',
-			// data: lines,
+			data: lines,
 			// reactiveData: true,
 			// layout: 'fitDataTable', //fit columns to width of table (optional)
 			columns: columns
 		});
-		tablulator_table.on('dataLoading', () => {
-			data_loaded = false;
-			console.warn('data loading');
-		});
-		tablulator_table.on('dataProcessed', () => {
-			data_loaded = true;
-			status = `Data loaded. ${lines.length} lines found.`;
-			console.log('data processed');
-		});
 	};
-
-	$: if (tablulator_table && data_loaded && lines?.length > 0) {
-		tablulator_table.replaceData(lines);
-	}
-
-	onDestroy(() => {
-		tablulator_table?.off('dataLoading');
-		tablulator_table?.off('dataProcessed');
-	});
 </script>
 
 <div role="alert" class="alert p-1 text-sm bg-yellow-200">
