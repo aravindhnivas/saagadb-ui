@@ -11,7 +11,7 @@
 			name="min_freq"
 			type="text"
 			placeholder="Type here"
-			value="600"
+			value=""
 			class="input input-bordered w-full max-w-xs"
 		/>
 		<div class="label">
@@ -23,7 +23,7 @@
 		<input
 			name="max_freq"
 			type="text"
-			value="2000"
+			value=""
 			placeholder="Type here"
 			class="input input-bordered w-full max-w-xs"
 		/>
@@ -60,6 +60,6 @@
 				d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
 			/></svg
 		>
-		<span>{error}</span>
+		<span>{error?.body?.message ?? 'Internal error'}</span>
 	</div>
 {/await}

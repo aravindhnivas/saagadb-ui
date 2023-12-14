@@ -85,6 +85,9 @@ devDependencies:
   vite:
     specifier: ^4.4.2
     version: 4.5.1(sass@1.69.5)
+  vite-plugin-remove-console:
+    specifier: ^2.2.0
+    version: 2.2.0
 
 packages:
 
@@ -3276,6 +3279,10 @@ packages:
 
   /util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
+    dev: true
+
+  /vite-plugin-remove-console@2.2.0:
+    resolution: {integrity: sha512-qgjh5pz75MdE9Kzs8J0kBwaCfifHV0ezRbB9rpGsIOxam+ilcGV7WOk91vFJXquzRmiKrFh3Hxlh0JJWAmXTbQ==}
     dev: true
 
   /vite@4.5.1(sass@1.69.5):
