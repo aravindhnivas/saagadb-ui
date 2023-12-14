@@ -1,7 +1,8 @@
 import { error } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { DB_URL } from '$lib/utils';
+import { DB_URL } from '$lib/server';
 export const GET: RequestHandler = async ({ params, url }) => {
+	// console.log({ DB_URL });
 	const query = url.searchParams.get('query') ?? '';
 	const fetch_url = `${DB_URL}/${params.name}${query ? `?${query}` : ''}`;
 	const res = await fetch(fetch_url);

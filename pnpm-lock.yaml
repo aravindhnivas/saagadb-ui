@@ -8,6 +8,9 @@ dependencies:
   dotenv:
     specifier: ^16.3.1
     version: 16.3.1
+  tabulator-tables:
+    specifier: ^5.5.2
+    version: 5.5.2
 
 devDependencies:
   '@iconify/json':
@@ -67,9 +70,6 @@ devDependencies:
   svelte-check:
     specifier: ^3.6.0
     version: 3.6.2(@babel/core@7.23.5)(postcss@8.4.32)(sass@1.69.5)(svelte@4.2.8)
-  tabulator-tables:
-    specifier: ^5.5.2
-    version: 5.5.2
   tslib:
     specifier: ^2.4.1
     version: 2.6.2
@@ -3074,7 +3074,7 @@ packages:
 
   /tabulator-tables@5.5.2:
     resolution: {integrity: sha512-GlzUPXeH9Rw1iPXcl3uBLJk6Sz51xdwscZ5RrsKxDQDQ+t2g31hGq/0xjaj6ea62wHgl8vzVsHuwap0jKzsUNg==}
-    dev: true
+    dev: false
 
   /tailwindcss@3.3.6:
     resolution: {integrity: sha512-AKjF7qbbLvLaPieoKeTjG1+FyNZT6KaJMJPFeQyLfIp7l82ggH1fbHJSsYIvnbTFQOlkh+gBYpyby5GT1LIdLw==}
