@@ -38,7 +38,7 @@
 	</button> -->
 </form>
 
-{#await data.streamed.lines}
+{#await data.lines}
 	<p>fetching please wait...</p>
 {:then lines}
 	{#if lines?.length > 0}

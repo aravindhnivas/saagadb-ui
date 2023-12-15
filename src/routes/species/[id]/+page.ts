@@ -1,18 +1,9 @@
 import type { PageLoad } from './$types';
 
 export const load: PageLoad = async ({ fetch, params }) => {
-	const fetchSpecies = async (id: string): Promise<Species> => {
-		const data = await fetch(`/api/species/${id}`);
-		return await data.json();
-	};
-
-	const fetchSpeciesMeta = async (id: string): Promise<Meta> => {
-		const data = await fetch(`/api/species-metadata/${id}`);
-		return await data.json();
-	};
-
-	return {
-		species: fetchSpecies(params.id),
-		meta: fetchSpeciesMeta(params.id)
-	};
+	const [species, meta] = await Promise.all([
+		fetch(`/api/species/${params.id}`).then((res) => res.json()),
+		fetch(`/api/species-metadata/${params.id}`).then((res) => res.json())
+	]);
+	return { species, meta };
 };

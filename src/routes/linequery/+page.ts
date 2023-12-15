@@ -12,5 +12,5 @@ export const load: PageLoad = async ({ url, fetch }) => {
 		return data;
 	};
 
-	return { streamed: { lines: getLinequery() } };
+	return { lines: getLinequery() };
 };
