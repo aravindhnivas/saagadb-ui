@@ -7,6 +7,6 @@ export const GET: RequestHandler = async ({ params, url }) => {
 	console.log({ query, fetch_url });
 	const res = await fetch(fetch_url);
 	const data = await res.json();
-	if (data.error) throw error(500, data.error);
+	if (data.error) error(500, data.error);
 	return new Response(JSON.stringify(data), { status: 200 });
 };

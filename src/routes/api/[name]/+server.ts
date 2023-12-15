@@ -7,6 +7,6 @@ export const GET: RequestHandler = async ({ params, url }) => {
 	const fetch_url = `${DB_URL}/${params.name}${query ? `?${query}` : ''}`;
 	const res = await fetch(fetch_url);
 	const data = await res.json();
-	if (data.error) throw error(500, data.error);
+	if (data.error) error(500, data.error);
 	return new Response(JSON.stringify(data), { status: 200 });
 };
