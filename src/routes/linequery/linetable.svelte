@@ -1,19 +1,32 @@
 <script lang="ts">
 	import { TabulatorFull as Tabulator } from 'tabulator-tables';
-	export let lines: {
-		[k in Line]: string;
-	}[] = [];
+	import type { OptionsColumns, OptionsData } from 'tabulator-tables';
 
-	type Line = (typeof columns)[number]['field'];
-	const columns = [
+	export let lines: OptionsData['data'] = [];
+
+	const columns: OptionsColumns['columns'] = [
 		{
 			title: 'Frequency',
 			field: 'frequency'
 		},
 		{ title: 'Uncertainty', field: 'uncertainty' },
 		{ title: 'Intensity', field: 'intensity' },
-		{ title: 'Formula', field: 'name_formula', headerFilter: 'input' },
-		{ title: 'IUPAC', field: 'iupac_name', headerFilter: 'input' },
+		{
+			title: 'Formula',
+			field: 'name_formula'
+			// headerFilter: 'input'
+		},
+		{
+			title: 'IUPAC',
+			field: 'iupac_name'
+			// headerFilter: 'input'
+		},
+		{
+			title: 'Database',
+			field: 'linelist',
+			formatter: (cell) => cell.getValue().toUpperCase(),
+			headerFilter: 'input'
+		},
 		{ title: 'Measured', field: 'measured', formatter: 'tickCross' },
 		{
 			title: 'Rovibrational',
@@ -44,12 +57,11 @@
 		{ title: 'S_ij_mu2', field: 's_ij_mu2' },
 		{ title: 'A_ij', field: 'a_ij' }
 		// {title: 'Name', field: 'name'},
-		// {title: 'Molecule Tag', field: 'molecule_tag'},
-		// {title: 'Linelist', field: 'linelist'},
-		// {title: 'Meta ID', field: 'meta_id'},
+		// { title: 'Molecule Tag', field: 'molecule_tag' }
+		// { title: 'Meta ID', field: 'meta_id' }
 		// {title: 'SMILES', field: 'smiles'},
-		// {title: 'SELFIES', field: 'selfies'}
-	] as const;
+		// { title: 'SELFIES', field: 'selfies' }
+	];
 
 	const mount = (node: HTMLDivElement) => {
 		new Tabulator(node, {
@@ -63,14 +75,9 @@
 			groupBy: 'name_formula',
 			data: lines,
 			columns: columns
-			// movableRows: true,
-			// reactiveData: true,
 			// layout: 'fitDataTable', //fit columns to width of table (optional)
 		});
 	};
 </script>
 
-<div role="alert" class="alert p-1 text-sm bg-yellow-200">
-	<span>{`Data loaded. ${lines.length} lines found.`}</span>
-</div>
 <div use:mount />
