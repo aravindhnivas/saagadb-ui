@@ -2,7 +2,7 @@
 	import type { PageData } from './$types';
 	export let data: PageData;
 	const species = data?.species;
-	console.log(Object.keys(species));
+	// console.log(Object.keys(species));
 
 	const metadata = [
 		{ name: 'Category', value: data?.meta?.category },
@@ -13,7 +13,7 @@
 		{ name: 'mu_b', value: data?.meta?.mu_b ?? '' },
 		{ name: 'mu_c', value: data?.meta?.mu_c ?? '' },
 		{ name: 'Date_added', value: data?.meta?.data_date },
-		{ name: 'Ref', value: data?.meta?.data_contributor },
+		{ name: 'Data_contributor', value: data?.meta?.data_contributor },
 		{ name: 'Notes', value: data?.meta?.notes }
 	];
 </script>
