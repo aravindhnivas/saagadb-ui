@@ -69,7 +69,7 @@
 			pagination: true,
 			paginationMode: 'local',
 			paginationSize: 10,
-			paginationSizeSelector: [10, 25, 50, 100],
+			paginationSizeSelector: [10, 15, 25, 50, 100],
 			paginationCounter: 'rows',
 			movableColumns: true,
 			groupBy: 'name_formula',
