@@ -1,9 +1,8 @@
 import type { Actions, PageServerLoad } from './$types';
 import { z } from 'zod';
-import { superValidate } from 'sveltekit-superforms/server';
-import { fail } from '@sveltejs/kit';
+import { superValidate, setError } from 'sveltekit-superforms/server';
+import { fail, redirect } from '@sveltejs/kit';
 import { DB_URL } from '$lib/server';
-import bcrypt from 'bcrypt';
 
 const schema = z.object({
 	email: z.string().email(),
@@ -22,7 +21,6 @@ export const load: PageServerLoad = async (event) => {
 export const actions: Actions = {
 	default: async (event) => {
 		const form = await superValidate(event, schema);
-		// console.log(form);
 
 		if (!form.valid) {
 			return fail(400, { form });
@@ -31,9 +29,7 @@ export const actions: Actions = {
 		const { data } = form;
 		const email = data.email;
 		const password = data.password;
-		console.log({ email, password });
 
-		// POST to API
 		const res = await event.fetch(`${DB_URL}/user/token/`, {
 			method: 'POST',
 			headers: {
@@ -44,21 +40,20 @@ export const actions: Actions = {
 		});
 
 		if (res.status !== 200) {
-			console.log(`res.status: ${res.status}, res.statusText: ${res.statusText}`);
-			return fail(400, { form });
+			console.log(`res.status: ${res.status}, res.statusText: ${res.statusText}`, form);
+			return setError(form, 'password', 'Invalid email or password.');
 		}
 		const { token } = await res.json();
-		console.log({ token });
 
-		if (token) {
-			// set event.locals.user using cookies
-			event.cookies.set('user', JSON.stringify({ email, token }), {
-				maxAge: 60 * 60 * 24 * 7, // 1 week
-				path: '/'
-			});
+		if (!token) return { form };
 
-			console.log(`Successfully logged in as ${email}`);
-		}
-		return { form };
+		event.cookies.set('user', JSON.stringify({ email, token }), {
+			maxAge: 60 * 60 * 24 * 7, // 1 week
+			path: '/',
+			httpOnly: true,
+			sameSite: 'strict',
+			secure: true
+		});
+		redirect(303, '/admin');
 	}
 };
