@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { superValidate } from 'sveltekit-superforms/server';
 import { fail } from '@sveltejs/kit';
 import { DB_URL } from '$lib/server';
+import bcrypt from 'bcrypt';
 
 const schema = z.object({
 	email: z.string().email(),
@@ -49,6 +50,15 @@ export const actions: Actions = {
 		const { token } = await res.json();
 		console.log({ token });
 
+		if (token) {
+			// set event.locals.user using cookies
+			event.cookies.set('user', JSON.stringify({ email, token }), {
+				maxAge: 60 * 60 * 24 * 7, // 1 week
+				path: '/'
+			});
+
+			console.log(`Successfully logged in as ${email}`);
+		}
 		return { form };
 	}
 };

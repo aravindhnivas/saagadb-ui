@@ -23,6 +23,7 @@
 				</label>
 				<input
 					name="email"
+					id="email"
 					type="email"
 					placeholder="email"
 					class="input input-bordered"
@@ -39,6 +40,7 @@
 				</label>
 				<input
 					name="password"
+					id="password"
 					type="password"
 					placeholder="password"
 					class="input input-bordered"
