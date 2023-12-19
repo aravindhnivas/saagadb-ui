@@ -73,6 +73,9 @@ devDependencies:
   svelte-check:
     specifier: ^3.6.0
     version: 3.6.2(@babel/core@7.23.5)(postcss@8.4.32)(sass@1.69.5)(svelte@4.2.8)
+  sveltekit-superforms:
+    specifier: ^1.12.0
+    version: 1.12.0(@sveltejs/kit@2.0.0)(svelte@4.2.8)(zod@3.22.4)
   tslib:
     specifier: ^2.4.1
     version: 2.6.2
@@ -91,6 +94,9 @@ devDependencies:
   vite-plugin-remove-console:
     specifier: ^2.2.0
     version: 2.2.0
+  zod:
+    specifier: ^3.22.4
+    version: 3.22.4
 
 packages:
 
@@ -3188,6 +3194,18 @@ packages:
       periscopic: 3.1.0
     dev: true
 
+  /sveltekit-superforms@1.12.0(@sveltejs/kit@2.0.0)(svelte@4.2.8)(zod@3.22.4):
+    resolution: {integrity: sha512-yer9YKhfWsKsDIxXahFLuGuUel32gyi96qIdxTVFAOWXZM9ZaMEP7+FL2cMYRDg6Xqlrh5SQ9oQdkVYeLNG0eA==}
+    peerDependencies:
+      '@sveltejs/kit': 1.x || 2.x
+      svelte: 3.x || 4.x
+      zod: 3.x
+    dependencies:
+      '@sveltejs/kit': 2.0.0(@sveltejs/vite-plugin-svelte@3.0.1)(svelte@4.2.8)(vite@5.0.10)
+      svelte: 4.2.8
+      zod: 3.22.4
+    dev: true
+
   /tabulator-tables@5.5.2:
     resolution: {integrity: sha512-GlzUPXeH9Rw1iPXcl3uBLJk6Sz51xdwscZ5RrsKxDQDQ+t2g31hGq/0xjaj6ea62wHgl8vzVsHuwap0jKzsUNg==}
     dev: false
@@ -3471,4 +3489,8 @@ packages:
   /yocto-queue@0.1.0:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
+    dev: true
+
+  /zod@3.22.4:
+    resolution: {integrity: sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==}
     dev: true

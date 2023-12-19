@@ -18,11 +18,13 @@
 	];
 </script>
 
-<h1 class="text-xl">{species.iupac_name}</h1>
-<h2>{Number(species.molecular_mass).toFixed(2)} atomic mass</h2>
-<h2><em>SMILES: </em>{species.standard_inchi}</h2>
-<h2><em>SELFIES: </em>{species.selfies}</h2>
-<h2>{species.notes}</h2>
+<div class="content">
+	<h1 class="text-xl">{species.iupac_name}</h1>
+	<h2>{Number(species.molecular_mass).toFixed(2)} atomic mass</h2>
+	<h2><em>SMILES: </em>{species.standard_inchi}</h2>
+	<h2><em>SELFIES: </em>{species.selfies}</h2>
+	<h2>{species.notes}</h2>
+</div>
 
 <div class="overflow-x-auto">
 	<table class="table border-2">

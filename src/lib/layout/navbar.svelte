@@ -5,6 +5,8 @@
 <div class="navbar bg-base-100">
 	<div class="navbar-start">
 		<div class="dropdown">
+			<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+			<!-- svelte-ignore a11y-label-has-associated-control -->
 			<label tabindex="0" class="btn btn-ghost lg:hidden">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
@@ -20,6 +22,7 @@
 					/></svg
 				>
 			</label>
+			<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 			<ul
 				tabindex="0"
 				class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
@@ -35,28 +38,6 @@
 		</ul>
 	</div>
 	<div class="navbar-end">
-		<div class="dropdown dropdown-end">
-			<div class="flex items-center gap-3">
-				<span class="text">Hello, User!</span>
-				<label tabindex="0" class="btn btn-ghost btn-circle avatar">
-					<div class="w-10 rounded-full">
-						<img src="https://picsum.photos/200" />
-					</div>
-				</label>
-			</div>
-			<ul
-				tabindex="0"
-				class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
-			>
-				<li>
-					<a class="justify-between">
-						Profile
-						<span class="badge">New</span>
-					</a>
-				</li>
-				<li><a>Settings</a></li>
-				<li><a href="/login">Logout</a></li>
-			</ul>
-		</div>
+		<a href="/admin" class="btn btn-ghost normal-case">Admin</a>
 	</div>
 </div>

@@ -28,6 +28,6 @@
 		display: grid;
 		overflow: auto;
 		height: 100%;
-		align-content: baseline;
+		// align-content: baseline;
 	}
 </style>
