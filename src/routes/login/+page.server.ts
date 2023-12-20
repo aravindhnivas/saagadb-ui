@@ -6,8 +6,8 @@ import { DB_URL } from '$lib/server';
 
 const schema = z.object({
 	email: z.string().email(),
-	// password: z.string().min(8)
-	password: z.string()
+	password: z.string().min(8)
+	// password: z.string()
 });
 
 export const load: PageServerLoad = async (event) => {
@@ -40,7 +40,7 @@ export const actions: Actions = {
 		});
 
 		if (res.status !== 200) {
-			console.log(`res.status: ${res.status}, res.statusText: ${res.statusText}`, form);
+			// console.log(`res.status: ${res.status}, res.statusText: ${res.statusText}`, form);
 			return setError(form, 'password', 'Invalid email or password.');
 		}
 		const { token } = await res.json();
@@ -54,6 +54,13 @@ export const actions: Actions = {
 			sameSite: 'strict',
 			secure: true
 		});
-		redirect(303, '/admin');
+		const redirectTo = event.url.searchParams.get('redirectTo');
+
+		console.log(`redirectTo: ${redirectTo}`, redirectTo?.slice(1));
+		if (redirectTo) {
+			redirect(303, `/${redirectTo.slice(1)}`);
+		} else {
+			redirect(303, '/admin');
+		}
 	}
 };

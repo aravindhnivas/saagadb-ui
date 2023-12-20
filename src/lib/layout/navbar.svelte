@@ -1,4 +1,5 @@
-<script>
+<script lang="ts">
+	import { logged_in } from '$lib/utils';
 	import Navitems from './nav/navitems.svelte';
 </script>
 
@@ -38,6 +39,24 @@
 		</ul>
 	</div>
 	<div class="navbar-end">
-		<a href="/admin" class="btn btn-ghost normal-case">Admin</a>
+		<div class="dropdown dropdown-end">
+			{#if $logged_in}
+				<div tabindex="0" role="button">Hi, {$logged_in}</div>
+				<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+				<ul
+					tabindex="0"
+					class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
+				>
+					<li><a href="/admin/">Dashboard</a></li>
+					<li>
+						<form action="/logout" method="POST">
+							<button>logout</button>
+						</form>
+					</li>
+				</ul>
+			{:else}
+				<a href="/login">Admin</a>
+			{/if}
+		</div>
 	</div>
 </div>

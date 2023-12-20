@@ -1,13 +1,17 @@
 import { redirect, type Handle } from '@sveltejs/kit';
+import { logged_in } from '$lib/utils';
 
 export const handle: Handle = async ({ event, resolve }) => {
-	event.locals.user = null;
 	const user = event.cookies.get('user');
-	if (user) event.locals.user = JSON.parse(user);
-
+	if (user) {
+		event.locals.user = JSON.parse(user);
+		logged_in.set(event.locals.user?.email ?? '');
+	}
 	if (event.url.pathname.startsWith('/admin')) {
 		if (!event.locals.user?.token) {
-			redirect(303, '/login');
+			const fromUrl = event.url.pathname + event.url.search;
+			const message = 'You must be logged in to access this page.';
+			redirect(303, `/login?redirectTo=${fromUrl}&message=${message}`);
 		}
 	}
 
