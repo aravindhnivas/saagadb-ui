@@ -47,13 +47,14 @@ export const actions: Actions = {
 
 		if (!token) return { form };
 
-		event.cookies.set('user', JSON.stringify({ email, token }), {
+		event.cookies.set('token', token, {
 			maxAge: 60 * 60 * 24 * 7, // 1 week
 			path: '/',
 			httpOnly: true,
 			sameSite: 'strict',
 			secure: true
 		});
+
 		const redirectTo = event.url.searchParams.get('redirectTo');
 
 		console.log(`redirectTo: ${redirectTo}`, redirectTo?.slice(1));

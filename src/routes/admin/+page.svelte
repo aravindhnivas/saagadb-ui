@@ -2,7 +2,8 @@
 	import { logged_in } from '$lib/utils';
 	import type { PageServerData } from './$types';
 	export let data: PageServerData;
-	logged_in.set(data?.email);
+	const { user } = data;
+	logged_in.set(user?.name);
 </script>
 
-Admin page
+{JSON.stringify(user)}
