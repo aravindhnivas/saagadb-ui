@@ -1,8 +1,9 @@
 import { redirect, type Handle } from '@sveltejs/kit';
-// import { logged_in } from '$lib/utils';
+import { logged_in } from '$lib/utils';
 import { env } from '$env/dynamic/private';
 
 export const handle: Handle = async ({ event, resolve }) => {
+	logged_in.set('');
 	event.locals.domain = process.env.NODE_ENV === 'development' ? 'localhost' : env.DOMAIN;
 	const token = event.cookies.get('token');
 	console.log(`token: ${token}`);
