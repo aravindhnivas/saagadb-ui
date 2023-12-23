@@ -3,11 +3,16 @@
 	import type { PageData } from './$types';
 	import { superForm } from 'sveltekit-superforms/client';
 
-	let message: string;
-	$: message = $page.url.searchParams.get('message') || '';
+	let message: string = '';
+	$: if ($page.url.searchParams.get('message')) {
+		message = $page.url.searchParams.get('message') as string;
+	}
 	export let data: PageData;
-	const { form, errors, enhance } = superForm(data.form);
-	// $: console.log({ $form, $errors });
+	const { form, errors, enhance } = superForm(data.form, {
+		onError: (err) => {
+			message = err.result.error.message;
+		}
+	});
 </script>
 
 <div class="w-full h-full flex flex-col gap-2 items-center justify-center">
@@ -26,7 +31,7 @@
 				</label>
 				<input
 					name="email"
-					id="email"
+					id="email-input"
 					type="email"
 					placeholder="email"
 					class="input input-bordered"
@@ -43,7 +48,7 @@
 				</label>
 				<input
 					name="password"
-					id="password"
+					id="password-input"
 					type="password"
 					placeholder="password"
 					class="input input-bordered"

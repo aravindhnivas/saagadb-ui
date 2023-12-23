@@ -2,7 +2,7 @@ import type { PageServerLoad } from './$types';
 import { DB_URL } from '$lib/server';
 import { error } from '@sveltejs/kit';
 
-export const load: PageServerLoad = async ({ cookies, locals, fetch }) => {
+export const load: PageServerLoad = async ({ locals, fetch }) => {
 	const fetch_user = async (): Promise<{
 		name: string;
 		email: string;
@@ -13,9 +13,9 @@ export const load: PageServerLoad = async ({ cookies, locals, fetch }) => {
 			headers: {
 				Authorization: locals.token ? `Token ${locals.token}` : '',
 				'Content-Type': 'application/json',
-				accept: 'application/json',
-				'X-CSRFToken': cookies.get('csrftoken') as string
-			}
+				accept: 'application/json'
+			},
+			credentials: 'include'
 		});
 
 		if (!res.ok) error(500, 'Could not fetch user data');

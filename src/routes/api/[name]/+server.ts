@@ -2,13 +2,12 @@ import { error } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { DB_URL } from '$lib/server';
 
-export const GET: RequestHandler = async ({ params, url, cookies, locals }) => {
+export const GET: RequestHandler = async ({ params, url, locals }) => {
 	const query = url.searchParams.get('query') ?? '';
 	const fetch_url = `${DB_URL}/data/${params.name}${query ? `?${query}` : ''}`;
 
 	const headers = {
 		accept: 'application/json',
-		'X-CSRFToken': cookies.get('csrftoken') as string,
 		Authorization: locals.token ? `Token ${locals.token}` : ''
 	};
 
