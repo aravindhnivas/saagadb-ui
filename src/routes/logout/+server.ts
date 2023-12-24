@@ -1,14 +1,15 @@
 import { redirect } from '@sveltejs/kit';
+import { logged_in } from '$lib/utils';
 import type { RequestHandler } from './$types';
 export const POST: RequestHandler = async ({ cookies, locals }) => {
-	console.log(process.env.NODE_ENV);
+	logged_in.set('');
 	cookies.set('token', '', {
 		maxAge: 0,
 		path: '/',
 		domain: locals.domain,
 		httpOnly: true,
-		sameSite: 'strict',
-		secure: false
+		sameSite: 'lax'
+		// secure: false
 	});
 	redirect(303, '/');
 };

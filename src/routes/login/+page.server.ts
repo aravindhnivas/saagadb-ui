@@ -36,7 +36,6 @@ export const actions: Actions = {
 				accept: 'application/json',
 				'Content-Type': 'application/json'
 			},
-			// credentials: 'include',
 			body: JSON.stringify({ email, password })
 		});
 
@@ -47,12 +46,13 @@ export const actions: Actions = {
 		const { token } = await res.json();
 
 		if (!token) return { form };
+
 		event.cookies.set('token', token, {
 			maxAge: 60 * 60 * 24 * 7, // 1 week
 			path: '/',
 			domain: event.locals.domain,
 			httpOnly: true,
-			sameSite: 'strict'
+			sameSite: 'lax'
 			// secure: true
 		});
 
