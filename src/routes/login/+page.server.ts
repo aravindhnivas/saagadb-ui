@@ -7,7 +7,6 @@ import { DB_URL } from '$lib/server';
 const schema = z.object({
 	email: z.string().email(),
 	password: z.string().min(8)
-	// password: z.string()
 });
 
 export const load: PageServerLoad = async (event) => {
