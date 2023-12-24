@@ -55,7 +55,7 @@
 					</li>
 				</ul>
 			{:else}
-				<a href="/login">Admin</a>
+				<a href="/login">Login</a>
 			{/if}
 		</div>
 	</div>
