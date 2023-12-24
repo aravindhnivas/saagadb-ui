@@ -44,6 +44,15 @@ export const actions: Actions = {
 		if (!token) return { form };
 
 		tokenStore.set(token);
+
+		event.cookies.set('token', token, {
+			path: '/',
+			// domain: event.locals.domain,
+			maxAge: 60 * 60 * 24 * 7, // 1 week
+			httpOnly: true,
+			sameSite: 'lax'
+		});
+
 		const redirectTo = event.url.searchParams.get('redirectTo');
 
 		if (redirectTo) {
