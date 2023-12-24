@@ -13,6 +13,5 @@ module.exports = {
             PROTOCOL_HEADER: "x-forwarded-proto",
             HOST_HEADER: "x-forwarded-host"
         },
-        env_
     }],
 };
