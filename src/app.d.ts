@@ -5,7 +5,6 @@ declare global {
 		// interface Error {}
 		interface Locals {
 			token: string | null;
-			domain: string;
 		}
 		// interface PageData {}
 		// interface Platform {}

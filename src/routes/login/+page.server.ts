@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { superValidate, setError } from 'sveltekit-superforms/server';
 import { fail, redirect } from '@sveltejs/kit';
 import { DB_URL } from '$lib/server';
-import { tokenStore } from '$lib/utils';
+import { tokenStore } from '$lib/server/stores';
 
 const schema = z.object({
 	email: z.string().email(),

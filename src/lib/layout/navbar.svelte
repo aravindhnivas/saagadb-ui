@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { logged_in } from '$lib/utils';
+	import { logged_in } from '$lib/utils/stores';
 	import Navitems from './nav/navitems.svelte';
 </script>
 
