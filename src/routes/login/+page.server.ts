@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { superValidate, setError } from 'sveltekit-superforms/server';
 import { fail, redirect } from '@sveltejs/kit';
 import { DB_URL } from '$lib/server';
+import { tokenStore } from '$lib/utils';
 
 const schema = z.object({
 	email: z.string().email(),
@@ -46,18 +47,9 @@ export const actions: Actions = {
 
 		if (!token) return { form };
 
-		event.cookies.set('token', token, {
-			maxAge: 60 * 60 * 24 * 7, // 1 week
-			path: '/',
-			domain: event.locals.domain,
-			httpOnly: true,
-			sameSite: 'lax'
-			// secure: true
-		});
-
+		tokenStore.set(token);
 		const redirectTo = event.url.searchParams.get('redirectTo');
 
-		console.log(`redirectTo: ${redirectTo}`, redirectTo?.slice(1));
 		if (redirectTo) {
 			redirect(303, `/${redirectTo.slice(1)}`);
 		} else {

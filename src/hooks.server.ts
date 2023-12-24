@@ -1,11 +1,13 @@
 import { redirect, type Handle } from '@sveltejs/kit';
-// import { logged_in } from '$lib/utils';
+import { tokenStore } from '$lib/utils';
 import { env } from '$env/dynamic/private';
+import { get } from 'svelte/store';
 
 export const handle: Handle = async ({ event, resolve }) => {
-	// logged_in.set('');
+	// console.log({ cookies: get(cookies).token });
 	event.locals.domain = process.env.NODE_ENV === 'development' ? 'localhost' : env.DOMAIN;
-	const token = event.cookies.get('token');
+	// const token = event.cookies.get('token');
+	const token = get(tokenStore);
 	if (token) event.locals.token = token;
 
 	if (event.url.pathname.startsWith('/admin')) {
