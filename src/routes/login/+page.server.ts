@@ -32,10 +32,6 @@ export const actions: Actions = {
 
 		const res = await event.fetch(`${DB_URL}/user/token/`, {
 			method: 'POST',
-			headers: {
-				accept: 'application/json',
-				'Content-Type': 'application/json'
-			},
 			body: JSON.stringify({ email, password })
 		});
 

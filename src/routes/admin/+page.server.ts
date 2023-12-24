@@ -10,15 +10,7 @@ export const load: PageServerLoad = async ({ locals, fetch }) => {
 	}> => {
 		if (!locals.token) error(500, 'No token found');
 
-		const res = await fetch(`${DB_URL}/user/me`, {
-			method: 'GET',
-			headers: {
-				Authorization: locals.token ? `Token ${locals.token}` : '',
-				'Content-Type': 'application/json',
-				accept: 'application/json'
-			}
-		});
-
+		const res = await fetch(`${DB_URL}/user/me`);
 		if (!res.ok) error(500, 'Could not fetch user data');
 
 		const data = await res.json();

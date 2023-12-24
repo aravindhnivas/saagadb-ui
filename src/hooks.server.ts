@@ -1,4 +1,4 @@
-import { redirect, type Handle } from '@sveltejs/kit';
+import { redirect, type Handle, type HandleFetch } from '@sveltejs/kit';
 import { tokenStore } from '$lib/server/stores';
 import { get } from 'svelte/store';
 
@@ -17,4 +17,18 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const response = await resolve(event);
 
 	return response;
+};
+
+export const handleFetch: HandleFetch = async ({ event, request, fetch }) => {
+	// if (request.url.startsWith('/admin')) {
+	// 	request.headers.set('cookie', event?.request.headers.get('cookie') ?? '');
+	// }
+
+	request.headers.set('accept', 'application/json');
+	request.headers.set('content-type', 'application/json');
+	if (get(tokenStore)) {
+		request.headers.set('Authorization', `Token ${get(tokenStore)}`);
+	}
+
+	return fetch(request);
 };
