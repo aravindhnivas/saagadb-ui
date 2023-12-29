@@ -45,9 +45,9 @@ export const actions: Actions = {
 		event.cookies.set('token', token, {
 			path: '/',
 			domain: event.locals.domain,
-			maxAge: 60 * 60 * 24 * 7, // 1 week
+			maxAge: 60 * 60 * 1,
 			httpOnly: true,
-			sameSite: "lax",
+			sameSite: 'lax',
 			secure: false
 		});
 
