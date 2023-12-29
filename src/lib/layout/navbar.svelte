@@ -48,6 +48,7 @@
 					class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
 				>
 					<li><a href="/admin">Dashboard</a></li>
+					<li><a href="http://herzberg.mit.edu:8080" target="_blank">ReadPDF</a></li>
 					<li>
 						<form action="/logout" method="POST">
 							<button>logout</button>
