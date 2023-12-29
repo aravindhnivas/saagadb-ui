@@ -1,6 +1,5 @@
 import { redirect, type Handle, type HandleFetch } from '@sveltejs/kit';
 import { env } from '$env/dynamic/private';
-import { logged_in } from '$lib/utils/stores';
 
 export const handle: Handle = async ({ event, resolve }) => {
 	const token = event.cookies.get('token') || '';
