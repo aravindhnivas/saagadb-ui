@@ -1,5 +1,6 @@
 import { redirect, type Handle, type HandleFetch } from '@sveltejs/kit';
 import { env } from '$env/dynamic/private';
+import { logged_in } from '$lib/utils/stores';
 
 export const handle: Handle = async ({ event, resolve }) => {
 	const token = event.cookies.get('token') || '';
@@ -18,7 +19,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 };
 
 export const handleFetch: HandleFetch = async ({ event, request, fetch }) => {
-
 	if (request.url.startsWith(`http://${env.DOMAIN}/`)) {
 		// clone the original request, but change the URL
 		request = new Request(

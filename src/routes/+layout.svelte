@@ -5,6 +5,15 @@
 	import '../global.scss';
 	import Footer from '$lib/layout/footer.svelte';
 	import Navbar from '$lib/layout/navbar.svelte';
+	import { logged_in } from '$lib/utils/stores';
+	import type { LayoutServerData } from './$types';
+
+	export let data: LayoutServerData;
+	const { user } = data;
+
+	$: if (user) {
+		logged_in.set(user.name);
+	}
 </script>
 
 <div class="parent w-full h-full">

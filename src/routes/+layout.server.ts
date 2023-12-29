@@ -1,14 +1,15 @@
-import type { PageServerLoad } from './$types';
+import type { LayoutServerLoad } from './$types';
 import { DB_URL } from '$lib/server';
 import { error } from '@sveltejs/kit';
 
-export const load: PageServerLoad = async ({ locals, fetch }) => {
+export const load: LayoutServerLoad = async ({ locals, fetch }) => {
 	const fetch_user = async (): Promise<{
 		name: string;
 		email: string;
 		organization: string;
-	}> => {
-		if (!locals.token) error(500, 'No token found');
+	} | null> => {
+		// console.log('fetch_user');
+		if (!locals.token) return null;
 
 		const res = await fetch(`${DB_URL}/user/me`);
 		if (!res.ok) error(500, 'Could not fetch user data');
@@ -17,7 +18,7 @@ export const load: PageServerLoad = async ({ locals, fetch }) => {
 		return data;
 	};
 
-	return {
-		user: await fetch_user()
-	};
+	const user = await fetch_user();
+
+	return { user };
 };
