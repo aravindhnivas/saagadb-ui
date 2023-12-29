@@ -19,6 +19,5 @@ export const load: LayoutServerLoad = async ({ locals, fetch }) => {
 	};
 
 	const user = await fetch_user();
-
 	return { user };
 };
