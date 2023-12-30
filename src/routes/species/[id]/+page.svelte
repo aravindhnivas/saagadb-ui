@@ -6,12 +6,12 @@
 
 	const metadata = [
 		{ name: 'Category', value: data?.meta?.category },
-		{ name: 'A', value: data?.meta?.a_const },
-		{ name: 'B', value: data?.meta?.b_const },
-		{ name: 'C', value: data?.meta?.c_const },
-		{ name: 'mu_a', value: data?.meta?.mu_a ?? '' },
-		{ name: 'mu_b', value: data?.meta?.mu_b ?? '' },
-		{ name: 'mu_c', value: data?.meta?.mu_c ?? '' },
+		{ name: 'A / MHz', value: data?.meta?.a_const },
+		{ name: 'B / MHz', value: data?.meta?.b_const },
+		{ name: 'C / MHz', value: data?.meta?.c_const },
+		{ name: 'mu_a / D', value: data?.meta?.mu_a ?? '' },
+		{ name: 'mu_b / D', value: data?.meta?.mu_b ?? '' },
+		{ name: 'mu_c / D', value: data?.meta?.mu_c ?? '' },
 		{ name: 'Date_added', value: data?.meta?.data_date },
 		{ name: 'Data_contributor', value: data?.meta?.data_contributor },
 		{ name: 'Notes', value: data?.meta?.notes }
@@ -31,15 +31,15 @@
 		<!-- head -->
 		<thead>
 			<tr>
-				<th></th>
+				<th class="border-r-5"></th>
 				<th>Value</th>
 			</tr>
 		</thead>
 		<tbody>
 			{#each metadata as { name, value }}
-				<tr>
-					<td>{name}</td>
-					<td>{value}</td>
+				<tr class="border">
+					<td class="border-r-5 pr-5">{name}</td>
+					<td class="pl-5">{value}</td>
 				</tr>
 			{/each}
 		</tbody>
