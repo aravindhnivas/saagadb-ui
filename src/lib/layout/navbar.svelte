@@ -34,14 +34,16 @@
 		<a href="/" class="btn btn-ghost normal-case text-xl">SAAGAdb</a>
 	</div>
 	<div class="navbar-center hidden lg:flex">
-		<ul class="menu menu-horizontal px-1">
+		<ul class="menu menu-horizontal px-1 gap-2">
 			<Navitems />
 		</ul>
 	</div>
 	<div class="navbar-end">
 		<div class="dropdown dropdown-end">
 			{#if $logged_in}
-				<div tabindex="0" role="button">Hi, {$logged_in}</div>
+				<div tabindex="0" role="button">
+					Hi, {$logged_in}
+				</div>
 				<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 				<ul
 					tabindex="0"

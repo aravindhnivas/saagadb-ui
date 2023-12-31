@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { logged_in } from '$lib/utils/stores';
-	import type { LayoutServerData } from '../$types';
+	import type { LayoutServerData } from '../../$types';
 	// import type { PageServerData } from './$types';
 	import Stats from './stats.svelte';
 	export let data: LayoutServerData;
