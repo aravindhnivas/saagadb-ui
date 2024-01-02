@@ -58,9 +58,6 @@
 				{#if $errors.password}
 					<p class="text-xs text-error">{$errors.password}</p>
 				{/if}
-				<!-- <label class="label" for="forgot-password-link">
-					<a href="https://example.com" class="label-text-alt link link-hover">Forgot password?</a>
-				</label> -->
 			</div>
 			<div class="form-control">
 				<button class="btn btn-primary">Login</button>

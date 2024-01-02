@@ -4,7 +4,8 @@
 	const admin_menu = [
 		{ name: 'Dashboard', href: '/admin/dashboard' },
 		{ name: 'Species', href: '/admin/species' },
-		{ name: 'Metadata', href: '/admin/meta' }
+		{ name: 'Metadata', href: '/admin/meta' },
+		{ name: 'Lines', href: '/admin/lines' }
 	];
 </script>
 
@@ -15,13 +16,18 @@
 			<li><a class:active={$page.route.id == href} {href}>{name}</a></li>
 		{/each}
 	</ul>
-	<slot />
+	<div class="child"><slot /></div>
 </div>
 
-<style>
+<style lang="scss">
 	.settings__div {
 		display: grid;
 		grid-template-columns: auto 1fr;
 		gap: 1rem;
+		overflow: hidden;
+
+		.child {
+			overflow: auto;
+		}
 	}
 </style>
