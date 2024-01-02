@@ -6,20 +6,21 @@
 
 	const metadata = [
 		{ name: 'Category', value: data?.meta?.category },
-		{ name: 'A / MHz', value: data?.meta?.a_const },
-		{ name: 'B / MHz', value: data?.meta?.b_const },
-		{ name: 'C / MHz', value: data?.meta?.c_const },
-		{ name: 'mu_a / D', value: data?.meta?.mu_a ?? '' },
-		{ name: 'mu_b / D', value: data?.meta?.mu_b ?? '' },
-		{ name: 'mu_c / D', value: data?.meta?.mu_c ?? '' },
-		{ name: 'Date_added', value: data?.meta?.data_date },
-		{ name: 'Data_contributor', value: data?.meta?.data_contributor },
+		{ name: 'A <em>/ MHz</em>', value: data?.meta?.a_const },
+		{ name: 'B <em>/ MHz</em>', value: data?.meta?.b_const },
+		{ name: 'C <em>/ MHz</em>', value: data?.meta?.c_const },
+		{ name: 'mu<sub>a</sub> <em>/ D</em>', value: data?.meta?.mu_a ?? '' },
+		{ name: 'mu<sub>b</sub> <em>/ D</em>', value: data?.meta?.mu_b ?? '' },
+		{ name: 'mu<sub>c</sub> <em>/ D</em>', value: data?.meta?.mu_c ?? '' },
+		{ name: 'Date added', value: data?.meta?.data_date },
+		{ name: 'Contributor', value: data?.meta?.data_contributor },
 		{ name: 'Notes', value: data?.meta?.notes }
 	];
 </script>
 
 <div class="content">
-	<h1 class="text-xl">{species.iupac_name}</h1>
+	<h1 class="text-xl font-300">{@html species.name_html}</h1>
+	<h1 class="text-xl font-500">{species.iupac_name}</h1>
 	<h2>{Number(species.molecular_mass).toFixed(2)} atomic mass</h2>
 	<h2><em>SMILES: </em>{species.standard_inchi}</h2>
 	<h2><em>SELFIES: </em>{species.selfies}</h2>
@@ -38,8 +39,8 @@
 		<tbody>
 			{#each metadata as { name, value }}
 				<tr class="border">
-					<td class="border-r-5 pr-5">{name}</td>
-					<td class="pl-5">{value}</td>
+					<td class="border-r-5 pr-5">{@html name}</td>
+					<td class="px-5">{value}</td>
 				</tr>
 			{/each}
 		</tbody>
