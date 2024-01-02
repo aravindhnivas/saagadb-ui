@@ -10,6 +10,9 @@ const schema = z.object({
 });
 
 export const load: PageServerLoad = async (event) => {
+	if (event.locals.token) {
+		redirect(303, '/admin/dashboard');
+	}
 	// Server API:
 	const form = await superValidate(event, schema);
 
