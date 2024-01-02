@@ -4,12 +4,12 @@
 	const admin_menu = [
 		{ name: 'Dashboard', href: '/admin/dashboard' },
 		{ name: 'Species', href: '/admin/species' },
-		{ name: 'Species metadata', href: '/admin/meta' }
+		{ name: 'Metadata', href: '/admin/meta' }
 	];
 </script>
 
 <div class="settings__div">
-	<ul class="menu bg-base-200 w-56 rounded-box">
+	<ul class="menu bg-base-200 w-56 rounded-box gap-2">
 		<li class="menu-title">Admin panel</li>
 		{#each admin_menu as { href, name }}
 			<li><a class:active={$page.route.id == href} {href}>{name}</a></li>
