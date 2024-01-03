@@ -17,14 +17,24 @@ export const GET: RequestHandler = async ({ params, url }) => {
 export const POST: RequestHandler = async ({ params, request }) => {
 	const body = await request.json();
 	// const auth = request.headers.get('Authorization');
-	// console.log({ auth });
-	const res = await fetch(`${DB_URL}/data/${params.name}`, {
+	console.warn({
+		name: params.name
+	});
+	const res = await fetch(`${DB_URL}/data/${params.name}/`, {
 		method: 'POST',
 		body: JSON.stringify(body)
 	});
 
+	console.log('returned post request from database', {
+		ok: res.ok,
+		status: res.status,
+		statusText: res.statusText
+	});
+
+	if (!res.ok) error(res.status, { message: res.statusText });
+
 	const data = await res.json();
-	// console.log({ data });
 	if (data.error) error(500, data.error);
+
 	return json(data, { status: 201 });
 };

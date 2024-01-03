@@ -5,14 +5,7 @@ import { error, fail } from '@sveltejs/kit';
 import { DB_URL } from '$lib/server';
 
 const schema = z.object({
-	name: z.string().min(1),
-	iupac_name: z.string().min(1),
-	name_formula: z.string().min(1),
-	name_html: z.string().min(1),
-	smiles: z.string().min(1),
-	standard_inchi: z.string().min(1),
-	standard_inchi_key: z.string().min(1),
-	notes: z.string()
+	linelist_name: z.string().min(1).default('string')
 });
 
 export const load: PageServerLoad = async ({ request }) => {
@@ -35,7 +28,7 @@ export const actions: Actions = {
 		}
 
 		// TODO: Do something with the validated form.data
-		const res = await fetch(`${DB_URL}/data/species/`, {
+		const res = await fetch(`${DB_URL}/data/linelist/`, {
 			method: 'POST',
 			body: JSON.stringify(form.data)
 		});

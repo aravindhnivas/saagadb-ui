@@ -3,4 +3,4 @@ import { env } from '$env/dynamic/private';
 
 export const DB_URL = `${env.DB_PROTOCOL ?? 'http'}://${env.DB_HOST ?? '127.0.0.1'}:${
 	env.DB_PORT ?? '80'
-}/api`;
+}/api` as const;

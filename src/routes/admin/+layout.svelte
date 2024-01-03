@@ -4,6 +4,7 @@
 	const admin_menu = [
 		{ name: 'Dashboard', href: '/admin/dashboard' },
 		{ name: 'Species', href: '/admin/species' },
+		{ name: 'Database name', href: '/admin/database_name' },
 		{ name: 'Metadata', href: '/admin/meta' },
 		{ name: 'Lines', href: '/admin/lines' }
 	];
