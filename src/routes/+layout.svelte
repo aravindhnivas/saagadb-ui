@@ -7,7 +7,7 @@
 	import Navbar from '$lib/layout/navbar.svelte';
 	import { logged_in } from '$lib/utils/stores';
 	import type { LayoutServerData } from './$types';
-
+	import { Toaster } from 'svelte-sonner';
 	export let data: LayoutServerData;
 	const { user } = data;
 
@@ -16,7 +16,9 @@
 	}
 </script>
 
-<div class="parent w-full h-full">
+<Toaster position="top-left" />
+
+<div class="parent h-full w-full">
 	<header><Navbar /></header>
 	<main class="p-5">
 		<slot />
