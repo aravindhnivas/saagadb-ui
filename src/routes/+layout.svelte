@@ -16,7 +16,7 @@
 	}
 </script>
 
-<Toaster position="top-left" />
+<Toaster position="bottom-center" richColors closeButton />
 
 <div class="parent h-full w-full">
 	<header><Navbar /></header>
