@@ -12,7 +12,8 @@ export const load: LayoutServerLoad = async ({ locals, fetch }) => {
 		if (!locals.token) return null;
 
 		const res = await fetch(`${DB_URL}/user/me`);
-		if (!res.ok) error(500, 'Could not fetch user data');
+		// console.log(res.status, res.statusText);
+		if (!res.ok) error(res.status, res.statusText);
 
 		const data = await res.json();
 		return data;
