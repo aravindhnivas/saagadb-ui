@@ -9,20 +9,20 @@ const schema = z.object({
 	password: z.string().min(8)
 });
 
-export const load: PageServerLoad = async (event) => {
-	if (event.locals.token) {
+export const load: PageServerLoad = async ({ request, locals }) => {
+	if (locals.token) {
 		redirect(303, '/admin');
 	}
 	// Server API:
-	const form = await superValidate(event, schema);
+	const form = await superValidate(request, schema);
 
 	// Unless you throw, always return { form } in load and form actions.
 	return { form };
 };
 
 export const actions: Actions = {
-	default: async (event) => {
-		const form = await superValidate(event, schema);
+	default: async ({ fetch, request, url, cookies, locals }) => {
+		const form = await superValidate(request, schema);
 
 		if (!form.valid) {
 			return fail(400, { form });
@@ -32,7 +32,7 @@ export const actions: Actions = {
 		const email = data.email;
 		const password = data.password;
 
-		const res = await event.fetch(`${DB_URL}/user/token/`, {
+		const res = await fetch(`${DB_URL}/user/token/`, {
 			method: 'POST',
 			body: JSON.stringify({ email, password })
 		});
@@ -45,16 +45,16 @@ export const actions: Actions = {
 
 		if (!token) return { form };
 
-		event.cookies.set('token', token, {
+		cookies.set('token', token, {
 			path: '/',
-			domain: event.locals.domain,
+			domain: locals.domain,
 			maxAge: 60 * 60 * 1,
 			httpOnly: true,
 			sameSite: 'lax',
 			secure: false
 		});
 
-		const redirectTo = event.url.searchParams.get('redirectTo');
+		const redirectTo = url.searchParams.get('redirectTo');
 
 		if (redirectTo) {
 			redirect(303, `/${redirectTo.slice(1)}`);
