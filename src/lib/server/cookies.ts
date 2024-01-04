@@ -12,7 +12,7 @@ export const delete_token = ({ cookies }: { cookies: Cookies }) => {
 export const set_token = ({ cookies, token }: { cookies: Cookies; token: string }) => {
 	cookies.set('token', token, {
 		path: '/',
-		maxAge: 60 * 60 * 1,
+		maxAge: 60 * 60 * 24,
 		httpOnly: true,
 		sameSite: 'lax',
 		secure: false
