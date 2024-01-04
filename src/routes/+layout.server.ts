@@ -12,8 +12,13 @@ export const load: LayoutServerLoad = async ({ locals, fetch }) => {
 		if (!locals.token) return null;
 
 		const res = await fetch(`${DB_URL}/user/me`);
-		// console.log(res.status, res.statusText);
-		if (!res.ok) error(res.status, res.statusText);
+		console.log(DB_URL, res.ok, res.status, res.statusText);
+		if (!res.ok) {
+			const text = await res.json();
+			console.log(res.status, res.statusText, text);
+			// error(res.status, `${res.statusText}: ${text.detail}`);
+			return null;
+		}
 
 		const data = await res.json();
 		return data;

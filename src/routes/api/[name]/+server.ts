@@ -24,14 +24,15 @@ export const POST: RequestHandler = async ({ params, request }) => {
 		method: 'POST',
 		body: JSON.stringify(body)
 	});
-
+	const res_text = JSON.parse(await res.text());
 	console.log('returned post request from database', {
 		ok: res.ok,
 		status: res.status,
-		statusText: res.statusText
+		statusText: res.statusText,
+		text: res_text
 	});
 
-	if (!res.ok) error(res.status, { message: res.statusText });
+	if (!res.ok) error(res.status, { message: `${res.statusText}: ${res_text}` });
 
 	const data = await res.json();
 	if (data.error) error(500, data.error);
