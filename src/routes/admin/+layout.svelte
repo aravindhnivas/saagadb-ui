@@ -3,6 +3,7 @@
 
 	const admin_menu = [
 		{ name: 'Dashboard', href: '/admin/dashboard' },
+		{ name: 'Create User', href: '/admin/create_user' },
 		{ name: 'Species', href: '/admin/species' },
 		{ name: 'Database name', href: '/admin/database_name' },
 		{ name: 'Metadata', href: '/admin/meta' },
