@@ -3,6 +3,7 @@
 	import type { PageData } from './$types';
 	import { superForm } from 'sveltekit-superforms/client';
 	import { toast } from 'svelte-sonner';
+	import KeyField from '$lib/components/forms/key-field.svelte';
 	let message: string = '';
 	$: if ($page.url.searchParams.get('message')) {
 		message = $page.url.searchParams.get('message') as string;
@@ -11,7 +12,7 @@
 	export let data: PageData;
 	let response_data;
 
-	const { form, errors, enhance } = superForm(data.form, {
+	const { form, errors, constraints, enhance } = superForm(data.form, {
 		onResult: ({ result }) => {
 			const { type, status } = result;
 			if (type === 'error') {
@@ -39,24 +40,12 @@
 
 <form class="grid gap-2 px-5" method="POST" use:enhance>
 	<div>
-		{#each Object.keys($form) as key}
-			<div class="form-control w-full">
-				<label class="label" for="{key}-id">
-					<span class="label-text">{key}</span>
-				</label>
-				<input
-					name={key}
-					id="{key}-id"
-					type="text"
-					placeholder="Type here"
-					class="input input-bordered w-full"
-					bind:value={$form[key]}
-				/>
-				{#if $errors[key]}
-					<p class="text-xs text-error">{$errors[key]}</p>
-				{/if}
-			</div>
-		{/each}
+		<KeyField
+			key="linelist_name"
+			bind:value={$form.linelist_name}
+			errors={$errors.linelist_name}
+			constraints={$constraints.linelist_name}
+		/>
 	</div>
 	<div class="form-control w-[20rem] m-auto">
 		<button class="btn btn-primary">Upload</button>

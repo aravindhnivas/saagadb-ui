@@ -2,13 +2,13 @@
 	import { page } from '$app/stores';
 	import type { PageData } from './$types';
 	import { superForm } from 'sveltekit-superforms/client';
-
+	import KeyField from '$lib/components/forms/key-field.svelte';
 	let message: string = '';
 	$: if ($page.url.searchParams.get('message')) {
 		message = $page.url.searchParams.get('message') as string;
 	}
 	export let data: PageData;
-	const { form, errors, enhance } = superForm(data.form, {
+	const { form, errors, constraints, enhance } = superForm(data.form, {
 		onError: (err) => {
 			message = err.result.error.message;
 		}
@@ -25,40 +25,18 @@
 
 	<div class="md:w-[50%] w-full card shadow-2xl bg-base-100">
 		<form class="card-body" method="POST" use:enhance>
-			<div class="form-control">
-				<label class="label" for="email-input">
-					<span class="label-text">Email</span>
-				</label>
-				<input
-					name="email"
-					id="email-input"
-					type="email"
-					placeholder="email"
-					class="input input-bordered"
-					required
-					bind:value={$form.email}
-				/>
-				{#if $errors.email}
-					<p class="text-xs text-error">{$errors.email}</p>
-				{/if}
-			</div>
-			<div class="form-control">
-				<label class="label" for="password-input">
-					<span class="label-text">Password</span>
-				</label>
-				<input
-					name="password"
-					id="password-input"
-					type="password"
-					placeholder="password"
-					class="input input-bordered"
-					required
-					bind:value={$form.password}
-				/>
-				{#if $errors.password}
-					<p class="text-xs text-error">{$errors.password}</p>
-				{/if}
-			</div>
+			<KeyField
+				key="email"
+				bind:value={$form.email}
+				errors={$errors.email}
+				constraints={$constraints.email}
+			/>
+			<KeyField
+				key="password"
+				bind:value={$form.password}
+				errors={$errors.password}
+				constraints={$constraints.password}
+			/>
 			<div class="form-control">
 				<button class="btn btn-primary">Login</button>
 			</div>
