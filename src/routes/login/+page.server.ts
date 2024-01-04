@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { superValidate, setError } from 'sveltekit-superforms/server';
 import { fail, redirect } from '@sveltejs/kit';
 import { DB_URL } from '$lib/server';
+import { set_token } from '$lib/server/cookies';
 
 const schema = z.object({
 	email: z.string().email(),
@@ -41,18 +42,10 @@ export const actions: Actions = {
 			// console.log(`res.status: ${res.status}, res.statusText: ${res.statusText}`, form);
 			return setError(form, 'password', 'Invalid email or password.');
 		}
-		const { token } = await res.json();
+		const { token } = (await res.json()) as { token: string };
 
 		if (!token) return { form };
-
-		cookies.set('token', token, {
-			path: '/',
-			domain: locals.domain,
-			maxAge: 60 * 60 * 1,
-			httpOnly: true,
-			sameSite: 'lax',
-			secure: false
-		});
+		set_token({ cookies, token });
 
 		const redirectTo = url.searchParams.get('redirectTo');
 
