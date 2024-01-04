@@ -11,7 +11,7 @@ const schema = z.object({
 
 export const load: PageServerLoad = async ({ request, locals }) => {
 	if (locals.token) {
-		redirect(303, '/admin');
+		redirect(303, '/admin/dashboard');
 	}
 	// Server API:
 	const form = await superValidate(request, schema);
@@ -59,7 +59,7 @@ export const actions: Actions = {
 		if (redirectTo) {
 			redirect(303, `/${redirectTo.slice(1)}`);
 		} else {
-			redirect(303, '/admin');
+			redirect(303, '/admin/dashboard');
 		}
 	}
 };
