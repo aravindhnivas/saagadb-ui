@@ -7,9 +7,14 @@
 
 	export let data: PageData;
 	let id: string;
+	let method: 'PATCH' | 'DELETE' = 'PATCH';
+	let changed_name: string = '';
 	let modal: HTMLDialogElement;
-	const openModal = (line_id: string) => {
+
+	const openModal = (line_id: string, update_type: 'PATCH' | 'DELETE', name: string = '') => {
+		method = update_type;
 		id = line_id;
+		changed_name = name;
 		modal?.showModal();
 	};
 
@@ -18,11 +23,12 @@
 			if (result.type === 'success') {
 				// rerun all `load` functions, following the successful update
 				await invalidateAll();
-
+				console.log(result);
 				if (result?.data?.success) {
-					toast.success('Deleted successfully');
+					toast.success('Updated successfully');
 				} else {
-					toast.error(`Error deleting linelist: ${result?.data?.message?.detail}`);
+					const msg = result?.data?.message;
+					toast.error(`Error deleting linelist: ${msg?.detail ?? msg}`);
 				}
 			}
 
@@ -44,23 +50,41 @@
 {/if}
 
 <form method="POST" use:enhance={onSubmit}>
-	<dialog bind:this={modal} id="delete-dialog-modal" class="modal">
+	<dialog bind:this={modal} class="modal">
 		<div class="modal-box gap-2">
-			<h3 class="font-bold text-lg">delete reason ?</h3>
-			<input
-				name="delete_reason"
-				type="text"
-				placeholder="Type here"
-				class="input input-sm w-full max-w-xs"
-				required
-			/>
+			{#if method === 'PATCH'}
+				<div class="">
+					<h3 class="font-bold text-lg">New name</h3>
+					<input
+						value={changed_name}
+						name="changed_name"
+						type="text"
+						placeholder="Type here"
+						class="input input-sm w-full max-w-xs"
+						required
+					/>
+				</div>
+			{/if}
+
+			<div class="">
+				<h3 class="font-bold text-lg">{method === 'DELETE' ? 'delete' : 'change'} reason ?</h3>
+				<input
+					name="reason"
+					type="text"
+					placeholder="Type here"
+					class="input input-sm w-full max-w-xs"
+					required
+				/>
+			</div>
 
 			<div class="modal-action">
 				<form method="dialog">
-					<!-- if there is a button in form, it will close the modal -->
 					<button class="btn">Cancel</button>
 				</form>
-				<button formaction="?/delete_table&id={id}" class="btn btn-error">Submit</button>
+				<button
+					formaction="?/update_table&id={id}&method={method}"
+					class="btn btn-{method === 'PATCH' ? 'warning' : 'error'}">Submit</button
+				>
 			</div>
 		</div>
 	</dialog>

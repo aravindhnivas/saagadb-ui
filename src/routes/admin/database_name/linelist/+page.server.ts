@@ -15,22 +15,34 @@ export const load: PageServerLoad = async ({ fetch }) => {
 };
 
 export const actions: Actions = {
-	delete_table: async ({ request, fetch, url }) => {
+	update_table: async ({ request, fetch, url }) => {
 		const data = await request.formData();
-		const id = url.searchParams.get('id');
-		// const id = data.get('id');
-		const delete_reason = data.get('delete_reason');
-
-		// console.log('id', id);
-		// console.log('delete_reason', delete_reason);
-
-		if (!(id && delete_reason)) {
-			return { success: false, message: 'id and delete_reason are required' };
+		const id = url.searchParams.get('id') as string;
+		const method = url.searchParams.get('method') as 'DELETE' | 'PATCH' | 'PUT';
+		const _change_reason = data.get('reason') as string;
+		const linelist_name = data.get('changed_name') as string;
+		console.log({ id, method, _change_reason, linelist_name });
+		// return { success: false, message: 'method not implemented' };
+		if (!(id && _change_reason)) {
+			return { success: false, message: 'id and reason are required' };
 		}
+		let res: Response;
 
-		const res = await fetch(`${DB_URL}/data/linelist/${id}/?delete_reason=${delete_reason}`, {
-			method: 'DELETE'
-		});
+		if (method === 'PATCH' || method === 'PUT') {
+			res = await fetch(`${DB_URL}/data/linelist/${id}/`, {
+				method,
+				body: JSON.stringify({ _change_reason, linelist_name })
+			});
+		} else if (method === 'DELETE') {
+			res = await fetch(
+				`${DB_URL}/data/linelist/${id}/?delete_reason=${encodeURIComponent(_change_reason)}`,
+				{
+					method: 'DELETE'
+				}
+			);
+		} else {
+			return { success: false, message: 'invalid method requested: ' + method };
+		}
 
 		if (!res.ok) {
 			const text = await res.json();
@@ -39,7 +51,7 @@ export const actions: Actions = {
 
 		return {
 			success: res.ok,
-			message: res.ok ? 'Table deleted' : 'Error deleting table'
+			message: res.ok ? 'Table update' : 'Error updating table'
 		};
 	}
 };

@@ -1,5 +1,5 @@
 <script lang="ts">
-	export let openModal: (line_id: string) => void;
+	export let openModal: (line_id: string, update_type: 'PATCH' | 'DELETE', name?: string) => void;
 	export let linelist: { id: string; linelist_name: string }[] = [];
 </script>
 
@@ -10,6 +10,7 @@
 			<tr>
 				<th>Name</th>
 				<th></th>
+				<th></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -17,8 +18,15 @@
 				<tr>
 					<td>{item.linelist_name}</td>
 					<th>
-						<button on:click={() => openModal(item.id)} class="btn btn-ghost btn-xs hover:bg-red"
-							>DELETE</button
+						<button
+							class="badge badge-sm badge-info gap-2"
+							on:click={() => openModal(item.id, 'PATCH', item.linelist_name)}>UPDATE</button
+						>
+					</th>
+					<th>
+						<button
+							class="badge badge-sm badge-error gap-2"
+							on:click={() => openModal(item.id, 'DELETE')}>DELETE</button
 						>
 					</th>
 				</tr>

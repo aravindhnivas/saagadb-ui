@@ -37,9 +37,9 @@ export const actions: Actions = {
 		});
 
 		if (!res.ok) {
-			// setError(form, 'name', 'Name already exists');
+			const message = await res.text();
 			if (res.status >= 400 && res.status < 599) {
-				error(res.status, { message: res.statusText });
+				error(res.status, { message });
 			}
 			return;
 		}
