@@ -15,8 +15,6 @@
 
 	const onSubmit = () => {
 		return async ({ result }) => {
-			console.log(result);
-
 			if (result.type === 'success') {
 				// rerun all `load` functions, following the successful update
 				await invalidateAll();
