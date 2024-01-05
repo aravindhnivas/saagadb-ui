@@ -40,7 +40,6 @@ export const actions: Actions = {
 
 		if (!res.ok) {
 			const message = await res.json();
-			console.log(message);
 			if (res.status >= 400 && res.status < 599) {
 				error(res.status, { message: message?.linelist_name?.[0] || res.statusText });
 			}
