@@ -39,11 +39,19 @@ export const actions: Actions = {
 		});
 
 		if (!res.ok) {
-			const message = await res.json();
-			if (res.status >= 400 && res.status < 599) {
-				error(res.status, { message: message?.linelist_name?.[0] || res.statusText });
+			try {
+				const msg_json = await res.json();
+				// console.log(Object.entries(msg_json));
+				const [key, value] = Object.entries(msg_json)[0] as [string, string];
+				return setError(form, key, value);
+			} catch (error) {
+				console.log('error', error);
 			}
-			// setError(form, message);
+
+			const message = await res.text();
+			if (res.status >= 400 && res.status < 599) {
+				error(res.status, { message });
+			}
 			return;
 		}
 
