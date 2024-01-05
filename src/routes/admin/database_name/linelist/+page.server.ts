@@ -21,8 +21,8 @@ export const actions: Actions = {
 		// const id = data.get('id');
 		const delete_reason = data.get('delete_reason');
 
-		console.log('id', id);
-		console.log('delete_reason', delete_reason);
+		// console.log('id', id);
+		// console.log('delete_reason', delete_reason);
 
 		if (!(id && delete_reason)) {
 			return { success: false, message: 'id and delete_reason are required' };
