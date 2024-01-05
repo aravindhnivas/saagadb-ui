@@ -8,7 +8,7 @@ const schema = z.object({
 	linelist_name: z.string().min(1).default('string')
 });
 
-export const load: PageServerLoad = async ({ request, fetch }) => {
+export const load: PageServerLoad = async ({ request }) => {
 	const form = await superValidate(request, schema);
 
 	return { form };
