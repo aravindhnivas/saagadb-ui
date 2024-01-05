@@ -49,7 +49,7 @@
 	<p>No linelist found</p>
 {/if}
 
-<form method="POST" use:enhance={onSubmit}>
+<form method="POST" action="?/update_table&id={id}&method={method}" use:enhance={onSubmit}>
 	<dialog bind:this={modal} class="modal">
 		<div class="modal-box gap-2">
 			{#if method === 'PATCH'}
@@ -81,9 +81,8 @@
 				<form method="dialog">
 					<button class="btn">Cancel</button>
 				</form>
-				<button
-					formaction="?/update_table&id={id}&method={method}"
-					class="btn btn-{method === 'PATCH' ? 'warning' : 'error'}">Submit</button
+				<button type="submit" class="btn btn-{method === 'PATCH' ? 'warning' : 'error'}"
+					>Submit</button
 				>
 			</div>
 		</div>
