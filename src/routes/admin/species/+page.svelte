@@ -4,7 +4,6 @@
 	import { superForm } from 'sveltekit-superforms/client';
 	import { toast } from 'svelte-sonner';
 	import KeyField from '$lib/components/forms/key-field.svelte';
-
 	let message: string = '';
 
 	$: if ($page.url.searchParams.get('message')) {
@@ -13,11 +12,16 @@
 
 	export let data: PageData;
 	let response_data;
-
+	let large_message: string = '';
 	const { form, errors, constraints, enhance } = superForm(data.form, {
 		onResult: ({ result }) => {
 			const { type, status } = result;
 			if (type === 'error') {
+				if (result.error.message.length > 100) {
+					large_message = result.error.message;
+					console.warn(result.error.message);
+					return;
+				}
 				message = `Error: ${result.error.message} (${status})`;
 				return;
 			}
@@ -30,8 +34,6 @@
 			}
 		}
 	});
-
-	console.log({ $constraints });
 </script>
 
 {#if message}
@@ -56,7 +58,3 @@
 		<button class="btn btn-primary">Upload</button>
 	</div>
 </form>
-
-{#if response_data}
-	{JSON.stringify(response_data)}
-{/if}

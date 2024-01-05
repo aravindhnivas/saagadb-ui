@@ -38,6 +38,7 @@
 		"typescript": "^5.3.3",
 		"unocss": "^0.58.3",
 		"unocss-preset-daisy": "^7.0.0",
+		"vaul-svelte": "^0.0.4",
 		"vite": "^5.0.10",
 		"vite-plugin-remove-console": "^2.2.0",
 		"zod": "^3.22.4"
