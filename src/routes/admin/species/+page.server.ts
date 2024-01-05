@@ -12,7 +12,7 @@ const schema = z.object({
 	smiles: z.string().min(1),
 	standard_inchi: z.string().min(1),
 	standard_inchi_key: z.string().min(1),
-	notes: z.string()
+	notes: z.string().min(10).optional()
 });
 
 export const load: PageServerLoad = async ({ request }) => {
@@ -48,7 +48,8 @@ export const actions: Actions = {
 		});
 
 		if (!res.ok) {
-			// setError(form, 'name', 'Name already exists');
+			const message = await res.text();
+			console.log(message);
 			if (res.status >= 400 && res.status < 599) {
 				error(res.status, { message: res.statusText });
 			}
