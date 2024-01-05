@@ -4,7 +4,9 @@
 	import { superForm } from 'sveltekit-superforms/client';
 	import { toast } from 'svelte-sonner';
 	import KeyField from '$lib/components/forms/key-field.svelte';
+
 	let message: string = '';
+
 	$: if ($page.url.searchParams.get('message')) {
 		message = $page.url.searchParams.get('message') as string;
 	}
@@ -21,7 +23,6 @@
 			}
 
 			response_data = result.data?.response;
-			// console.log(response_data);
 		},
 		onUpdated({ form }) {
 			if (form.valid) {
@@ -29,6 +30,8 @@
 			}
 		}
 	});
+
+	console.log({ $constraints });
 </script>
 
 {#if message}
