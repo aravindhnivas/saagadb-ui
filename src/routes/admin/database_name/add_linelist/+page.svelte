@@ -5,18 +5,23 @@
 	import { toast } from 'svelte-sonner';
 	import KeyField from '$lib/components/forms/key-field.svelte';
 	let message: string = '';
+
 	$: if ($page.url.searchParams.get('message')) {
 		message = $page.url.searchParams.get('message') as string;
 	}
 
 	export let data: PageData;
-	let response_data;
+
+	let response_data: {
+		id: string;
+		linelist_name: string;
+	};
 
 	const { form, errors, constraints, enhance } = superForm(data.form, {
 		onResult: ({ result }) => {
 			const { type, status } = result;
 			if (type === 'error') {
-				message = `Error: ${result.error.message} (${status})`;
+				message = `${result.error.message} (error code: ${status})`;
 				return;
 			}
 
@@ -38,7 +43,7 @@
 	</div>
 {/if}
 
-<form class="grid gap-2 px-5" method="POST" use:enhance>
+<form class="grid gap-2 px-5" method="POST" action="?/get_linelist" use:enhance>
 	<div>
 		<KeyField
 			key="linelist_name"
@@ -51,7 +56,3 @@
 		<button class="btn btn-primary">Upload</button>
 	</div>
 </form>
-
-{#if response_data}
-	{JSON.stringify(response_data)}
-{/if}

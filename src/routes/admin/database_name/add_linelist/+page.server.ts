@@ -1,6 +1,6 @@
 import type { Actions, PageServerLoad } from './$types';
 import { z } from 'zod';
-import { superValidate } from 'sveltekit-superforms/server';
+import { setError, superValidate } from 'sveltekit-superforms/server';
 import { error, fail } from '@sveltejs/kit';
 import { DB_URL } from '$lib/server';
 
@@ -8,16 +8,14 @@ const schema = z.object({
 	linelist_name: z.string().min(1).default('string')
 });
 
-export const load: PageServerLoad = async ({ request }) => {
-	// Server API:
+export const load: PageServerLoad = async ({ request, fetch }) => {
 	const form = await superValidate(request, schema);
 
-	// Unless you throw, always return { form } in load and form actions.
 	return { form };
 };
 
 export const actions: Actions = {
-	default: async ({ request, fetch }) => {
+	get_linelist: async ({ request, fetch }) => {
 		const form = await superValidate(request, schema);
 		console.log('POST', form.data);
 
@@ -41,10 +39,12 @@ export const actions: Actions = {
 		});
 
 		if (!res.ok) {
-			// setError(form, 'name', 'Name already exists');
+			const message = await res.json();
+			console.log(message);
 			if (res.status >= 400 && res.status < 599) {
-				error(res.status, { message: res.statusText });
+				error(res.status, { message: message?.linelist_name?.[0] || res.statusText });
 			}
+			// setError(form, message);
 			return;
 		}
 
