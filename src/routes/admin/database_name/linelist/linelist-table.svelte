@@ -20,7 +20,7 @@
 					<th>
 						<button
 							class="badge badge-sm badge-info gap-2"
-							on:click={() => openModal(item.id, 'PATCH', item.linelist_name)}>UPDATE</button
+							on:click={() => openModal(item.id, 'PATCH', item.linelist_name)}>EDIT</button
 						>
 					</th>
 					<th>
