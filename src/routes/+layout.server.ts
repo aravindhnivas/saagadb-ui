@@ -3,6 +3,7 @@ import { DB_URL } from '$lib/server';
 import { delete_token } from '$lib/server/cookies';
 
 export const load: LayoutServerLoad = async ({ locals, fetch, cookies }) => {
+	// console.log('layout.server.ts load()', DB_URL);
 	const fetch_user = async () => {
 		if (!locals.token) return null;
 
