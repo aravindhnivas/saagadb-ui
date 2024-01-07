@@ -1,31 +1,23 @@
 import type { Actions, PageServerLoad } from './$types';
-import { z } from 'zod';
 import { setError, superValidate } from 'sveltekit-superforms/server';
 import { error, fail } from '@sveltejs/kit';
 import { DB_URL } from '$lib/server';
+import { schemas } from '$lib/server/schemas/meta';
 
-const schema = z.object({
-	name: z.string().min(1).default('C3H3'),
-	iupac_name: z.string().min(1).default('cyclopropa-1-yn-3-ylradical'),
-	name_formula: z.string().min(1).default('C3H3'),
-	name_html: z.string().min(1).default('C<sub>3</sub>H<sub>3</sub>'),
-	smiles: z.string().min(1).default('[CH]1C#C1'),
-	standard_inchi: z.string().min(1).default('InChI=1S/C3H/c1-2-3-1/h1H'),
-	standard_inchi_key: z.string().min(1).default('BNZFPDMLDDZTCS-UHFFFAOYSA-N'),
-	notes: z.string().min(10).optional()
-});
-
-export const load: PageServerLoad = async ({ request }) => {
+export const load: PageServerLoad = async ({ request, params }) => {
+	if (!Object.keys(schemas).includes(params.metaName))
+		error(404, { message: `${params.metaName} page is incorrect and not defined in the schemas` });
 	// Server API:
-	const form = await superValidate(request, schema);
+	const form = await superValidate(request, schemas[params.metaName]);
+	console.log(params.metaName, { form });
 
 	// Unless you throw, always return { form } in load and form actions.
 	return { form };
 };
 
 export const actions: Actions = {
-	default: async ({ request, fetch }) => {
-		const form = await superValidate(request, schema);
+	default: async ({ request, fetch, params }) => {
+		const form = await superValidate(request, schemas[params.metaName]);
 		console.log('POST', form.data);
 
 		// Convenient validation check:
@@ -35,7 +27,7 @@ export const actions: Actions = {
 		}
 
 		const { name, ...restData } = form.data;
-		const name_arr = name.split(',').map((s) => s.trim());
+		const name_arr = name.split(',').map((s: string) => s.trim());
 
 		// TODO: Do something with the validated form.data
 		const res = await fetch(`${DB_URL}/data/species/`, {
