@@ -1,8 +1,10 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
+	import { edit_mode } from '$lib/utils/stores';
 	import type { PageData } from './$types';
 	export let data: PageData;
 	const species = data?.species;
-	console.log({ data });
+	// console.log({ data });
 
 	const metadata = [
 		{ name: 'Category', value: data?.meta?.category },
@@ -17,6 +19,13 @@
 		{ name: 'Notes', value: data?.meta?.notes }
 	];
 </script>
+
+{#if $edit_mode}
+	<form method="POST" class="ml-auto" use:enhance>
+		<button class="badge badge-warning badge-md">EDIT</button>
+		<button formaction="?/delete_species" class="badge badge-error badge-md">DELETE</button>
+	</form>
+{/if}
 
 <div class="content">
 	<h1 class="text-xl font-300">{@html species.name_html}</h1>
