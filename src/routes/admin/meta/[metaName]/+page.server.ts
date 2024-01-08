@@ -12,7 +12,7 @@ export const load: PageServerLoad = async ({ request, params }) => {
 	// console.log(params.metaName, { form });
 
 	// Unless you throw, always return { form } in load and form actions.
-	return { form, fileInputs: fileInputs[params.metaName] as string[] };
+	return { form, fileInputs: fileInputs[params.metaName] as { name: string; required: boolean }[] };
 };
 
 export const actions: Actions = {
@@ -28,20 +28,25 @@ export const actions: Actions = {
 			return fail(400, { form });
 		}
 
-		const fileKeys = fileInputs[params.metaName] as string[];
+		const fileKeys = fileInputs[params.metaName];
 		const fileData: {
 			[key: string]: Buffer;
 		} = {};
 
 		for (const key of fileKeys) {
-			const file = formData.get(key);
-			if (!(file instanceof File)) continue;
-			console.log('file', file);
+			const file = formData.get(key.name);
+			if (!(file instanceof File)) {
+				if (key.required) {
+					return setError(form, key.name, 'File is required');
+				}
+				continue;
+			}
+			// console.log('file', file);
 			const contents = await file.arrayBuffer();
 			const binaryContent = Buffer.from(contents);
-			const utf8Content = binaryContent.toString('utf8');
-			console.log({ binaryContent, contents, utf8Content });
-			fileData[key] = binaryContent;
+			// const utf8Content = binaryContent.toString('utf8');
+			// console.log({ binaryContent, contents, utf8Content });
+			fileData[key.name] = binaryContent;
 		}
 
 		// TODO: Do something with the validated form.data

@@ -51,7 +51,7 @@
 
 {#if $form && $errors && $constraints}
 	<form class="grid gap-2 px-5" method="POST" use:enhance>
-		{#each fileInputs as name}
+		{#each fileInputs as { name, required }}
 			<div class="form-control w-full max-w-xs">
 				<label for="{name}-input" class="label">
 					<span class="label-text">Pick <em>"{name}"</em></span>
@@ -61,6 +61,7 @@
 					id="{name}-input"
 					type="file"
 					class="file-input file-input-bordered w-full max-w-xs"
+					{required}
 				/>
 			</div>
 		{/each}

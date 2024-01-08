@@ -25,13 +25,18 @@ export const schemas: Schema = {
 		var_file: z.string().optional(),
 		fit_file: z.string().optional(),
 		lin_file: z.string().optional(),
-		notes: z.string().min(5).optional()
+		notes: z.string().min(5).optional(),
+		'qpart-file': z.string().optional(),
+		'int-file': z.string().optional(),
+		'var-file': z.string().optional(),
+		'fit-file': z.string().optional(),
+		'lin-file': z.string().optional()
 	}),
 	reference: z.object({
 		doi: z.string(),
 		ref_url: z.string(),
-		bibtex: z.string(),
-		notes: z.string().optional()
+		notes: z.string().optional(),
+		bibtex: z.string().optional()
 	}),
 	'meta-reference': z.object({
 		ref: z.string(),
@@ -45,13 +50,22 @@ export const schemas: Schema = {
 		qn_label_str: z.string(),
 		contains_rovibrational: z.boolean(),
 		vib_qn: z.string().default('').optional(),
-		notes: z.string().optional()
+		notes: z.string().optional(),
+		'cat-file': z.string().optional()
 	})
 };
 
-export const fileInputs = {
-	'species-metadata': ['qpart_file', 'int_file', 'var_file', 'fit_file', 'lin_file'],
-	reference: ['bibtex'],
+export const fileInputs: {
+	[key: string]: { name: string; required: boolean }[];
+} = {
+	'species-metadata': [
+		{ name: 'qpart_file', required: true },
+		{ name: 'int_file', required: false },
+		{ name: 'var_file', required: false },
+		{ name: 'fit_file', required: false },
+		{ name: 'lin_file', required: false }
+	],
+	reference: [{ name: 'bibtex', required: true }],
 	'meta-reference': [],
-	line: ['cat_file']
+	line: [{ name: 'cat_file', required: true }]
 };
