@@ -10,7 +10,7 @@
 	}
 
 	export let data: PageData;
-	let response_data;
+	// let response_data;
 
 	const { form, errors, enhance, constraints } = superForm(data.form, {
 		onResult: ({ result }) => {
@@ -20,7 +20,7 @@
 				return;
 			}
 
-			response_data = result.data?.response;
+			// response_data = result.data?.response;
 			// console.log(response_data);
 		},
 		onUpdated({ form }) {

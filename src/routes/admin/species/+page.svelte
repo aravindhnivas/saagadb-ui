@@ -11,14 +11,14 @@
 	}
 
 	export let data: PageData;
-	let response_data;
-	let large_message: string = '';
+	// let response_data;
+	// let large_message: string = '';
 	const { form, errors, constraints, enhance } = superForm(data.form, {
 		onResult: ({ result }) => {
 			const { type, status } = result;
 			if (type === 'error') {
 				if (result.error.message.length > 100) {
-					large_message = result.error.message;
+					// large_message = result.error.message;
 					console.warn(result.error.message);
 					return;
 				}
@@ -26,7 +26,7 @@
 				return;
 			}
 
-			response_data = result.data?.response;
+			// response_data = result.data?.response;
 		},
 		onUpdated({ form }) {
 			if (form.valid) {
@@ -43,18 +43,20 @@
 	</div>
 {/if}
 
-<form class="grid gap-2 px-5" method="POST" use:enhance>
-	<div>
-		{#each Object.keys($form) as key}
-			<KeyField
-				{key}
-				bind:value={$form[key]}
-				errors={$errors[key]}
-				constraints={$constraints[key]}
-			/>
-		{/each}
-	</div>
-	<div class="form-control w-[20rem] m-auto">
-		<button class="btn btn-primary">Upload</button>
-	</div>
-</form>
+{#if $form && $errors && $constraints}
+	<form class="grid gap-2 px-5" method="POST" use:enhance>
+		<div>
+			{#each Object.keys($form) as key}
+				<KeyField
+					{key}
+					bind:value={$form[key]}
+					errors={$errors[key]}
+					constraints={$constraints[key]}
+				/>
+			{/each}
+		</div>
+		<div class="form-control w-[20rem] m-auto">
+			<button class="btn btn-primary">Upload</button>
+		</div>
+	</form>
+{/if}
