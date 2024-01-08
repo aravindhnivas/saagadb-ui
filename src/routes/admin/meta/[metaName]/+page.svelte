@@ -38,9 +38,12 @@
 		({ form, errors, constraints, enhance } = createSuperForm(data.form));
 	}
 
-	console.log(data);
-	// $: selected_dropdown = data?.dropdown ?? [];
-	// $: console.log(selected_dropdown);
+	$: if (data.dropdown) {
+		console.log('check');
+		for (const { id, name } of data.dropdown) {
+			console.log(data[name]);
+		}
+	}
 </script>
 
 {#if message}
@@ -54,14 +57,14 @@
 	<form class="grid gap-2 px-5" method="POST" use:enhance>
 		<div>
 			{#each Object.keys($form) as key (key)}
-				{#if !data?.fileInput?.map((input) => input.name).includes(key)}
+				{#if !data.fileInput?.map((input) => input.name).includes(key)}
 					<KeyField
 						{key}
 						bind:value={$form[key]}
 						errors={$errors[key]}
 						constraints={$constraints[key]}
 					>
-						{#if data?.dropdown?.map((f) => f.name).includes(key)}
+						{#if data.dropdown?.map((f) => f.name).includes(key)}
 							<Dropdown items={data.dropdown} />
 						{/if}
 					</KeyField>
@@ -69,7 +72,7 @@
 			{/each}
 		</div>
 
-		{#each data?.fileInput as { id, name, required } (id)}
+		{#each data.fileInput as { id, name, required } (id)}
 			<div class="form-control w-full max-w-xs">
 				<label for="{name}-input" class="label">
 					<span class="label-text">Pick <em>"{name}"</em></span>
