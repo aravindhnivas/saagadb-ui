@@ -39,7 +39,8 @@ export const schemas: Schema = {
 		bibtex: z.string().optional()
 	}),
 	'meta-reference': z.object({
-		ref: z.string(),
+		meta: z.number().int(),
+		ref: z.number().int(),
 		dipole_moment: z.boolean(),
 		spectrum: z.boolean(),
 		notes: z.string().optional()
