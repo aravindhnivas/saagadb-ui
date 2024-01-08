@@ -1,21 +1,28 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-
 	const admin_menu = [
 		{ name: 'Dashboard', href: '/admin/dashboard' },
 		{ name: 'Create New user', href: '/admin/create_user' },
 		{ name: 'Database name', href: '/admin/database_name' },
 		{ name: 'Species', href: '/admin/species' },
 		{ name: 'Metadata', href: '/admin/meta' }
-		// { name: 'Lines', href: '/admin/lines' }
 	];
+
+	let active_tab = admin_menu[0].name;
 </script>
 
 <div class="settings__div">
 	<ul class="menu bg-base-200 w-56 rounded-box gap-2">
 		<li class="menu-title">Admin panel</li>
 		{#each admin_menu as { href, name }}
-			<li><a class:active={$page.route.id === href} {href}>{name}</a></li>
+			<li>
+				<a
+					class:active={active_tab === name}
+					{href}
+					on:click={() => {
+						active_tab = name;
+					}}>{name}</a
+				>
+			</li>
 		{/each}
 	</ul>
 	<div class="child"><slot /></div>
