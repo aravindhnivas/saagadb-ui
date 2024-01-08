@@ -22,7 +22,7 @@ export const load: PageServerLoad = async ({ request, locals }) => {
 };
 
 export const actions: Actions = {
-	default: async ({ fetch, request, url, cookies, locals }) => {
+	default: async ({ fetch, request, url, cookies }) => {
 		const form = await superValidate(request, schema);
 
 		if (!form.valid) {
