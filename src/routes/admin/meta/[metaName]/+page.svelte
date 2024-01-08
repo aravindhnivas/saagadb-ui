@@ -12,7 +12,7 @@
 	}
 
 	$: fileInputs = data?.fileInputs ?? [];
-	$: console.log(fileInputs);
+	// $: console.log(fileInputs);
 
 	const createSuperForm = (form: PageData['form']) => {
 		return superForm(form, {
@@ -39,7 +39,7 @@
 	$: if (data.form) {
 		({ form, errors, constraints, enhance } = createSuperForm(data.form));
 	}
-	$: console.log(!fileInputs.map((input) => input.name).includes('name'));
+	// $: console.log(!fileInputs.map((input) => input.name).includes('name'));
 </script>
 
 {#if message}
