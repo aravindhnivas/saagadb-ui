@@ -39,7 +39,7 @@
 	$: if (data.form) {
 		({ form, errors, constraints, enhance } = createSuperForm(data.form));
 	}
-	$: console.log($form);
+	$: console.log(!fileInputs.map((input) => input.name).includes('name'));
 </script>
 
 {#if message}
@@ -68,12 +68,14 @@
 
 		<div>
 			{#each Object.keys($form) as key}
-				<KeyField
-					{key}
-					bind:value={$form[key]}
-					errors={$errors[key]}
-					constraints={$constraints[key]}
-				/>
+				{#if !fileInputs.map((input) => input.name).includes(key)}
+					<KeyField
+						{key}
+						bind:value={$form[key]}
+						errors={$errors[key]}
+						constraints={$constraints[key]}
+					/>
+				{/if}
 			{/each}
 		</div>
 		<div class="form-control w-[20rem] m-auto">

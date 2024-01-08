@@ -20,17 +20,12 @@ export const schemas: Schema = {
 		data_contributor: z.string().refine((str) => !isNaN(Date.parse(str)), {
 			message: 'Invalid date format'
 		}),
-		qpart_file: z.string(),
+		qpart_file: z.string().optional(),
 		int_file: z.string().optional(),
 		var_file: z.string().optional(),
 		fit_file: z.string().optional(),
 		lin_file: z.string().optional(),
-		notes: z.string().min(5).optional(),
-		'qpart-file': z.string().optional(),
-		'int-file': z.string().optional(),
-		'var-file': z.string().optional(),
-		'fit-file': z.string().optional(),
-		'lin-file': z.string().optional()
+		notes: z.string().min(5).optional()
 	}),
 	reference: z.object({
 		doi: z.string(),
@@ -47,12 +42,11 @@ export const schemas: Schema = {
 	}),
 	line: z.object({
 		meta: z.number().int(),
-		cat_file: z.string(),
+		cat_file: z.string().optional(),
 		qn_label_str: z.string(),
 		contains_rovibrational: z.boolean(),
 		vib_qn: z.string().default('').optional(),
-		notes: z.string().optional(),
-		'cat-file': z.string().optional()
+		notes: z.string().optional()
 	})
 };
 
