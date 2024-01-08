@@ -4,10 +4,10 @@
 	const admin_menu = [
 		{ name: 'Dashboard', href: '/admin/dashboard' },
 		{ name: 'Create New user', href: '/admin/create_user' },
-		{ name: 'Species', href: '/admin/species' },
 		{ name: 'Database name', href: '/admin/database_name' },
-		{ name: 'Metadata', href: '/admin/meta' },
-		{ name: 'Lines', href: '/admin/lines' }
+		{ name: 'Species', href: '/admin/species' },
+		{ name: 'Metadata', href: '/admin/meta' }
+		// { name: 'Lines', href: '/admin/lines' }
 	];
 </script>
 

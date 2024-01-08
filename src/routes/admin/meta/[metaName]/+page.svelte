@@ -11,30 +11,33 @@
 	}
 	export let data: PageData;
 
-	$: console.log(data.form.data);
-	let response_data;
-	let large_message: string = '';
-	let { form, errors, constraints, enhance } = superForm(data.form, {
-		onResult: ({ result }) => {
-			const { type, status } = result;
-			if (type === 'error') {
-				if (result.error.message.length > 100) {
-					large_message = result.error.message;
-					console.warn(result.error.message);
+	const createSuperForm = (form: PageData['form']) => {
+		console.log(form);
+
+		return superForm(form, {
+			onResult: ({ result }) => {
+				const { type, status } = result;
+				if (type === 'error') {
+					if (result.error.message.length > 100) {
+						console.warn(result.error.message);
+						message = `Error: ${result.error.message.slice(0, 100)}... (${status})`;
+						return;
+					}
+					message = `Error: ${result.error.message} (${status})`;
 					return;
 				}
-				message = `Error: ${result.error.message} (${status})`;
-				return;
+			},
+			onUpdated({ form }) {
+				if (form.valid) {
+					toast.success('Species added!');
+				}
 			}
-
-			response_data = result.data?.response;
-		},
-		onUpdated({ form }) {
-			if (form.valid) {
-				toast.success('Species added!');
-			}
-		}
-	});
+		});
+	};
+	let form, errors, constraints, enhance;
+	$: if (data.form) {
+		({ form, errors, constraints, enhance } = createSuperForm(data.form));
+	}
 </script>
 
 {#if message}
@@ -43,9 +46,8 @@
 		<span>{message}</span>
 	</div>
 {/if}
-{JSON.stringify(data.form.data)}
-{JSON.stringify($form)}
-<!-- <form class="grid gap-2 px-5" method="POST" use:enhance>
+
+<form class="grid gap-2 px-5" method="POST" use:enhance>
 	<div>
 		{#each Object.keys($form) as key}
 			<KeyField
@@ -59,4 +61,4 @@
 	<div class="form-control w-[20rem] m-auto">
 		<button class="btn btn-primary">Upload</button>
 	</div>
-</form> -->
+</form>

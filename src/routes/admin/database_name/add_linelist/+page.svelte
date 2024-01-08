@@ -4,6 +4,7 @@
 	import { superForm } from 'sveltekit-superforms/client';
 	import { toast } from 'svelte-sonner';
 	import KeyField from '$lib/components/forms/key-field.svelte';
+
 	let message: string = '';
 
 	$: if ($page.url.searchParams.get('message')) {
