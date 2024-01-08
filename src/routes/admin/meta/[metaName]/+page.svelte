@@ -1,14 +1,9 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import type { PageData } from './$types';
 	import { superForm } from 'sveltekit-superforms/client';
 	import { toast } from 'svelte-sonner';
 	import KeyField from '$lib/components/forms/key-field.svelte';
-	let message: string = '';
 
-	$: if ($page.url.searchParams.get('message')) {
-		message = $page.url.searchParams.get('message') as string;
-	}
 	export let data: PageData;
 
 	const createSuperForm = (form: PageData['form']) => {
@@ -39,13 +34,6 @@
 		({ form, errors, constraints, enhance } = createSuperForm(data.form));
 	}
 </script>
-
-{#if message}
-	<div role="alert" class="alert alert-warning w-100 m-auto">
-		<i class="i-mdi-alert"></i>
-		<span>{message}</span>
-	</div>
-{/if}
 
 <form class="grid gap-2 px-5" method="POST" use:enhance>
 	<div>

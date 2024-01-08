@@ -44,7 +44,7 @@ export const schemas: Schema = {
 		cat_file: z.string(),
 		qn_label_str: z.string(),
 		contains_rovibrational: z.boolean(),
-		vib_qn: z.string(),
+		vib_qn: z.string().default('').optional(),
 		notes: z.string().optional()
 	})
 };

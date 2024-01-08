@@ -9,7 +9,7 @@ export const load: PageServerLoad = async ({ request, params }) => {
 		error(404, { message: `${params.metaName} page is incorrect and not defined in the schemas` });
 	// Server API:
 	const form = await superValidate(request, schemas[params.metaName]);
-	console.log(params.metaName, { form });
+	// console.log(params.metaName, { form });
 
 	// Unless you throw, always return { form } in load and form actions.
 	return { form };
