@@ -4,7 +4,7 @@
 	import { toast } from 'svelte-sonner';
 	import KeyField from '$lib/components/forms/key-field.svelte';
 	import { page } from '$app/stores';
-
+	import Dropdown from '$lib/components/dropdown.svelte';
 	export let data: PageData;
 	let message: string = '';
 	$: if ($page.url.searchParams.get('message')) {
@@ -48,7 +48,7 @@
 		<span>{message}</span>
 	</div>
 {/if}
-
+<Dropdown />
 {#if $form && $errors && $constraints}
 	<form class="grid gap-2 px-5" method="POST" use:enhance>
 		{#each fileInputs as { name, required }}
