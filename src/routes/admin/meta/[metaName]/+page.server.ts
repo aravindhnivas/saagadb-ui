@@ -2,7 +2,7 @@ import type { Actions, PageServerLoad } from './$types';
 import { setError, superValidate } from 'sveltekit-superforms/server';
 import { error, fail } from '@sveltejs/kit';
 import { DB_URL } from '$lib/server';
-import { schemas, fileInputs } from '$lib/server/schemas/meta';
+import { schemas, fileInputs, dropdowns } from '$lib/server/schemas/meta';
 
 export const load: PageServerLoad = async ({ request, params }) => {
 	if (!Object.keys(schemas).includes(params.metaName))
@@ -12,7 +12,9 @@ export const load: PageServerLoad = async ({ request, params }) => {
 	// console.log(params.metaName, { form });
 
 	// Unless you throw, always return { form } in load and form actions.
-	return { form, fileInputs: fileInputs[params.metaName] as { name: string; required: boolean }[] };
+	const fileInput = fileInputs[params.metaName];
+	const dropdown = dropdowns[params.metaName];
+	return { form, fileInput, dropdown };
 };
 
 export const actions: Actions = {

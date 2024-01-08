@@ -17,7 +17,7 @@
 		changed_name = name;
 		modal?.showModal();
 	};
-
+	console.log({ data });
 	const onSubmit = () => {
 		return async ({ result }) => {
 			if (result.type === 'success') {

@@ -51,16 +51,31 @@ export const schemas: Schema = {
 };
 
 export const fileInputs: {
-	[key: string]: { name: string; required: boolean }[];
+	[key: string]: { id: string; name: string; required: boolean }[];
 } = {
 	'species-metadata': [
-		{ name: 'qpart_file', required: true },
-		{ name: 'int_file', required: false },
-		{ name: 'var_file', required: false },
-		{ name: 'fit_file', required: false },
-		{ name: 'lin_file', required: false }
+		{ id: crypto.randomUUID(), name: 'qpart_file', required: true },
+		{ id: crypto.randomUUID(), name: 'int_file', required: false },
+		{ id: crypto.randomUUID(), name: 'var_file', required: false },
+		{ id: crypto.randomUUID(), name: 'fit_file', required: false },
+		{ id: crypto.randomUUID(), name: 'lin_file', required: false }
 	],
-	reference: [{ name: 'bibtex', required: true }],
+	reference: [{ id: crypto.randomUUID(), name: 'bibtex', required: true }],
 	'meta-reference': [],
-	line: [{ name: 'cat_file', required: true }]
+	line: [{ id: crypto.randomUUID(), name: 'cat_file', required: true }]
+};
+
+export const dropdowns: {
+	[key: string]: { id: string; name: string }[];
+} = {
+	'species-metadata': [
+		{ id: crypto.randomUUID(), name: 'species' },
+		{ id: crypto.randomUUID(), name: 'linelist' }
+	],
+	reference: [],
+	'meta-reference': [
+		{ id: crypto.randomUUID(), name: 'meta' },
+		{ id: crypto.randomUUID(), name: 'ref' }
+	],
+	line: [{ id: crypto.randomUUID(), name: 'meta' }]
 };

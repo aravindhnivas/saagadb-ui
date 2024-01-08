@@ -1,31 +1,18 @@
 <script lang="ts">
-	export let items = [
-		'Afghanistan',
-		'Albania',
-		'Algeria',
-		'Andorra',
-		'Angola',
-		'Anguilla',
-		'Afghanistan',
-		'Albania',
-		'Algeria',
-		'Andorra',
-		'Angola',
-		'Anguilla'
-	];
+	export let items: { id: string; name: string }[] = [];
 	export let value = '';
 	export let label = 'Choose...';
+
 	let inputVal = '';
-	function onItemClicked(item) {
-		// document.activeElement?.blur();
+
+	function onItemClicked(item: string) {
 		value = item;
 		inputVal = '';
 	}
-	$: filteredItems = items?.filter(function (item) {
-		return item.toLowerCase().includes(inputVal.toLowerCase());
-	});
 
-	// $: console.log(value);
+	$: filteredItems = items?.filter(function (item) {
+		return item.name.toLowerCase().includes(inputVal.toLowerCase());
+	});
 </script>
 
 <div class="dropdown">
@@ -36,9 +23,9 @@
 		<li>
 			<input class="w-full input input-bordered" placeholder="Search..." bind:value={inputVal} />
 		</li>
-		{#each filteredItems as item}
+		{#each filteredItems as { name, id } (id)}
 			<li>
-				<button on:click={() => onItemClicked(item)}>{item}</button>
+				<button on:click|preventDefault={() => onItemClicked(name)}>{name}</button>
 			</li>
 		{/each}
 	</ul>

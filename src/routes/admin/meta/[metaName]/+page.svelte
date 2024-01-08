@@ -5,14 +5,12 @@
 	import KeyField from '$lib/components/forms/key-field.svelte';
 	import { page } from '$app/stores';
 	import Dropdown from '$lib/components/dropdown.svelte';
+
 	export let data: PageData;
 	let message: string = '';
 	$: if ($page.url.searchParams.get('message')) {
 		message = $page.url.searchParams.get('message') as string;
 	}
-
-	$: fileInputs = data?.fileInputs ?? [];
-	// $: console.log(fileInputs);
 
 	const createSuperForm = (form: PageData['form']) => {
 		return superForm(form, {
@@ -39,7 +37,10 @@
 	$: if (data.form) {
 		({ form, errors, constraints, enhance } = createSuperForm(data.form));
 	}
-	// $: console.log(!fileInputs.map((input) => input.name).includes('name'));
+
+	console.log(data);
+	// $: selected_dropdown = data?.dropdown ?? [];
+	// $: console.log(selected_dropdown);
 </script>
 
 {#if message}
@@ -48,10 +49,27 @@
 		<span>{message}</span>
 	</div>
 {/if}
-<Dropdown />
+
 {#if $form && $errors && $constraints}
 	<form class="grid gap-2 px-5" method="POST" use:enhance>
-		{#each fileInputs as { name, required }}
+		<div>
+			{#each Object.keys($form) as key (key)}
+				{#if !data?.fileInput?.map((input) => input.name).includes(key)}
+					<KeyField
+						{key}
+						bind:value={$form[key]}
+						errors={$errors[key]}
+						constraints={$constraints[key]}
+					>
+						{#if data?.dropdown?.map((f) => f.name).includes(key)}
+							<Dropdown items={data.dropdown} />
+						{/if}
+					</KeyField>
+				{/if}
+			{/each}
+		</div>
+
+		{#each data?.fileInput as { id, name, required } (id)}
 			<div class="form-control w-full max-w-xs">
 				<label for="{name}-input" class="label">
 					<span class="label-text">Pick <em>"{name}"</em></span>
@@ -65,19 +83,6 @@
 				/>
 			</div>
 		{/each}
-
-		<div>
-			{#each Object.keys($form) as key}
-				{#if !fileInputs.map((input) => input.name).includes(key)}
-					<KeyField
-						{key}
-						bind:value={$form[key]}
-						errors={$errors[key]}
-						constraints={$constraints[key]}
-					/>
-				{/if}
-			{/each}
-		</div>
 		<div class="form-control w-[20rem] m-auto">
 			<button class="btn btn-primary">Upload</button>
 		</div>

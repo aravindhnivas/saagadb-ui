@@ -51,7 +51,7 @@
 	use:enhance
 	enctype="multipart/form-data"
 >
-	<div class="form-control w-full max-w-xs">
+	<!-- <div class="form-control w-full max-w-xs">
 		<label for="file-input" class="label">
 			<span class="label-text">Pick a file</span>
 		</label>
@@ -61,7 +61,7 @@
 			type="file"
 			class="file-input file-input-bordered w-full max-w-xs"
 		/>
-	</div>
+	</div> -->
 	<div>
 		<KeyField
 			key="linelist_name"

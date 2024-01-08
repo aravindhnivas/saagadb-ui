@@ -26,17 +26,17 @@ export const actions: Actions = {
 			// Again, return { form } and things will just work.
 			return fail(400, { form });
 		}
-		const file = formData.get('file');
-		// console.log('file uploaded', file);
-		if (file instanceof File) {
-			console.log('file', file);
-			const contents = await file.arrayBuffer();
-			const binaryContent = Buffer.from(contents);
-			const utf8Content = binaryContent.toString('utf8');
-			console.log({ binaryContent, contents, utf8Content });
-		}
+		// const file = formData.get('file');
+		// // console.log('file uploaded', file);
+		// if (file instanceof File) {
+		// 	// console.log('file', file);
+		// 	const contents = await file.arrayBuffer();
+		// 	const binaryContent = Buffer.from(contents);
+		// 	// const utf8Content = binaryContent.toString('utf8');
+		// 	// console.log({ binaryContent, contents, utf8Content });
+		// }
 
-		return { form };
+		// return { form };
 		// TODO: Do something with the validated form.data
 		const res = await fetch(`${DB_URL}/data/linelist/`, {
 			method: 'POST',
@@ -53,9 +53,10 @@ export const actions: Actions = {
 		if (!res.ok) {
 			try {
 				const msg_json = await res.json();
-				// console.log(Object.entries(msg_json));
-				const [key, value] = Object.entries(msg_json)[0] as [string, string];
-				return setError(form, key, value);
+				for (const [key, value] of Object.entries(msg_json) as [string, string][]) {
+					setError(form, key, value);
+				}
+				return setError(form, '', 'Form is invalid');
 			} catch (error) {
 				console.log('error', error);
 			}
