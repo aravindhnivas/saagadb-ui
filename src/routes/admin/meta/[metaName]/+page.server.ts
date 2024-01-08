@@ -26,16 +26,12 @@ export const actions: Actions = {
 			return fail(400, { form });
 		}
 
-		const { name, ...restData } = form.data;
-		const name_arr = name.split(',').map((s: string) => s.trim());
-
 		// TODO: Do something with the validated form.data
-		const res = await fetch(`${DB_URL}/data/species/`, {
+		const res = await fetch(`${DB_URL}/data/${params.metaName}/`, {
 			method: 'POST',
-			body: JSON.stringify({ name: name_arr, ...restData })
+			body: JSON.stringify(form.data)
 		});
-		// const newUrl = res.headers.get('Location');
-		// console.log('newUrl', newUrl);
+
 		console.log('return post request from API', {
 			ok: res.ok,
 			status: res.status,
