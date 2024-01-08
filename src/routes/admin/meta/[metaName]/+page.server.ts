@@ -64,7 +64,6 @@ export const actions: Actions = {
 		if (!res.ok) {
 			try {
 				const msg_json = await res.json();
-				// const [key, value] = Object.entries(msg_json)[0] as [string, string];
 				console.log('msg_json', msg_json);
 				for (const [key, value] of Object.entries(msg_json) as [string, string][]) {
 					setError(form, key, value);
@@ -73,6 +72,7 @@ export const actions: Actions = {
 			} catch (error) {
 				console.log('error', error);
 			}
+
 			const message = await res.text();
 			if (res.status >= 400 && res.status < 599) {
 				error(res.status, { message });
