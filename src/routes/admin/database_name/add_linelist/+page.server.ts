@@ -10,21 +10,33 @@ const schema = z.object({
 
 export const load: PageServerLoad = async ({ request }) => {
 	const form = await superValidate(request, schema);
-
 	return { form };
 };
 
 export const actions: Actions = {
 	get_linelist: async ({ request, fetch }) => {
-		const form = await superValidate(request, schema);
+		const formData = await request.formData();
+
+		const form = await superValidate(formData, schema);
 		console.log('POST', form.data);
 
 		// Convenient validation check:
 		if (!form.valid) {
+			console.warn('form not valid');
 			// Again, return { form } and things will just work.
 			return fail(400, { form });
 		}
+		const file = formData.get('file');
+		// console.log('file uploaded', file);
+		if (file instanceof File) {
+			console.log('file', file);
+			const contents = await file.arrayBuffer();
+			const binaryContent = Buffer.from(contents);
+			const utf8Content = binaryContent.toString('utf8');
+			console.log({ binaryContent, contents, utf8Content });
+		}
 
+		return { form };
 		// TODO: Do something with the validated form.data
 		const res = await fetch(`${DB_URL}/data/linelist/`, {
 			method: 'POST',

@@ -44,7 +44,24 @@
 	</div>
 {/if}
 
-<form class="grid gap-2 px-5" method="POST" action="?/get_linelist" use:enhance>
+<form
+	class="grid gap-2 px-5"
+	method="POST"
+	action="?/get_linelist"
+	use:enhance
+	enctype="multipart/form-data"
+>
+	<div class="form-control w-full max-w-xs">
+		<label for="file-input" class="label">
+			<span class="label-text">Pick a file</span>
+		</label>
+		<input
+			name="file"
+			id="file-input"
+			type="file"
+			class="file-input file-input-bordered w-full max-w-xs"
+		/>
+	</div>
 	<div>
 		<KeyField
 			key="linelist_name"

@@ -11,6 +11,9 @@
 		message = $page.url.searchParams.get('message') as string;
 	}
 
+	$: fileInputs = data?.fileInputs ?? [];
+	$: console.log(fileInputs);
+
 	const createSuperForm = (form: PageData['form']) => {
 		return superForm(form, {
 			onResult: ({ result }) => {
@@ -48,6 +51,20 @@
 
 {#if $form && $errors && $constraints}
 	<form class="grid gap-2 px-5" method="POST" use:enhance>
+		{#each fileInputs as name}
+			<div class="form-control w-full max-w-xs">
+				<label for="{name}-input" class="label">
+					<span class="label-text">Pick <em>"{name}"</em></span>
+				</label>
+				<input
+					{name}
+					id="{name}-input"
+					type="file"
+					class="file-input file-input-bordered w-full max-w-xs"
+				/>
+			</div>
+		{/each}
+
 		<div>
 			{#each Object.keys($form) as key}
 				<KeyField

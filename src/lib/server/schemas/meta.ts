@@ -48,3 +48,10 @@ export const schemas: Schema = {
 		notes: z.string().optional()
 	})
 };
+
+export const fileInputs = {
+	'species-metadata': ['qpart_file', 'int_file', 'var_file', 'fit_file', 'lin_file'],
+	reference: ['bibtex'],
+	'meta-reference': [],
+	line: ['cat_file']
+};

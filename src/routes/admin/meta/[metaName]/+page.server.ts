@@ -2,7 +2,7 @@ import type { Actions, PageServerLoad } from './$types';
 import { setError, superValidate } from 'sveltekit-superforms/server';
 import { error, fail } from '@sveltejs/kit';
 import { DB_URL } from '$lib/server';
-import { schemas } from '$lib/server/schemas/meta';
+import { schemas, fileInputs } from '$lib/server/schemas/meta';
 
 export const load: PageServerLoad = async ({ request, params }) => {
 	if (!Object.keys(schemas).includes(params.metaName))
@@ -12,18 +12,36 @@ export const load: PageServerLoad = async ({ request, params }) => {
 	// console.log(params.metaName, { form });
 
 	// Unless you throw, always return { form } in load and form actions.
-	return { form };
+	return { form, fileInputs: fileInputs[params.metaName] as string[] };
 };
 
 export const actions: Actions = {
 	default: async ({ request, fetch, params }) => {
-		const form = await superValidate(request, schemas[params.metaName]);
+		const formData = await request.formData();
+
+		const form = await superValidate(formData, schemas[params.metaName]);
 		console.log('POST', form.data);
 
 		// Convenient validation check:
 		if (!form.valid) {
 			// Again, return { form } and things will just work.
 			return fail(400, { form });
+		}
+
+		const fileKeys = fileInputs[params.metaName] as string[];
+		const fileData: {
+			[key: string]: Buffer;
+		} = {};
+
+		for (const key of fileKeys) {
+			const file = formData.get(key);
+			if (!(file instanceof File)) continue;
+			console.log('file', file);
+			const contents = await file.arrayBuffer();
+			const binaryContent = Buffer.from(contents);
+			const utf8Content = binaryContent.toString('utf8');
+			console.log({ binaryContent, contents, utf8Content });
+			fileData[key] = binaryContent;
 		}
 
 		// TODO: Do something with the validated form.data
