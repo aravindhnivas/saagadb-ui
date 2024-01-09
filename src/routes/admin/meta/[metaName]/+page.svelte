@@ -11,7 +11,6 @@
 	$: if ($page.url.searchParams.get('message')) {
 		message = $page.url.searchParams.get('message') as string;
 	}
-
 	const createSuperForm = (form: PageData['form']) => {
 		return superForm(form, {
 			onResult: ({ result }) => {
@@ -33,17 +32,23 @@
 			}
 		});
 	};
-	let form, errors, constraints, enhance;
+
+	let form: ReturnType<typeof createSuperForm>['form'];
+	let errors: ReturnType<typeof createSuperForm>['errors'];
+	let constraints: ReturnType<typeof createSuperForm>['constraints'];
+	let enhance: ReturnType<typeof createSuperForm>['enhance'];
+
 	$: if (data.form) {
 		({ form, errors, constraints, enhance } = createSuperForm(data.form));
 	}
 
-	$: if (data.dropdown) {
-		console.log('check');
-		for (const { id, name } of data.dropdown) {
-			console.log(data[name]);
-		}
-	}
+	const check_key_to_include = (key: string) => {
+		const arr_file_input = data.fileInput?.map((f) => f.name);
+		const arr_dropdown = data.dropdown?.map((f) => f.name);
+		const arr = new Set([...arr_file_input, ...arr_dropdown]);
+		return !arr.has(key);
+	};
+	// $: console.log($form);
 </script>
 
 {#if message}
@@ -55,18 +60,45 @@
 
 {#if $form && $errors && $constraints}
 	<form class="grid gap-2 px-5" method="POST" use:enhance>
+		{#each data.dropdown as { id, name, key } (id)}
+			<div class="w-full">
+				<label class="label" for="{name}-id">
+					<span class="label-text">{name}</span>
+				</label>
+				<Dropdown
+					items={data[name]?.map((f) => ({
+						id: f.id,
+						name: f[key]
+					}))}
+					label="Select {name}"
+					on:selected={({ detail }) => {
+						$form[name] = detail.id;
+					}}
+				>
+					<input
+						{name}
+						id="{name}-id"
+						class="input input-bordered"
+						placeholder="selected id"
+						bind:value={$form[name]}
+						required
+					/>
+				</Dropdown>
+			</div>
+		{/each}
+
 		<div>
 			{#each Object.keys($form) as key (key)}
-				{#if !data.fileInput?.map((input) => input.name).includes(key)}
+				{#if check_key_to_include(key)}
 					<KeyField
 						{key}
 						bind:value={$form[key]}
 						errors={$errors[key]}
 						constraints={$constraints[key]}
 					>
-						{#if data.dropdown?.map((f) => f.name).includes(key)}
+						<!-- {#if data.dropdown?.map((f) => f.name).includes(key)}
 							<Dropdown items={data.dropdown} />
-						{/if}
+						{/if} -->
 					</KeyField>
 				{/if}
 			{/each}

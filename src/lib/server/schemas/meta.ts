@@ -66,16 +66,16 @@ export const fileInputs: {
 };
 
 export const dropdowns: {
-	[key: string]: { id: string; name: string }[];
+	[key: string]: { id: string; name: string; key: string }[];
 } = {
 	'species-metadata': [
-		{ id: crypto.randomUUID(), name: 'species' },
-		{ id: crypto.randomUUID(), name: 'linelist' }
+		{ id: crypto.randomUUID(), name: 'species', key: 'name_formula' },
+		{ id: crypto.randomUUID(), name: 'linelist', key: 'linelist_name' }
 	],
 	reference: [],
 	'meta-reference': [
-		{ id: crypto.randomUUID(), name: 'meta' },
-		{ id: crypto.randomUUID(), name: 'ref' }
+		{ id: crypto.randomUUID(), name: 'meta', key: '' },
+		{ id: crypto.randomUUID(), name: 'ref', key: '' }
 	],
-	line: [{ id: crypto.randomUUID(), name: 'meta' }]
+	line: [{ id: crypto.randomUUID(), name: 'meta', key: '' }]
 };
