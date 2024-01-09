@@ -19,6 +19,7 @@
 	};
 
 	const { form, errors, constraints, enhance } = superForm(data.form, {
+		resetForm: true,
 		onResult: ({ result }) => {
 			const { type, status } = result;
 			if (type === 'error') {
