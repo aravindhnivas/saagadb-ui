@@ -1,25 +1,17 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import type { PageData } from './$types';
 	import { superForm } from 'sveltekit-superforms/client';
 	import KeyField from '$lib/components/forms/key-field.svelte';
-	let message: string = '';
-	$: if ($page.url.searchParams.get('message')) {
-		message = $page.url.searchParams.get('message') as string;
-	}
+
 	export let data: PageData;
-	const { form, errors, constraints, enhance } = superForm(data.form, {
-		onError: (err) => {
-			message = err.result.error.message;
-		}
-	});
+	const { form, errors, constraints, enhance, message } = superForm(data.form);
 </script>
 
 <div class="w-full h-full flex flex-col gap-2 items-center justify-center">
-	{#if message}
+	{#if $message}
 		<div role="alert" class="alert alert-warning w-100">
 			<i class="i-mdi-alert"></i>
-			<span>{message}</span>
+			<span>{JSON.stringify($message)}</span>
 		</div>
 	{/if}
 

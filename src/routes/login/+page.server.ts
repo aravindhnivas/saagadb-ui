@@ -39,7 +39,6 @@ export const actions: Actions = {
 		});
 
 		if (res.status !== 200) {
-			// console.log(`res.status: ${res.status}, res.statusText: ${res.statusText}`, form);
 			return setError(form, 'password', 'Invalid email or password.');
 		}
 		const { token } = (await res.json()) as { token: string };

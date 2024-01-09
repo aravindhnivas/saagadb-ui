@@ -1,7 +1,7 @@
 import type { Actions, PageServerLoad } from './$types';
 import { z } from 'zod';
-import { setError, superValidate } from 'sveltekit-superforms/server';
-import { error, fail } from '@sveltejs/kit';
+import { message, setError, superValidate } from 'sveltekit-superforms/server';
+import { fail } from '@sveltejs/kit';
 import { DB_URL } from '$lib/server';
 
 const schema = z.object({
@@ -42,13 +42,6 @@ export const actions: Actions = {
 			method: 'POST',
 			body: JSON.stringify({ name: name_arr, ...restData })
 		});
-		// const newUrl = res.headers.get('Location');
-		// console.log('newUrl', newUrl);
-		console.log('return post request from API', {
-			ok: res.ok,
-			status: res.status,
-			statusText: res.statusText
-		});
 
 		if (!res.ok) {
 			try {
@@ -58,10 +51,8 @@ export const actions: Actions = {
 			} catch (error) {
 				console.log('error', error);
 			}
-			const message = await res.text();
-			if (res.status >= 400 && res.status < 599) {
-				error(res.status, { message });
-			}
+			const msg = await res.text();
+			message(form, msg);
 			return;
 		}
 

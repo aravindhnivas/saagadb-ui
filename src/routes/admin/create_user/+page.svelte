@@ -1,28 +1,12 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import type { PageData } from './$types';
 	import { superForm } from 'sveltekit-superforms/client';
 	import { toast } from 'svelte-sonner';
 	import KeyField from '$lib/components/forms/key-field.svelte';
-	let message: string = '';
-	$: if ($page.url.searchParams.get('message')) {
-		message = $page.url.searchParams.get('message') as string;
-	}
 
 	export let data: PageData;
-	// let response_data;
 
-	const { form, errors, enhance, constraints } = superForm(data.form, {
-		onResult: ({ result }) => {
-			const { type, status } = result;
-			if (type === 'error') {
-				message = `Error: ${result.error.message} (${status})`;
-				return;
-			}
-
-			// response_data = result.data?.response;
-			// console.log(response_data);
-		},
+	const { form, errors, enhance, constraints, message } = superForm(data.form, {
 		onUpdated({ form }) {
 			if (form.valid) {
 				toast.success('Species added!');
@@ -31,10 +15,10 @@
 	});
 </script>
 
-{#if message}
+{#if $message}
 	<div role="alert" class="alert alert-warning w-100 m-auto">
 		<i class="i-mdi-alert"></i>
-		<span>{message}</span>
+		<span>{JSON.stringify($message)}</span>
 	</div>
 {/if}
 <form class="grid gap-2 px-5" method="POST" use:enhance>

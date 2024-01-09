@@ -1,6 +1,6 @@
 import type { Actions, PageServerLoad } from './$types';
 import { z } from 'zod';
-import { setError, superValidate } from 'sveltekit-superforms/server';
+import { message, setError, superValidate } from 'sveltekit-superforms/server';
 import { error, fail } from '@sveltejs/kit';
 import { DB_URL } from '$lib/server';
 
@@ -44,7 +44,7 @@ export const actions: Actions = {
 		});
 		// const newUrl = res.headers.get('Location');
 		// console.log('newUrl', newUrl);
-		console.log('return post request from API', {
+		message(form, {
 			ok: res.ok,
 			status: res.status,
 			statusText: res.statusText
