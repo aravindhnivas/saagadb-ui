@@ -3,43 +3,26 @@
 	import { superForm } from 'sveltekit-superforms/client';
 	import { toast } from 'svelte-sonner';
 	import KeyField from '$lib/components/forms/key-field.svelte';
-	import { page } from '$app/stores';
 	import Dropdown from '$lib/components/dropdown.svelte';
 
 	export let data: PageData;
-	let message: string = '';
-	$: if ($page.url.searchParams.get('message')) {
-		message = $page.url.searchParams.get('message') as string;
-	}
-	const createSuperForm = (form: PageData['form']) => {
-		return superForm(form, {
-			onResult: ({ result }) => {
-				const { type, status } = result;
-				if (type === 'error') {
-					if (result.error.message.length > 100) {
-						console.warn(result.error.message);
-						message = `Error: ${result.error.message.slice(0, 100)}... (${status})`;
-						return;
-					}
-					message = `Error: ${result.error.message} (${status})`;
-					return;
-				}
-			},
+
+	let form: ReturnType<typeof superForm>['form'];
+	let errors: ReturnType<typeof superForm>['errors'];
+	let constraints: ReturnType<typeof superForm>['constraints'];
+	let enhance: ReturnType<typeof superForm>['enhance'];
+	let formId: ReturnType<typeof superForm>['formId'];
+	let message: ReturnType<typeof superForm>['message'];
+
+	$: if (data.form) {
+		({ form, errors, constraints, enhance, formId, message } = superForm(data.form, {
 			onUpdated({ form }) {
 				if (form.valid) {
 					toast.success('Species added!');
 				}
 			}
-		});
-	};
-
-	let form: ReturnType<typeof createSuperForm>['form'];
-	let errors: ReturnType<typeof createSuperForm>['errors'];
-	let constraints: ReturnType<typeof createSuperForm>['constraints'];
-	let enhance: ReturnType<typeof createSuperForm>['enhance'];
-
-	$: if (data.form) {
-		({ form, errors, constraints, enhance } = createSuperForm(data.form));
+		}));
+		// console.log({ $formId });
 	}
 
 	const check_key_to_include = (key: string) => {
@@ -48,13 +31,12 @@
 		const arr = new Set([...arr_file_input, ...arr_dropdown]);
 		return !arr.has(key);
 	};
-	// $: console.log($form);
 </script>
 
-{#if message}
+{#if $message}
 	<div role="alert" class="alert alert-warning w-100 m-auto">
 		<i class="i-mdi-alert"></i>
-		<span>{message}</span>
+		<span>{$message}</span>
 	</div>
 {/if}
 
@@ -95,11 +77,7 @@
 						bind:value={$form[key]}
 						errors={$errors[key]}
 						constraints={$constraints[key]}
-					>
-						<!-- {#if data.dropdown?.map((f) => f.name).includes(key)}
-							<Dropdown items={data.dropdown} />
-						{/if} -->
-					</KeyField>
+					/>
 				{/if}
 			{/each}
 		</div>
