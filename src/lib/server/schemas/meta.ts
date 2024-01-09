@@ -1,13 +1,22 @@
-import { z } from 'zod';
-interface Schema {
-	[key: string]: unknown;
-}
-export const schemas: Schema = {
+import { z, type AnyZodObject } from 'zod';
+
+const zint = () => {
+	// make the default value undefined and not 0
+	return z
+		.number()
+		.positive()
+		.default('' as unknown as number);
+};
+
+export const schemas: {
+	[key: string]: AnyZodObject;
+} = {
 	'species-metadata': z.object({
-		species: z.number().int(),
+		species: zint(),
+		linelist: zint(),
+		degree_of_freedom: zint(),
 		molecule_tag: z.number().int().optional(),
 		hyperfine: z.boolean(),
-		degree_of_freedom: z.number().int(),
 		category: z.string().min(1),
 		mu_a: z.string().nullable(),
 		mu_b: z.string().nullable(),
@@ -15,7 +24,6 @@ export const schemas: Schema = {
 		a_const: z.string().nullable(),
 		b_const: z.string().nullable(),
 		c_const: z.string().nullable(),
-		linelist: z.number().int(),
 		data_date: z.string().min(1),
 		data_contributor: z.string().refine((str) => !isNaN(Date.parse(str)), {
 			message: 'Invalid date format'
