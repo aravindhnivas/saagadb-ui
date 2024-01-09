@@ -1,11 +1,10 @@
 <script lang="ts">
-	// import Dropdown from '$lib/components/dropdown.svelte';
+	import type { InputConstraint } from 'sveltekit-superforms';
 
 	export let key: string;
-	export let value: string;
-	export let errors: string[] = [];
-	export let constraints = {};
-	// export let dropdown: string[] = [];
+	export let value: string | boolean;
+	export let errors: string[] | undefined = undefined;
+	export let constraints: InputConstraint | undefined = undefined;
 </script>
 
 {#if typeof value === 'boolean'}
