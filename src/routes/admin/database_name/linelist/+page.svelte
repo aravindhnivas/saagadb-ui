@@ -4,6 +4,9 @@
 	import type { PageData } from './$types';
 	import LinelistTable from './linelist-table.svelte';
 	import { goto, invalidateAll } from '$app/navigation';
+	import { Input } from '$lib/components/ui/input';
+	import { Label } from '$lib/components/ui/label';
+	import { Button } from '$lib/components/ui/button';
 
 	export let data: PageData;
 	let id: string;
@@ -52,38 +55,27 @@
 <form method="POST" action="?/update_table&id={id}&method={method}" use:enhance={onSubmit}>
 	<dialog bind:this={modal} class="modal">
 		<div class="modal-box gap-2">
-			{#if method === 'PATCH'}
-				<div class="">
-					<h3 class="font-bold text-lg">New name</h3>
-					<input
-						value={changed_name}
-						name="changed_name"
-						type="text"
-						placeholder="Type here"
-						class="input input-sm w-full max-w-xs"
-						required
-					/>
+			<div class="grid gap-4 py-4">
+				{#if method === 'PATCH'}
+					<div class="grid grid-cols-4 items-center gap-4">
+						<Label class="text-right">New name</Label>
+						<Input name="changed_name" value={changed_name} class="col-span-3" required />
+					</div>
+				{/if}
+				<div class="grid grid-cols-4 items-center gap-4">
+					<Label class="text-right">Reason ?</Label>
+					<Input name="reason" value="" class="col-span-3" required />
 				</div>
-			{/if}
-
-			<div class="">
-				<h3 class="font-bold text-lg">{method === 'DELETE' ? 'delete' : 'change'} reason ?</h3>
-				<input
-					name="reason"
-					type="text"
-					placeholder="Type here"
-					class="input input-sm w-full max-w-xs"
-					required
-				/>
 			</div>
 
 			<div class="modal-action">
 				<form method="dialog">
-					<button class="btn">Cancel</button>
+					<Button type="submit">Cancel</Button>
 				</form>
-				<button type="submit" class="btn btn-{method === 'PATCH' ? 'warning' : 'error'}"
+				<Button type="submit" variant="destructive">Destructive</Button>
+				<!-- <button type="submit" class="btn btn-{method === 'PATCH' ? 'warning' : 'error'}"
 					>Submit</button
-				>
+				> -->
 			</div>
 		</div>
 	</dialog>
