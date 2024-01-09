@@ -5,12 +5,10 @@
 	export let value = 'None';
 	export let label = 'Choose...';
 
-	// items = [{ id: crypto.randomUUID(), name: 'None' }, ...items];
 	const dispatch = createEventDispatcher();
 	let inputVal = '';
 
 	function onItemClicked(item: string, id?: string) {
-		// if (!(item && id)) return;
 		value = item;
 		inputVal = '';
 		dispatch('selected', { item, id });
