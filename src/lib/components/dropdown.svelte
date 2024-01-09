@@ -29,7 +29,7 @@
 	<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 	<ul
 		tabindex="0"
-		class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 max-h-80 flex-nowrap overflow-auto"
+		class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-70 max-h-80 flex-nowrap overflow-auto"
 	>
 		<li>
 			<input class="w-full input input-bordered" placeholder="Search..." bind:value={inputVal} />
