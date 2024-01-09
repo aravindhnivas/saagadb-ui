@@ -2,14 +2,14 @@
 	import { createEventDispatcher } from 'svelte';
 
 	export let items: { id: string; name: string }[] = [];
-	export let value = '';
+	export let value = 'None';
 	export let label = 'Choose...';
 
 	// items = [{ id: crypto.randomUUID(), name: 'None' }, ...items];
 	const dispatch = createEventDispatcher();
 	let inputVal = '';
 
-	function onItemClicked(item: string, id: string) {
+	function onItemClicked(item: string, id?: string) {
 		// if (!(item && id)) return;
 		value = item;
 		inputVal = '';
@@ -35,7 +35,7 @@
 			<input class="w-full input input-bordered" placeholder="Search..." bind:value={inputVal} />
 		</li>
 		<li>
-			<button on:click|preventDefault={() => onItemClicked('None', undefined)}>None</button>
+			<button on:click|preventDefault={() => onItemClicked('None')}>None</button>
 		</li>
 		{#each filteredItems as { name, id } (id)}
 			<li>
