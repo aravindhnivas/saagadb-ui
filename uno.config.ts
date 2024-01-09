@@ -18,7 +18,7 @@ export default defineConfig({
 		presetDaisy(),
 		presetAnimations(),
 		presetShadcn({
-			color: 'red'
+			color: 'slate'
 		})
 	],
 	// By default, `.ts` and `.js` files are NOT extracted.
