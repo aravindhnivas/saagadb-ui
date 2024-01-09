@@ -5,7 +5,7 @@ import { error, fail } from '@sveltejs/kit';
 import { DB_URL } from '$lib/server';
 
 const schema = z.object({
-	linelist_name: z.string().min(1).default('string')
+	linelist_name: z.string().min(1)
 });
 
 export const load: PageServerLoad = async ({ request }) => {
