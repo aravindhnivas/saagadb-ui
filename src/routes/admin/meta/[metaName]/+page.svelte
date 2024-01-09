@@ -36,7 +36,7 @@
 {#if $message}
 	<div role="alert" class="alert alert-warning w-100 m-auto">
 		<i class="i-mdi-alert"></i>
-		<span>{$message}</span>
+		<span>{JSON.stringify($message)}</span>
 	</div>
 {/if}
 
