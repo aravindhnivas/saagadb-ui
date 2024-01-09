@@ -1,20 +1,18 @@
 import type { Actions, PageServerLoad } from './$types';
-import { setError, superValidate } from 'sveltekit-superforms/server';
+import { setError, superValidate, message } from 'sveltekit-superforms/server';
 import { error, fail } from '@sveltejs/kit';
 import { DB_URL } from '$lib/server';
 import { schemas, fileInputs, dropdowns } from '$lib/server/schemas/meta';
 
-export const load: PageServerLoad = async ({ request, params }) => {
+export const load: PageServerLoad = async ({ params }) => {
 	if (!Object.keys(schemas).includes(params.metaName))
-		error(404, { message: `${params.metaName} page is incorrect and not defined in the schemas` });
-	// Server API:
-	const form = await superValidate(request, schemas[params.metaName]);
-	// console.log(params.metaName, { form });
+		error(404, `invalid page requested: ${params.metaName}`);
 
-	// Unless you throw, always return { form } in load and form actions.
+	const form = await superValidate(schemas[params.metaName], { id: params.metaName });
+
 	const fileInput = fileInputs[params.metaName];
 	const dropdown = dropdowns[params.metaName];
-	return { form, fileInput, dropdown };
+	return { form, fileInput, dropdown, id: params.metaName };
 };
 
 export const actions: Actions = {
@@ -75,10 +73,8 @@ export const actions: Actions = {
 				console.log('error', error);
 			}
 
-			const message = await res.text();
-			if (res.status >= 400 && res.status < 599) {
-				error(res.status, { message });
-			}
+			const msg = await res.text();
+			message(form, msg);
 			return;
 		}
 
