@@ -1,7 +1,12 @@
 <script lang="ts">
 	import { logged_in, edit_mode } from '$lib/utils/stores';
 	import type { LayoutServerData } from '../../$types';
-	// import Stats from './stats.svelte';
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
+	import { Button } from '$lib/components/ui/button';
+
+	let showStatusBar = true;
+	let showActivityBar = false;
+	let showPanel = false;
 
 	export let data: LayoutServerData;
 
@@ -35,3 +40,18 @@
 {:else}
 	<p>Invalid user</p>
 {/if}
+
+<DropdownMenu.Root>
+	<DropdownMenu.Trigger asChild let:builder>
+		<Button variant="outline" builders={[builder]}>Open</Button>
+	</DropdownMenu.Trigger>
+	<DropdownMenu.Content class="w-56">
+		<DropdownMenu.Label>Appearance</DropdownMenu.Label>
+		<DropdownMenu.Separator />
+		<DropdownMenu.CheckboxItem bind:checked={showStatusBar}>Status Bar</DropdownMenu.CheckboxItem>
+		<DropdownMenu.CheckboxItem bind:checked={showActivityBar} disabled>
+			Activity Bar
+		</DropdownMenu.CheckboxItem>
+		<DropdownMenu.CheckboxItem bind:checked={showPanel}>Panel</DropdownMenu.CheckboxItem>
+	</DropdownMenu.Content>
+</DropdownMenu.Root>

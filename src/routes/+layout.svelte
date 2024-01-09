@@ -8,6 +8,8 @@
 	import { logged_in } from '$lib/utils/stores';
 	import type { LayoutServerData } from './$types';
 	import { Toaster } from 'svelte-sonner';
+	import '../app.pcss';
+
 	export let data: LayoutServerData;
 	const { user } = data;
 
