@@ -41,11 +41,8 @@ export const actions: Actions = {
 				}
 				continue;
 			}
-			// console.log('file', file);
 			const contents = await file.arrayBuffer();
 			const binaryContent = Buffer.from(contents);
-			// const utf8Content = binaryContent.toString('utf8');
-			// console.log({ binaryContent, contents, utf8Content });
 			fileData[key.name] = binaryContent;
 		}
 
@@ -55,7 +52,7 @@ export const actions: Actions = {
 			body: JSON.stringify(form.data)
 		});
 
-		console.log('return post request from API', {
+		message(form, {
 			ok: res.ok,
 			status: res.status,
 			statusText: res.statusText
