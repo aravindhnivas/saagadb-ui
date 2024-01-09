@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-
+	import { v4 as uuidv4 } from 'uuid';
 	const db_menu = [
-		{ id: crypto.randomUUID(), name: 'linelist', href: '/admin/database_name/linelist' },
-		{ id: crypto.randomUUID(), name: 'add_linelist', href: '/admin/database_name/add_linelist' }
+		{ id: uuidv4(), name: 'linelist', href: '/admin/database_name/linelist' },
+		{ id: uuidv4(), name: 'add_linelist', href: '/admin/database_name/add_linelist' }
 	];
 
 	let active_tab = db_menu.find((f) => $page.url.pathname.startsWith(f.href))?.name;

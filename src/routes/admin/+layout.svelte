@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { v4 as uuidv4 } from 'uuid';
 	const admin_menu = [
-		{ id: crypto.randomUUID(), name: 'Dashboard', href: '/admin/dashboard' },
-		{ id: crypto.randomUUID(), name: 'Create New user', href: '/admin/create_user' },
-		{ id: crypto.randomUUID(), name: 'Database name', href: '/admin/database_name' },
-		{ id: crypto.randomUUID(), name: 'Species', href: '/admin/species' },
-		{ id: crypto.randomUUID(), name: 'Metadata', href: '/admin/meta' }
+		{ id: uuidv4(), name: 'Dashboard', href: '/admin/dashboard' },
+		{ id: uuidv4(), name: 'Create New user', href: '/admin/create_user' },
+		{ id: uuidv4(), name: 'Database name', href: '/admin/database_name' },
+		{ id: uuidv4(), name: 'Species', href: '/admin/species' },
+		{ id: uuidv4(), name: 'Metadata', href: '/admin/meta' }
 	];
 	let active_tab = admin_menu.find((f) => $page.url.pathname.startsWith(f.href))?.name;
 </script>

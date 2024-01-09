@@ -1,4 +1,5 @@
 import { z, type AnyZodObject } from 'zod';
+import { v4 as uuidv4 } from 'uuid';
 
 const zint = () => {
 	// make the default value undefined and not 0
@@ -62,28 +63,28 @@ export const fileInputs: {
 	[key: string]: { id: string; name: string; required: boolean }[];
 } = {
 	'species-metadata': [
-		{ id: crypto.randomUUID(), name: 'qpart_file', required: true },
-		{ id: crypto.randomUUID(), name: 'int_file', required: false },
-		{ id: crypto.randomUUID(), name: 'var_file', required: false },
-		{ id: crypto.randomUUID(), name: 'fit_file', required: false },
-		{ id: crypto.randomUUID(), name: 'lin_file', required: false }
+		{ id: uuidv4(), name: 'qpart_file', required: true },
+		{ id: uuidv4(), name: 'int_file', required: false },
+		{ id: uuidv4(), name: 'var_file', required: false },
+		{ id: uuidv4(), name: 'fit_file', required: false },
+		{ id: uuidv4(), name: 'lin_file', required: false }
 	],
-	reference: [{ id: crypto.randomUUID(), name: 'bibtex', required: true }],
+	reference: [{ id: uuidv4(), name: 'bibtex', required: true }],
 	'meta-reference': [],
-	line: [{ id: crypto.randomUUID(), name: 'cat_file', required: true }]
+	line: [{ id: uuidv4(), name: 'cat_file', required: true }]
 };
 
 export const dropdowns: {
 	[key: string]: { id: string; name: string; key: string }[];
 } = {
 	'species-metadata': [
-		{ id: crypto.randomUUID(), name: 'species', key: 'name_formula' },
-		{ id: crypto.randomUUID(), name: 'linelist', key: 'linelist_name' }
+		{ id: uuidv4(), name: 'species', key: 'name_formula' },
+		{ id: uuidv4(), name: 'linelist', key: 'linelist_name' }
 	],
 	reference: [],
 	'meta-reference': [
-		{ id: crypto.randomUUID(), name: 'meta', key: '' },
-		{ id: crypto.randomUUID(), name: 'ref', key: '' }
+		{ id: uuidv4(), name: 'meta', key: '' },
+		{ id: uuidv4(), name: 'ref', key: '' }
 	],
-	line: [{ id: crypto.randomUUID(), name: 'meta', key: '' }]
+	line: [{ id: uuidv4(), name: 'meta', key: '' }]
 };
