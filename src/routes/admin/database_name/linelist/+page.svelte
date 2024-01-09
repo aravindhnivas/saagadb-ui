@@ -72,7 +72,9 @@
 				<form method="dialog">
 					<Button type="submit">Cancel</Button>
 				</form>
-				<Button type="submit" variant="destructive">Destructive</Button>
+				<Button type="submit" variant={method === 'PATCH' ? 'outline' : 'destructive'}
+					>Submit</Button
+				>
 				<!-- <button type="submit" class="btn btn-{method === 'PATCH' ? 'warning' : 'error'}"
 					>Submit</button
 				> -->
