@@ -2,7 +2,7 @@ import type { Actions, PageServerLoad } from './$types';
 import { setError, superValidate, message } from 'sveltekit-superforms/server';
 import { error, fail } from '@sveltejs/kit';
 import { DB_URL } from '$lib/server';
-import { schemas, fileInputs, dropdowns } from '$lib/server/schemas/meta';
+import { schemas, fileInputs, dropdowns } from '$lib/utils/schemas/meta';
 
 export const load: PageServerLoad = async ({ params }) => {
 	if (!Object.keys(schemas).includes(params.metaName))
