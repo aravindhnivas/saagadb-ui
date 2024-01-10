@@ -3,6 +3,8 @@
 	import { superForm } from 'sveltekit-superforms/client';
 	import { toast } from 'svelte-sonner';
 	import KeyField from '$lib/components/forms/key-field.svelte';
+	import DropFile from '@svelte-parts/drop-file/DropFile.svelte';
+	import * as YAML from 'js-yaml';
 
 	export let data: PageData;
 
@@ -13,6 +15,17 @@
 			}
 		}
 	});
+
+	const onDrop = async (files: File[]) => {
+		const fileContents = await files[0].text();
+		let parsed;
+		try {
+			const parsed = YAML.load(fileContents);
+			$form = parsed;
+		} catch (error) {
+			toast.error('Invalid YAML file. Please correct and try again.');
+		}
+	};
 </script>
 
 {#if $message}
@@ -21,6 +34,10 @@
 		<span>{JSON.stringify($message)}</span>
 	</div>
 {/if}
+
+<div>
+	<DropFile {onDrop} />
+</div>
 
 {#if $form && $errors && $constraints}
 	<form class="grid gap-2 px-5" method="POST" use:enhance>

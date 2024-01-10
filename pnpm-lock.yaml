@@ -37,6 +37,9 @@ devDependencies:
   '@macfja/svelte-persistent-store':
     specifier: ^2.4.1
     version: 2.4.1(svelte@4.2.8)
+  '@svelte-parts/drop-file':
+    specifier: ^0.0.23
+    version: 0.0.23(svelte@4.2.8)
   '@sveltejs/adapter-auto':
     specifier: ^3.1.0
     version: 3.1.0(@sveltejs/kit@2.0.6)
@@ -82,6 +85,9 @@ devDependencies:
   eslint-plugin-svelte:
     specifier: ^2.35.1
     version: 2.35.1(eslint@8.56.0)(svelte@4.2.8)
+  js-yaml:
+    specifier: ^4.1.0
+    version: 4.1.0
   prettier:
     specifier: ^3.1.1
     version: 3.1.1
@@ -1025,6 +1031,14 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /@svelte-parts/drop-file@0.0.23(svelte@4.2.8):
+    resolution: {integrity: sha512-yzpeY/lSmf+NDnMUJKlZip2eqz44GLFQAY+OCw96RXcVtBtgRclcR5Ny0ZN/VZInht0C2K/hIxVa4v4LA6dvPA==}
+    peerDependencies:
+      svelte: ^3.29.7
+    dependencies:
+      svelte: 4.2.8
+    dev: true
 
   /@sveltejs/adapter-auto@3.1.0(@sveltejs/kit@2.0.6):
     resolution: {integrity: sha512-igS5hqCwdiXWb8NoWzThKCVQQj9tKgUkbTtzfxBPgSLOyFjkiGNDX0SgCoY2QIUWBqOkfGTOqGlrW5Ynw9oUvw==}

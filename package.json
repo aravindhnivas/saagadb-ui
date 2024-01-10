@@ -14,6 +14,7 @@
 	"devDependencies": {
 		"@iconify/json": "^2.2.166",
 		"@macfja/svelte-persistent-store": "^2.4.1",
+		"@svelte-parts/drop-file": "^0.0.23",
 		"@sveltejs/adapter-auto": "^3.1.0",
 		"@sveltejs/adapter-node": "^2.0.2",
 		"@sveltejs/kit": "^2.0.6",
@@ -29,6 +30,7 @@
 		"eslint": "^8.56.0",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-svelte": "^2.35.1",
+		"js-yaml": "^4.1.0",
 		"prettier": "^3.1.1",
 		"prettier-plugin-svelte": "^3.1.2",
 		"sass": "^1.69.7",
