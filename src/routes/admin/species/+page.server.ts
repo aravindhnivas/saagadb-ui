@@ -26,7 +26,7 @@ export const load: PageServerLoad = async ({ request }) => {
 export const actions: Actions = {
 	default: async ({ request, fetch }) => {
 		const form = await superValidate(request, schema);
-		console.log('POST', form.data);
+		// console.log('POST', form.data);
 
 		// Convenient validation check:
 		if (!form.valid) {
@@ -57,7 +57,7 @@ export const actions: Actions = {
 		}
 
 		const res_data = await res.json();
-
+		console.log({ res_data });
 		// Yep, return { form } here too
 		return { form, response: res_data };
 	}
