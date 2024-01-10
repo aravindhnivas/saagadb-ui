@@ -20,7 +20,7 @@
 </script>
 
 <div class="dropdown">
-	<div class="w-full">
+	<div class="w-full flex gap-4">
 		<input tabindex="0" class="input input-bordered" placeholder={label} bind:value />
 		<slot />
 	</div>
