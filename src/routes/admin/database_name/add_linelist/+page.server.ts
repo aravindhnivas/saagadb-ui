@@ -47,12 +47,12 @@ export const actions: Actions = {
 			return;
 		}
 
+		const res_data = await res.json();
 		message(form, {
 			type: 'success',
-			text: 'Successfully added linelist'
+			text: `Successfully added <em>${res_data.linelist_name}</em> to the database`
 		});
 
-		const res_data = await res.json();
 		return { form, response: res_data };
 	}
 };
