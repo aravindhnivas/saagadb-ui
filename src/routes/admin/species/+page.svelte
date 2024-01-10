@@ -1,13 +1,11 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import { superForm } from 'sveltekit-superforms/client';
-	import { toast } from 'svelte-sonner';
 	import KeyField from '$lib/components/forms/key-field.svelte';
-	import DropFile from '@svelte-parts/drop-file/DropFile.svelte';
-	import * as YAML from 'js-yaml';
+	import Dropfile from '$lib/components/dropfile.svelte';
+	import { toast } from 'svelte-sonner';
 
 	export let data: PageData;
-
 	const { form, errors, constraints, enhance, message } = superForm(data.form, {
 		onUpdated({ form }) {
 			if (form.valid) {
@@ -15,21 +13,6 @@
 			}
 		}
 	});
-
-	const onDrop = async (files: File[]) => {
-		if (!files.length) return console.error('No files provided');
-		const file = files[0];
-		if (file.type !== 'application/x-yaml')
-			return toast.error('Invalid file type. Please upload a YAML file.');
-		const fileContents = await file.text();
-		try {
-			const parsed = YAML.load(fileContents);
-			$form = parsed;
-			toast.success(`Loaded ${file.name}`);
-		} catch (error) {
-			toast.error('Invalid YAML file. Please correct and try again.');
-		}
-	};
 </script>
 
 {#if $message}
@@ -39,9 +22,15 @@
 	</div>
 {/if}
 
-<div>
-	<DropFile {onDrop} />
-</div>
+<Dropfile
+	on:parsed={({ detail }) => {
+		const keys = Object.keys(detail.parsed);
+		keys.forEach((key) => {
+			if (!Object.keys($form).includes(key)) return;
+			$form[key] = detail.parsed[key];
+		});
+	}}
+/>
 
 {#if $form && $errors && $constraints}
 	<form class="grid gap-2 px-5" method="POST" use:enhance>

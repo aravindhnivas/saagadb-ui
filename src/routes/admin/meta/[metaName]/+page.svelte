@@ -4,6 +4,7 @@
 	import { toast } from 'svelte-sonner';
 	import KeyField from '$lib/components/forms/key-field.svelte';
 	import Dropdown from '$lib/components/dropdown.svelte';
+	import Dropfile from '$lib/components/dropfile.svelte';
 
 	export let data: PageData;
 
@@ -39,6 +40,16 @@
 		<span>{JSON.stringify($message)}</span>
 	</div>
 {/if}
+
+<Dropfile
+	on:parsed={({ detail }) => {
+		const keys = Object.keys(detail.parsed);
+		keys.forEach((key) => {
+			if (!Object.keys($form).includes(key)) return;
+			$form[key] = detail.parsed[key];
+		});
+	}}
+/>
 
 {#if $form && $errors && $constraints}
 	<form class="grid gap-2 px-5" method="POST" use:enhance>

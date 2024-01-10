@@ -14,7 +14,7 @@ export const schemas: {
 } = {
 	'species-metadata': z.object({
 		species: zint(),
-		linelist: zint(),
+		linelist: z.number().int(),
 		degree_of_freedom: zint(),
 		molecule_tag: z.number().int().optional(),
 		hyperfine: z.boolean(),
