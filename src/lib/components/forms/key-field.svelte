@@ -32,6 +32,9 @@
 					bind:value
 					{...constraints}
 				/>
+			{:else if key === 'notes'}
+				<textarea placeholder={key} class="textarea textarea-bordered textarea-md w-full" bind:value
+				></textarea>
 			{:else if key === 'password'}
 				<input
 					name={key}
