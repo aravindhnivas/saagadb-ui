@@ -5,13 +5,13 @@ import { fail } from '@sveltejs/kit';
 import { DB_URL } from '$lib/server';
 
 const schema = z.object({
-	name: z.string().min(1).default('C3H3'),
-	iupac_name: z.string().min(1).default('cyclopropa-1-yn-3-ylradical'),
-	name_formula: z.string().min(1).default('C3H3'),
-	name_html: z.string().min(1).default('C<sub>3</sub>H<sub>3</sub>'),
-	smiles: z.string().min(1).default('[CH]1C#C1'),
-	standard_inchi: z.string().min(1).default('InChI=1S/C3H/c1-2-3-1/h1H'),
-	standard_inchi_key: z.string().min(1).default('BNZFPDMLDDZTCS-UHFFFAOYSA-N'),
+	name: z.string().min(1),
+	iupac_name: z.string().min(1),
+	name_formula: z.string().min(1),
+	name_html: z.string().min(1),
+	smiles: z.string().min(1),
+	standard_inchi: z.string().min(1),
+	standard_inchi_key: z.string().min(1),
 	notes: z.string().min(10).optional()
 });
 
