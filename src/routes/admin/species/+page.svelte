@@ -17,11 +17,13 @@
 	});
 
 	const onDrop = async (files: File[]) => {
+		const filename = files[0].name;
 		const fileContents = await files[0].text();
 		let parsed;
 		try {
 			const parsed = YAML.load(fileContents);
 			$form = parsed;
+			toast.success(`Loaded ${filename}`);
 		} catch (error) {
 			toast.error('Invalid YAML file. Please correct and try again.');
 		}
