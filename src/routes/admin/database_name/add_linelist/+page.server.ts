@@ -44,11 +44,11 @@ export const actions: Actions = {
 		});
 		// const newUrl = res.headers.get('Location');
 		// console.log('newUrl', newUrl);
-		message(form, {
-			ok: res.ok,
-			status: res.status,
-			statusText: res.statusText
-		});
+		// message(form, {
+		// 	ok: res.ok,
+		// 	status: res.status,
+		// 	statusText: res.statusText
+		// });
 
 		if (!res.ok) {
 			try {
