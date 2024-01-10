@@ -5,11 +5,14 @@
 	import { AlertCircle, CheckCheck, AlertTriangle } from 'lucide-svelte';
 	import * as Alert from '$lib/components/ui/alert';
 	import { z } from 'zod';
-
 	export let schema: z.AnyZodObject;
 	export let form: SuperValidated<typeof schema>;
 	export let opts = {};
 	export let action = '';
+	export let method = 'POST';
+
+	let className = '';
+	export { className as class };
 
 	const options: FormOptions<typeof schema> = {
 		resetForm: true,
@@ -25,7 +28,7 @@
 	};
 </script>
 
-<Form.Root class="p-2" method="POST" {action} {options} {form} {schema} let:config let:message>
+<Form.Root class={className} {method} {action} {options} {form} {schema} let:config let:message>
 	{#if message && message.type && message.text}
 		<Alert.Root variant={message.type === 'error' ? 'destructive' : 'default'}>
 			{#if message.type === 'success'}

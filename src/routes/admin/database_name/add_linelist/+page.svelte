@@ -6,7 +6,7 @@
 	export let data: PageData;
 </script>
 
-<FormComponent schema={linelistSchema} form={data.form} let:config>
+<FormComponent class="p-2" schema={linelistSchema} form={data.form} let:config>
 	<Form.Field {config} name="linelist_name">
 		<Form.Item class="max-w-md">
 			<Form.Label>Name</Form.Label>
