@@ -43,7 +43,7 @@ export const actions: Actions = {
 			}
 
 			const msg = await res.text();
-			message(form, msg);
+			message(form, { type: 'error', text: msg });
 			return;
 		}
 
