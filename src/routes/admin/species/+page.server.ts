@@ -46,8 +46,10 @@ export const actions: Actions = {
 		if (!res.ok) {
 			try {
 				const msg_json = await res.json();
-				const [key, value] = Object.entries(msg_json)[0] as [string, string];
-				return setError(form, key, value);
+				for (const [key, value] of Object.entries(msg_json) as [string, string][]) {
+					setError(form, key, value);
+				}
+				return setError(form, '', 'Form is invalid');
 			} catch (error) {
 				console.log('error', error);
 			}
