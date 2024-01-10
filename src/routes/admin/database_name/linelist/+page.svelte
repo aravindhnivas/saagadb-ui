@@ -21,6 +21,7 @@
 		modal?.showModal();
 	};
 
+	let message;
 	const onSubmit = () => {
 		return async ({ result }) => {
 			if (result.type === 'success') {
@@ -32,7 +33,8 @@
 					toast.success(data.message);
 				} else {
 					const { error } = data.message;
-					toast.error(`${error?.message} (${error?.type})`);
+					message = `${error?.message} (${error?.type})`;
+					toast.error(message);
 				}
 			}
 
@@ -46,6 +48,13 @@
 		};
 	};
 </script>
+
+{#if message}
+	<div role="alert" class="alert alert-warning w-100 m-auto">
+		<i class="i-mdi-alert"></i>
+		<span>{JSON.stringify(message)}</span>
+	</div>
+{/if}
 
 <div class="max-w-sm">
 	{#if data?.linelist.length > 0}
