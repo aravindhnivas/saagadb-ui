@@ -27,11 +27,12 @@
 				// rerun all `load` functions, following the successful update
 				await invalidateAll();
 				console.log(result);
-				if (result?.data?.success) {
-					toast.success('Updated successfully');
+				const { data } = result;
+				if (data.success) {
+					toast.success(data.message);
 				} else {
-					const msg = result?.data?.message;
-					toast.error(`Error deleting linelist: ${msg?.detail ?? msg}`);
+					const { error } = data.message;
+					toast.error(`${error?.message} (${error?.type})`);
 				}
 			}
 
