@@ -1,20 +1,20 @@
 import type { Actions, PageServerLoad } from './$types';
 import { z } from 'zod';
 import { message, setError, superValidate } from 'sveltekit-superforms/server';
-import { error, fail } from '@sveltejs/kit';
+import { fail } from '@sveltejs/kit';
 import { DB_URL } from '$lib/server';
 
 const schema = z.object({
 	linelist_name: z.string().min(1)
 });
 
-export const load: PageServerLoad = async ({ request }) => {
-	const form = await superValidate(request, schema);
+export const load: PageServerLoad = async () => {
+	const form = await superValidate(schema);
 	return { form };
 };
 
 export const actions: Actions = {
-	get_linelist: async ({ request, fetch }) => {
+	default: async ({ request, fetch }) => {
 		const formData = await request.formData();
 
 		const form = await superValidate(formData, schema);
@@ -22,33 +22,13 @@ export const actions: Actions = {
 
 		// Convenient validation check:
 		if (!form.valid) {
-			console.warn('form not valid');
-			// Again, return { form } and things will just work.
 			return fail(400, { form });
 		}
-		// const file = formData.get('file');
-		// // console.log('file uploaded', file);
-		// if (file instanceof File) {
-		// 	// console.log('file', file);
-		// 	const contents = await file.arrayBuffer();
-		// 	const binaryContent = Buffer.from(contents);
-		// 	// const utf8Content = binaryContent.toString('utf8');
-		// 	// console.log({ binaryContent, contents, utf8Content });
-		// }
 
-		// return { form };
-		// TODO: Do something with the validated form.data
 		const res = await fetch(`${DB_URL}/data/linelist/`, {
 			method: 'POST',
 			body: JSON.stringify(form.data)
 		});
-		// const newUrl = res.headers.get('Location');
-		// console.log('newUrl', newUrl);
-		// message(form, {
-		// 	ok: res.ok,
-		// 	status: res.status,
-		// 	statusText: res.statusText
-		// });
 
 		if (!res.ok) {
 			try {
@@ -61,16 +41,12 @@ export const actions: Actions = {
 				console.log('error', error);
 			}
 
-			const message = await res.text();
-			if (res.status >= 400 && res.status < 599) {
-				error(res.status, { message });
-			}
+			const msg = await res.text();
+			message(form, msg);
 			return;
 		}
 
 		const res_data = await res.json();
-
-		// Yep, return { form } here too
 		return { form, response: res_data };
 	}
 };
