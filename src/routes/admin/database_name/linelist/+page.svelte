@@ -2,11 +2,11 @@
 	import { applyAction, enhance } from '$app/forms';
 	import { toast } from 'svelte-sonner';
 	import type { PageData } from './$types';
-	import LinelistTable from './linelist-table.svelte';
 	import { goto, invalidateAll } from '$app/navigation';
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
 	import { Button } from '$lib/components/ui/button';
+	import * as Table from '$lib/components/ui/table';
 
 	export let data: PageData;
 	let id: string;
@@ -46,11 +46,38 @@
 	};
 </script>
 
-{#if data?.linelist.length > 0}
-	<LinelistTable linelist={data.linelist} {openModal} />
-{:else}
-	<p>No linelist found</p>
-{/if}
+<div class="max-w-sm">
+	{#if data?.linelist.length > 0}
+		<Table.Root>
+			<Table.Caption>Available linelist</Table.Caption>
+			<Table.Header>
+				<Table.Row>
+					<Table.Head class="w-[100px] text-center">Name</Table.Head>
+					<Table.Head class="text-right" />
+					<Table.Head class="text-right" />
+				</Table.Row>
+			</Table.Header>
+			<Table.Body>
+				{#each data.linelist as { id, linelist_name } (id)}
+					<Table.Row>
+						<Table.Cell class="font-medium text-center">{linelist_name}</Table.Cell>
+						<Table.Cell class="text-center"
+							><Button variant="outline" on:click={() => openModal(id, 'PATCH', linelist_name)}
+								>EDIT</Button
+							></Table.Cell
+						>
+						<Table.Cell class="text-center"
+							><Button variant="destructive" on:click={() => openModal(id, 'DELETE')}>DELETE</Button
+							></Table.Cell
+						>
+					</Table.Row>
+				{/each}
+			</Table.Body>
+		</Table.Root>
+	{:else}
+		<p>No linelist found</p>
+	{/if}
+</div>
 
 <form method="POST" action="?/update_table&id={id}&method={method}" use:enhance={onSubmit}>
 	<dialog bind:this={modal} class="modal">
@@ -75,9 +102,6 @@
 				<Button type="submit" variant={method === 'PATCH' ? 'outline' : 'destructive'}
 					>Submit</Button
 				>
-				<!-- <button type="submit" class="btn btn-{method === 'PATCH' ? 'warning' : 'error'}"
-					>Submit</button
-				> -->
 			</div>
 		</div>
 	</dialog>
