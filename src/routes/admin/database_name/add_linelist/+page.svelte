@@ -1,38 +1,18 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import { superForm } from 'sveltekit-superforms/client';
-	import { toast } from 'svelte-sonner';
-	import KeyField from '$lib/components/forms/key-field.svelte';
-
+	import { linelistSchema } from '$lib/utils/schemas';
+	import FormComponent from '$lib/components/forms/form-component.svelte';
+	import * as Form from '$lib/components/ui/form';
 	export let data: PageData;
-
-	const { form, errors, constraints, enhance, message } = superForm(data.form, {
-		resetForm: true,
-		onUpdated({ form }) {
-			if (form.valid) {
-				toast.success('Species added!');
-			}
-		}
-	});
 </script>
 
-{#if $message}
-	<div role="alert" class="alert alert-warning w-100 m-auto">
-		<i class="i-mdi-alert"></i>
-		<span>{JSON.stringify($message)}</span>
-	</div>
-{/if}
-
-<form class="grid gap-2 px-5" method="POST" use:enhance>
-	<div>
-		<KeyField
-			key="linelist_name"
-			bind:value={$form.linelist_name}
-			errors={$errors.linelist_name}
-			constraints={$constraints.linelist_name}
-		/>
-	</div>
-	<div class="form-control w-[20rem] m-auto">
-		<button class="btn btn-primary">Upload</button>
-	</div>
-</form>
+<FormComponent schema={linelistSchema} form={data.form} let:config>
+	<Form.Field {config} name="linelist_name">
+		<Form.Item class="max-w-md">
+			<Form.Label>Name</Form.Label>
+			<Form.Input />
+			<Form.Description>Enter the name of the database</Form.Description>
+			<Form.Validation />
+		</Form.Item>
+	</Form.Field>
+</FormComponent>
