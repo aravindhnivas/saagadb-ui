@@ -1,19 +1,6 @@
 import type { Actions } from './$types';
 import { DB_URL } from '$lib/server';
 
-// export const load: PageServerLoad = async ({ fetch }) => {
-// 	const linelist_res = await fetch(`/api/linelist`);
-
-// 	if (!linelist_res.ok) return { linelist: [] };
-
-// 	const linelist = (await linelist_res.json()) as {
-// 		id: string;
-// 		linelist_name: string;
-// 	}[];
-
-// 	return { linelist };
-// };
-
 export const actions: Actions = {
 	update_table: async ({ request, fetch, url }) => {
 		const data = await request.formData();
@@ -51,7 +38,7 @@ export const actions: Actions = {
 
 		return {
 			success: res.ok,
-			message: res.ok ? 'Table update' : 'Error updating table'
+			message: 'Table update successfully'
 		};
 	}
 };
