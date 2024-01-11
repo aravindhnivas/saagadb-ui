@@ -5,7 +5,6 @@
 	import { Button } from '$lib/components/ui/button';
 	import { cn } from '$lib/utils';
 	import { createEventDispatcher, tick } from 'svelte';
-
 	export let items: {
 		label: string;
 		value: string;
@@ -17,8 +16,8 @@
 	const dispatch = createEventDispatcher();
 	let open = false;
 
-	$: selectedValue = items.find((f) => f.value === value)?.label ?? `Select ${label}`;
-
+	$: selectedValue = items?.find((f) => f.value === value)?.label ?? `Select ${label}`;
+	$: console.log({ value });
 	// We want to refocus the trigger button when the user selects
 	// an item from the list so users can continue navigating the
 	// rest of the form with the keyboard.

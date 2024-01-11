@@ -27,7 +27,7 @@ export const actions: Actions = {
 			// Again, return { form } and things will just work.
 			return fail(400, { form });
 		}
-
+		console.log('form.valid', form.data);
 		const fileKeys = fileInputs[params.metaName];
 		const fileData: {
 			[key: string]: Buffer;

@@ -5,8 +5,8 @@ const zint = () => {
 	// make the default value undefined and not 0
 	return z
 		.number()
-		.positive()
-		.default('' as unknown as number);
+		.int()
+		.default(undefined as unknown as number);
 };
 
 export const schemas: {
@@ -15,7 +15,7 @@ export const schemas: {
 	'species-metadata': z.object({
 		species: z.number().int(),
 		linelist: z.number().int(),
-		degree_of_freedom: zint(),
+		degree_of_freedom: z.number().int(),
 		molecule_tag: z.number().int().optional(),
 		hyperfine: z.boolean(),
 		category: z.string().min(1),
