@@ -4,7 +4,7 @@
 	import * as Popover from '$lib/components/ui/popover';
 	import { Button } from '$lib/components/ui/button';
 	import { cn } from '$lib/utils';
-	import { tick } from 'svelte';
+	import { createEventDispatcher, tick } from 'svelte';
 
 	export let items: {
 		label: string;
@@ -13,6 +13,8 @@
 
 	export let value = '';
 	export let label = 'Choose...';
+
+	const dispatch = createEventDispatcher();
 	let open = false;
 
 	$: selectedValue = items.find((f) => f.value === value)?.label ?? `Select ${label}`;
@@ -51,6 +53,7 @@
 						value={item.value}
 						onSelect={(currentValue) => {
 							value = currentValue;
+							dispatch('change', { value });
 							closeAndFocusTrigger(ids.trigger);
 						}}
 					>

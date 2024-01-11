@@ -13,7 +13,7 @@ export const schemas: {
 	[key: string]: AnyZodObject;
 } = {
 	'species-metadata': z.object({
-		species: zint(),
+		species: z.number().int(),
 		linelist: z.number().int(),
 		degree_of_freedom: zint(),
 		molecule_tag: z.number().int().optional(),

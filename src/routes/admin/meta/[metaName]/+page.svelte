@@ -30,6 +30,8 @@
 		const arr = new Set([...arr_file_input, ...arr_dropdown]);
 		return !arr.has(key);
 	};
+
+	$: console.log($form);
 </script>
 
 {#if $message}
@@ -53,7 +55,7 @@
 	<form class="grid gap-2 px-5" method="POST" use:enhance>
 		{#each data.dropdown as { id, name, key } (id)}
 			<Combobox
-				bind:value={$form[name]}
+				on:change={({ detail }) => ($form[name] = parseInt(detail.value))}
 				label={name}
 				items={data[name]?.map((f) => ({
 					value: `${f.id}`,
