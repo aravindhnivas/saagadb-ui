@@ -52,17 +52,19 @@
 />
 
 {#if $form && $errors && $constraints}
-	<form class="grid gap-2 px-5" method="POST" use:enhance>
-		{#each data.dropdown as { id, name, key } (id)}
-			<Combobox
-				on:change={({ detail }) => ($form[name] = parseInt(detail.value))}
-				label={name}
-				items={data[name]?.map((f) => ({
-					value: `${f.id}`,
-					label: f[key]
-				}))}
-			/>
-		{/each}
+	<form class="grid gap-2 p-5" method="POST" use:enhance>
+		<div class="flex gap-2">
+			{#each data.dropdown as { id, name, key } (id)}
+				<Combobox
+					on:change={({ detail }) => ($form[name] = parseInt(detail.value))}
+					label={name}
+					items={data[name]?.map((f) => ({
+						value: `${f.id}`,
+						label: f[key]
+					}))}
+				/>
+			{/each}
+		</div>
 
 		<div>
 			{#each Object.keys($form) as key (key)}
