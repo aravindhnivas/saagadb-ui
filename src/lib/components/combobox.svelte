@@ -6,33 +6,16 @@
 	import { cn } from '$lib/utils';
 	import { tick } from 'svelte';
 
-	const frameworks = [
-		{
-			value: 'sveltekit',
-			label: 'SvelteKit'
-		},
-		{
-			value: 'next.js',
-			label: 'Next.js'
-		},
-		{
-			value: 'nuxt.js',
-			label: 'Nuxt.js'
-		},
-		{
-			value: 'remix',
-			label: 'Remix'
-		},
-		{
-			value: 'astro',
-			label: 'Astro'
-		}
-	];
+	export let items: {
+		label: string;
+		value: string;
+	}[] = [];
 
+	export let value = '';
+	export let label = 'Choose...';
 	let open = false;
-	let value = '';
 
-	$: selectedValue = frameworks.find((f) => f.value === value)?.label ?? 'Select a framework...';
+	$: selectedValue = items.find((f) => f.value === value)?.label ?? `Select ${label}`;
 
 	// We want to refocus the trigger button when the user selects
 	// an item from the list so users can continue navigating the
@@ -60,19 +43,19 @@
 	</Popover.Trigger>
 	<Popover.Content class="w-[200px] p-0">
 		<Command.Root>
-			<Command.Input placeholder="Search framework..." />
-			<Command.Empty>No framework found.</Command.Empty>
+			<Command.Input placeholder="Search {label}..." />
+			<Command.Empty>Not found</Command.Empty>
 			<Command.Group>
-				{#each frameworks as framework}
+				{#each items as item}
 					<Command.Item
-						value={framework.value}
+						value={item.value}
 						onSelect={(currentValue) => {
 							value = currentValue;
 							closeAndFocusTrigger(ids.trigger);
 						}}
 					>
-						<Check class={cn('mr-2 h-4 w-4', value !== framework.value && 'text-transparent')} />
-						{framework.label}
+						<Check class={cn('mr-2 h-4 w-4', value !== item.value && 'text-transparent')} />
+						{item.label}
 					</Command.Item>
 				{/each}
 			</Command.Group>

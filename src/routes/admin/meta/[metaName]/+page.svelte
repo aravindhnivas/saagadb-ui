@@ -5,25 +5,23 @@
 	import KeyField from '$lib/components/forms/key-field.svelte';
 	import Dropdown from '$lib/components/dropdown.svelte';
 	import Dropfile from '$lib/components/dropfile.svelte';
-
+	import Combobox from '$lib/components/combobox.svelte';
 	export let data: PageData;
 
 	let form: ReturnType<typeof superForm>['form'];
 	let errors: ReturnType<typeof superForm>['errors'];
 	let constraints: ReturnType<typeof superForm>['constraints'];
 	let enhance: ReturnType<typeof superForm>['enhance'];
-	let formId: ReturnType<typeof superForm>['formId'];
 	let message: ReturnType<typeof superForm>['message'];
 
 	$: if (data.form) {
-		({ form, errors, constraints, enhance, formId, message } = superForm(data.form, {
+		({ form, errors, constraints, enhance, message } = superForm(data.form, {
 			onUpdated({ form }) {
 				if (form.valid) {
 					toast.success('Species added!');
 				}
 			}
 		}));
-		// console.log({ $formId });
 	}
 
 	const check_key_to_include = (key: string) => {
@@ -54,30 +52,14 @@
 {#if $form && $errors && $constraints}
 	<form class="grid gap-2 px-5" method="POST" use:enhance>
 		{#each data.dropdown as { id, name, key } (id)}
-			<div class="w-full">
-				<label class="label" for="{name}-id">
-					<span class="label-text">{name}</span>
-				</label>
-				<Dropdown
-					items={data[name]?.map((f) => ({
-						id: f.id,
-						name: f[key]
-					}))}
-					label="Select {name}"
-					on:selected={({ detail }) => {
-						$form[name] = detail.id;
-					}}
-				>
-					<input
-						{name}
-						id="{name}-id"
-						class="input input-bordered"
-						placeholder="selected id"
-						bind:value={$form[name]}
-						required
-					/>
-				</Dropdown>
-			</div>
+			<Combobox
+				bind:value={$form[name]}
+				label={name}
+				items={data[name]?.map((f) => ({
+					value: `${f.id}`,
+					label: f[key]
+				}))}
+			/>
 		{/each}
 
 		<div>
