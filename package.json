@@ -55,6 +55,7 @@
 	"dependencies": {
 		"bits-ui": "^0.13.6",
 		"clsx": "^2.1.0",
+		"cmdk-sv": "^0.0.12",
 		"dotenv": "^16.3.1",
 		"formsnap": "^0.4.2",
 		"lucide-svelte": "^0.308.0",
