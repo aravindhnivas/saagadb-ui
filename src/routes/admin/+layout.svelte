@@ -12,7 +12,7 @@
 </script>
 
 <div class="settings__div">
-	<ul class="menu bg-base-200 w-56 rounded-box gap-2">
+	<ul class=" menu menu-sm lg:menu-md px-4 py-0 gap-0.5">
 		<li class="menu-title">Admin panel</li>
 		{#each admin_menu as { href, name, id } (id)}
 			<li>
@@ -36,8 +36,8 @@
 		gap: 1rem;
 		overflow: hidden;
 
-		.child {
-			overflow: auto;
-		}
+		// .child {
+		// 	overflow: auto;
+		// }
 	}
 </style>

@@ -21,7 +21,9 @@
 			</Card.Description>
 		</Card.Header>
 		<Card.Content class="space-y-2 {className}">
-			<slot />
+			<div class="pr-5" style="max-height: calc(100vh - 20rem); overflow: auto;">
+				<slot />
+			</div>
 		</Card.Content>
 
 		{#if footer}
