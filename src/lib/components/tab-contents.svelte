@@ -4,6 +4,7 @@
 	import { Button } from '$lib/components/ui/button';
 
 	export let value: string;
+	export let footer = true;
 	export let title: string = '';
 	export let description: string = '';
 
@@ -22,10 +23,13 @@
 		<Card.Content class="space-y-2 {className}">
 			<slot />
 		</Card.Content>
-		<Card.Footer>
-			<slot name="footer">
-				<Button>Submit form</Button>
-			</slot>
-		</Card.Footer>
+
+		{#if footer}
+			<Card.Footer>
+				<slot name="footer">
+					<Button>Submit form</Button>
+				</slot>
+			</Card.Footer>
+		{/if}
 	</Card.Root>
 </Tabs.Content>

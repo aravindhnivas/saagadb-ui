@@ -24,10 +24,10 @@
 </script>
 
 {#each metadata_items as { value: metaid, name: title } (metaid)}
-	<TabContents value={metaid} {title} description="Description">
+	<TabContents footer={false} value={metaid} {title} description="Description">
 		{@const schema = schemas[metaid]}
 		{@const form = data.forms[metaid]}
-		<FormComponent footer={false} class="p-2" {schema} {form} let:config debug>
+		<FormComponent class="p-2" {schema} {form} let:config debug>
 			<div class="flex gap-2 py-4">
 				{#each dropdowns[metaid] as { id, name, key } (id)}
 					{@const items = data[name]?.map((f) => ({

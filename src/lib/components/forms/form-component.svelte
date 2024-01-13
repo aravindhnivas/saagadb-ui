@@ -9,7 +9,7 @@
 	export let options: FormOptions<typeof schema> = {};
 	export let action = '';
 	export let method = 'POST';
-	export let footer = false;
+	export let footer = true;
 
 	let className = '';
 	export { className as class };
