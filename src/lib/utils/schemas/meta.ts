@@ -88,3 +88,5 @@ export const dropdowns: {
 	],
 	line: [{ id: uuidv4(), name: 'meta', key: '' }]
 };
+
+export const ids = ['species-metadata', 'reference', 'meta-reference', 'line'] as const;

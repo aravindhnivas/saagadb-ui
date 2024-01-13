@@ -6,7 +6,7 @@
 		{ id: uuidv4(), name: 'Create New user', href: '/admin/create_user' },
 		{ id: uuidv4(), name: 'Database name', href: '/admin/database_name' },
 		{ id: uuidv4(), name: 'Species', href: '/admin/species' },
-		{ id: uuidv4(), name: 'Metadata', href: '/admin/meta' }
+		{ id: uuidv4(), name: 'Metadata', href: '/admin/meta-data/index' }
 	];
 	let active_tab = admin_menu.find((f) => $page.url.pathname.startsWith(f.href))?.name;
 </script>
