@@ -31,7 +31,7 @@
 	<slot {config} />
 	<slot name="footer">
 		{#if footer}
-			<Form.Button class="mt-2">Submit</Form.Button>
+			<Form.Button class="m-2">Submit</Form.Button>
 		{/if}
 	</slot>
 </Form.Root>

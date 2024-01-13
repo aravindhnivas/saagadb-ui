@@ -13,9 +13,9 @@ export const schemas: {
 	[key: string]: AnyZodObject;
 } = {
 	'species-metadata': z.object({
-		species: z.number().int(),
-		linelist: z.number().int(),
-		degree_of_freedom: z.number().int(),
+		species: zint(),
+		linelist: zint(),
+		degree_of_freedom: zint(),
 		molecule_tag: z.number().int().optional(),
 		hyperfine: z.boolean(),
 		category: z.string().min(1),
@@ -37,24 +37,24 @@ export const schemas: {
 		notes: z.string().min(5).optional()
 	}),
 	reference: z.object({
-		doi: z.string(),
-		ref_url: z.string(),
+		doi: z.string().min(5),
+		ref_url: z.string().min(5),
 		notes: z.string().optional(),
 		bibtex: z.string().optional()
 	}),
 	'meta-reference': z.object({
-		meta: z.number().int(),
-		ref: z.number().int(),
+		meta: zint(),
+		ref: zint(),
 		dipole_moment: z.boolean(),
 		spectrum: z.boolean(),
 		notes: z.string().optional()
 	}),
 	line: z.object({
-		meta: z.number().int(),
+		meta: zint(),
 		cat_file: z.string().optional(),
-		qn_label_str: z.string(),
+		qn_label_str: z.string().min(1),
 		contains_rovibrational: z.boolean(),
-		vib_qn: z.string().default('').optional(),
+		vib_qn: z.string().optional(),
 		notes: z.string().optional()
 	})
 };

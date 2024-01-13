@@ -3,7 +3,9 @@
 	import * as Alert from '$lib/components/ui/alert';
 	import { getForm } from 'formsnap';
 
-	const { message } = getForm();
+	const superformData = getForm();
+	const { message, constraints } = superformData;
+	$: console.log({ $message, $constraints, superformData });
 </script>
 
 {#if $message && $message.text && $message.type}

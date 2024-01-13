@@ -32,6 +32,10 @@ export const actions: Actions = {
 			// Again, return { form } and things will just work.
 			return fail(400, { form });
 		}
+
+		// message(form, { type: 'success', text: 'Form is valid' });
+		// return { form };
+
 		console.log('form.valid', form.data, { formData, metaid });
 		const fileKeys = fileInputs[metaid];
 		const fileData: {
@@ -39,7 +43,9 @@ export const actions: Actions = {
 		} = {};
 
 		for (const key of fileKeys) {
+			console.log('key', key);
 			const file = formData.get(key.name);
+			console.log('file', file);
 			if (!(file instanceof File)) {
 				if (key.required) {
 					return setError(form, key.name, 'File is required');
