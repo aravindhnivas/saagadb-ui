@@ -5,7 +5,7 @@
 
 	const superformData = getForm();
 	const { message, constraints } = superformData;
-	$: console.log({ $message, $constraints, superformData });
+	// $: console.log({ $message, $constraints, superformData });
 </script>
 
 {#if $message && $message.text && $message.type}
