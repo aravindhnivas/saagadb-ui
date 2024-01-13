@@ -20,6 +20,7 @@
 		return !arr.has(key);
 	};
 
+	let error_message = '';
 	const options: FormOptions<(typeof schemas)[number]> = {
 		resetForm: true,
 		// applyAction: false,
@@ -27,6 +28,11 @@
 		taintedMessage: null,
 		onResult: (e) => {
 			console.log(e);
+			if (e.result.type === 'failure') {
+				error_message = 'Please check the form above for errors';
+			} else {
+				error_message = '';
+			}
 		},
 		onError: (e) => {
 			// do something else
@@ -88,6 +94,7 @@
 			{/each}
 
 			<Form.Button class="m-2">Submit</Form.Button>
+			{error_message}
 		</Form.Root>
 	</TabContents>
 {/each}
