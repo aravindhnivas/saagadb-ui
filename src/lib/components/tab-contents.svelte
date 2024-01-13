@@ -21,7 +21,7 @@
 			</Card.Description>
 		</Card.Header>
 		<Card.Content class="space-y-2 {className}">
-			<div class="pr-5" style="max-height: calc(100vh - 20rem); overflow: auto;">
+			<div class="px-2" style="max-height: calc(100vh - 20rem); overflow: auto;">
 				<slot />
 			</div>
 		</Card.Content>
