@@ -24,7 +24,14 @@
 		resetForm: true,
 		// applyAction: false,
 		invalidateAll: false,
-		taintedMessage: null
+		taintedMessage: null,
+		onResult: (e) => {
+			console.log(e);
+		},
+		onError: (e) => {
+			// do something else
+			console.error(e);
+		}
 	};
 </script>
 
