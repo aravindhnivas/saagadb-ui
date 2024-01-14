@@ -1,6 +1,6 @@
 <script lang="ts">
 	import FormTabContents from '$lib/components/forms/form-tab-contents.svelte';
-	import Dropfile from './file-drop.svelte';
+	import Dropfile from '$lib/components/file-drop.svelte';
 	import { AlertCircle } from 'lucide-svelte';
 	import * as Alert from '$lib/components/ui/alert';
 	import { schemas, dropdowns, fileInputs } from '$lib/utils/schemas/meta';

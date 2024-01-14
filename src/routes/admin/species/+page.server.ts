@@ -1,23 +1,12 @@
 import type { Actions, PageServerLoad } from './$types';
-import { z } from 'zod';
 import { message, setError, superValidate } from 'sveltekit-superforms/server';
 import { fail } from '@sveltejs/kit';
 import { DB_URL } from '$lib/server';
+import { schemaSchema } from '$lib/utils/schemas/species';
 
-const schema = z.object({
-	name: z.string().min(1),
-	iupac_name: z.string().min(1),
-	name_formula: z.string().min(1),
-	name_html: z.string().min(1),
-	smiles: z.string().min(1),
-	standard_inchi: z.string().min(1),
-	standard_inchi_key: z.string().min(1),
-	notes: z.string().min(10).optional()
-});
-
-export const load: PageServerLoad = async ({ request }) => {
+export const load: PageServerLoad = async () => {
 	// Server API:
-	const form = await superValidate(request, schema);
+	const form = await superValidate(schemaSchema);
 
 	// Unless you throw, always return { form } in load and form actions.
 	return { form };
@@ -25,7 +14,7 @@ export const load: PageServerLoad = async ({ request }) => {
 
 export const actions: Actions = {
 	default: async ({ request, fetch }) => {
-		const form = await superValidate(request, schema);
+		const form = await superValidate(request, schemaSchema);
 		// console.log('POST', form.data);
 
 		// Convenient validation check:
@@ -59,7 +48,7 @@ export const actions: Actions = {
 		}
 
 		const res_data = await res.json();
-		console.log({ res_data });
+		message(form, 'Form submitted successfully');
 		// Yep, return { form } here too
 		return { form, response: res_data };
 	}

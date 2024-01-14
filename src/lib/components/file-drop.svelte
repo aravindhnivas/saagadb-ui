@@ -1,9 +1,12 @@
 <script lang="ts">
+	import { getForm } from 'formsnap';
+	import { Upload, File } from 'lucide-svelte';
 	import { toast } from 'svelte-sonner';
 	import DropFile from '@svelte-parts/drop-file/DropFile.svelte';
 	import * as YAML from 'js-yaml';
 	import { createEventDispatcher } from 'svelte';
 
+	const { formId, form } = getForm();
 	const dispatch = createEventDispatcher();
 	let fileOver = false;
 	let filename = '';
@@ -18,9 +21,16 @@
 
 		try {
 			const fileContents = await file.text();
-			const parsed = YAML.load(fileContents);
+			const parsed = YAML.load(fileContents) as Record<string, unknown>;
 			dispatch('parsed', { parsed });
-			toast.info(`Loaded ${filename}`);
+
+			const keys = Object.keys(parsed);
+			keys.forEach((key) => {
+				if (!Object.keys($form).includes(key)) return;
+				$form[key] = parsed[key];
+			});
+			console.log($formId, ' updated');
+			toast.info(`Form updated using ${filename} file`);
 		} catch (error) {
 			if (error instanceof Error) toast.error(error.message);
 			toast.error('Invalid YAML file. Please correct and try again.');
@@ -29,5 +39,16 @@
 </script>
 
 <DropFile {onDrop} onEnter={() => (fileOver = true)} onLeave={() => (fileOver = false)}>
-	<slot {fileOver} {filename} />
+	<div class="flex items-center gap-2 space-y-2 cursor-pointer">
+		{#if fileOver}
+			<File />
+			<span>Drop file here</span>
+		{:else}
+			<Upload />
+			<span>Drag & drop or Upload file here</span>
+		{/if}
+		{#if filename}
+			<em class=" text-gray-500">{filename}</em>
+		{/if}
+	</div>
 </DropFile>
