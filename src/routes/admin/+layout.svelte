@@ -37,6 +37,8 @@
 		overflow: hidden;
 
 		.child {
+			user-select: none;
+			-webkit-user-select: none;
 			overflow: auto;
 		}
 	}
