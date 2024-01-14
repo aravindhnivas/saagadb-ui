@@ -4,7 +4,7 @@
 	import Dropfile from '$lib/components/file-drop.svelte';
 	import * as Form from '$lib/components/ui/form';
 	import * as Card from '$lib/components/ui/card';
-	import { speciesSchema } from '$lib/utils/schemas/species';
+	import speciesSchema from './schema';
 
 	export let data: PageData;
 </script>

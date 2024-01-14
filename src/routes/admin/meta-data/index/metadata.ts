@@ -1,4 +1,4 @@
-import { ids } from '$lib/utils/schemas/meta';
+import { ids } from './schemas';
 
 export const metadata_items: {
 	value: (typeof ids)[number];

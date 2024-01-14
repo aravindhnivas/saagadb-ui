@@ -3,10 +3,10 @@
 	import Dropfile from '$lib/components/file-drop.svelte';
 	import { AlertCircle } from 'lucide-svelte';
 	import * as Alert from '$lib/components/ui/alert';
-	import { schemas, dropdowns, fileInputs } from '$lib/utils/schemas/meta';
+	import { Schemas, dropdowns, fileInputs } from './schemas';
 	import * as Form from '$lib/components/ui/form';
 	import FormCombobox from '$lib/components/combobox/form-combobox.svelte';
-	import { metadata_items } from '$lib/utils/metadata';
+	import { metadata_items } from './metadata';
 
 	import type { PageData } from './$types';
 	import MessageAlert from '$lib/components/forms/message-alert.svelte';
@@ -22,7 +22,7 @@
 	};
 
 	let error_message = '';
-	const options: FormOptions<(typeof schemas)[number]> = {
+	const options: FormOptions<(typeof Schemas)[number]> = {
 		resetForm: true,
 		// applyAction: false,
 		invalidateAll: false,
@@ -44,7 +44,7 @@
 {#each metadata_items as { value: metaid } (metaid)}
 	<!-- <TabContents footer={false} value={metaid} title="Upload config YAML file"> -->
 
-	{@const schema = schemas[metaid]}
+	{@const schema = Schemas[metaid]}
 	{@const form = data.forms[metaid]}
 
 	<FormTabContents

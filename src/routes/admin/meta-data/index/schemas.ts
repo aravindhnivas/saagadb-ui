@@ -9,7 +9,7 @@ const zint = () => {
 		.default(undefined as unknown as number);
 };
 
-export const schemas: {
+export const Schemas: {
 	[key: string]: AnyZodObject;
 } = {
 	'species-metadata': z.object({

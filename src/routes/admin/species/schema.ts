@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const speciesSchema = z.object({
+export default z.object({
 	name: z.string().min(1),
 	iupac_name: z.string().min(1),
 	name_formula: z.string().min(1),

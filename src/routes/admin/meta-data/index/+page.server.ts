@@ -1,17 +1,18 @@
 import type { Actions, PageServerLoad } from './$types';
 import { message, setError, superValidate } from 'sveltekit-superforms/server';
-import { schemas, ids, fileInputs } from '$lib/utils/schemas/meta';
+import { Schemas, ids, fileInputs } from './schemas';
 import type { SuperValidated } from 'sveltekit-superforms';
 import { fail } from '@sveltejs/kit';
 import { DB_URL } from '$lib/server';
 
 export const load: PageServerLoad = async () => {
+
 	const forms: {
-		[key: string]: SuperValidated<(typeof schemas)[number]>;
+		[key: string]: SuperValidated<(typeof Schemas)[number]>;
 	} = {};
 
 	for (const id of ids) {
-		const schema = schemas[id];
+		const schema = Schemas[id];
 		forms[id] = await superValidate(schema, { id });
 	}
 
@@ -24,7 +25,7 @@ export const actions: Actions = {
 		const metaid = formData.get('__superform_id') as string;
 		// console.log('formData', { formData, metaid });
 
-		const form = await superValidate(formData, schemas[metaid]);
+		const form = await superValidate(formData, Schemas[metaid]);
 		console.log('POST', form.data);
 
 		// Convenient validation check:

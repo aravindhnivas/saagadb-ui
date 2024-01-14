@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import { linelistSchema } from '$lib/utils/schemas';
+	import linelistSchema from './schema';
 	import FormComponent from '$lib/components/forms/form-component.svelte';
 	import * as Form from '$lib/components/ui/form';
 
