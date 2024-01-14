@@ -12,7 +12,7 @@
 </script>
 
 <div class="settings__div">
-	<ul class=" menu menu-sm lg:menu-md px-4 py-0 gap-0.5">
+	<ul class=" menu menu-sm lg:menu-md px-4 py-0 gap-2 border-r-2">
 		<li class="menu-title">Admin panel</li>
 		{#each admin_menu as { href, name, id } (id)}
 			<li>
