@@ -3,7 +3,6 @@
 	import FormComponent from '$lib/components/forms/form-component.svelte';
 	import * as Form from '$lib/components/ui/form';
 	import { schemaSchema } from '$lib/utils/schemas/species';
-	import Dropfile from '$lib/components/file-drop.svelte';
 
 	export let data: PageData;
 </script>

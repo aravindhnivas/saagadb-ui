@@ -76,7 +76,7 @@ export const actions: Actions = {
 				for (const [key, value] of Object.entries(msg_json) as [string, string][]) {
 					setError(form, key, value);
 				}
-				return setError(form, '', 'Form is invalid');
+				return fail(400, { form });
 			} catch (error) {
 				console.log('error', error);
 			}
