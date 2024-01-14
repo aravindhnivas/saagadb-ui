@@ -2,11 +2,11 @@ import type { Actions, PageServerLoad } from './$types';
 import { message, setError, superValidate } from 'sveltekit-superforms/server';
 import { fail } from '@sveltejs/kit';
 import { DB_URL } from '$lib/server';
-import { schemaSchema } from '$lib/utils/schemas/species';
+import { speciesSchema } from '$lib/utils/schemas/species';
 
 export const load: PageServerLoad = async () => {
 	// Server API:
-	const form = await superValidate(schemaSchema);
+	const form = await superValidate(speciesSchema);
 
 	// Unless you throw, always return { form } in load and form actions.
 	return { form };
@@ -14,7 +14,7 @@ export const load: PageServerLoad = async () => {
 
 export const actions: Actions = {
 	default: async ({ request, fetch }) => {
-		const form = await superValidate(request, schemaSchema);
+		const form = await superValidate(request, speciesSchema);
 		// console.log('POST', form.data);
 
 		// Convenient validation check:

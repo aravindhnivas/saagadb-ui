@@ -7,7 +7,7 @@
 </script>
 
 {#if $message && $message.text && $message.type}
-	<Alert.Root variant={$message.type === 'error' ? 'destructive' : 'default'}>
+	<Alert.Root class="my" variant={$message.type === 'error' ? 'destructive' : 'default'}>
 		{#if $message.type === 'success'}
 			<CheckCheck class="h-4 w-4" />
 		{:else if $message.type === 'warning'}

@@ -58,13 +58,14 @@
 	<slot name="footer">
 		{#if footer}
 			<Form.Button>Submit</Form.Button>
-			{#if error_message}
-				<Alert.Root variant="destructive">
-					<AlertCircle class="h-4 w-4" />
-					<Alert.Title>Error</Alert.Title>
-					<Alert.Description>{error_message}</Alert.Description>
-				</Alert.Root>
-			{/if}
 		{/if}
 	</slot>
+
+	{#if error_message}
+		<Alert.Root class="my" variant="destructive">
+			<AlertCircle class="h-4 w-4" />
+			<Alert.Title>Error</Alert.Title>
+			<Alert.Description>{error_message}</Alert.Description>
+		</Alert.Root>
+	{/if}
 </Form.Root>
