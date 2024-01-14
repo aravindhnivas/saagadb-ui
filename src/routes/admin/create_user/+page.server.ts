@@ -1,19 +1,12 @@
 import type { Actions, PageServerLoad } from './$types';
-import { z } from 'zod';
 import { message, setError, superValidate } from 'sveltekit-superforms/server';
 import { fail } from '@sveltejs/kit';
 import { DB_URL } from '$lib/server';
+import userSchema from './schema';
 
-const schema = z.object({
-	name: z.string().min(2),
-	email: z.string().email(),
-	password: z.string().min(8),
-	organization: z.string().min(2).default('saagadb')
-});
-
-export const load: PageServerLoad = async ({ request }) => {
+export const load: PageServerLoad = async () => {
 	// Server API:
-	const form = await superValidate(request, schema);
+	const form = await superValidate(userSchema);
 
 	// Unless you throw, always return { form } in load and form actions.
 	return { form };
@@ -21,7 +14,7 @@ export const load: PageServerLoad = async ({ request }) => {
 
 export const actions: Actions = {
 	default: async ({ request, fetch }) => {
-		const form = await superValidate(request, schema);
+		const form = await superValidate(request, userSchema);
 		console.log('POST', form.data);
 
 		// Convenient validation check:
@@ -50,7 +43,7 @@ export const actions: Actions = {
 			message(form, msg);
 			return;
 		}
-
+		message(form, { type: 'success', text: 'User created' });
 		const res_data = await res.json();
 
 		// Yep, return { form } here too

@@ -1,54 +1,39 @@
 <script lang="ts">
+	import { Eye, EyeOff } from 'lucide-svelte';
 	import type { PageData } from './$types';
-	import { superForm } from 'sveltekit-superforms/client';
-	import { toast } from 'svelte-sonner';
-	import KeyField from '$lib/components/forms/key-field.svelte';
+	import * as Form from '$lib/components/ui/form';
+	import FormComponent from '$lib/components/forms/form-component.svelte';
+	import userSchema from './schema';
 
 	export let data: PageData;
-
-	const { form, errors, enhance, constraints, message } = superForm(data.form, {
-		onUpdated({ form }) {
-			if (form.valid) {
-				toast.success('Species added!');
-			}
-		}
-	});
+	let show_password = false;
 </script>
 
-{#if $message}
-	<div role="alert" class="alert alert-warning w-100 m-auto">
-		<i class="i-mdi-alert"></i>
-		<span>{JSON.stringify($message)}</span>
-	</div>
-{/if}
-<form class="grid gap-2 px-5" method="POST" use:enhance>
-	<div class="justify-self-center min-w-[25em]">
-		<KeyField
-			key="name"
-			bind:value={$form.name}
-			errors={$errors.name}
-			constraints={$constraints.name}
-		/>
-		<KeyField
-			key="organization"
-			bind:value={$form.organization}
-			errors={$errors.organization}
-			constraints={$constraints.organization}
-		/>
-		<KeyField
-			key="email"
-			bind:value={$form.email}
-			errors={$errors.email}
-			constraints={$constraints.email}
-		/>
-		<KeyField
-			key="password"
-			bind:value={$form.password}
-			errors={$errors.password}
-			constraints={$constraints.password}
-		/>
-	</div>
-	<div class="form-control w-[20rem] justify-self-center">
-		<button class="btn btn-primary">Create new user</button>
-	</div>
-</form>
+<FormComponent schema={userSchema} form={data.form} let:config>
+	{#each Object.keys(data.form.data) as name}
+		<Form.Field {config} {name}>
+			<Form.Item>
+				<Form.Label>{name}</Form.Label>
+				{#if name === 'password'}
+					<!-- svelte-ignore a11y-interactive-supports-focus -->
+					<div class="flex items-center gap-1">
+						<Form.Input type={show_password ? 'text' : 'password'} />
+						<!-- svelte-ignore a11y-interactive-supports-focus -->
+						<!-- svelte-ignore a11y-click-events-have-key-events -->
+						<!-- svelte-ignore a11y-no-static-element-interactions -->
+						<span class="cursor-pointer" on:click={() => (show_password = !show_password)}>
+							{#if show_password}
+								<EyeOff />
+							{:else}
+								<Eye />
+							{/if}
+						</span>
+					</div>
+				{:else}
+					<Form.Input />
+				{/if}
+				<Form.Validation />
+			</Form.Item>
+		</Form.Field>
+	{/each}
+</FormComponent>

@@ -13,6 +13,7 @@
 	export let action = '';
 	export let method = 'POST';
 	export let footer = true;
+	export let dropfile = false;
 
 	let className = '';
 	export { className as class };
@@ -48,7 +49,10 @@
 	{options}
 >
 	<MessageAlert />
-	<Dropfile />
+
+	{#if dropfile}
+		<Dropfile />
+	{/if}
 
 	<slot {config} />
 	<slot name="footer">

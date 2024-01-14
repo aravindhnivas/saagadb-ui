@@ -87,7 +87,7 @@ export const actions: Actions = {
 		}
 
 		const res_data = await res.json();
-
+		message(form, { type: 'success', text: 'Form submitted succesfully' });
 		// Yep, return { form } here too
 		return { form, response: res_data };
 	}

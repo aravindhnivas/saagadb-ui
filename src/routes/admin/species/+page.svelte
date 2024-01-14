@@ -7,7 +7,7 @@
 	export let data: PageData;
 </script>
 
-<FormComponent class="p-2" schema={schemaSchema} form={data.form} let:config>
+<FormComponent dropfile={true} schema={schemaSchema} form={data.form} let:config>
 	{#each Object.keys(data.form.data) as name}
 		<Form.Field {config} {name}>
 			<Form.Item>
