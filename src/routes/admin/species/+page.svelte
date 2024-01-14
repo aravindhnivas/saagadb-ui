@@ -22,7 +22,7 @@
 	</div>
 {/if}
 
-<Dropfile
+<!-- <Dropfile
 	on:parsed={({ detail }) => {
 		const keys = Object.keys(detail.parsed);
 		keys.forEach((key) => {
@@ -30,7 +30,7 @@
 			$form[key] = detail.parsed[key];
 		});
 	}}
-/>
+/> -->
 
 {#if $form && $errors && $constraints}
 	<form class="grid gap-2 px-5" method="POST" use:enhance>

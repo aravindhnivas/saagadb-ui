@@ -36,8 +36,8 @@
 		gap: 1rem;
 		overflow: hidden;
 
-		// .child {
-		// 	overflow: auto;
-		// }
+		.child {
+			overflow: auto;
+		}
 	}
 </style>

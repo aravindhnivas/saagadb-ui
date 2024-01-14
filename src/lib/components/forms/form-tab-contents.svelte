@@ -2,7 +2,6 @@
 	import * as Tabs from '$lib/components/ui/tabs';
 	import * as Card from '$lib/components/ui/card';
 	import * as Form from '$lib/components/ui/form';
-	import { Button } from '$lib/components/ui/button';
 	import type { FormOptions, SuperValidated } from 'formsnap';
 	import type { AnyZodObject } from 'zod';
 
@@ -10,7 +9,6 @@
 	export let footer = true;
 	export let title: string = '';
 	export let description: string = '';
-
 	export let form: SuperValidated<AnyZodObject>;
 	export let schema: AnyZodObject;
 	export let options: FormOptions<AnyZodObject> = {};

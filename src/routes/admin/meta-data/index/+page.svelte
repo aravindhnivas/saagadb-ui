@@ -1,6 +1,5 @@
 <script lang="ts">
-	import TabContents from '$lib/components/tab-contents.svelte';
-	import FormTabContents from '$lib/components/form-tab-contents.svelte';
+	import FormTabContents from '$lib/components/forms/form-tab-contents.svelte';
 	import Dropfile from './file-drop.svelte';
 	import { AlertCircle } from 'lucide-svelte';
 	import * as Alert from '$lib/components/ui/alert';
