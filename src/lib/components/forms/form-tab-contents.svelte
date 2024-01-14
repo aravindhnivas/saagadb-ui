@@ -34,9 +34,7 @@
 				</Card.Description>
 			</Card.Header>
 			<Card.Content class="space-y-2 {className}">
-				<div class="px-2">
-					<slot {config} />
-				</div>
+				<slot {config} />
 			</Card.Content>
 
 			{#if footer}
