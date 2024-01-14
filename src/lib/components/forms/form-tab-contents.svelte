@@ -42,7 +42,7 @@
 			{#if footer}
 				<Card.Footer>
 					<slot name="footer">
-						<Form.Button>Submit form</Form.Button>
+						<Form.Button>Submit</Form.Button>
 					</slot>
 				</Card.Footer>
 			{/if}
