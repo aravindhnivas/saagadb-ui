@@ -17,7 +17,7 @@
 		<Card.Header>
 			<Card.Title>{title}</Card.Title>
 			<Card.Description>
-				{description}
+				<slot name="description">{description}</slot>
 			</Card.Description>
 		</Card.Header>
 		<Card.Content class="space-y-2 {className}">
