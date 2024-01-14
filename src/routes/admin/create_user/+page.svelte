@@ -7,6 +7,7 @@
 	import userSchema from './schema';
 
 	export let data: PageData;
+
 	let show_password = false;
 </script>
 
@@ -46,8 +47,8 @@
 				</Form.Field>
 			{/each}
 		</Card.Content>
-		<Card.Footer class="flex justify-between">
-			<Form.Button>Submit</Form.Button>
+		<Card.Footer class="flex justify-center">
+			<Form.Button class="w-[150px]">Submit</Form.Button>
 		</Card.Footer>
 	</Card.Root>
 </FormComponent>
