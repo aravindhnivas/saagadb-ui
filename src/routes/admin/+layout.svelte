@@ -26,7 +26,7 @@
 			</li>
 		{/each}
 	</ul>
-	<div class="child p-2"><slot /></div>
+	<div class="child"><slot /></div>
 </div>
 
 <style lang="scss">
