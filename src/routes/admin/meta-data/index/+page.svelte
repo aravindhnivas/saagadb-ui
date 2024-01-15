@@ -23,7 +23,7 @@
 
 	let error_message = '';
 	const options: FormOptions<(typeof Schemas)[number]> = {
-		resetForm: true,
+		resetForm: false,
 		// applyAction: false,
 		invalidateAll: false,
 		taintedMessage: null,

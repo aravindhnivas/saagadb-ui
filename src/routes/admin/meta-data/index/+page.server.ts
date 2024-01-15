@@ -92,7 +92,8 @@ export const actions: Actions = {
 			const msg = await res.text();
 			console.log({ msg });
 			message(form, msg);
-			return { form };
+			return fail(500, { form });
+			// return { form };
 		}
 	}
 };
