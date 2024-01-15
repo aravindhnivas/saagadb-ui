@@ -58,19 +58,18 @@ export const actions: Actions = {
 			fileData[key.name] = binaryContent;
 		}
 
-		// TODO: Do something with the validated form.data
 		const res = await fetch(`${DB_URL}/data/${metaid}/`, {
 			method: 'POST',
 			body: JSON.stringify(form.data)
 		});
 
-		message(form, {
+		console.log({
 			ok: res.ok,
 			status: res.status,
 			statusText: res.statusText
 		});
 
-		if (!res.ok) {
+		if (!res.ok && res.status === 400) {
 			try {
 				const msg_json = await res.json();
 				console.log('msg_json', msg_json);
@@ -79,17 +78,21 @@ export const actions: Actions = {
 				}
 				return fail(400, { form });
 			} catch (error) {
-				console.log('error', error);
+				console.log('could not parse json', error);
 			}
+		} 
 
+		let res_data
+		if(res.ok && res.status === 200) {
+			res_data = await res.json();
+			message(form, { type: 'success', text: 'Form submitted succesfully' });
+			return { form, response: res_data };
+		} else {
+			console.log('trying text parsing after 500 Internal error')
 			const msg = await res.text();
+			console.log({ msg });
 			message(form, msg);
-			return;
+			return { form };
 		}
-
-		const res_data = await res.json();
-		message(form, { type: 'success', text: 'Form submitted succesfully' });
-		// Yep, return { form } here too
-		return { form, response: res_data };
 	}
 };
