@@ -15,8 +15,8 @@ export const Schemas: {
 	'species-metadata': z.object({
 		species: zint(),
 		linelist: zint(),
-		degree_of_freedom: zint(),
-		molecule_tag: z.number().int().optional(),
+		degree_of_freedom: z.string().min(1),
+		molecule_tag: z.string().min(1).optional(),
 		hyperfine: z.boolean(),
 		category: z.string().min(1),
 		mu_a: z.string().nullable(),
@@ -25,10 +25,10 @@ export const Schemas: {
 		a_const: z.string().nullable(),
 		b_const: z.string().nullable(),
 		c_const: z.string().nullable(),
-		data_date: z.string().min(1),
-		data_contributor: z.string().refine((str) => !isNaN(Date.parse(str)), {
+		data_date: z.string().min(1).refine((str) => !isNaN(Date.parse(str)), {
 			message: 'Invalid date format'
 		}),
+		data_contributor: z.string().min(1),
 		qpart_file: z.string().optional(),
 		int_file: z.string().optional(),
 		var_file: z.string().optional(),
