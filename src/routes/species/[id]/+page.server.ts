@@ -32,19 +32,18 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 
 		const references: { [name: string]: [] } = {};
 
-		meta_ref_fetched.forEach((m) => {
+		for (const m of meta_ref_fetched) {
 			if (!m) return;
 			if (!m[0]) return;
 			meta_references[m[0].meta] = m;
 
-			m.forEach(async ({ ref }) => {
+			for (const mr of m) {
+				const ref = mr.ref;
 				if (!ref) return;
-				// if (ref in references) return;
-
+				if (ref in references) return;
 				references[ref] = await fetchFunc(`/api/reference/${ref}`);
-				// console.log('fetching', ref, ref_fetched);
-			});
-		});
+			}
+		}
 
 		// for (const m of meta_ref_fetched) {
 		// 	meta_references[m[0].meta] = { meta: m, ref: [] };

@@ -6,7 +6,7 @@
 
 	export let data: PageData;
 	const species = data?.species;
-	console.log(data);
+	// console.log(data);
 
 	let metadata_keys = [
 		{ name: 'Category', value: 'category' },
