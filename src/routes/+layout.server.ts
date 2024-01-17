@@ -3,7 +3,6 @@ import { DB_URL } from '$lib/server';
 import { delete_token } from '$lib/server/cookies';
 
 export const load: LayoutServerLoad = async ({ locals, fetch, cookies }) => {
-	// console.log('layout.server.ts load()', DB_URL);
 	const fetch_user = async () => {
 		if (!locals.token) return null;
 
@@ -24,11 +23,23 @@ export const load: LayoutServerLoad = async ({ locals, fetch, cookies }) => {
 			};
 			return data;
 		} catch (error) {
-			console.log('error', error);
 			return null;
 		}
 	};
 
-	const user = await fetch_user();
-	return { user };
+	const fetchFunc = async <T>(url: string): Promise<T | null> => {
+		const res = await fetch(url);
+		if (!res.ok) return null;
+		return res.json();
+	};
+
+	const [user, linelist] = await Promise.all([
+		fetch_user(),
+		fetchFunc<{ id: string; linelist_name: string }[]>(`/api/linelist`)
+	]);
+
+	return { user, linelist };
+
+	// const user = await fetch_user();
+	// return { user };
 };

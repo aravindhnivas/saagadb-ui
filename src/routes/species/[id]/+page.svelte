@@ -2,30 +2,48 @@
 	import { enhance } from '$app/forms';
 	import { edit_mode } from '$lib/utils/stores';
 	import type { PageData } from './$types';
+	import * as Table from '$lib/components/ui/table';
+
 	export let data: PageData;
 	const species = data?.species;
-	// console.log({ data });
+	// console.log(data);
 
-	const metadata = [
-		{ name: 'Category', value: data?.meta?.category },
-		{ name: 'A <em>/ MHz</em>', value: data?.meta?.a_const },
-		{ name: 'B <em>/ MHz</em>', value: data?.meta?.b_const },
-		{ name: 'C <em>/ MHz</em>', value: data?.meta?.c_const },
-		{ name: 'mu<sub>a</sub> <em>/ D</em>', value: data?.meta?.mu_a ?? '' },
-		{ name: 'mu<sub>b</sub> <em>/ D</em>', value: data?.meta?.mu_b ?? '' },
-		{ name: 'mu<sub>c</sub> <em>/ D</em>', value: data?.meta?.mu_c ?? '' },
-		{ name: 'Date added', value: data?.meta?.data_date },
-		{ name: 'Contributor', value: data?.meta?.data_contributor },
-		{ name: 'Notes', value: data?.meta?.notes }
+	const metadata_keys = [
+		{ name: 'Category', value: 'category' },
+		{ name: 'Molecule tag', value: 'molecule_tag' },
+		{ name: 'A <em>/ MHz</em>', value: 'a_const' },
+		{ name: 'B <em>/ MHz</em>', value: 'b_const' },
+		{ name: 'C <em>/ MHz</em>', value: 'c_const' },
+		{ name: 'mu<sub>a</sub> <em>/ D</em>', value: 'mu_a' },
+		{ name: 'mu<sub>b</sub> <em>/ D</em>', value: 'mu_b' },
+		{ name: 'mu<sub>c</sub> <em>/ D</em>', value: 'mu_c' },
+		{ name: 'Hyperfine', value: 'hyperfine' },
+		{ name: 'Degree of freedom', value: 'degree_of_freedom' },
+		{ name: 'Date added', value: 'data_date' },
+		{ name: 'Contributors', value: 'data_contributor' },
+		{ name: 'Notes', value: 'notes' }
 	];
+
+	// const metadata = [
+	// 	{ name: 'Category', value: data?.meta?.category },
+	// 	{ name: 'A <em>/ MHz</em>', value: data?.meta?.a_const },
+	// 	{ name: 'B <em>/ MHz</em>', value: data?.meta?.b_const },
+	// 	{ name: 'C <em>/ MHz</em>', value: data?.meta?.c_const },
+	// 	{ name: 'mu<sub>a</sub> <em>/ D</em>', value: data?.meta?.mu_a ?? '' },
+	// 	{ name: 'mu<sub>b</sub> <em>/ D</em>', value: data?.meta?.mu_b ?? '' },
+	// 	{ name: 'mu<sub>c</sub> <em>/ D</em>', value: data?.meta?.mu_c ?? '' },
+	// 	{ name: 'Date added', value: data?.meta?.data_date },
+	// 	{ name: 'Contributor', value: data?.meta?.data_contributor },
+	// 	{ name: 'Notes', value: data?.meta?.notes }
+	// ];
 </script>
 
-{#if $edit_mode}
+<!-- {#if $edit_mode}
 	<form method="POST" class="ml-auto" use:enhance>
 		<button class="badge badge-warning badge-md">EDIT</button>
 		<button formaction="?/delete_species" class="badge badge-error badge-md">DELETE</button>
 	</form>
-{/if}
+{/if} -->
 
 <div class="content">
 	<h1 class="text-xl font-300">
@@ -39,22 +57,29 @@
 	<h2>{species.notes}</h2>
 </div>
 
-<div class="overflow-x-auto">
-	<table class="table border-2">
-		<!-- head -->
-		<thead>
-			<tr>
-				<th class="border-r-5"></th>
-				<th>Value</th>
-			</tr>
-		</thead>
-		<tbody>
-			{#each metadata as { name, value }}
-				<tr class="border">
-					<td class="border-r-5 pr-5">{@html name}</td>
-					<td class="px-5">{value}</td>
-				</tr>
+<Table.Root>
+	<Table.Caption>Species-metadata</Table.Caption>
+	<Table.Header>
+		<Table.Row>
+			<Table.Head class="w-[100px]"></Table.Head>
+			{#each data.meta as metadata}
+				<Table.Head class="text-center font-bold"
+					>{data.linelist
+						?.find((f) => f.id === metadata.linelist)
+						?.linelist_name.toLocaleUpperCase()}</Table.Head
+				>
 			{/each}
-		</tbody>
-	</table>
-</div>
+		</Table.Row>
+	</Table.Header>
+	<Table.Body>
+		{#each metadata_keys as key}
+			<Table.Row>
+				<Table.Cell>{@html key.name}</Table.Cell>
+				{#each data.meta as metadata (metadata.id)}
+					{@const value = metadata[key.value]}
+					<Table.Cell class="text-center">{value ?? '-'}</Table.Cell>
+				{/each}
+			</Table.Row>
+		{/each}
+	</Table.Body>
+</Table.Root>

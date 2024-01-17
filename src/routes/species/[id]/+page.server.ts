@@ -3,10 +3,19 @@ import { DB_URL } from '$lib/server';
 import { redirect } from '@sveltejs/kit';
 
 export const load: PageServerLoad = async ({ fetch, params }) => {
+	const fetchFunc = async <T>(url: string): Promise<T | null> => {
+		const res = await fetch(url);
+		if (!res.ok) return null;
+		return res.json();
+	};
+
+	const queryString = new URLSearchParams({ species_id: params.id }).toString();
+	// console.log({ queryString });
 	const [species, meta] = await Promise.all([
-		fetch(`/api/species/${params.id}`).then((res) => res.json()),
-		fetch(`/api/species-metadata/${params.id}`).then((res) => res.json())
+		fetchFunc(`/api/species/${params.id}`),
+		fetchFunc(`/api/species-metadata/query?query=${encodeURIComponent(queryString)}`)
 	]);
+
 	return { species, meta };
 };
 
