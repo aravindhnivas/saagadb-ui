@@ -1,14 +1,14 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
 	import { edit_mode } from '$lib/utils/stores';
 	import type { PageData } from './$types';
 	import * as Table from '$lib/components/ui/table';
+	import { onMount } from 'svelte';
 
 	export let data: PageData;
 	const species = data?.species;
-	// console.log(data);
+	console.log(data);
 
-	const metadata_keys = [
+	let metadata_keys = [
 		{ name: 'Category', value: 'category' },
 		{ name: 'Molecule tag', value: 'molecule_tag' },
 		{ name: 'A <em>/ MHz</em>', value: 'a_const' },
@@ -24,26 +24,12 @@
 		{ name: 'Notes', value: 'notes' }
 	];
 
-	// const metadata = [
-	// 	{ name: 'Category', value: data?.meta?.category },
-	// 	{ name: 'A <em>/ MHz</em>', value: data?.meta?.a_const },
-	// 	{ name: 'B <em>/ MHz</em>', value: data?.meta?.b_const },
-	// 	{ name: 'C <em>/ MHz</em>', value: data?.meta?.c_const },
-	// 	{ name: 'mu<sub>a</sub> <em>/ D</em>', value: data?.meta?.mu_a ?? '' },
-	// 	{ name: 'mu<sub>b</sub> <em>/ D</em>', value: data?.meta?.mu_b ?? '' },
-	// 	{ name: 'mu<sub>c</sub> <em>/ D</em>', value: data?.meta?.mu_c ?? '' },
-	// 	{ name: 'Date added', value: data?.meta?.data_date },
-	// 	{ name: 'Contributor', value: data?.meta?.data_contributor },
-	// 	{ name: 'Notes', value: data?.meta?.notes }
-	// ];
+	onMount(() => {
+		if ($edit_mode) {
+			metadata_keys = [{ name: 'meta_id', value: 'id' }, ...metadata_keys];
+		}
+	});
 </script>
-
-<!-- {#if $edit_mode}
-	<form method="POST" class="ml-auto" use:enhance>
-		<button class="badge badge-warning badge-md">EDIT</button>
-		<button formaction="?/delete_species" class="badge badge-error badge-md">DELETE</button>
-	</form>
-{/if} -->
 
 <div class="content">
 	<h1 class="text-xl font-300">
@@ -83,3 +69,5 @@
 		{/each}
 	</Table.Body>
 </Table.Root>
+<!-- meta-references -->
+<!-- {JSON.stringify(data.meta_references, null, 2)} -->

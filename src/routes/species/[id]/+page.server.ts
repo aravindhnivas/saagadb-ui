@@ -3,20 +3,60 @@ import { DB_URL } from '$lib/server';
 import { redirect } from '@sveltejs/kit';
 
 export const load: PageServerLoad = async ({ fetch, params }) => {
-	const fetchFunc = async <T>(url: string): Promise<T | null> => {
+	const fetchFunc = async <T>(
+		url: string,
+		queryID?: { [name: string]: string }
+	): Promise<T | null> => {
+		if (queryID) {
+			const queryString = new URLSearchParams(queryID).toString();
+			url += `/query?query=${encodeURIComponent(queryString)}`;
+		}
 		const res = await fetch(url);
 		if (!res.ok) return null;
 		return res.json();
 	};
 
-	const queryString = new URLSearchParams({ species_id: params.id }).toString();
-	// console.log({ queryString });
-	const [species, meta] = await Promise.all([
-		fetchFunc(`/api/species/${params.id}`),
-		fetchFunc(`/api/species-metadata/query?query=${encodeURIComponent(queryString)}`)
-	]);
+	const fetch_data = async () => {
+		// const queryString = new URLSearchParams({ species_id: params.id }).toString();
+		// console.log({ queryString });
+		const [species, meta] = await Promise.all([
+			fetchFunc(`/api/species/${params.id}`),
+			fetchFunc(`/api/species-metadata`, { species_id: params.id })
+		]);
 
-	return { species, meta };
+		const meta_references: { [name: string]: [] } = {};
+
+		const meta_ref_fetched = await Promise.all(
+			meta?.map(({ id: meta_id }) => fetchFunc(`/api/meta-reference`, { meta_id }))
+		);
+
+		const references: { [name: string]: [] } = {};
+
+		meta_ref_fetched.forEach((m) => {
+			if (!m) return;
+			if (!m[0]) return;
+			meta_references[m[0].meta] = m;
+
+			m.forEach(async ({ ref }) => {
+				if (!ref) return;
+				// if (ref in references) return;
+
+				references[ref] = await fetchFunc(`/api/reference/${ref}`);
+				// console.log('fetching', ref, ref_fetched);
+			});
+		});
+
+		// for (const m of meta_ref_fetched) {
+		// 	meta_references[m[0].meta] = { meta: m, ref: [] };
+		// 	meta_references[m[0].meta].ref = await Promise.all(
+		// 		m.map((mr) => fetchFunc(`/api/reference/${mr.ref}`))
+		// 	);
+		// }
+
+		return { species, meta, meta_references, references };
+	};
+
+	return fetch_data();
 };
 
 export const actions: Actions = {
