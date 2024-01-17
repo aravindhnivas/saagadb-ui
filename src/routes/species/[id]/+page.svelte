@@ -5,8 +5,8 @@
 	import { onMount } from 'svelte';
 
 	export let data: PageData;
-	const species = data?.species;
-	// console.log(data);
+	// const species = data?.species;
+	console.log(data);
 
 	let metadata_keys = [
 		{ name: 'Category', value: 'category' },
@@ -33,14 +33,14 @@
 
 <div class="content">
 	<h1 class="text-xl font-300">
-		{@html species.name_html}
-		{$edit_mode ? `(id = ${species.id})` : ''}
+		{@html data.species?.name_html}
+		{$edit_mode ? `(id = ${data.species?.id})` : ''}
 	</h1>
-	<h1 class="text-xl font-500">{species.iupac_name}</h1>
-	<h2>{Number(species.molecular_mass).toFixed(2)} atomic mass</h2>
-	<h2><em>SMILES: </em>{species.standard_inchi}</h2>
-	<h2><em>SELFIES: </em>{species.selfies}</h2>
-	<h2>{species.notes}</h2>
+	<h1 class="text-xl font-500">{data.species?.iupac_name}</h1>
+	<h2>{Number(data.species?.molecular_mass).toFixed(2)} atomic mass</h2>
+	<h2><em>SMILES: </em>{data.species?.standard_inchi}</h2>
+	<h2><em>SELFIES: </em>{data.species?.selfies}</h2>
+	<h2>{data.species?.notes}</h2>
 </div>
 
 <Table.Root>
