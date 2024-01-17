@@ -21,7 +21,8 @@
 		{ name: 'Degree of freedom', value: 'degree_of_freedom' },
 		{ name: 'Date added', value: 'data_date' },
 		{ name: 'Contributors', value: 'data_contributor' },
-		{ name: 'Notes', value: 'notes' }
+		{ name: 'Notes', value: 'notes' },
+		{ name: 'References', value: 'references' }
 	];
 
 	onMount(() => {
@@ -62,8 +63,7 @@
 			<Table.Row>
 				<Table.Cell>{@html key.name}</Table.Cell>
 				{#each data.meta as metadata (metadata.id)}
-					{@const value = metadata[key.value]}
-					<Table.Cell class="text-center">{value ?? '-'}</Table.Cell>
+					<Table.Cell class="text-center">{metadata[key.value] ?? '-'}</Table.Cell>
 				{/each}
 			</Table.Row>
 		{/each}
