@@ -6,7 +6,7 @@ export const GET: RequestHandler = async ({ params, url }) => {
 	url.searchParams.forEach((value, key) => {
 		fetch_url.searchParams.append(key, value);
 	});
-	console.log(fetch_url);
+	// console.log(fetch_url);
 	const res = await fetch(fetch_url);
 
 	const data = await res.json();

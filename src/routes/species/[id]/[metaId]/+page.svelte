@@ -56,8 +56,9 @@
 		<Table.Row>
 			<Table.Cell class={cell_padding}>Bibtex file</Table.Cell>
 			{#each data.references as ref (ref.id)}
+				{@const bibfile = ref.bibtex.split('/').at(-1)}
 				<Table.Cell class="text-center {cell_padding}">
-					<a href={ref.bibtex} download target="_blank" class="flex justify-center"
+					<a href="/uploads/bib/{bibfile}" download target="_blank" class="flex justify-center"
 						><DownloadCloud size="20" /></a
 					>
 				</Table.Cell>
