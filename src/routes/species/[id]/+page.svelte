@@ -3,9 +3,11 @@
 	import type { PageData } from './$types';
 	import * as Table from '$lib/components/ui/table';
 	import { onMount } from 'svelte';
-
+	import { preloadData, pushState, goto } from '$app/navigation';
+	import { page } from '$app/stores';
+	import MetaPage from './meta-page.svelte';
+	import { Button } from '$lib/components/ui/button';
 	export let data: PageData;
-	// const species = data?.species;
 	// console.log(data);
 
 	let metadata_keys = [
@@ -29,7 +31,39 @@
 			metadata_keys = [{ name: 'meta_id', value: 'id' }, ...metadata_keys];
 		}
 	});
+
+	let open_meta_ref = false;
+
+	const nav_to_ref = async (e: MouseEvent) => {
+		// bail if opening a new tab, or we're on too small a screen
+		if (e.metaKey || innerWidth < 640) return;
+
+		// prevent navigation
+		e.preventDefault();
+
+		const { href } = e.currentTarget as HTMLAnchorElement;
+
+		// run `load` functions (or rather, get the result of the `load` functions
+		// that are already running because of `data-sveltekit-preload-data`)
+		const result = await preloadData(href);
+
+		if (result.type === 'loaded' && result.status === 200) {
+			pushState(href, { selected: result.data });
+			open_meta_ref = true;
+		} else {
+			// something bad happened! try navigating
+			goto(href);
+		}
+	};
+
+	let meta_name: string;
 </script>
+
+<Button
+	class="flex gap-2 items-center w-[200px]"
+	variant="outline"
+	on:click={() => goto('/species')}><i class="i-mdi-arrow-back"></i> <span>Go back</span></Button
+>
 
 {#if data.species}
 	<div class="content">
@@ -58,7 +92,13 @@
 				{#each data.meta as metadata}
 					{@const key = data.linelist?.find((f) => f.id === metadata.linelist)?.linelist_name}
 					<Table.Head class="text-center font-bold">
-						<a href="/species/{data.species.id}/{metadata.id}">
+						<a
+							href="/species/{data.species.id}/{metadata.id}"
+							on:click={(e) => {
+								if (key) meta_name = key.toLocaleUpperCase();
+								nav_to_ref(e);
+							}}
+						>
 							<span class="underline hover:text-blue">{key.toLocaleUpperCase()}</span>
 						</a>
 					</Table.Head>
@@ -78,4 +118,14 @@
 	</Table.Root>
 {:else}
 	<p>No metadata found</p>
+{/if}
+
+{#if $page.state.selected}
+	<MetaPage
+		bind:open={open_meta_ref}
+		data={$page.state.selected}
+		{meta_name}
+		species_id={data.species.id}
+		species_name={data.species.iupac_name}
+	/>
 {/if}

@@ -5,4 +5,5 @@
 	// console.log(data);
 </script>
 
-<pre>{JSON.stringify(data, null, 2)}</pre>
+<pre>{JSON.stringify(data.meta_references, null, 2)}</pre>
+<pre>{JSON.stringify(data.references, null, 2)}</pre>
