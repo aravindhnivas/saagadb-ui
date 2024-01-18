@@ -6,7 +6,7 @@
 
 	export let data: PageData;
 	// const species = data?.species;
-	console.log(data);
+	// console.log(data);
 
 	let metadata_keys = [
 		{ name: 'Category', value: 'category' },
@@ -21,8 +21,7 @@
 		{ name: 'Degree of freedom', value: 'degree_of_freedom' },
 		{ name: 'Date added', value: 'data_date' },
 		{ name: 'Contributors', value: 'data_contributor' },
-		{ name: 'Notes', value: 'notes' },
-		{ name: 'References', value: 'references' }
+		{ name: 'Notes', value: 'notes' }
 	];
 
 	onMount(() => {
@@ -32,42 +31,47 @@
 	});
 </script>
 
-<div class="content">
-	<h1 class="text-xl font-300">
-		{@html data.species?.name_html}
-		{$edit_mode ? `(id = ${data.species?.id})` : ''}
-	</h1>
-	<h1 class="text-xl font-500">{data.species?.iupac_name}</h1>
-	<h2>{Number(data.species?.molecular_mass).toFixed(2)} atomic mass</h2>
-	<h2><em>SMILES: </em>{data.species?.standard_inchi}</h2>
-	<h2><em>SELFIES: </em>{data.species?.selfies}</h2>
-	<h2>{data.species?.notes}</h2>
-</div>
+{#if data.species}
+	<div class="content">
+		<h1 class="text-xl font-300">
+			{@html data.species.name_html}
+			{$edit_mode ? `(id = ${data.species.id})` : ''}
+		</h1>
+		<h1 class="text-xl font-500">{data.species.iupac_name}</h1>
+		<h2>{Number(data.species.molecular_mass).toFixed(2)} atomic mass</h2>
+		<h2><em class="font-bold">SMILES: </em>{data.species.smiles}</h2>
+		<h2><em class="font-bold">Standard InChI: </em>{data.species.standard_inchi}</h2>
+		<h2><em class="font-bold">InChIkey: </em>{data.species.standard_inchi_key}</h2>
+		<h2><em class="font-bold">SELFIES: </em>{data.species.selfies}</h2>
+		<h2>{data.species.notes}</h2>
+	</div>
+{:else}
+	<p>No species found</p>
+{/if}
 
-<Table.Root>
-	<Table.Caption>Species-metadata</Table.Caption>
-	<Table.Header>
-		<Table.Row>
-			<Table.Head class="w-[100px]"></Table.Head>
-			{#each data.meta as metadata}
-				<Table.Head class="text-center font-bold"
-					>{data.linelist
-						?.find((f) => f.id === metadata.linelist)
-						?.linelist_name.toLocaleUpperCase()}</Table.Head
-				>
-			{/each}
-		</Table.Row>
-	</Table.Header>
-	<Table.Body>
-		{#each metadata_keys as key}
+{#if data.meta}
+	<Table.Root class="lg:w-2xl sm:w-full">
+		<Table.Caption>Species-metadata</Table.Caption>
+		<Table.Header>
 			<Table.Row>
-				<Table.Cell>{@html key.name}</Table.Cell>
-				{#each data.meta as metadata (metadata.id)}
-					<Table.Cell class="text-center">{metadata[key.value] ?? '-'}</Table.Cell>
+				<Table.Head class="p-0">Database</Table.Head>
+				{#each data.meta as metadata}
+					{@const key = data.linelist?.find((f) => f.id === metadata.linelist)?.linelist_name}
+					<Table.Head class="text-center font-bold">{key.toLocaleUpperCase()}</Table.Head>
 				{/each}
 			</Table.Row>
-		{/each}
-	</Table.Body>
-</Table.Root>
-<!-- meta-references -->
-<!-- {JSON.stringify(data.meta_references, null, 2)} -->
+		</Table.Header>
+		<Table.Body>
+			{#each metadata_keys as key}
+				<Table.Row>
+					<Table.Cell class="p-0">{@html key.name}</Table.Cell>
+					{#each data.meta as metadata (metadata.id)}
+						<Table.Cell class="text-center p-0">{metadata[key.value] ?? '-'}</Table.Cell>
+					{/each}
+				</Table.Row>
+			{/each}
+		</Table.Body>
+	</Table.Root>
+{:else}
+	<p>No metadata found</p>
+{/if}

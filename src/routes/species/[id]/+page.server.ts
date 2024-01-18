@@ -1,61 +1,57 @@
 import type { Actions, PageServerLoad } from './$types';
 import { DB_URL } from '$lib/server';
-import { redirect } from '@sveltejs/kit';
+import { error, redirect } from '@sveltejs/kit';
+import * as _ from 'lodash-es';
 
 export const load: PageServerLoad = async ({ fetch, params }) => {
-	const fetchFunc = async <T>(
-		url: string,
-		queryID?: { [name: string]: string }
-	): Promise<T | null> => {
-		if (queryID) {
-			const queryString = new URLSearchParams(queryID).toString();
-			url += `/query?query=${encodeURIComponent(queryString)}`;
-		}
-		const res = await fetch(url);
-		if (!res.ok) return null;
-		return res.json();
-	};
-
 	const fetch_data = async () => {
-		// const queryString = new URLSearchParams({ species_id: params.id }).toString();
-		// console.log({ queryString });
 		const [species, meta] = await Promise.all([
-			fetchFunc(`/api/species/${params.id}`),
-			fetchFunc(`/api/species-metadata`, { species_id: params.id })
+			fetch(`/api/species/${params.id}`).then((res) => res.json()),
+			fetch(`/api/species-metadata/query?species_id=${params.id}`).then((res) => res.json())
 		]);
+		return { species, meta };
 
-		const meta_references: { [name: string]: [] } = {};
+		// console.log('species fetched', species);
+		// console.log('species-metada fetched', meta.length);
 
-		const meta_ref_fetched = await Promise.all(
-			meta?.map(({ id: meta_id }) => fetchFunc(`/api/meta-reference`, { meta_id }))
-		);
+		// const meta_references: { [name: string]: [] } = {};
 
-		const references: { [name: string]: [] } = {};
+		// const meta_ref_fetched = await Promise.all(
+		// 	meta?.map(({ id: meta_id }) => fetchFunc(`/api/meta-reference`, { meta_id }))
+		// );
 
-		for (const m of meta_ref_fetched) {
-			if (!m) return;
-			if (!m[0]) return;
-			meta_references[m[0].meta] = m;
-
-			for (const mr of m) {
-				const ref = mr.ref;
-				if (!ref) return;
-				if (ref in references) return;
-				references[ref] = await fetchFunc(`/api/reference/${ref}`);
-			}
-		}
+		// const references: { [name: string]: [] } = {};
 
 		// for (const m of meta_ref_fetched) {
-		// 	meta_references[m[0].meta] = { meta: m, ref: [] };
-		// 	meta_references[m[0].meta].ref = await Promise.all(
-		// 		m.map((mr) => fetchFunc(`/api/reference/${mr.ref}`))
-		// 	);
+		// 	if (!m) return;
+		// 	if (!m[0]) return;
+		// 	meta_references[m[0].meta] = m;
+
+		// 	for (const mr of m) {
+		// 		const ref = mr.ref;
+		// 		if (!ref) return;
+		// 		if (ref in references) return;
+		// 		references[ref] = await fetchFunc(`/api/reference/${ref}`);
+		// 	}
 		// }
 
-		return { species, meta, meta_references, references };
+		// console.log('meta_references fetched', meta_references);
+		// console.log('references fetched', references);
 	};
 
-	return fetch_data();
+	console.log('fetching data');
+	const data = await fetch_data();
+	// console.log('data fetched', data);
+
+	if (data.species?.detail === 'Not found.') {
+		error(404, `species of id=${params.id} not found`);
+	}
+
+	if (_.isEmpty(data.meta)) {
+		error(404, `species of id=${params.id} metadata not found`);
+	}
+
+	return data;
 };
 
 export const actions: Actions = {
