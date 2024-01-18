@@ -7,6 +7,8 @@
 	import { page } from '$app/stores';
 	import MetaPage from './meta-page.svelte';
 	import { Button } from '$lib/components/ui/button';
+	import { Terminal } from 'lucide-svelte';
+	import * as Alert from '$lib/components/ui/alert';
 	export let data: PageData;
 	// console.log(data);
 
@@ -84,7 +86,14 @@
 	<p>No species found</p>
 {/if}
 
-<em>NOTE: Click on the database name to get more information/metadata such as references</em>
+<Alert.Root class="sm:w-full lg:w-[60%]">
+	<Terminal class="h-4 w-4" />
+	<Alert.Title>Note</Alert.Title>
+	<Alert.Description
+		>Click on the database name to get more metadata such as references, bibtex file, spectrum
+		informations, etc.</Alert.Description
+	>
+</Alert.Root>
 
 {#if data.species && data.meta}
 	<Table.Root class="lg:w-2xl sm:w-full">

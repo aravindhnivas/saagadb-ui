@@ -4,13 +4,6 @@
 	import { DownloadCloud } from 'lucide-svelte';
 
 	export let data: PageData;
-
-	const metaref_keys = [
-		{ name: 'Dipole moment', value: 'dipole_moment' },
-		{ name: 'Spectrum', value: 'spectrum' },
-		{ name: 'Notes', value: 'notes' }
-	];
-
 	const cell_padding = 'p-2';
 </script>
 
@@ -19,22 +12,12 @@
 	<Table.Header>
 		<Table.Row>
 			<Table.Head class="{cell_padding} w-[100px]"></Table.Head>
-			{#each data.meta_references as metaref (metaref.id)}
-				<Table.Cell class="text-center {cell_padding}">Ref <sup>{metaref.ref}</sup></Table.Cell>
+			{#each data.meta_references as metaref, ind (metaref.id)}
+				<Table.Cell class="text-center {cell_padding}">Ref <sup>{ind + 1}</sup></Table.Cell>
 			{/each}
 		</Table.Row>
 	</Table.Header>
 	<Table.Body>
-		{#each metaref_keys as key}
-			<Table.Row>
-				<Table.Cell class={cell_padding}>{key.name}</Table.Cell>
-				{#each data.meta_references as metaref (metaref.id)}
-					<Table.Cell class="text-center {cell_padding}">{metaref[key.value] ?? '-'}</Table.Cell>
-				{/each}
-			</Table.Row>
-		{/each}
-
-		<!-- Ref DOI/URL -->
 		<Table.Row>
 			<Table.Cell class={cell_padding}>DOI/URL</Table.Cell>
 			{#each data.references as ref (ref.id)}
@@ -52,7 +35,6 @@
 			{/each}
 		</Table.Row>
 
-		<!-- Ref bibtex -->
 		<Table.Row>
 			<Table.Cell class={cell_padding}>Bibtex file</Table.Cell>
 			{#each data.references as ref (ref.id)}
@@ -69,6 +51,29 @@
 			<Table.Cell class={cell_padding}>Ref. Notes</Table.Cell>
 			{#each data.references as ref (ref.id)}
 				<Table.Cell class="text-center {cell_padding}">{ref.notes ?? '-'}</Table.Cell>
+			{/each}
+		</Table.Row>
+
+		<Table.Row>
+			<Table.Cell class={cell_padding}>Dipole moment</Table.Cell>
+			{#each data.meta_references as metaref (metaref.id)}
+				<Table.Cell class="text-center {cell_padding}"
+					>{metaref.dipole_moment ? '✅' : '❌'}</Table.Cell
+				>
+			{/each}
+		</Table.Row>
+
+		<Table.Row>
+			<Table.Cell class={cell_padding}>Spectrum</Table.Cell>
+			{#each data.meta_references as metaref (metaref.id)}
+				<Table.Cell class="text-center {cell_padding}">{metaref.spectrum ? '✅' : '❌'}</Table.Cell>
+			{/each}
+		</Table.Row>
+
+		<Table.Row>
+			<Table.Cell class={cell_padding}>Notes</Table.Cell>
+			{#each data.meta_references as metaref (metaref.id)}
+				<Table.Cell class="text-center {cell_padding}">{metaref.notes ?? '-'}</Table.Cell>
 			{/each}
 		</Table.Row>
 	</Table.Body>
