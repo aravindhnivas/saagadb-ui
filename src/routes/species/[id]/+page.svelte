@@ -49,7 +49,7 @@
 	<p>No species found</p>
 {/if}
 
-{#if data.meta}
+{#if data.species && data.meta}
 	<Table.Root class="lg:w-2xl sm:w-full">
 		<Table.Caption>Species-metadata</Table.Caption>
 		<Table.Header>
@@ -57,7 +57,11 @@
 				<Table.Head class="p-0">Database</Table.Head>
 				{#each data.meta as metadata}
 					{@const key = data.linelist?.find((f) => f.id === metadata.linelist)?.linelist_name}
-					<Table.Head class="text-center font-bold">{key.toLocaleUpperCase()}</Table.Head>
+					<Table.Head class="text-center font-bold">
+						<a href="/species/{data.species.id}/{metadata.id}">
+							<span class="underline hover:text-blue">{key.toLocaleUpperCase()}</span>
+						</a>
+					</Table.Head>
 				{/each}
 			</Table.Row>
 		</Table.Header>
