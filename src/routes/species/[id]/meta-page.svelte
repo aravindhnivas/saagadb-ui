@@ -7,7 +7,7 @@
 
 	export let data: PageData;
 	export let species_name: string;
-	export let species_id: string;
+	// export let species_id: string;
 	export let meta_name: string;
 	export let open: boolean = false;
 

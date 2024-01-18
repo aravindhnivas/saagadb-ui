@@ -57,6 +57,7 @@
 	};
 
 	let meta_name: string;
+	const cell_padding = 'p-0.5';
 </script>
 
 <Button
@@ -83,12 +84,14 @@
 	<p>No species found</p>
 {/if}
 
+<em>NOTE: Click on the database name to get more information/metadata such as references</em>
+
 {#if data.species && data.meta}
 	<Table.Root class="lg:w-2xl sm:w-full">
 		<Table.Caption>Species-metadata</Table.Caption>
 		<Table.Header>
 			<Table.Row>
-				<Table.Head class="p-0">Database</Table.Head>
+				<Table.Head class={cell_padding}>Database</Table.Head>
 				{#each data.meta as metadata}
 					{@const key = data.linelist?.find((f) => f.id === metadata.linelist)?.linelist_name}
 					<Table.Head class="text-center font-bold">
@@ -108,9 +111,9 @@
 		<Table.Body>
 			{#each metadata_keys as key}
 				<Table.Row>
-					<Table.Cell class="p-0">{@html key.name}</Table.Cell>
+					<Table.Cell class={cell_padding}>{@html key.name}</Table.Cell>
 					{#each data.meta as metadata (metadata.id)}
-						<Table.Cell class="text-center p-0">{metadata[key.value] ?? '-'}</Table.Cell>
+						<Table.Cell class="text-center {cell_padding}">{metadata[key.value] ?? '-'}</Table.Cell>
 					{/each}
 				</Table.Row>
 			{/each}
@@ -125,7 +128,6 @@
 		bind:open={open_meta_ref}
 		data={$page.state.selected}
 		{meta_name}
-		species_id={data.species.id}
 		species_name={data.species.iupac_name}
 	/>
 {/if}
