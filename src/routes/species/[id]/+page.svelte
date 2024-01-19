@@ -8,7 +8,7 @@
 	import { page } from '$app/stores';
 	import MetaPage from './meta-page.svelte';
 	import { Button } from '$lib/components/ui/button';
-	import { AlertCircle, Loader, Terminal } from 'lucide-svelte';
+	import { AlertCircle, ArrowBigLeft, Loader, Terminal } from 'lucide-svelte';
 	import * as Alert from '$lib/components/ui/alert';
 
 	export let data: PageData;
@@ -62,9 +62,12 @@
 	const cell_padding = 'p-0.5';
 </script>
 
-<Button class="flex gap-2 items-center w-[200px]" variant="outline"
-	><i class="i-mdi-arrow-back"></i> <a href="/species">Go back</a></Button
->
+<Button class="flex items-center w-[200px]" variant="outline">
+	<a href="/species" class="w-full flex gap-2 items-center justify-center"
+		><ArrowBigLeft /><span>Go back</span></a
+	>
+</Button>
+
 {#await data.load}
 	<div class="flex gap-2 items-center">
 		<Loader class="h-8 w-8" />
