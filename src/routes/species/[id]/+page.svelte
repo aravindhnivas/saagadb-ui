@@ -30,9 +30,8 @@
 	];
 
 	onMount(() => {
-		if ($edit_mode) {
-			metadata_keys = [{ name: 'meta_id', value: 'id' }, ...metadata_keys];
-		}
+		if (!$edit_mode) return;
+		metadata_keys = [{ name: 'meta_id', value: 'id' }, ...metadata_keys];
 	});
 
 	let open_meta_ref = false;
@@ -59,15 +58,12 @@
 			goto(href);
 		}
 	};
-
 	let meta_name: string;
 	const cell_padding = 'p-0.5';
 </script>
 
-<Button
-	class="flex gap-2 items-center w-[200px]"
-	variant="outline"
-	on:click={() => goto('/species')}><i class="i-mdi-arrow-back"></i> <span>Go back</span></Button
+<Button class="flex gap-2 items-center w-[200px]" variant="outline"
+	><i class="i-mdi-arrow-back"></i> <a href="/species">Go back</a></Button
 >
 {#await data.load}
 	<div class="flex gap-2 items-center">
