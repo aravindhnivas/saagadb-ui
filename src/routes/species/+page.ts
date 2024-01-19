@@ -1,17 +1,12 @@
 import type { PageLoad } from './$types';
 export const load: PageLoad = async ({ url, fetch }) => {
-	const getSpeciesStruct = async () => {
+	const fetch_species = async () => {
 		const substruct = url.searchParams.get('substruct') ?? '';
-		const queryString = new URLSearchParams({ substruct }).toString();
-		const fetch_url_page = `/api/species?${queryString}`;
+		const fetch_url_page = `/api/species?${new URLSearchParams({ substruct }).toString()}`;
 		const res = await fetch(fetch_url_page);
-		if (!res.ok) {
-			return { species: [] };
-		}
-
-		const data = await res.json();
-		return data;
+		if (!res.ok) return { species: [] };
+		const species = await res.json();
+		return { species };
 	};
-
-	return { species: await getSpeciesStruct() };
+	return { load: fetch_species() };
 };

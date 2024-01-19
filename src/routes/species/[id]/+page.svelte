@@ -1,16 +1,17 @@
 <script lang="ts">
 	import { edit_mode } from '$lib/utils/stores';
 	import type { PageData } from './$types';
+	import type { PageData as MetaPageData } from './[metaId]/$types';
 	import * as Table from '$lib/components/ui/table';
 	import { onMount } from 'svelte';
 	import { preloadData, pushState, goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import MetaPage from './meta-page.svelte';
 	import { Button } from '$lib/components/ui/button';
-	import { Terminal } from 'lucide-svelte';
+	import { AlertCircle, Loader, Terminal } from 'lucide-svelte';
 	import * as Alert from '$lib/components/ui/alert';
+
 	export let data: PageData;
-	// console.log(data);
 
 	let metadata_keys = [
 		{ name: 'Category', value: 'category' },
@@ -35,6 +36,7 @@
 	});
 
 	let open_meta_ref = false;
+	let meta_page_data: MetaPageData;
 
 	const nav_to_ref = async (e: MouseEvent) => {
 		// bail if opening a new tab, or we're on too small a screen
@@ -48,9 +50,9 @@
 		// run `load` functions (or rather, get the result of the `load` functions
 		// that are already running because of `data-sveltekit-preload-data`)
 		const result = await preloadData(href);
-
 		if (result.type === 'loaded' && result.status === 200) {
-			pushState(href, { selected: result.data });
+			meta_page_data = result.data as MetaPageData;
+			pushState(href, { ready: true });
 			open_meta_ref = true;
 		} else {
 			// something bad happened! try navigating
@@ -67,76 +69,90 @@
 	variant="outline"
 	on:click={() => goto('/species')}><i class="i-mdi-arrow-back"></i> <span>Go back</span></Button
 >
-
-{#if data.species}
-	<div class="content">
-		<h1 class="text-xl font-300">
-			{@html data.species.name_html}
-			{$edit_mode ? `(id = ${data.species.id})` : ''}
-		</h1>
-		<h1 class="text-xl font-500">{data.species.iupac_name}</h1>
-		<h2>{Number(data.species.molecular_mass).toFixed(2)} atomic mass</h2>
-		<h2><em class="font-bold">SMILES: </em>{data.species.smiles}</h2>
-		<h2><em class="font-bold">Standard InChI: </em>{data.species.standard_inchi}</h2>
-		<h2><em class="font-bold">InChIkey: </em>{data.species.standard_inchi_key}</h2>
-		<h2><em class="font-bold">SELFIES: </em>{data.species.selfies}</h2>
-		<h2>{data.species.notes}</h2>
+{#await data.load}
+	<div class="flex gap-2 items-center">
+		<Loader class="h-8 w-8" />
+		Fetching data please wait...
 	</div>
-{:else}
-	<p>No species found</p>
-{/if}
+{:then { species, meta }}
+	{#if species}
+		<div class="content">
+			<h1 class="text-xl font-300">
+				{@html species.name_html}
+				{$edit_mode ? `(id = ${species.id})` : ''}
+			</h1>
+			<h1 class="text-xl font-500">{species.iupac_name}</h1>
+			<h2>{Number(species.molecular_mass).toFixed(2)} atomic mass</h2>
+			<h2><em class="font-bold">SMILES: </em>{species.smiles}</h2>
+			<h2><em class="font-bold">Standard InChI: </em>{species.standard_inchi}</h2>
+			<h2><em class="font-bold">InChIkey: </em>{species.standard_inchi_key}</h2>
+			<h2><em class="font-bold">SELFIES: </em>{species.selfies}</h2>
+			<h2>{species.notes}</h2>
+		</div>
 
-<Alert.Root class="sm:w-full lg:w-[60%]">
-	<Terminal class="h-4 w-4" />
-	<Alert.Title>Note</Alert.Title>
-	<Alert.Description
-		>Click on the database name to get more metadata such as references, bibtex file, spectrum
-		informations, etc.</Alert.Description
-	>
-</Alert.Root>
+		<Alert.Root class="sm:w-full lg:w-[60%]">
+			<Terminal class="h-4 w-4" />
+			<Alert.Title>Note</Alert.Title>
+			<Alert.Description
+				>Click on the database name to get more metadata such as references, bibtex file, spectrum
+				informations, etc.</Alert.Description
+			>
+		</Alert.Root>
+	{:else}
+		<p>No species found</p>
+	{/if}
 
-{#if data.species && data.meta}
-	<Table.Root class="lg:w-2xl sm:w-full">
-		<Table.Caption>Species-metadata</Table.Caption>
-		<Table.Header>
-			<Table.Row>
-				<Table.Head class={cell_padding}>Database</Table.Head>
-				{#each data.meta as metadata}
-					{@const key = data.linelist?.find((f) => f.id === metadata.linelist)?.linelist_name}
-					<Table.Head class="text-center font-bold">
-						<a
-							href="/species/{data.species.id}/{metadata.id}"
-							on:click={(e) => {
-								if (key) meta_name = key.toLocaleUpperCase();
-								nav_to_ref(e);
-							}}
-						>
-							<span class="underline hover:text-blue">{key.toLocaleUpperCase()}</span>
-						</a>
-					</Table.Head>
-				{/each}
-			</Table.Row>
-		</Table.Header>
-		<Table.Body>
-			{#each metadata_keys as key}
+	{#if species && meta}
+		<Table.Root class="lg:w-2xl sm:w-full">
+			<Table.Caption>Species-metadata</Table.Caption>
+			<Table.Header>
 				<Table.Row>
-					<Table.Cell class={cell_padding}>{@html key.name}</Table.Cell>
-					{#each data.meta as metadata (metadata.id)}
-						<Table.Cell class="text-center {cell_padding}">{metadata[key.value] ?? '-'}</Table.Cell>
+					<Table.Head class={cell_padding}>Database</Table.Head>
+					{#each meta as metadata}
+						{@const key = data.linelist?.find((f) => f.id === metadata.linelist)?.linelist_name}
+						<Table.Head class="text-center font-bold">
+							<a
+								href="/species/{species.id}/{metadata.id}"
+								on:click={(e) => {
+									if (key) meta_name = key.toLocaleUpperCase();
+									nav_to_ref(e);
+								}}
+							>
+								<span class="underline hover:text-blue">{key?.toLocaleUpperCase()}</span>
+							</a>
+						</Table.Head>
 					{/each}
 				</Table.Row>
-			{/each}
-		</Table.Body>
-	</Table.Root>
-{:else}
-	<p>No metadata found</p>
-{/if}
+			</Table.Header>
+			<Table.Body>
+				{#each metadata_keys as key}
+					<Table.Row>
+						<Table.Cell class={cell_padding}>{@html key.name}</Table.Cell>
+						{#each meta as metadata (metadata.id)}
+							<Table.Cell class="text-center {cell_padding}"
+								>{metadata[key.value] ?? '-'}</Table.Cell
+							>
+						{/each}
+					</Table.Row>
+				{/each}
+			</Table.Body>
+		</Table.Root>
+	{:else}
+		<p>No metadata found</p>
+	{/if}
 
-{#if $page.state.selected}
-	<MetaPage
-		bind:open={open_meta_ref}
-		data={$page.state.selected}
-		{meta_name}
-		species_name={data.species.iupac_name}
-	/>
-{/if}
+	{#if $page.state.ready}
+		<MetaPage
+			bind:open={open_meta_ref}
+			data={meta_page_data}
+			{meta_name}
+			species_name={species.iupac_name}
+		/>
+	{/if}
+{:catch error}
+	<Alert.Root variant="destructive">
+		<AlertCircle class="h-4 w-4" />
+		<Alert.Title>Error</Alert.Title>
+		<Alert.Description>{error?.message ?? error}</Alert.Description>
+	</Alert.Root>
+{/await}

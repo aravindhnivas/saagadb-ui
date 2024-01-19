@@ -17,7 +17,7 @@
 >
 	<Dialog.Content class="max-w-2xl">
 		<Dialog.Header>
-			<Dialog.Title>{meta_name} (found {data.meta_references.length} references)</Dialog.Title>
+			<Dialog.Title>{meta_name}</Dialog.Title>
 			<Dialog.Description>
 				<p>
 					Reference and metadata for <em class="font-bold">{species_name}</em> from {meta_name}

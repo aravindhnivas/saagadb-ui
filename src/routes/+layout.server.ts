@@ -39,7 +39,4 @@ export const load: LayoutServerLoad = async ({ locals, fetch, cookies }) => {
 	]);
 
 	return { user, linelist };
-
-	// const user = await fetch_user();
-	// return { user };
 };

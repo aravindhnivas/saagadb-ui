@@ -7,6 +7,9 @@ declare global {
 			token: string | null;
 			domain: string;
 		}
+		interface PageState {
+			ready: boolean;
+		}
 		// interface PageData {}
 		// interface Platform {}
 	}
