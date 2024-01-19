@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import * as Table from '$lib/components/ui/table';
-	import { AlertCircle, DownloadCloud, Loader } from 'lucide-svelte';
+	import { AlertCircle, DownloadCloud } from 'lucide-svelte';
 	import * as Alert from '$lib/components/ui/alert';
 
 	export let data: PageData;
@@ -10,8 +10,8 @@
 
 {#await data.load}
 	<div class="flex gap-2 items-center">
-		<Loader class="h-8 w-8" />
-		Fetching data please wait...
+		<span class="loading loading-spinner"></span>
+		<span>Fetching data please wait...</span>
 	</div>
 {:then { meta_references, references }}
 	<Table.Root class="sm:w-full lg:max-w-2xl">

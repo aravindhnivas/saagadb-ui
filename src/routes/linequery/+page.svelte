@@ -1,4 +1,5 @@
 <script lang="ts">
+	// import { Loader } from 'lucide-svelte';
 	import type { PageData } from './$types';
 	import Linetable from './linetable.svelte';
 
@@ -34,13 +35,13 @@
 		</label>
 
 		<button class="btn btn-primary btn-loading">Submit</button>
-		<!-- <button class="btn btn-square">
-		<span class="loading loading-spinner"></span>
-	</button> -->
 	</form>
 
 	{#await data.lines}
-		<p>fetching please wait...</p>
+		<div class="flex gap-2 items-center">
+			<span class="loading loading-spinner"></span>
+			<span>Fetching data please wait...</span>
+		</div>
 	{:then lines}
 		{#if lines?.length > 0}
 			<Linetable {lines} />

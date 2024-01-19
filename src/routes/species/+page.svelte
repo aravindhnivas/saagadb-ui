@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import { AlertCircle, Loader, Terminal } from 'lucide-svelte';
+	import { AlertCircle } from 'lucide-svelte';
 	import * as Alert from '$lib/components/ui/alert';
 
 	export let data: PageData;
@@ -17,8 +17,8 @@
 </form>
 {#await data.load}
 	<div class="flex gap-2 items-center">
-		<Loader class="h-8 w-8" />
-		Fetching data please wait...
+		<span class="loading loading-spinner"></span>
+		<span>Fetching data please wait...</span>
 	</div>
 {:then { species }}
 	<div class="">

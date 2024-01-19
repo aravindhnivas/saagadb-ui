@@ -8,7 +8,7 @@
 	import { page } from '$app/stores';
 	import MetaPage from './meta-page.svelte';
 	import { Button } from '$lib/components/ui/button';
-	import { AlertCircle, ArrowBigLeft, Loader, Terminal } from 'lucide-svelte';
+	import { AlertCircle, ArrowBigLeft, Terminal } from 'lucide-svelte';
 	import * as Alert from '$lib/components/ui/alert';
 
 	export let data: PageData;
@@ -70,8 +70,8 @@
 
 {#await data.load}
 	<div class="flex gap-2 items-center">
-		<Loader class="h-8 w-8" />
-		Fetching data please wait...
+		<span class="loading loading-spinner"></span>
+		<span>Fetching data please wait...</span>
 	</div>
 {:then { species, meta }}
 	{#if species}
@@ -89,7 +89,7 @@
 			<h2>{species.notes}</h2>
 		</div>
 
-		<Alert.Root class="sm:w-full lg:w-[60%]">
+		<Alert.Root class="sm:w-full lg:w-[70%]">
 			<Terminal class="h-4 w-4" />
 			<Alert.Title>Note</Alert.Title>
 			<Alert.Description
