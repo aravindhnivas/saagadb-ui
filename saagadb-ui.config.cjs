@@ -5,7 +5,7 @@ module.exports = {
 	apps: [
 		{
 			name: 'saagadb-ui',
-			script: 'build/index.js',
+			script: 'my-server.js',
 			interpreter: 'node',
 			interpreter_args: '-r dotenv/config',
 			env: {
