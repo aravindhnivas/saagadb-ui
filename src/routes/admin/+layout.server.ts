@@ -1,3 +1,4 @@
+import { base } from '$app/paths';
 import type { LayoutServerLoad } from './$types';
 
 export const load: LayoutServerLoad = async ({ fetch }) => {
@@ -8,8 +9,8 @@ export const load: LayoutServerLoad = async ({ fetch }) => {
 	};
 
 	const [species, linelist] = (await Promise.all([
-		fetchFunc(`/api/species`),
-		fetchFunc(`/api/linelist`)
+		fetchFunc(`${base}/api/species`),
+		fetchFunc(`${base}/api/linelist`)
 	])) as [{ [key: string]: string }[], { id: string; linelist_name: string }[]];
 
 	return { species, linelist };

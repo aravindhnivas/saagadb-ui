@@ -1,6 +1,7 @@
 import type { LayoutServerLoad } from './$types';
 import { DB_URL } from '$lib/server';
 import { delete_token } from '$lib/server/cookies';
+import { base } from '$app/paths';
 
 export const load: LayoutServerLoad = async ({ locals, fetch, cookies }) => {
 	const fetch_user = async () => {
@@ -35,7 +36,7 @@ export const load: LayoutServerLoad = async ({ locals, fetch, cookies }) => {
 
 	const [user, linelist] = await Promise.all([
 		fetch_user(),
-		fetchFunc<{ id: string; linelist_name: string }[]>(`/api/linelist`)
+		fetchFunc<{ id: string; linelist_name: string }[]>(`${base}/api/linelist`)
 	]);
 
 	return { user, linelist };

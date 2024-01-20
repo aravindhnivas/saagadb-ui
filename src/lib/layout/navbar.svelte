@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import { logged_in } from '$lib/utils/stores';
 	import Navitems from './nav/navitems.svelte';
 </script>
@@ -31,7 +32,7 @@
 				<Navitems />
 			</ul>
 		</div>
-		<a href="/" class="btn btn-ghost normal-case text-xl">SAAGAdb</a>
+		<a href="{base}/" class="btn btn-ghost normal-case text-xl">SAAGAdb</a>
 	</div>
 	<div class="navbar-center hidden lg:flex">
 		<ul class="menu menu-horizontal px-1 gap-2">
@@ -51,13 +52,13 @@
 				>
 					<li><a href="/admin/dashboard">Dashboard</a></li>
 					<li>
-						<form action="/logout" method="POST">
+						<form action="{base}/logout" method="POST">
 							<button>logout</button>
 						</form>
 					</li>
 				</ul>
 			{:else}
-				<a href="/login">Login</a>
+				<a href="{base}/login">Login</a>
 			{/if}
 		</div>
 	</div>

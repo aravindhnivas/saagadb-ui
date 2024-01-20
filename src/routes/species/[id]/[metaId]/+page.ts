@@ -1,3 +1,4 @@
+import { base } from '$app/paths';
 import type { PageLoad } from './$types';
 
 interface Reference {
@@ -19,11 +20,13 @@ interface MetaReference {
 
 export const load: PageLoad = async ({ fetch, params }) => {
 	const fetch_data = async () => {
-		const meta_references = (await fetch(`/api/meta-reference/query?meta_id=${params.metaId}`).then(
-			(res) => res.json()
-		)) as MetaReference[];
+		const meta_references = (await fetch(
+			`${base}/api/meta-reference/query?meta_id=${params.metaId}`
+		).then((res) => res.json())) as MetaReference[];
 		const references = (await Promise.all(
-			meta_references.map(({ ref }) => fetch(`/api/reference/${ref}`).then((res) => res.json()))
+			meta_references.map(({ ref }) =>
+				fetch(`${base}/api/reference/${ref}`).then((res) => res.json())
+			)
 		)) as Reference[];
 		return { meta_references, references };
 	};

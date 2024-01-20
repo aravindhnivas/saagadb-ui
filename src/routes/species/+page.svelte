@@ -2,11 +2,12 @@
 	import type { PageData } from './$types';
 	import { AlertCircle } from 'lucide-svelte';
 	import * as Alert from '$lib/components/ui/alert';
+	import { base } from '$app/paths';
 
 	export let data: PageData;
 </script>
 
-<form class="join w-full" method="GET" action="/species">
+<form class="join w-full" method="GET" action="{base}/species">
 	<input
 		name="substruct"
 		value=""
@@ -25,7 +26,7 @@
 		{#if species.length > 0}
 			{#each species as sp (sp.id)}
 				<li class="text-xl">
-					<a href="/species/{sp.id}"
+					<a href="{base}/species/{sp.id}"
 						>{#if sp.name_html}
 							{@html sp.name_html}
 						{:else}

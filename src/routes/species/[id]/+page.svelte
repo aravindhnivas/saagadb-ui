@@ -10,6 +10,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import { AlertCircle, ArrowBigLeft, Terminal } from 'lucide-svelte';
 	import * as Alert from '$lib/components/ui/alert';
+	import { base } from '$app/paths';
 
 	export let data: PageData;
 
@@ -63,7 +64,7 @@
 </script>
 
 <Button class="flex items-center w-[200px]" variant="outline">
-	<a href="/species" class="w-full flex gap-2 items-center justify-center"
+	<a href="{base}/species" class="w-full flex gap-2 items-center justify-center"
 		><ArrowBigLeft /><span>Go back</span></a
 	>
 </Button>
@@ -111,7 +112,7 @@
 						{@const key = data.linelist?.find((f) => f.id === metadata.linelist)?.linelist_name}
 						<Table.Head class="text-center font-bold">
 							<a
-								href="/species/{species.id}/{metadata.id}"
+								href="{base}/species/{species.id}/{metadata.id}"
 								on:click={(e) => {
 									if (key) meta_name = key.toLocaleUpperCase();
 									nav_to_ref(e);

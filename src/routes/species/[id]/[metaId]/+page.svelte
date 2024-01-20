@@ -3,6 +3,7 @@
 	import * as Table from '$lib/components/ui/table';
 	import { AlertCircle, DownloadCloud } from 'lucide-svelte';
 	import * as Alert from '$lib/components/ui/alert';
+	import { base } from '$app/paths';
 
 	export let data: PageData;
 	const cell_padding = 'p-2';
@@ -47,8 +48,11 @@
 				{#each references as ref (ref.id)}
 					{@const bibfile = ref.bibtex.split('/').at(-1)}
 					<Table.Cell class="text-center {cell_padding}">
-						<a href="/uploads/bib/{bibfile}" download target="_blank" class="flex justify-center"
-							><DownloadCloud size="20" /></a
+						<a
+							href="{base}/uploads/bib/{bibfile}"
+							download
+							target="_blank"
+							class="flex justify-center"><DownloadCloud size="20" /></a
 						>
 					</Table.Cell>
 				{/each}

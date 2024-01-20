@@ -4,6 +4,7 @@ import { superValidate, setError } from 'sveltekit-superforms/server';
 import { fail, redirect } from '@sveltejs/kit';
 import { DB_URL } from '$lib/server';
 import { set_token } from '$lib/server/cookies';
+import { base } from '$app/paths';
 
 const schema = z.object({
 	email: z.string().email(),
@@ -12,7 +13,7 @@ const schema = z.object({
 
 export const load: PageServerLoad = async ({ request, locals }) => {
 	if (locals.token) {
-		redirect(303, '/admin/dashboard');
+		redirect(303, base + '/admin/dashboard');
 	}
 	// Server API:
 	const form = await superValidate(request, schema);
@@ -49,9 +50,9 @@ export const actions: Actions = {
 		const redirectTo = url.searchParams.get('redirectTo');
 
 		if (redirectTo) {
-			redirect(303, `/${redirectTo.slice(1)}`);
+			redirect(303, base + `/${redirectTo.slice(1)}`);
 		} else {
-			redirect(303, '/admin/dashboard');
+			redirect(303, base + '/admin/dashboard');
 		}
 	}
 };
