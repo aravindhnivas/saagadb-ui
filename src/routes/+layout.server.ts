@@ -1,16 +1,15 @@
 import type { LayoutServerLoad } from './$types';
-import { DB_URL } from '$lib/server';
+// import { DB_URL } from '$lib/server';
 import { delete_token } from '$lib/server/cookies';
 import { base } from '$app/paths';
 
 export const load: LayoutServerLoad = async ({ locals, fetch, cookies }) => {
 	const fetch_user = async () => {
 		if (!locals.token) return null;
-
+		console.log('fetching user', locals.token);
 		let res: Response;
-
 		try {
-			res = await fetch(`${DB_URL}/user/me`);
+			res = await fetch('/api/user/me');
 
 			if (!res.ok) {
 				delete_token({ cookies });
