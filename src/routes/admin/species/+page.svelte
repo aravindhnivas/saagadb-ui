@@ -5,11 +5,10 @@
 	import * as Form from '$lib/components/ui/form';
 	import * as Card from '$lib/components/ui/card';
 	import speciesSchema from './schema';
-
 	export let data: PageData;
 </script>
 
-<FormComponent footer={false} schema={speciesSchema} form={data.form} let:config>
+<FormComponent footer={false} schema={speciesSchema} form={data.form} let:config debug={true}>
 	<Card.Root>
 		<Card.Header>
 			<Card.Title>Upload new species</Card.Title>
