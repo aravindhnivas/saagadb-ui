@@ -16,6 +16,7 @@
 		"@svelte-parts/drop-file": "^0.0.23",
 		"@sveltejs/adapter-node": "^4.0.0",
 		"@sveltejs/kit": "^2.4.1",
+		"@sveltejs/svelte-virtual-list": "^3.0.1",
 		"@sveltejs/vite-plugin-svelte": "^3.0.1",
 		"@types/js-yaml": "^4.0.9",
 		"@types/lodash-es": "^4.17.12",

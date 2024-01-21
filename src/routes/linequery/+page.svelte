@@ -1,5 +1,4 @@
 <script lang="ts">
-	// import { Loader } from 'lucide-svelte';
 	import type { PageData } from './$types';
 	import Linetable from './linetable.svelte';
 
@@ -7,8 +6,11 @@
 </script>
 
 <div class="grid gap-5 content-start">
-	<form class="flex gap-2" method="GET" action="/linequery">
+	<form class="flex gap-2 items-end" method="GET">
 		<label class="form-control w-full max-w-xs">
+			<div class="label">
+				<span class="label-text-alt">Minimum frequency</span>
+			</div>
 			<input
 				name="min_freq"
 				type="text"
@@ -16,12 +18,12 @@
 				value=""
 				class="input input-bordered w-full max-w-xs"
 			/>
-			<div class="label">
-				<span class="label-text-alt">Minimum frequency</span>
-			</div>
 		</label>
 
 		<label class="form-control w-full max-w-xs">
+			<div class="label">
+				<span class="label-text-alt">Maximum frequency</span>
+			</div>
 			<input
 				name="max_freq"
 				type="text"
@@ -29,9 +31,6 @@
 				placeholder="Type here"
 				class="input input-bordered w-full max-w-xs"
 			/>
-			<div class="label">
-				<span class="label-text-alt">Maximum frequency</span>
-			</div>
 		</label>
 
 		<button class="btn btn-primary btn-loading">Submit</button>

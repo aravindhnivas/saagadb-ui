@@ -3,6 +3,7 @@
 	import { AlertCircle } from 'lucide-svelte';
 	import * as Alert from '$lib/components/ui/alert';
 	import { base } from '$app/paths';
+	import VirtualList from '@sveltejs/svelte-virtual-list';
 
 	export let data: PageData;
 </script>
@@ -24,7 +25,8 @@
 {:then { species }}
 	<div class="">
 		{#if species.length > 0}
-			{#each species as sp (sp.id)}
+			<!-- {#each species as sp (sp.id)} -->
+			<VirtualList height="500px" items={species} let:item={sp}>
 				<li class="text-xl">
 					<a href="{base}/species/{sp.id}"
 						>{#if sp.name_html}
@@ -34,7 +36,8 @@
 						{/if}</a
 					>
 				</li>
-			{/each}
+			</VirtualList>
+			<!-- {/each} -->
 		{:else}
 			<p>No species found</p>
 		{/if}
