@@ -36,7 +36,7 @@ export const load: LayoutServerLoad = async ({ locals, fetch, cookies }) => {
 
 	const [user, linelist] = await Promise.all([
 		fetch_user(),
-		fetchFunc<{ id: string; linelist_name: string }[]>(`${base}/api/linelist`)
+		fetchFunc<{ id: string; linelist_name: string }[]>(`${base}/api/data/linelist`)
 	]);
 
 	return { user, linelist };

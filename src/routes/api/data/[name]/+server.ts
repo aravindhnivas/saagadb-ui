@@ -1,32 +1,34 @@
 import { error, json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { DB_URL } from '$lib/server';
+import { DB_ORIGIN } from '$lib/server';
 
-export const GET: RequestHandler = async ({ params, url }) => {
-	const fetch_url = new URL(`${DB_URL}/data/${params.name}`);
+export const GET: RequestHandler = async ({ url }) => {
+	const fetch_url = new URL(url.pathname, DB_ORIGIN);
+
 	url.searchParams.forEach((value, key) => {
 		fetch_url.searchParams.append(key, value);
 	});
 
-	// console.log(fetch_url);
 	const res = await fetch(fetch_url);
 
+	if (!res.ok) {
+		const text = await res.text();
+		console.error(`Error in ${url.pathname}`, text);
+		error(500, { message: `${res.statusText}: ${text}` });
+	}
 	const data = await res.json();
-	if (data.error) error(500, data.error);
-
 	return json(data, { status: 200 });
 };
 
-export const POST: RequestHandler = async ({ params, request }) => {
+export const POST: RequestHandler = async ({ url, request }) => {
 	const body = await request.json();
-	// const auth = request.headers.get('Authorization');
-	console.warn({
-		name: params.name
-	});
-	const res = await fetch(`${DB_URL}/data/${params.name}/`, {
+	const fetch_url = new URL(url.pathname, DB_ORIGIN);
+
+	const res = await fetch(fetch_url, {
 		method: 'POST',
 		body: JSON.stringify(body)
 	});
+
 	const res_text = JSON.parse(await res.text());
 	console.log('returned post request from database', {
 		ok: res.ok,
@@ -35,10 +37,8 @@ export const POST: RequestHandler = async ({ params, request }) => {
 		text: res_text
 	});
 
-	if (!res.ok) error(res.status, { message: `${res.statusText}: ${res_text}` });
-
+	if (!res.ok) error(500, { message: `${res.statusText}: ${res_text}` });
 	const data = await res.json();
-	if (data.error) error(500, data.error);
 
 	return json(data, { status: 201 });
 };
