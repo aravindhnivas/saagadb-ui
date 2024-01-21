@@ -6,6 +6,7 @@
 	import Dropfile from '$lib/components/file-drop.svelte';
 	import { AlertCircle } from 'lucide-svelte';
 	import * as Alert from '$lib/components/ui/alert';
+	import { createEventDispatcher } from 'svelte';
 
 	export let schema: AnyZodObject;
 	export let form: SuperValidated<AnyZodObject>;
@@ -18,6 +19,7 @@
 	let className = '';
 	export { className as class };
 
+	const dispatch = createEventDispatcher();
 	let error_message = '';
 	const options: FormOptions<AnyZodObject> = {
 		// resetForm: true,
@@ -25,7 +27,8 @@
 			console.log(result);
 			if (result.type === 'failure') {
 				error_message = 'Please check the form above for errors';
-			} else {
+			} else if (result.type === 'success') {
+				dispatch('success', { result });
 				error_message = '';
 			}
 		},
