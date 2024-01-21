@@ -12,9 +12,8 @@ export const GET: RequestHandler = async ({ url }) => {
 	const res = await fetch(fetch_url);
 
 	if (!res.ok) {
-		const text = await res.text();
-		console.error(`Error in ${url.pathname}`, text);
-		error(500, { message: `${res.statusText}: ${text}` });
+		const { detail } = (await res.json()) as { detail: string };
+		error(500, { message: `${res.statusText}: ${detail}` });
 	}
 
 	const data = await res.json();
