@@ -53,6 +53,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@zmotivat0r/o0": "^1.0.2",
 		"bits-ui": "^0.15.1",
 		"clsx": "^2.1.0",
 		"cmdk-sv": "^0.0.13",
