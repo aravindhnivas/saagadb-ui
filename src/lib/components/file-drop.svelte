@@ -6,7 +6,7 @@
 	import * as YAML from 'js-yaml';
 	import { createEventDispatcher } from 'svelte';
 
-	const { formId, form } = getForm();
+	const { form } = getForm();
 	const dispatch = createEventDispatcher();
 	let fileOver = false;
 	let filename = '';
@@ -29,7 +29,6 @@
 				if (!Object.keys($form).includes(key)) return;
 				$form[key] = parsed[key];
 			});
-			console.log($formId, ' updated');
 			toast.info(`Form updated using ${filename} file`);
 		} catch (error) {
 			if (error instanceof Error) toast.error(error.message);
