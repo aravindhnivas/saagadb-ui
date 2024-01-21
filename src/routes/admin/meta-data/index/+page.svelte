@@ -62,13 +62,15 @@
 			<Dropfile />
 		</svelte:fragment>
 
-		{#each dropdowns[metaid] as { id, name, key } (id)}
-			{@const items = data[name]?.map((f) => ({
-				value: `${f.id}`,
-				label: f[key]
-			}))}
-			<FormCombobox val_type="number" {config} {name} {items} />
-		{/each}
+		<div class="grid-auto-fill lg:max-w-md sm:max-w-full">
+			{#each dropdowns[metaid] as { id, name, key } (id)}
+				{@const items = data[name]?.map((f) => ({
+					value: `${f.id}`,
+					label: f[key]
+				}))}
+				<FormCombobox val_type="number" {config} {name} {items} />
+			{/each}
+		</div>
 
 		{#each Object.keys(form.data) as name (name)}
 			{#if check_key_to_include(metaid, name)}
@@ -92,17 +94,19 @@
 			{/if}
 		{/each}
 
-		{#each fileInputs[metaid] as { id, name, required } (id)}
-			<Form.Field {config} {name}>
-				<Form.Item>
-					<div class="grid w-full max-w-sm items-center gap-1.5">
-						<Form.Label>{name}</Form.Label>
-						<Form.Input type="file" {required} />
-					</div>
-					<Form.Validation />
-				</Form.Item>
-			</Form.Field>
-		{/each}
+		<div class="grid-auto-fill">
+			{#each fileInputs[metaid] as { id, name, required } (id)}
+				<Form.Field {config} {name}>
+					<Form.Item>
+						<div class="grid w-full max-w-sm items-center gap-1.5">
+							<Form.Label>{name}</Form.Label>
+							<Form.Input type="file" {required} />
+						</div>
+						<Form.Validation />
+					</Form.Item>
+				</Form.Field>
+			{/each}
+		</div>
 
 		<!-- <Form.Button class="m-2">Submit</Form.Button> -->
 

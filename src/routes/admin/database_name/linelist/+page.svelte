@@ -7,6 +7,7 @@
 	import { Label } from '$lib/components/ui/label';
 	import { Button } from '$lib/components/ui/button';
 	import * as Table from '$lib/components/ui/table';
+	import { Delete, Edit } from 'lucide-svelte';
 
 	export let data: PageData;
 	let id: string;
@@ -15,13 +16,14 @@
 	let modal: HTMLDialogElement;
 
 	const openModal = (line_id: string, update_type: 'PATCH' | 'DELETE', name: string = '') => {
-		method = update_type;
+		if (!(line_id && update_type)) return toast.error('Missing required parameters');
 		id = line_id;
-		changed_name = name;
+		method = update_type;
+		if (name) changed_name = name;
 		modal?.showModal();
 	};
 
-	let message;
+	let message: string;
 	const onSubmit = () => {
 		return async ({ result }) => {
 			if (result.type === 'success') {
@@ -56,42 +58,43 @@
 	</div>
 {/if}
 
-<div class="max-w-sm">
-	{#if data?.linelist.length > 0}
-		<Table.Root>
-			<Table.Caption>Available linelist</Table.Caption>
-			<Table.Header>
+{#if data?.linelist.length > 0}
+	<Table.Root class="w-[200px]">
+		<Table.Caption>Available linelist</Table.Caption>
+		<Table.Header>
+			<Table.Row>
+				<Table.Head>Name</Table.Head>
+				<Table.Head />
+				<Table.Head />
+			</Table.Row>
+		</Table.Header>
+		<Table.Body>
+			{#each data.linelist as { id, linelist_name } (id)}
 				<Table.Row>
-					<Table.Head class="w-[100px] text-center">Name</Table.Head>
-					<Table.Head class="text-right" />
-					<Table.Head class="text-right" />
+					<Table.Cell class="font-medium p-1">{linelist_name}</Table.Cell>
+					<Table.Cell class="p-1"
+						><button on:click={() => openModal(id, 'PATCH', linelist_name)}><Edit /></button
+						></Table.Cell
+					>
+					<Table.Cell class="p-1"
+						><button class="text-red" on:click={() => openModal(id, 'DELETE', linelist_name)}
+							><Delete /></button
+						></Table.Cell
+					>
 				</Table.Row>
-			</Table.Header>
-			<Table.Body>
-				{#each data.linelist as { id, linelist_name } (id)}
-					<Table.Row>
-						<Table.Cell class="font-medium text-center">{linelist_name}</Table.Cell>
-						<Table.Cell class="text-center"
-							><Button variant="outline" on:click={() => openModal(id, 'PATCH', linelist_name)}
-								>EDIT</Button
-							></Table.Cell
-						>
-						<Table.Cell class="text-center"
-							><Button variant="destructive" on:click={() => openModal(id, 'DELETE')}>DELETE</Button
-							></Table.Cell
-						>
-					</Table.Row>
-				{/each}
-			</Table.Body>
-		</Table.Root>
-	{:else}
-		<p>No linelist found</p>
-	{/if}
-</div>
+			{/each}
+		</Table.Body>
+	</Table.Root>
+{:else}
+	<p>No linelist found</p>
+{/if}
 
 <form method="POST" action="?/update_table&id={id}&method={method}" use:enhance={onSubmit}>
 	<dialog bind:this={modal} class="modal">
 		<div class="modal-box gap-2">
+			<h3 class="font-bold text-lg">
+				{method === 'DELETE' ? 'Deleting: ' : 'Updating: '}{changed_name}
+			</h3>
 			<div class="grid gap-4 py-4">
 				{#if method === 'PATCH'}
 					<div class="grid grid-cols-4 items-center gap-4">

@@ -1,7 +1,9 @@
-.tabulator-header-filter {
-	border: solid 1px;
-}
+.tabulator-header-filter {border: solid 1px;}
 
-button {
-	background: transparent;
+button {background: transparent;}
+
+.grid-auto-fill {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	grid-gap: 1rem;
 }
