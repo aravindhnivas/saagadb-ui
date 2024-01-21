@@ -25,8 +25,7 @@
 {:then { species }}
 	<div class="">
 		{#if species.length > 0}
-			<!-- {#each species as sp (sp.id)} -->
-			<VirtualList height="500px" items={species} let:item={sp}>
+			<VirtualList height="calc(90vh - 15rem)" items={species} let:item={sp}>
 				<li class="text-xl">
 					<a href="{base}/species/{sp.id}"
 						>{#if sp.name_html}
@@ -37,7 +36,6 @@
 					>
 				</li>
 			</VirtualList>
-			<!-- {/each} -->
 		{:else}
 			<p>No species found</p>
 		{/if}
