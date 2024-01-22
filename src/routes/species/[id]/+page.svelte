@@ -8,7 +8,7 @@
 	import { page } from '$app/stores';
 	import MetaPage from './meta-page.svelte';
 	import { Button } from '$lib/components/ui/button';
-	import { AlertCircle, ArrowBigLeft, Terminal } from 'lucide-svelte';
+	import { AlertCircle, ArrowBigLeft, HelpCircle, Terminal } from 'lucide-svelte';
 	import * as Alert from '$lib/components/ui/alert';
 	import { base } from '$app/paths';
 
@@ -63,96 +63,102 @@
 	const cell_padding = 'p-0.5';
 </script>
 
-<Button class="flex items-center w-[200px]" variant="outline">
-	<a href="{base}/species" class="w-full flex gap-2 items-center justify-center"
-		><ArrowBigLeft /><span>Go back</span></a
-	>
-</Button>
+<div class="grid gap-5 content-start overflow-hidden">
+	<Button class="flex items-center w-[200px]" variant="outline">
+		<a href="{base}/species" class="w-full flex gap-2 items-center justify-center"
+			><ArrowBigLeft /><span>Go back</span></a
+		>
+	</Button>
 
-{#await data.load}
-	<div class="flex gap-2 items-center">
-		<span class="loading loading-spinner"></span>
-		<span>Fetching data please wait...</span>
-	</div>
-{:then { species, meta }}
-	{#if species}
-		<div class="content">
-			<h1 class="text-xl font-300">
-				{@html species.name_html}
-				{$edit_mode ? `(id = ${species.id})` : ''}
-			</h1>
-			<h1 class="text-xl font-500">{species.iupac_name}</h1>
-			<h2>{Number(species.molecular_mass).toFixed(2)} atomic mass</h2>
-			<h2><em class="font-bold">SMILES: </em>{species.smiles}</h2>
-			<h2><em class="font-bold">Standard InChI: </em>{species.standard_inchi}</h2>
-			<h2><em class="font-bold">InChIkey: </em>{species.standard_inchi_key}</h2>
-			<h2><em class="font-bold">SELFIES: </em>{species.selfies}</h2>
-			<h2>{species.notes}</h2>
-		</div>
+	<div class="overflow-auto">
+		{#await data.load}
+			<div class="flex gap-2 items-center items-center">
+				<span class="loading loading-spinner"></span>
+				<span>Fetching data please wait...</span>
+			</div>
+		{:then { species, meta }}
+			{#if species}
+				<div class="my-2">
+					<h1 class="text-xl font-300">
+						{@html species.name_html}
+						{$edit_mode ? `(id = ${species.id})` : ''}
+					</h1>
+					<h1 class="text-xl font-500">{species.iupac_name}</h1>
+					<h2>{Number(species.molecular_mass).toFixed(2)} atomic mass</h2>
+					<h2><em class="font-bold">SMILES: </em>{species.smiles}</h2>
+					<h2><em class="font-bold">Standard InChI: </em>{species.standard_inchi}</h2>
+					<h2><em class="font-bold">InChIkey: </em>{species.standard_inchi_key}</h2>
+					<h2><em class="font-bold">SELFIES: </em>{species.selfies}</h2>
+					<h2>{species.notes}</h2>
+				</div>
 
-		<Alert.Root class="sm:w-full lg:w-[70%]">
-			<Terminal class="h-4 w-4" />
-			<Alert.Title>Note</Alert.Title>
-			<Alert.Description
-				>Click on the database name to get more metadata such as references, bibtex file, spectrum
-				informations, etc.</Alert.Description
-			>
-		</Alert.Root>
-	{:else}
-		<p>No species found</p>
-	{/if}
+				<!-- <Alert.Root class="mb-2">
+				<Terminal class="h-4 w-4" />
+				<Alert.Title>Note</Alert.Title>
+				<Alert.Description
+					>NOTE: Click on the database name to get more metadata such as references, bibtex file,
+					spectrum informations, etc.</Alert.Description
+				>
+			</Alert.Root> -->
+			{:else}
+				<p>No species found</p>
+			{/if}
 
-	{#if species && meta}
-		<Table.Root class="lg:w-2xl sm:w-full">
-			<Table.Caption>Species-metadata</Table.Caption>
-			<Table.Header>
-				<Table.Row>
-					<Table.Head class={cell_padding}>Database</Table.Head>
-					{#each meta as metadata}
-						{@const key = data.linelist?.find((f) => f.id === metadata.linelist)?.linelist_name}
-						<Table.Head class="text-center font-bold">
-							<a
-								href="{base}/species/{species.id}/{metadata.id}"
-								on:click={(e) => {
-									if (key) meta_name = key.toLocaleUpperCase();
-									nav_to_ref(e);
-								}}
+			{#if species && meta}
+				<Table.Root class="lg:w-2xl sm:w-full ">
+					<Table.Caption>Species-metadata</Table.Caption>
+					<Table.Header>
+						<Table.Row>
+							<Table.Head class="flex items-center gap-2 {cell_padding}"
+								><span>Database</span> <HelpCircle /></Table.Head
 							>
-								<span class="underline hover:text-blue">{key?.toLocaleUpperCase()}</span>
-							</a>
-						</Table.Head>
-					{/each}
-				</Table.Row>
-			</Table.Header>
-			<Table.Body>
-				{#each metadata_keys as key}
-					<Table.Row>
-						<Table.Cell class={cell_padding}>{@html key.name}</Table.Cell>
-						{#each meta as metadata (metadata.id)}
-							<Table.Cell class="text-center {cell_padding}"
-								>{metadata[key.value] ?? '-'}</Table.Cell
-							>
+							{#each meta as metadata}
+								{@const key = data.linelist?.find((f) => f.id === metadata.linelist)?.linelist_name}
+								<Table.Head class="text-center font-bold">
+									<a
+										href="{base}/species/{species.id}/{metadata.id}"
+										on:click={(e) => {
+											if (key) meta_name = key.toLocaleUpperCase();
+											nav_to_ref(e);
+										}}
+									>
+										<span class="underline hover:text-blue">{key?.toLocaleUpperCase()}</span>
+									</a>
+								</Table.Head>
+							{/each}
+						</Table.Row>
+					</Table.Header>
+					<Table.Body>
+						{#each metadata_keys as key}
+							<Table.Row>
+								<Table.Cell class={cell_padding}>{@html key.name}</Table.Cell>
+								{#each meta as metadata (metadata.id)}
+									<Table.Cell class="text-center {cell_padding}"
+										>{metadata[key.value] ?? '-'}</Table.Cell
+									>
+								{/each}
+							</Table.Row>
 						{/each}
-					</Table.Row>
-				{/each}
-			</Table.Body>
-		</Table.Root>
-	{:else}
-		<p>No metadata found</p>
-	{/if}
+					</Table.Body>
+				</Table.Root>
+			{:else}
+				<p>No metadata found</p>
+			{/if}
 
-	{#if $page.state.ready}
-		<MetaPage
-			bind:open={open_meta_ref}
-			data={meta_page_data}
-			{meta_name}
-			species_name={species.iupac_name}
-		/>
-	{/if}
-{:catch error}
-	<Alert.Root variant="destructive">
-		<AlertCircle class="h-4 w-4" />
-		<Alert.Title>Error</Alert.Title>
-		<Alert.Description>{error?.message ?? error}</Alert.Description>
-	</Alert.Root>
-{/await}
+			{#if $page.state.ready}
+				<MetaPage
+					bind:open={open_meta_ref}
+					data={meta_page_data}
+					{meta_name}
+					species_name={species.iupac_name}
+				/>
+			{/if}
+		{:catch error}
+			<Alert.Root variant="destructive">
+				<AlertCircle class="h-4 w-4" />
+				<Alert.Title>Error</Alert.Title>
+				<Alert.Description>{error?.message ?? error}</Alert.Description>
+			</Alert.Root>
+		{/await}
+	</div>
+</div>
