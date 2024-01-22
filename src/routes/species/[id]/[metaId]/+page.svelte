@@ -5,9 +5,21 @@
 	import * as Alert from '$lib/components/ui/alert';
 	import { base } from '$app/paths';
 	import { Button } from '$lib/components/ui/button';
+	import * as bibtexParse from '@orcid/bibtex-parse-js';
 
 	export let data: PageData;
+
 	const cell_padding = 'p-2';
+
+	const fetch_bibfile = async (bibfile: string) => {
+		const res = await fetch(`${base}/uploads/bib/${bibfile}`);
+		const bibcontents = await res.text();
+		const parsed_bib = bibtexParse.toJSON(bibcontents)[0];
+		const authors = parsed_bib.entryTags.author as string;
+		// replace all { and } with empty string
+		const authors_clean = authors.replace(/[{}]/g, '');
+		return authors_clean;
+	};
 </script>
 
 {#await data.load}
@@ -57,6 +69,20 @@
 							target="_blank"
 							class="flex justify-center hover:text-blue"><Download size="20" /></a
 						>
+					</Table.Cell>
+				{/each}
+			</Table.Row>
+
+			<Table.Row>
+				<Table.Cell class={cell_padding}>Authors</Table.Cell>
+				{#each references as ref (ref.id)}
+					{@const bibfile = ref.bibtex.split('/').at(-1)}
+					<Table.Cell class="text-center {cell_padding}">
+						{#if bibfile}
+							{#await fetch_bibfile(bibfile) then value}
+								{value}
+							{/await}
+						{/if}
 					</Table.Cell>
 				{/each}
 			</Table.Row>
