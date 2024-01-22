@@ -110,8 +110,14 @@
 					<Table.Header>
 						<Table.Row>
 							<Table.Head class="flex items-center gap-2 {cell_padding}"
-								><span>Database</span> <HelpCircle /></Table.Head
-							>
+								><span>Database</span>
+								<span
+									aria-label="Click on the database name to get more metadata such as references, bibtex file, spectrum informations, etc."
+									data-cooltipz-dir="down"
+								>
+									<HelpCircle />
+								</span>
+							</Table.Head>
 							{#each meta as metadata}
 								{@const key = data.linelist?.find((f) => f.id === metadata.linelist)?.linelist_name}
 								<Table.Head class="text-center font-bold">

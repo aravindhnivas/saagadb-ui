@@ -9,6 +9,8 @@
 	import { Toaster } from 'svelte-sonner';
 	import '../app.pcss';
 	import '../global.scss';
+	import 'cooltipz-css';
+
 	export let data: LayoutServerData;
 
 	const { user } = data;
