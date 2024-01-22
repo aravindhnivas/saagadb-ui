@@ -1,9 +1,10 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import * as Table from '$lib/components/ui/table';
-	import { AlertCircle, DownloadCloud } from 'lucide-svelte';
+	import { AlertCircle, Download } from 'lucide-svelte';
 	import * as Alert from '$lib/components/ui/alert';
 	import { base } from '$app/paths';
+	import { Button } from '$lib/components/ui/button';
 
 	export let data: PageData;
 	const cell_padding = 'p-2';
@@ -30,15 +31,17 @@
 				<Table.Cell class={cell_padding}>DOI/URL</Table.Cell>
 				{#each references as ref (ref.id)}
 					<Table.Cell class="text-center {cell_padding}">
-						{#if ref.doi}
-							<a href="https://doi.org/{ref.doi}" target="_blank">
-								<em class="underline hover:text-blue">{ref.doi ?? '-'}</em>
-							</a>
-						{:else if ref.ref_url}
-							<a href={ref.ref_url} target="_blank">
-								<em class="underline hover:text-blue">{`${ref.ref_url.slice(0, 15)}...` ?? '-'}</em>
-							</a>
-						{/if}
+						<Button variant="link">
+							{#if ref.doi}
+								<a href="https://doi.org/{ref.doi}" target="_blank">
+									{ref.doi ?? '-'}
+								</a>
+							{:else if ref.ref_url}
+								<a href={ref.ref_url} target="_blank">
+									{`${ref.ref_url.slice(0, 15)}...` ?? '-'}
+								</a>
+							{/if}
+						</Button>
 					</Table.Cell>
 				{/each}
 			</Table.Row>
@@ -52,7 +55,7 @@
 							href="{base}/uploads/bib/{bibfile}"
 							download
 							target="_blank"
-							class="flex justify-center"><DownloadCloud size="20" /></a
+							class="flex justify-center hover:text-blue"><Download size="20" /></a
 						>
 					</Table.Cell>
 				{/each}
