@@ -1,37 +1,37 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import { superForm } from 'sveltekit-superforms/client';
-	import KeyField from '$lib/components/forms/key-field.svelte';
-
+	import * as Form from '$lib/components/ui/form';
+	import * as Card from '$lib/components/ui/card';
+	import loginSchema from '$lib/schemas/login';
 	export let data: PageData;
-	const { form, errors, constraints, enhance, message } = superForm(data.form);
 </script>
 
-<div class="w-full h-full flex flex-col gap-2 items-center justify-center">
-	{#if $message}
-		<div role="alert" class="alert alert-warning w-100">
-			<i class="i-mdi-alert"></i>
-			<span>{JSON.stringify($message)}</span>
-		</div>
-	{/if}
-
-	<div class="md:w-[50%] w-full card shadow-2xl bg-base-100">
-		<form class="card-body" method="POST" use:enhance>
-			<KeyField
-				key="email"
-				bind:value={$form.email}
-				errors={$errors.email}
-				constraints={$constraints.email}
-			/>
-			<KeyField
-				key="password"
-				bind:value={$form.password}
-				errors={$errors.password}
-				constraints={$constraints.password}
-			/>
-			<div class="form-control">
-				<button class="btn btn-primary">Login</button>
-			</div>
-		</form>
-	</div>
+<div class="w-full flex items-center justify-center">
+	<Form.Root form={data.form} schema={loginSchema} let:config>
+		<Card.Root class="lg:w-sm sm:w-full">
+			<Card.Header class="space-y-1">
+				<Card.Title class="text-2xl">Login with your account</Card.Title>
+				<Card.Description>Enter your email and password below</Card.Description>
+			</Card.Header>
+			<Card.Content class="grid gap-4">
+				<Form.Field {config} name="email">
+					<Form.Item>
+						<Form.Label>Email</Form.Label>
+						<Form.Input type="email" />
+						<Form.Validation />
+					</Form.Item>
+				</Form.Field>
+				<Form.Field {config} name="password">
+					<Form.Item>
+						<Form.Label>Password</Form.Label>
+						<Form.Input type="password" />
+						<Form.Validation />
+					</Form.Item>
+				</Form.Field>
+			</Card.Content>
+			<Card.Footer>
+				<Form.Button class="w-full">Login</Form.Button>
+			</Card.Footer>
+		</Card.Root>
+	</Form.Root>
 </div>

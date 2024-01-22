@@ -1,22 +1,17 @@
 import type { Actions, PageServerLoad } from './$types';
-import { z } from 'zod';
 import { superValidate, setError } from 'sveltekit-superforms/server';
 import { fail, redirect } from '@sveltejs/kit';
 import { DB_URL } from '$lib/server';
 import { set_token } from '$lib/server/cookies';
 import { base } from '$app/paths';
+import loginSchema from '$lib/schemas/login';
 
-const schema = z.object({
-	email: z.string().email(),
-	password: z.string().min(8)
-});
-
-export const load: PageServerLoad = async ({ request, locals }) => {
+export const load: PageServerLoad = async ({ locals }) => {
 	if (locals.token) {
 		redirect(303, base + '/admin/dashboard');
 	}
 	// Server API:
-	const form = await superValidate(request, schema);
+	const form = await superValidate(loginSchema);
 
 	// Unless you throw, always return { form } in load and form actions.
 	return { form };
@@ -24,7 +19,7 @@ export const load: PageServerLoad = async ({ request, locals }) => {
 
 export const actions: Actions = {
 	default: async ({ fetch, request, url, cookies }) => {
-		const form = await superValidate(request, schema);
+		const form = await superValidate(request, loginSchema);
 
 		if (!form.valid) {
 			return fail(400, { form });
