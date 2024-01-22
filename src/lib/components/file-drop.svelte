@@ -46,8 +46,8 @@
 			<Upload />
 			<span>Drag & drop or Upload file here</span>
 		{/if}
-		{#if filename}
-			<em class=" text-gray-500">{filename}</em>
-		{/if}
 	</div>
 </DropFile>
+{#if filename}
+	<span class=" text-blue">{filename}</span>
+{/if}
