@@ -91,15 +91,6 @@
 					<h2><em class="font-bold">SELFIES: </em>{species.selfies}</h2>
 					<h2>{species.notes}</h2>
 				</div>
-
-				<!-- <Alert.Root class="mb-2">
-				<Terminal class="h-4 w-4" />
-				<Alert.Title>Note</Alert.Title>
-				<Alert.Description
-					>NOTE: Click on the database name to get more metadata such as references, bibtex file,
-					spectrum informations, etc.</Alert.Description
-				>
-			</Alert.Root> -->
 			{:else}
 				<p>No species found</p>
 			{/if}

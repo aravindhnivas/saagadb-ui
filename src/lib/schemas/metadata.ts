@@ -1,4 +1,4 @@
-import { z, type AnyZodObject } from 'zod';
+import { z } from 'zod';
 import { v4 as uuidv4 } from 'uuid';
 
 const zint = () => {
@@ -8,9 +8,7 @@ const zint = () => {
 		.default(undefined as unknown as number);
 };
 
-export const Schemas: {
-	[key: string]: AnyZodObject;
-} = {
+export const Schemas = {
 	'species-metadata': z.object({
 		species: zint(),
 		linelist: zint(),
@@ -59,7 +57,7 @@ export const Schemas: {
 		vib_qn: z.string().optional(),
 		notes: z.string().optional()
 	})
-};
+} as const;
 
 export const fileInputs: {
 	[key: string]: { id: string; name: string; required: boolean }[];
