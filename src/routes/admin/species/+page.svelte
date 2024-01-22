@@ -4,11 +4,17 @@
 	import Dropfile from '$lib/components/file-drop.svelte';
 	import * as Form from '$lib/components/ui/form';
 	import * as Card from '$lib/components/ui/card';
-	import speciesSchema from './schema';
+	import speciesSchema from '$lib/schemas/species';
 	export let data: PageData;
 </script>
 
-<FormComponent footer={false} schema={speciesSchema} form={data.form} let:config debug={true}>
+<FormComponent
+	footer={false}
+	schema={speciesSchema}
+	form={data.form}
+	let:config
+	debug={import.meta.env.DEV}
+>
 	<Card.Root>
 		<Card.Header>
 			<Card.Title>Upload new species</Card.Title>

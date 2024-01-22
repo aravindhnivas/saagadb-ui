@@ -3,11 +3,9 @@
 	import Dropfile from '$lib/components/file-drop.svelte';
 	import { AlertCircle } from 'lucide-svelte';
 	import * as Alert from '$lib/components/ui/alert';
-	import { Schemas, dropdowns, fileInputs } from './schemas';
+	import { Schemas, dropdowns, fileInputs, metadata_items } from '$lib/schemas/metadata';
 	import * as Form from '$lib/components/ui/form';
 	import FormCombobox from '$lib/components/combobox/form-combobox.svelte';
-	import { metadata_items } from './metadata';
-
 	import type { PageData } from './$types';
 	import MessageAlert from '$lib/components/forms/message-alert.svelte';
 	import type { FormOptions } from 'formsnap';
@@ -55,7 +53,7 @@
 		{form}
 		let:config
 		{options}
-		debug
+		debug={import.meta.env.DEV}
 	>
 		<MessageAlert />
 		<svelte:fragment slot="description">

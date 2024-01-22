@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as Tabs from '$lib/components/ui/tabs';
-	import { metadata_items } from './index/metadata';
+	import { metadata_items } from '$lib/schemas/metadata';
 	let value = metadata_items[0].value;
 </script>
 

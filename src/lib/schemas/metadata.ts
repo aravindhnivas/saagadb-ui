@@ -2,7 +2,6 @@ import { z, type AnyZodObject } from 'zod';
 import { v4 as uuidv4 } from 'uuid';
 
 const zint = () => {
-	// make the default value undefined and not 0
 	return z
 		.number()
 		.int()
@@ -25,9 +24,12 @@ export const Schemas: {
 		a_const: z.string().nullable(),
 		b_const: z.string().nullable(),
 		c_const: z.string().nullable(),
-		data_date: z.string().min(1).refine((str) => !isNaN(Date.parse(str)), {
-			message: 'Invalid date format'
-		}),
+		data_date: z
+			.string()
+			.min(1)
+			.refine((str) => !isNaN(Date.parse(str)), {
+				message: 'Invalid date format'
+			}),
 		data_contributor: z.string().min(1),
 		qpart_file: z.string().optional(),
 		int_file: z.string().optional(),
@@ -90,3 +92,13 @@ export const dropdowns: {
 };
 
 export const ids = ['species-metadata', 'reference', 'meta-reference', 'line'] as const;
+
+export const metadata_items: {
+	value: (typeof ids)[number];
+	name: string;
+}[] = [
+	{ value: 'species-metadata', name: 'Species metadata' },
+	{ value: 'reference', name: 'Reference' },
+	{ value: 'meta-reference', name: 'Meta reference' },
+	{ value: 'line', name: 'Line' }
+];

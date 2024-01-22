@@ -1,12 +1,11 @@
 import type { Actions, PageServerLoad } from './$types';
 import { message, setError, superValidate } from 'sveltekit-superforms/server';
-import { Schemas, ids, fileInputs } from './schemas';
+import { Schemas, ids, fileInputs } from '$lib/schemas/metadata';
 import type { SuperValidated } from 'sveltekit-superforms';
 import { fail } from '@sveltejs/kit';
 import { DB_URL } from '$lib/server';
 
 export const load: PageServerLoad = async () => {
-
 	const forms: {
 		[key: string]: SuperValidated<(typeof Schemas)[number]>;
 	} = {};
@@ -80,15 +79,15 @@ export const actions: Actions = {
 			} catch (error) {
 				console.log('could not parse json', error);
 			}
-		} 
+		}
 
-		let res_data
-		if(res.ok && res.status === 200) {
+		let res_data;
+		if (res.ok && res.status === 200) {
 			res_data = await res.json();
 			message(form, { type: 'success', text: 'Form submitted succesfully' });
 			return { form, response: res_data };
 		} else {
-			console.log('trying text parsing after 500 Internal error')
+			console.log('trying text parsing after 500 Internal error');
 			const msg = await res.text();
 			console.log({ msg });
 			message(form, msg);

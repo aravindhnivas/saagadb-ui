@@ -2,7 +2,7 @@ import type { Actions, PageServerLoad } from './$types';
 import { message, setError, superValidate } from 'sveltekit-superforms/server';
 import { fail } from '@sveltejs/kit';
 import { DB_URL } from '$lib/server';
-import speciesSchema from './schema';
+import speciesSchema from '$lib/schemas/species';
 
 export const load: PageServerLoad = async () => {
 	// Server API:
