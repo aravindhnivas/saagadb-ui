@@ -12,10 +12,10 @@
 		"format": "prettier --write ."
 	},
 	"devDependencies": {
-		"@iconify/json": "^2.2.171",
+		"@iconify/json": "^2.2.172",
 		"@svelte-parts/drop-file": "^0.0.23",
-		"@sveltejs/adapter-node": "^4.0.0",
-		"@sveltejs/kit": "^2.4.1",
+		"@sveltejs/adapter-node": "^4.0.1",
+		"@sveltejs/kit": "^2.4.3",
 		"@sveltejs/svelte-virtual-list": "^3.0.1",
 		"@sveltejs/vite-plugin-svelte": "^3.0.1",
 		"@types/js-yaml": "^4.0.9",
@@ -23,8 +23,8 @@
 		"@types/node": "^20.11.5",
 		"@types/tabulator-tables": "^5.5.6",
 		"@types/uuid": "^9.0.7",
-		"@typescript-eslint/eslint-plugin": "^6.19.0",
-		"@typescript-eslint/parser": "^6.19.0",
+		"@typescript-eslint/eslint-plugin": "^6.19.1",
+		"@typescript-eslint/parser": "^6.19.1",
 		"@unocss/extractor-svelte": "^0.58.3",
 		"@unocss/preset-icons": "^0.58.3",
 		"@unocss/reset": "^0.58.3",
@@ -64,8 +64,8 @@
 		"formsnap": "^0.4.2",
 		"lodash-es": "^4.17.21",
 		"lucide-svelte": "^0.312.0",
-		"tabulator-tables": "^5.5.2",
-		"tailwind-merge": "^2.2.0",
+		"tabulator-tables": "^5.5.3",
+		"tailwind-merge": "^2.2.1",
 		"tailwind-variants": "^0.1.20",
 		"uuid": "^9.0.1"
 	}
