@@ -3,10 +3,12 @@
 	import { base } from '$app/paths';
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
+
 	const nav = [
 		{ name: 'Home', href: base + '/' },
 		{ name: 'Species', href: base + '/species' },
-		{ name: 'Line-query', href: base + '/linequery' }
+		{ name: 'Line-query', href: base + '/linequery' },
+		{ name: 'References', href: base + '/references' }
 	];
 
 	let active_page: string;
