@@ -113,10 +113,7 @@
 						<h2><em class="font-bold">SELFIES: </em>{species.selfies}</h2>
 						<h2>{species.notes}</h2>
 					</div>
-					<canvas use:chemdraw={species.smiles} id="mol-canvas" width="500" height="500"></canvas>
-					<!-- <div class="chem_drawing">
-						{@html get_mol_structure_from_smi(species.smiles)}
-					</div> -->
+					<canvas use:chemdraw={species.smiles} id="mol-canvas"></canvas>
 				</div>
 			{:else}
 				<p>No species found</p>
