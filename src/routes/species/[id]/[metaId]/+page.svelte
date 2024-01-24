@@ -30,7 +30,10 @@
 					<p class="text-center">No partition table available</p>
 				{/if}
 			{:catch error}
-				<p class="text-red">Error occured</p>
+				<div class="flex gap-2 items-center justify-center text-error">
+					<AlertCircle />
+					<span>{error.message}</span>
+				</div>
 			{/await}
 		</div>
 	</div>

@@ -8,16 +8,15 @@
 	const current_meta = meta.find((m) => m.id == id);
 	const { partition_function, qpart_file } = current_meta ?? {};
 	const qpart_filename = qpart_file?.split('/').pop();
-	console.log({ current_meta, qpart_filename });
 	const cell_padding = 'p-2';
 </script>
 
 {#if partition_function}
 	<div class="flex gap-4 items-center">
-		<h1>Parition function of the molecule</h1>
+		<h1>Parition function</h1>
 		<a href="{base}/uploads/sp/{qpart_filename}" download target="_blank"><Download /></a>
 	</div>
-	<Table.Root class="sm:w-full lg:max-w-2xl">
+	<Table.Root>
 		<Table.Caption>Table 2. Partition function</Table.Caption>
 		<Table.Header>
 			<Table.Row>

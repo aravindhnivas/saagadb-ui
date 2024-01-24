@@ -8,7 +8,7 @@
 	const cell_padding = 'p-2';
 </script>
 
-<Table.Root class="sm:w-full lg:max-w-2xl">
+<Table.Root>
 	<Table.Caption>Table 1. Metadata reference</Table.Caption>
 	<Table.Header>
 		<Table.Row>
@@ -31,7 +31,7 @@
 			{/each}
 		</Table.Row>
 
-		<Table.Row>
+		<!-- <Table.Row>
 			<Table.Cell class={cell_padding}>Bibtex file</Table.Cell>
 			{#each references as ref (ref.id)}
 				<Table.Cell class="text-center {cell_padding}">
@@ -40,7 +40,7 @@
 					>
 				</Table.Cell>
 			{/each}
-		</Table.Row>
+		</Table.Row> -->
 
 		<Table.Row>
 			<Table.Cell class={cell_padding}>Ref. Notes</Table.Cell>

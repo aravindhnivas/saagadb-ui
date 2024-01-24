@@ -1,20 +1,18 @@
 <script lang="ts">
-	import { Copy } from 'lucide-svelte';
+	import { AlertCircle, Download } from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button';
 	import Cite from 'citation-js';
 	import type { Reference } from '$lib/schemas/reference';
-	import { copy } from 'svelte-copy';
-	import { toast } from 'svelte-sonner';
+	import CopyButton from '$lib/components/copy-button.svelte';
 
 	export let ref: Reference;
 
 	const fetch_bibfile = async (ref: Reference) => {
 		const parsed_data = await Cite.async(ref.doi);
-
 		const data = parsed_data.data[0];
-		// console.log(data.link);
 
-		const { author, issued, URL } = data;
+		// console.log(parsed_data);
+		const { author, issued, URL: href } = data;
 
 		const first_author = author.find((a) => a.sequence === 'first');
 		const author_clean = first_author.family + (author.length > 1 ? ' et al.' : '');
@@ -23,37 +21,35 @@
 
 		const tooltip = `${data['container-title']}`;
 		const parsed = parsed_data.format('bibliography', {
-			// format: 'html',
+			format: 'text',
 			template: 'apa',
 			lang: 'en-US'
 		});
-		return { citeas, URL, tooltip, parsed };
+
+		const bibtex_text = parsed_data.format('bibtex');
+		const citation_key = bibtex_text.match(/@article\{(.+),/)[1];
+		const blob = new Blob([bibtex_text], { type: 'text/plain' });
+		const bibtex_download_href = URL.createObjectURL(blob);
+
+		return { citeas, href, tooltip, parsed, bibtex_download_href, citation_key };
 	};
 </script>
 
 {#await fetch_bibfile(ref)}
 	<p>fetching...</p>
-{:then { citeas, URL, tooltip, parsed }}
-	<div class="flex gap-2 items-center">
+{:then { citeas, href, tooltip, parsed, bibtex_download_href, citation_key }}
+	<div class="flex gap-4 items-center justify-center">
 		<Button variant="link">
-			<a href={URL} target="_blank">
+			<a {href} target="_blank">
 				<span aria-label={tooltip} data-cooltipz-dir="top">{citeas}</span>
 			</a>
 		</Button>
-		<button
-			use:copy={parsed}
-			on:svelte-copy={(event) => {
-				toast.success(`${event.detail}`);
-			}}
-			on:svelte-copy:error={(event) => {
-				toast.error(`There was an error: ${event.detail.message}`);
-			}}
-			aria-label={'copy full reference to clipboard'}
-			data-cooltipz-dir="top"
-		>
-			<Copy />
-		</button>
+		<CopyButton text={parsed} />
+		<a href={bibtex_download_href} download={`${citation_key}.bib`} target="_blank"><Download /></a>
 	</div>
 {:catch error}
-	<p>error: {error.message}</p>
+	<div class="flex gap-2 items-center justify-center text-error">
+		<AlertCircle />
+		<span>{error.message}</span>
+	</div>
 {/await}

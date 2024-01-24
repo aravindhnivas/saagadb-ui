@@ -103,6 +103,9 @@ devDependencies:
   '@unocss/transformer-directives':
     specifier: ^0.58.3
     version: 0.58.3
+  animate.css:
+    specifier: ^4.1.1
+    version: 4.1.1
   cooltipz-css:
     specifier: ^2.3.0
     version: 2.3.0(sass@1.70.0)
@@ -127,6 +130,9 @@ devDependencies:
   sass:
     specifier: ^1.70.0
     version: 1.70.0
+  smiles-drawer:
+    specifier: ^2.1.7
+    version: 2.1.7
   svelte:
     specifier: ^4.2.9
     version: 4.2.9
@@ -1785,6 +1791,10 @@ packages:
       uri-js: 4.4.1
     dev: true
 
+  /animate.css@4.1.1:
+    resolution: {integrity: sha512-+mRmCTv6SbCmtYJCN4faJMNFVNN5EuCTTprDTAo7YzIGji2KADmakjVA3+8mVDkZ2Bf09vayB35lSQIex2+QaQ==}
+    dev: true
+
   /ansi-regex@5.0.1:
     resolution: {integrity: sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ==}
     engines: {node: '>=8'}
@@ -2124,6 +2134,10 @@ packages:
     resolution: {integrity: sha512-bIomtDF5KGpdogkLd9VspvFzk9KfpyyGlS8YFVZl7TGPBHL5snIOnxeshwVgPteQ9b4Eydl+pVbIyE1DcvCWgQ==}
     engines: {node: '>=10'}
     dev: false
+
+  /chroma-js@2.4.2:
+    resolution: {integrity: sha512-U9eDw6+wt7V8z5NncY2jJfZa+hUH8XEj8FQHgFJTrUFnJfXYf4Ml4adI2vXZOjqRDpFWtYVWypDfZwnJ+HIR4A==}
+    dev: true
 
   /citation-js@0.7.8:
     resolution: {integrity: sha512-8QDVuZ2U2+syKGJcfy5a8KmtKSMGl8gTbYN3IQ63v44l7fK5o1sqfuvtaKmhqftMee96FvFzVN76UDg6aCHv0w==}
@@ -4659,6 +4673,12 @@ packages:
     resolution: {integrity: sha512-94hK0Hh8rPqQl2xXc3HsaBoOXKV20MToPkcXvwbISWLEs+64sBq5kFgn2kJDHb1Pry9yrP0dxrCI9RRci7RXKg==}
     engines: {node: '>= 6.0.0', npm: '>= 3.0.0'}
     dev: false
+
+  /smiles-drawer@2.1.7:
+    resolution: {integrity: sha512-gApm5tsWrAYDkjbGYQb5OhwIyHvtM2kIO40DfATaOV0DPm0wA63yn4Ow7us27BT49lDdU9busCOPN9fpyonzaA==}
+    dependencies:
+      chroma-js: 2.4.2
+    dev: true
 
   /socks-proxy-agent@6.2.1:
     resolution: {integrity: sha512-a6KW9G+6B3nWZ1yB8G7pJwL3ggLy1uTzKAgCb7ttblwqdz9fMGJUuTy3uFzEP48FAs9FLILlmzDlE2JJhVQaXQ==}

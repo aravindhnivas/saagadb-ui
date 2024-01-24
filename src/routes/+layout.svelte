@@ -5,13 +5,13 @@
 	import Footer from '$lib/layout/footer.svelte';
 	import Navbar from '$lib/layout/navbar.svelte';
 	import { logged_in } from '$lib/utils/stores';
-	import type { LayoutServerData } from './$types';
+	import type { LayoutData } from './$types';
 	import { Toaster } from 'svelte-sonner';
+
 	import '../app.pcss';
 	import '../global.scss';
-	import 'cooltipz-css';
 
-	export let data: LayoutServerData;
+	export let data: LayoutData;
 
 	const { user } = data;
 	$: if (user) {

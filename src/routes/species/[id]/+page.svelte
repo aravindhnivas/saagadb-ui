@@ -11,10 +11,11 @@
 	import { AlertCircle, ArrowBigLeft, HelpCircle, Terminal } from 'lucide-svelte';
 	import * as Alert from '$lib/components/ui/alert';
 	import { base } from '$app/paths';
+	import * as MolDraw from 'smiles-drawer';
 
 	export let data: LayoutData;
-	// console.log(data);
-
+	// console.log(MolDraw);
+	// window.MolDraw = MolDraw;
 	let metadata_keys = [
 		{ name: 'Category', value: 'category' },
 		{ name: 'Molecule tag', value: 'molecule_tag' },
@@ -30,6 +31,27 @@
 		{ name: 'Contributors', value: 'data_contributor' },
 		{ name: 'Notes', value: 'notes' }
 	];
+
+	const chemdraw = (node: HTMLCanvasElement, smiles: string) => {
+		console.log({ node, smiles, id: node.id, MolDraw });
+		let moleculeOptions = {};
+		let reactionOptions = {};
+
+		const sd = new MolDraw.SmiDrawer(moleculeOptions, reactionOptions);
+		sd.draw(
+			smiles,
+			node.id,
+			'light',
+			function (result) {
+				console.log({ result });
+			},
+			function (err) {
+				console.log({ err });
+			}
+		);
+		console.log({ sd });
+		return '';
+	};
 
 	onMount(() => {
 		if (!$edit_mode) return;
@@ -94,6 +116,10 @@
 						<h2><em class="font-bold">SELFIES: </em>{species.selfies}</h2>
 						<h2>{species.notes}</h2>
 					</div>
+					<canvas use:chemdraw={species.smiles} id="mol-canvas" width="500" height="500"></canvas>
+					<!-- <div class="chem_drawing">
+						{@html get_mol_structure_from_smi(species.smiles)}
+					</div> -->
 				</div>
 			{:else}
 				<p>No species found</p>
