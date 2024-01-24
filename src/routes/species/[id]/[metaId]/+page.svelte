@@ -1,90 +1,40 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import * as Table from '$lib/components/ui/table';
-	import { AlertCircle, Download } from 'lucide-svelte';
+	import { AlertCircle } from 'lucide-svelte';
 	import * as Alert from '$lib/components/ui/alert';
-	import Bibfile from './bibfile.svelte';
+	import MetaRefTable from './meta-ref-table.svelte';
+	import MetaPartitionTable from './meta-partition-table.svelte';
 
 	export let data: PageData;
-	const cell_padding = 'p-2';
 </script>
 
-{#await data.load}
+{#await data.load_meta_reference}
 	<div class="flex gap-2 items-center">
 		<span class="loading loading-spinner"></span>
 		<span>Fetching data please wait...</span>
 	</div>
 {:then { meta_references, references }}
-	<Table.Root class="sm:w-full lg:max-w-2xl">
-		<Table.Caption>Metadata reference</Table.Caption>
-		<Table.Header>
-			<Table.Row>
-				<Table.Head class="{cell_padding} w-[100px]"></Table.Head>
-				{#each meta_references as metaref, ind (metaref.id)}
-					<Table.Cell class="text-center {cell_padding}">Ref <sup>{ind + 1}</sup></Table.Cell>
-				{/each}
-			</Table.Row>
-		</Table.Header>
+	<div class="grid gap-4 p-5">
+		<MetaRefTable {meta_references} {references} />
 
-		<Table.Body>
-			<Table.Row>
-				<Table.Cell class={cell_padding}>Cite</Table.Cell>
-				{#each references as ref (ref.id)}
-					<Table.Cell class="text-center {cell_padding}">
-						{#if ref.bibtex}
-							<Bibfile {ref} />
-						{/if}
-					</Table.Cell>
-				{/each}
-			</Table.Row>
-
-			<Table.Row>
-				<Table.Cell class={cell_padding}>Bibtex file</Table.Cell>
-				{#each references as ref (ref.id)}
-					<Table.Cell class="text-center {cell_padding}">
-						<a
-							href={ref.bibtex}
-							download
-							target="_blank"
-							class="flex justify-center hover:text-blue"><Download size="20" /></a
-						>
-					</Table.Cell>
-				{/each}
-			</Table.Row>
-
-			<Table.Row>
-				<Table.Cell class={cell_padding}>Ref. Notes</Table.Cell>
-				{#each references as ref (ref.id)}
-					<Table.Cell class="text-center {cell_padding}">{ref.notes ?? '-'}</Table.Cell>
-				{/each}
-			</Table.Row>
-
-			<Table.Row>
-				<Table.Cell class={cell_padding}>Dipole moment</Table.Cell>
-				{#each meta_references as metaref (metaref.id)}
-					<Table.Cell class="text-center {cell_padding}"
-						>{metaref.dipole_moment ? '✅' : '❌'}</Table.Cell
-					>
-				{/each}
-			</Table.Row>
-
-			<Table.Row>
-				<Table.Cell class={cell_padding}>Spectrum</Table.Cell>
-				{#each meta_references as metaref (metaref.id)}
-					<Table.Cell class="text-center {cell_padding}"
-						>{metaref.spectrum ? '✅' : '❌'}</Table.Cell
-					>
-				{/each}
-			</Table.Row>
-
-			<Table.Row>
-				<Table.Cell class={cell_padding}>Notes</Table.Cell>
-				{#each meta_references as metaref (metaref.id)}
-					<Table.Cell class="text-center {cell_padding}">{metaref.notes ?? '-'}</Table.Cell>
-				{/each}
-			</Table.Row>
-		</Table.Body>
-	</Table.Root>
+		<div class="space-y-2">
+			<h1>Parition function of the molecule</h1>
+			{#await data.load_species_metadata}
+				<div class="flex gap-2 items-center">
+					<span class="loading loading-spinner"></span>
+					<span>Fetching partition please wait...</span>
+				</div>
+			{:then { meta }}
+				{#if meta && meta.length > 0}
+					<MetaPartitionTable {meta} id={data.id} />
+				{:else}
+					<p class="text-center">No partition table available</p>
+				{/if}
+			{:catch error}
+				<p class="text-red">Error occured</p>
+			{/await}
+		</div>
+	</div>
 {:catch error}
 	<Alert.Root variant="destructive">
 		<AlertCircle class="h-4 w-4" />

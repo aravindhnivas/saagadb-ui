@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { edit_mode } from '$lib/utils/stores';
-	import type { PageData } from './$types';
+	import type { LayoutData } from './$types';
 	import type { PageData as MetaPageData } from './[metaId]/$types';
 	import * as Table from '$lib/components/ui/table';
 	import { onMount } from 'svelte';
@@ -12,7 +12,8 @@
 	import * as Alert from '$lib/components/ui/alert';
 	import { base } from '$app/paths';
 
-	export let data: PageData;
+	export let data: LayoutData;
+	// console.log(data);
 
 	let metadata_keys = [
 		{ name: 'Category', value: 'category' },
@@ -20,9 +21,9 @@
 		{ name: 'A <em>/ MHz</em>', value: 'a_const' },
 		{ name: 'B <em>/ MHz</em>', value: 'b_const' },
 		{ name: 'C <em>/ MHz</em>', value: 'c_const' },
-		{ name: 'mu<sub>a</sub> <em>/ D</em>', value: 'mu_a' },
-		{ name: 'mu<sub>b</sub> <em>/ D</em>', value: 'mu_b' },
-		{ name: 'mu<sub>c</sub> <em>/ D</em>', value: 'mu_c' },
+		{ name: 'μ<sub>a</sub> <em>/ D</em>', value: 'mu_a' },
+		{ name: 'μ<sub>b</sub> <em>/ D</em>', value: 'mu_b' },
+		{ name: 'μ<sub>c</sub> <em>/ D</em>', value: 'mu_c' },
 		{ name: 'Hyperfine', value: 'hyperfine' },
 		{ name: 'Degree of freedom', value: 'degree_of_freedom' },
 		{ name: 'Date added', value: 'data_date' },
@@ -50,6 +51,7 @@
 		// run `load` functions (or rather, get the result of the `load` functions
 		// that are already running because of `data-sveltekit-preload-data`)
 		const result = await preloadData(href);
+		// console.log({ result });
 		if (result.type === 'loaded' && result.status === 200) {
 			meta_page_data = result.data as MetaPageData;
 			pushState(href, { ready: true });
@@ -71,25 +73,27 @@
 	</Button>
 
 	<div class="overflow-auto">
-		{#await data.load}
+		{#await data.load_species_metadata}
 			<div class="flex gap-2 items-center items-center">
 				<span class="loading loading-spinner"></span>
 				<span>Fetching data please wait...</span>
 			</div>
 		{:then { species, meta }}
 			{#if species}
-				<div class="my-2">
-					<h1 class="text-xl font-300">
-						{@html species.name_html}
-						{$edit_mode ? `(id = ${species.id})` : ''}
-					</h1>
-					<h1 class="text-xl font-500">{species.iupac_name}</h1>
-					<h2>{Number(species.molecular_mass).toFixed(2)} atomic mass</h2>
-					<h2><em class="font-bold">SMILES: </em>{species.smiles}</h2>
-					<h2><em class="font-bold">Standard InChI: </em>{species.standard_inchi}</h2>
-					<h2><em class="font-bold">InChIkey: </em>{species.standard_inchi_key}</h2>
-					<h2><em class="font-bold">SELFIES: </em>{species.selfies}</h2>
-					<h2>{species.notes}</h2>
+				<div class="grid grid-cols-2 gap-4 my-2">
+					<div class="">
+						<h1 class="text-xl font-300">
+							{@html species.name_html}
+							{$edit_mode ? `(id = ${species.id})` : ''}
+						</h1>
+						<h1 class="text-xl font-500">{species.iupac_name}</h1>
+						<h2>{Number(species.molecular_mass).toFixed(2)} atomic mass</h2>
+						<h2><em class="font-bold">SMILES: </em>{species.smiles}</h2>
+						<h2><em class="font-bold">Standard InChI: </em>{species.standard_inchi}</h2>
+						<h2><em class="font-bold">InChIkey: </em>{species.standard_inchi_key}</h2>
+						<h2><em class="font-bold">SELFIES: </em>{species.selfies}</h2>
+						<h2>{species.notes}</h2>
+					</div>
 				</div>
 			{:else}
 				<p>No species found</p>
@@ -130,9 +134,14 @@
 							<Table.Row>
 								<Table.Cell class={cell_padding}>{@html key.name}</Table.Cell>
 								{#each meta as metadata (metadata.id)}
-									<Table.Cell class="text-center {cell_padding}"
-										>{metadata[key.value] ?? '-'}</Table.Cell
-									>
+									{@const val = metadata[key.value]}
+									<Table.Cell class="text-center {cell_padding}">
+										{#if typeof val === 'boolean' || ['true', 'false'].includes(val)}
+											{val === 'true' ? '✅' : '❌'}
+										{:else}
+											{val ?? '-'}
+										{/if}
+									</Table.Cell>
 								{/each}
 							</Table.Row>
 						{/each}

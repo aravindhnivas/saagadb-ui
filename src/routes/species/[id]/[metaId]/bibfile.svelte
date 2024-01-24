@@ -10,8 +10,12 @@
 
 	const fetch_bibfile = async (ref: Reference) => {
 		const parsed_data = await Cite.async(ref.doi);
+
 		const data = parsed_data.data[0];
+		// console.log(data.link);
+
 		const { author, issued, URL } = data;
+
 		const first_author = author.find((a) => a.sequence === 'first');
 		const author_clean = first_author.family + (author.length > 1 ? ' et al.' : '');
 		const year = issued['date-parts'][0][0];
@@ -20,14 +24,16 @@
 		const tooltip = `${data['container-title']}`;
 		const parsed = parsed_data.format('bibliography', {
 			// format: 'html',
-			template: 'harvard1',
+			template: 'apa',
 			lang: 'en-US'
 		});
 		return { citeas, URL, tooltip, parsed };
 	};
 </script>
 
-{#await fetch_bibfile(ref) then { citeas, URL, tooltip, parsed }}
+{#await fetch_bibfile(ref)}
+	<p>fetching...</p>
+{:then { citeas, URL, tooltip, parsed }}
 	<div class="flex gap-2 items-center">
 		<Button variant="link">
 			<a href={URL} target="_blank">
@@ -37,7 +43,7 @@
 		<button
 			use:copy={parsed}
 			on:svelte-copy={(event) => {
-				toast.success(`Copied to clipboard: ${event.detail}`);
+				toast.success(`${event.detail}`);
 			}}
 			on:svelte-copy:error={(event) => {
 				toast.error(`There was an error: ${event.detail.message}`);
@@ -48,4 +54,6 @@
 			<Copy />
 		</button>
 	</div>
+{:catch error}
+	<p>error: {error.message}</p>
 {/await}

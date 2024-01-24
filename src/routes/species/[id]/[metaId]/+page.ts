@@ -1,23 +1,6 @@
 import { base } from '$app/paths';
 import type { PageLoad } from './$types';
 
-interface Reference {
-	id: string;
-	doi: string;
-	ref_url: string;
-	bibtex: string;
-	notes: string;
-}
-
-interface MetaReference {
-	id: string;
-	meta: string;
-	ref: string;
-	dipole_moment: boolean;
-	spectrum: boolean;
-	notes: string;
-}
-
 export const load: PageLoad = async ({ fetch, params }) => {
 	const fetch_data = async () => {
 		const meta_references = (await fetch(
@@ -35,5 +18,5 @@ export const load: PageLoad = async ({ fetch, params }) => {
 		return { meta_references, references };
 	};
 
-	return { load: fetch_data() };
+	return { load_meta_reference: fetch_data(), id: params.metaId };
 };
