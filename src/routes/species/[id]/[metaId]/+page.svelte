@@ -18,7 +18,6 @@
 		<MetaRefTable {meta_references} {references} />
 
 		<div class="space-y-2">
-			<h1>Parition function of the molecule</h1>
 			{#await data.load_species_metadata}
 				<div class="flex gap-2 items-center">
 					<span class="loading loading-spinner"></span>

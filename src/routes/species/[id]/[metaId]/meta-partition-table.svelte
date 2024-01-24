@@ -13,7 +13,10 @@
 </script>
 
 {#if partition_function}
-	<a href="{base}/uploads/sp/{qpart_filename}" download target="_blank"><Download /></a>
+	<div class="flex gap-4 items-center">
+		<h1>Parition function of the molecule</h1>
+		<a href="{base}/uploads/sp/{qpart_filename}" download target="_blank"><Download /></a>
+	</div>
 	<Table.Root class="sm:w-full lg:max-w-2xl">
 		<Table.Caption>Table 2. Partition function</Table.Caption>
 		<Table.Header>
