@@ -3,7 +3,6 @@
 	import * as Table from '$lib/components/ui/table';
 	import { AlertCircle, Copy, Download } from 'lucide-svelte';
 	import * as Alert from '$lib/components/ui/alert';
-	import { base } from '$app/paths';
 	import { Button } from '$lib/components/ui/button';
 	import Cite from 'citation-js';
 	import type { Reference } from '$lib/schemas/reference';
@@ -12,7 +11,6 @@
 
 	export let data: PageData;
 
-	console.log(copy);
 	const cell_padding = 'p-2';
 
 	const fetch_bibfile = async (ref: Reference) => {
