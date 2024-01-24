@@ -28,7 +28,6 @@
 	let query = '';
 	let mounted = false;
 	let formatted: { text: string; matches: boolean; key: string }[][][] = [];
-	$: console.log(formatted);
 	onMount(async () => {
 		const [err, result] = await oO(parse_ref());
 		if (err) {
