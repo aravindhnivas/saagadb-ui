@@ -99,7 +99,7 @@
 				<p>No species found</p>
 			{/if}
 
-			{#if species && meta}
+			{#if species && meta.length > 0}
 				<Table.Root class="lg:w-2xl sm:w-full ">
 					<Table.Caption>Species-metadata</Table.Caption>
 					<Table.Header>
