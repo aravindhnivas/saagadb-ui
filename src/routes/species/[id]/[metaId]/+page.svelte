@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import { AlertCircle } from 'lucide-svelte';
+	import { AlertCircle, Download } from 'lucide-svelte';
 	import * as Alert from '$lib/components/ui/alert';
 	import MetaRefTable from './meta-ref-table.svelte';
 	import MetaPartitionTable from './meta-partition-table.svelte';
