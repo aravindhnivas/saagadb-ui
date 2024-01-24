@@ -24,9 +24,13 @@ export const load: PageLoad = async ({ fetch, params }) => {
 			`${base}/api/data/meta-reference/query?meta_id=${params.metaId}`
 		).then((res) => res.json())) as MetaReference[];
 		const references = (await Promise.all(
-			meta_references.map(({ ref }) =>
-				fetch(`${base}/api/data/reference/${ref}`).then((res) => res.json())
-			)
+			meta_references.map(async ({ ref }) => {
+				const res = await fetch(`${base}/api/data/reference/${ref}`);
+				if (!res.ok) return null;
+				const { bibtex, ...restRef } = (await res.json()) as Reference;
+				const bibfile = `${base}/uploads/bib/` + bibtex.split('/').at(-1);
+				return { ...restRef, bibtex: bibfile };
+			})
 		)) as Reference[];
 		return { meta_references, references };
 	};

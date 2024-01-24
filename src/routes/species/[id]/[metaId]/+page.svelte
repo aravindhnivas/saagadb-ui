@@ -1,24 +1,36 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import * as Table from '$lib/components/ui/table';
-	import { AlertCircle, Download } from 'lucide-svelte';
+	import { AlertCircle, Copy, Download } from 'lucide-svelte';
 	import * as Alert from '$lib/components/ui/alert';
 	import { base } from '$app/paths';
 	import { Button } from '$lib/components/ui/button';
-	import * as bibtexParse from '@orcid/bibtex-parse-js';
+	import Cite from 'citation-js';
+	import type { Reference } from '$lib/schemas/reference';
+	import { copy } from 'svelte-copy';
+	import { toast } from 'svelte-sonner';
 
 	export let data: PageData;
 
+	console.log(copy);
 	const cell_padding = 'p-2';
 
-	const fetch_bibfile = async (bibfile: string) => {
-		const res = await fetch(`${base}/uploads/bib/${bibfile}`);
-		const bibcontents = await res.text();
-		const parsed_bib = bibtexParse.toJSON(bibcontents)[0];
-		const authors = parsed_bib.entryTags.author as string;
-		// replace all { and } with empty string
-		const authors_clean = authors.replace(/[{}]/g, '');
-		return authors_clean;
+	const fetch_bibfile = async (ref: Reference) => {
+		const parsed_data = await Cite.async(ref.doi);
+		const data = parsed_data.data[0];
+		const { author, issued, URL } = data;
+		const first_author = author.find((a) => a.sequence === 'first');
+		const author_clean = first_author.family + (author.length > 1 ? ' et al.' : '');
+		const year = issued['date-parts'][0][0];
+		const citeas = `${author_clean} (${year})`;
+
+		const tooltip = `${data['container-title']}`;
+		const parsed = parsed_data.format('bibliography', {
+			// format: 'html',
+			template: 'harvard1',
+			lang: 'en-US'
+		});
+		return { citeas, URL, tooltip, parsed };
 	};
 </script>
 
@@ -38,22 +50,36 @@
 				{/each}
 			</Table.Row>
 		</Table.Header>
+
 		<Table.Body>
 			<Table.Row>
-				<Table.Cell class={cell_padding}>DOI/URL</Table.Cell>
+				<Table.Cell class={cell_padding}>Cite</Table.Cell>
 				{#each references as ref (ref.id)}
 					<Table.Cell class="text-center {cell_padding}">
-						<Button variant="link">
-							{#if ref.doi}
-								<a href="https://doi.org/{ref.doi}" target="_blank">
-									{ref.doi ?? '-'}
-								</a>
-							{:else if ref.ref_url}
-								<a href={ref.ref_url} target="_blank">
-									{`${ref.ref_url.slice(0, 15)}...` ?? '-'}
-								</a>
-							{/if}
-						</Button>
+						{#if ref.bibtex}
+							{#await fetch_bibfile(ref) then { citeas, URL, tooltip, parsed }}
+								<div class="flex gap-2 items-center">
+									<Button variant="link">
+										<a href={URL} target="_blank">
+											<span aria-label={tooltip} data-cooltipz-dir="top">{citeas}</span>
+										</a>
+									</Button>
+									<button
+										use:copy={parsed}
+										on:svelte-copy={(event) => {
+											toast.success(`Copied to clipboard: ${event.detail}`);
+										}}
+										on:svelte-copy:error={(event) => {
+											toast.error(`There was an error: ${event.detail.message}`);
+										}}
+										aria-label={'copy full reference to clipboard'}
+										data-cooltipz-dir="top"
+									>
+										<Copy />
+									</button>
+								</div>
+							{/await}
+						{/if}
 					</Table.Cell>
 				{/each}
 			</Table.Row>
@@ -61,28 +87,13 @@
 			<Table.Row>
 				<Table.Cell class={cell_padding}>Bibtex file</Table.Cell>
 				{#each references as ref (ref.id)}
-					{@const bibfile = ref.bibtex.split('/').at(-1)}
 					<Table.Cell class="text-center {cell_padding}">
 						<a
-							href="{base}/uploads/bib/{bibfile}"
+							href={ref.bibtex}
 							download
 							target="_blank"
 							class="flex justify-center hover:text-blue"><Download size="20" /></a
 						>
-					</Table.Cell>
-				{/each}
-			</Table.Row>
-
-			<Table.Row>
-				<Table.Cell class={cell_padding}>Authors</Table.Cell>
-				{#each references as ref (ref.id)}
-					{@const bibfile = ref.bibtex.split('/').at(-1)}
-					<Table.Cell class="text-center {cell_padding}">
-						{#if bibfile}
-							{#await fetch_bibfile(bibfile) then value}
-								{value}
-							{/await}
-						{/if}
 					</Table.Cell>
 				{/each}
 			</Table.Row>

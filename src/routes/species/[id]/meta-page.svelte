@@ -15,7 +15,7 @@
 		history.back();
 	}}
 >
-	<Dialog.Content class="max-w-2xl">
+	<Dialog.Content class="max-w-4xl">
 		<Dialog.Header>
 			<Dialog.Title>{meta_name}</Dialog.Title>
 			<Dialog.Description>
