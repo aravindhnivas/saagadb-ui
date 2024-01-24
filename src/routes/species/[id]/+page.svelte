@@ -11,7 +11,7 @@
 	import { AlertCircle, ArrowBigLeft, HelpCircle, Terminal } from 'lucide-svelte';
 	import * as Alert from '$lib/components/ui/alert';
 	import { base } from '$app/paths';
-	import * as MolDraw from 'smiles-drawer';
+	import SmilesDrawer from 'smiles-drawer';
 
 	export let data: LayoutData;
 	// console.log(MolDraw);
@@ -33,23 +33,20 @@
 	];
 
 	const chemdraw = (node: HTMLCanvasElement, smiles: string) => {
-		console.log({ node, smiles, id: node.id, MolDraw });
-		let moleculeOptions = {};
-		let reactionOptions = {};
+		console.log(smiles);
+		// Initialize the drawer to draw to canvas
+		let smilesDrawer = new SmilesDrawer.Drawer();
+		// Alternatively, initialize the SVG drawer:
+		// let svgDrawer = new SmilesDrawer.SvgDrawer();
 
-		const sd = new MolDraw.SmiDrawer(moleculeOptions, reactionOptions);
-		sd.draw(
-			smiles,
-			node.id,
-			'light',
-			function (result) {
-				console.log({ result });
-			},
-			function (err) {
-				console.log({ err });
-			}
-		);
-		console.log({ sd });
+		// Clean the input (remove unrecognized characters, such as spaces and tabs) and parse it
+		SmilesDrawer.parse(smiles, function (tree) {
+			console.log(smiles, tree);
+			// Draw to the canvas
+			smilesDrawer.draw(tree, node.id, 'light', false);
+			// Alternatively, draw to SVG:
+			// svgDrawer.draw(tree, 'output-svg', 'dark', false);
+		});
 		return '';
 	};
 
