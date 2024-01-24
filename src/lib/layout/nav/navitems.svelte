@@ -7,8 +7,8 @@
 	const nav = [
 		{ name: 'Home', href: base + '/' },
 		{ name: 'Species', href: base + '/species' },
-		{ name: 'Line-query', href: base + '/linequery' },
-		{ name: 'References', href: base + '/references' }
+		{ name: 'Line-query', href: base + '/linequery' }
+		// { name: 'References', href: base + '/references' }
 	];
 
 	let active_page: string;
