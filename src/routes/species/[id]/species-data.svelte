@@ -11,12 +11,12 @@
 
 <div class="w-full text-2xl font-400 flex justify-center">{species.iupac_name}</div>
 
-<div class="grid grid-cols-2 gap-4 justify-items-start my-2">
+<div class="grid grid-cols-2 gap-4 my-2">
 	{#if mol}
 		{@const svg = mol?.get_svg()}
 		{@const blob = new Blob([svg], { type: 'image/svg+xml' })}
 		{@const url = URL.createObjectURL(blob)}
-		<div class="card shadow-xl p-2 border-black border-2 grid justify-items-center">
+		<div class="grid justify-items-center">
 			<div>{@html svg}</div>
 			<div class="flex gap-4">
 				<span>{@html species.name_html} molecular structure </span>
