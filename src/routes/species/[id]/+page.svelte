@@ -11,11 +11,11 @@
 	import { AlertCircle, ArrowBigLeft, HelpCircle, Terminal } from 'lucide-svelte';
 	import * as Alert from '$lib/components/ui/alert';
 	import { base } from '$app/paths';
-	import SmilesDrawer from 'smiles-drawer';
+	// import initRDKitModule from '@rdkit/rdkit';
+	// import type { RDKitModule } from '@rdkit/rdkit';
 
 	export let data: LayoutData;
-	// console.log(MolDraw);
-	// window.MolDraw = MolDraw;
+
 	let metadata_keys = [
 		{ name: 'Category', value: 'category' },
 		{ name: 'Molecule tag', value: 'molecule_tag' },
@@ -32,21 +32,15 @@
 		{ name: 'Notes', value: 'notes' }
 	];
 
+	// let molecule: ReturnType<typeof window.RDKit.get_mol>;
 	const chemdraw = (node: HTMLCanvasElement, smiles: string) => {
-		console.log(smiles);
-		// Initialize the drawer to draw to canvas
-		let smilesDrawer = new SmilesDrawer.Drawer();
-		// Alternatively, initialize the SVG drawer:
-		// let svgDrawer = new SmilesDrawer.SvgDrawer();
+		console.log('drawing ' + smiles);
+		// const molecule = window.RDKit.get_mol('CC(=O)Oc1ccccc1C(=O)O');
+		const molecule = window.RDKit.get_mol(smiles);
+		if (!molecule) return;
 
-		// Clean the input (remove unrecognized characters, such as spaces and tabs) and parse it
-		SmilesDrawer.parse(smiles, function (tree) {
-			console.log(smiles, tree);
-			// Draw to the canvas
-			smilesDrawer.draw(tree, node.id, 'light', false);
-			// Alternatively, draw to SVG:
-			// svgDrawer.draw(tree, 'output-svg', 'dark', false);
-		});
+		molecule.draw_to_canvas(node, -1, -1);
+		// console.log(molecule);
 		return '';
 	};
 
@@ -99,7 +93,7 @@
 			</div>
 		{:then { species, meta }}
 			{#if species}
-				<div class="grid grid-cols-2 gap-4 my-2">
+				<div class="grid grid-cols-2 gap-4 justify-items-start my-2">
 					<div class="">
 						<h1 class="text-xl font-300">
 							{@html species.name_html}
@@ -113,7 +107,10 @@
 						<h2><em class="font-bold">SELFIES: </em>{species.selfies}</h2>
 						<h2>{species.notes}</h2>
 					</div>
-					<canvas use:chemdraw={species.smiles} id="mol-canvas"></canvas>
+					<div class="grid justify-items-center">
+						<canvas use:chemdraw={species.smiles} id="mol-canvas"></canvas>
+						<p>Molecular structure</p>
+					</div>
 				</div>
 			{:else}
 				<p>No species found</p>

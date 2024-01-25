@@ -19,6 +19,30 @@
 	}
 </script>
 
+<svelte:head>
+	<!-- Load the RDKit JS file -->
+	<!-- Load the RDKit JS file -->
+	<script src="https://unpkg.com/@rdkit/rdkit/dist/RDKit_minimal.js"></script>
+
+	<!-- Instantiate the WASM module. The inline script below could live elsewhere inside your application code. -->
+	<!-- Instantiate the WASM module. The inline script below could live elsewhere inside your application code. -->
+	<script>
+		window
+			.initRDKitModule()
+			.then(function (RDKit) {
+				console.log('RDKit version: ' + RDKit.version());
+				window.RDKit = RDKit;
+				/**
+				 * The RDKit module is now loaded.
+				 * You can use it anywhere.
+				 */
+			})
+			.catch(() => {
+				// handle loading errors here...
+			});
+	</script>
+</svelte:head>
+
 <Toaster position="bottom-center" richColors closeButton />
 
 <div class="parent h-full w-full">
