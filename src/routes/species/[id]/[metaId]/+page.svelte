@@ -1,12 +1,39 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import { AlertCircle } from 'lucide-svelte';
+	import { AlertCircle, ArrowBigLeft } from 'lucide-svelte';
 	import * as Alert from '$lib/components/ui/alert';
 	import MetaRefTable from './meta-ref-table.svelte';
 	import MetaPartitionTable from './meta-partition-table.svelte';
+	import { Button } from '$lib/components/ui/button';
+	import { base } from '$app/paths';
+	import { page } from '$app/stores';
 
 	export let data: PageData;
+	// export let info: string;
+
+	console.log(data);
 </script>
+
+<!-- show back button only in non-dialog mode -->
+{#if $page.params.metaId}
+	{#await data.load_species_metadata then { species, meta }}
+		{@const metadata = meta.find((f) => f.id == $page.params.metaId)}
+		{@const key = data.linelist?.find((f) => f.id == metadata.linelist)?.linelist_name}
+		{@const meta_name = key ? key.toUpperCase() : 'Unknown'}
+		<div class="text-lg font-400 flex justify-center">
+			<span
+				>Reference and metadata for <em class="font-bold">{species.iupac_name}</em>
+				from {meta_name}
+				database</span
+			>
+		</div>
+	{/await}
+	<Button class="flex items-center w-[200px]" variant="outline">
+		<a href="{base}/species/{$page.params.id}" class="w-full flex gap-2 items-center justify-center"
+			><ArrowBigLeft /><span>Go back</span></a
+		>
+	</Button>
+{/if}
 
 {#await data.load_meta_reference}
 	<div class="flex gap-2 items-center">

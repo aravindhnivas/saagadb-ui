@@ -66,11 +66,11 @@
 </script>
 
 <div class="grid gap-5 content-start overflow-hidden">
-	<Button class="flex items-center w-[200px]" variant="outline">
+	<!-- <Button class="flex items-center w-[200px]" variant="outline">
 		<a href="{base}/species" class="w-full flex gap-2 items-center justify-center"
 			><ArrowBigLeft /><span>Go back</span></a
 		>
-	</Button>
+	</Button> -->
 
 	<div class="overflow-auto">
 		{#await data.load_species_metadata}
