@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { edit_mode } from '$lib/utils/stores';
+	import { Download } from 'lucide-svelte';
 
 	export let species: Species;
 
@@ -37,12 +38,18 @@
 		<h2><em class="font-bold">SELFIES: </em>{species.selfies}</h2>
 		<h2>{species.notes}</h2>
 	</div>
-	<div class="grid justify-items-center">
-		{#if mol}
-			<div>{@html mol?.get_svg()}</div>
-		{:else}
-			<p>No structure found</p>
-		{/if}
-		<p>Molecular structure</p>
-	</div>
+	{#if mol}
+		{@const svg = mol?.get_svg()}
+		{@const blob = new Blob([svg], { type: 'image/svg+xml' })}
+		{@const url = URL.createObjectURL(blob)}
+		<div class="grid justify-items-center">
+			<div>{@html svg}</div>
+			<div class="flex gap-4">
+				<span>Molecular structure </span>
+				<a href={url} download="{species.iupac_name}.svg"><Download /></a>
+			</div>
+		</div>
+	{:else}
+		<p>No structure found</p>
+	{/if}
 </div>
