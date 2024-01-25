@@ -1,5 +1,6 @@
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
+import type { RDKitModule } from '@rdkit/rdkit';
 declare global {
 	namespace App {
 		// interface Error {}
@@ -27,6 +28,10 @@ declare global {
 		notes: string;
 	}
 	interface Meta {}
+
+	interface Window {
+		RDKit: RDKitModule;
+	}
 }
 
 export {};
