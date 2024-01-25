@@ -1,12 +1,11 @@
 <script lang="ts">
 	import { edit_mode } from '$lib/utils/stores';
-	import type { RDKitModule } from '@rdkit/rdkit';
 
 	export let species: Species;
 
-	const mol: ReturnType<RDKitModule['get_mol']> = window.RDKit.get_mol(species.smiles);
+	const mol = window.RDKit.get_mol(species.smiles);
 	const mol_descriptor: MolecularDescriptor = mol ? JSON.parse(mol.get_descriptors()) : null;
-	// console.log(mol_descriptor);
+	// console.log(mol?.get_new_coords());
 </script>
 
 <div class="grid grid-cols-2 gap-4 justify-items-start my-2">
