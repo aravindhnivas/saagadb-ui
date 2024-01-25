@@ -24,9 +24,7 @@
 			<Table.Cell class={cell_padding}>Cite</Table.Cell>
 			{#each references as ref (ref.id)}
 				<Table.Cell class="text-center {cell_padding}">
-					{#if ref.bibtex}
-						<Bibfile {ref} />
-					{/if}
+					<Bibfile {ref} />
 				</Table.Cell>
 			{/each}
 		</Table.Row>

@@ -8,7 +8,7 @@
 	export let ref: Reference;
 
 	const fetch_bibfile = async (ref: Reference) => {
-		const parsed_data = await Cite.async(ref.doi);
+		const parsed_data = await Cite.async(ref.doi ?? ref.bibtex);
 		const data = parsed_data.data[0];
 
 		// console.log(parsed_data);
