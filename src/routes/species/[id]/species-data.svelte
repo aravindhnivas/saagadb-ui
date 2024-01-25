@@ -12,7 +12,22 @@
 <div class="w-full text-2xl font-400 flex justify-center">{species.iupac_name}</div>
 
 <div class="grid grid-cols-2 gap-4 justify-items-start my-2">
-	<div class="">
+	{#if mol}
+		{@const svg = mol?.get_svg()}
+		{@const blob = new Blob([svg], { type: 'image/svg+xml' })}
+		{@const url = URL.createObjectURL(blob)}
+		<div class="card shadow-xl p-2 border-black border-2 grid justify-items-center">
+			<div>{@html svg}</div>
+			<div class="flex gap-4">
+				<span>{@html species.name_html} molecular structure </span>
+				<a href={url} download="{species.iupac_name}.svg"><Download /></a>
+			</div>
+		</div>
+	{:else}
+		<p>No structure found</p>
+	{/if}
+
+	<div class="grid content-center">
 		<h2><em class="font-bold">Chemical formula: </em>{@html species.name_html}</h2>
 		{$edit_mode ? `(id = ${species.id})` : ''}
 		<!-- <h2><em class="font-bold">IUPAC Name: </em> {species.iupac_name}</h2> -->
@@ -36,31 +51,8 @@
 		{/if}
 
 		<h2><em class="font-bold">SELFIES: </em>{species.selfies}</h2>
-		<h2>{species.notes}</h2>
+		{#if species.notes}
+			<h2>{species.notes}</h2>
+		{/if}
 	</div>
-	{#if mol}
-		{@const svg = mol?.get_svg()}
-		{@const blob = new Blob([svg], { type: 'image/svg+xml' })}
-		{@const url = URL.createObjectURL(blob)}
-		<!-- <div class="card w-96 bg-base-100 shadow-xl">
-			<div class="card-body">
-				<h2 class="card-title">molecular structure</h2>
-				<div>{@html svg}</div>
-				<div class="card-actions justify-end">
-					<button class="btn btn-primary"
-						><a href={url} download="{species.iupac_name}.svg"><Download /></a></button
-					>
-				</div>
-			</div>
-		</div> -->
-		<div class="grid justify-items-center">
-			<div>{@html svg}</div>
-			<div class="flex gap-4">
-				<span>{@html species.name_html} molecular structure </span>
-				<a href={url} download="{species.iupac_name}.svg"><Download /></a>
-			</div>
-		</div>
-	{:else}
-		<p>No structure found</p>
-	{/if}
 </div>
