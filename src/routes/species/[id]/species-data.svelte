@@ -20,7 +20,9 @@
 			<div>{@html svg}</div>
 			<div class="flex gap-4">
 				<span>{@html species.name_html} molecular structure </span>
-				<a href={url} download="{species.iupac_name}.svg"><Download /></a>
+				<a class="btn btn-sm bg-slate-300" href={url} download="{species.iupac_name}.svg"
+					><Download /></a
+				>
 			</div>
 		</div>
 	{:else}
