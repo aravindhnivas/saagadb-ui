@@ -72,7 +72,7 @@
 		>
 	</Button>
 
-	<div class="overflow-auto sm:w-full lg:w-2xl">
+	<div class="overflow-auto sm:w-full lg:w-4xl">
 		{#await data.load_species_metadata}
 			<div class="flex gap-2 items-center items-center">
 				<span class="loading loading-spinner"></span>
