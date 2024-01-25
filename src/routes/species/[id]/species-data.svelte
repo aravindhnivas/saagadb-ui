@@ -6,7 +6,7 @@
 
 	const mol = window.RDKit.get_mol(species.smiles);
 	const mol_descriptor: MolecularDescriptor = mol ? JSON.parse(mol.get_descriptors()) : null;
-	// console.log(mol?.get_new_coords());
+	// console.log(mol?.get_molblock());
 </script>
 
 <div class="grid grid-cols-2 gap-4 justify-items-start my-2">
@@ -17,9 +17,9 @@
 		</h1>
 		<h1 class="text-xl font-500">{species.iupac_name}</h1>
 		<h2>
-			<em class="font-bold">Molecular weight: </em>{mol_descriptor
+			<em class="font-bold">Molar mass: </em>{mol_descriptor
 				? mol_descriptor.amw
-				: species.molecular_mass}
+				: species.molecular_mass} g/mol
 		</h2>
 
 		{#if mol}
