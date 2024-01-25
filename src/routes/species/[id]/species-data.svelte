@@ -1,19 +1,34 @@
 <script lang="ts">
 	import { edit_mode } from '$lib/utils/stores';
 	import { Download } from 'lucide-svelte';
+	import * as Dmol from '3dmol';
+	import { onMount } from 'svelte';
 
 	export let species: Species;
 
-	const mol = window.RDKit.get_mol(species.smiles);
+	const mol = window?.RDKit.get_mol(species.smiles);
 	const mol_descriptor: MolecularDescriptor = mol ? JSON.parse(mol.get_descriptors()) : null;
-	// console.log(mol?.get_molblock());
+	let viewerElement: HTMLDivElement;
+	let molBlock = mol?.get_v3Kmolblock();
+
+	console.log(molBlock);
+	onMount(() => {
+		if (!(molBlock && viewerElement)) return;
+		// Initialize 3Dmol.js
+		const viewer = Dmol.createViewer(viewerElement);
+
+		// Add the molblock to the viewer
+		viewer.addModel(molBlock, 'mol');
+		viewer.zoomTo();
+		viewer.render();
+	});
 </script>
 
-<div class="w-full text-2xl font-400 flex justify-center">{species.iupac_name}</div>
+<div class="max-w-4xl text-2xl font-400 flex justify-center">{species.iupac_name}</div>
 
-<div class="grid grid-cols-2 gap-4 my-2">
+<div class="grid grid-cols-2 gap-4 my-2 max-w-4xl">
 	{#if mol}
-		{@const svg = mol?.get_svg()}
+		{@const svg = mol.get_svg()}
 		{@const blob = new Blob([svg], { type: 'image/svg+xml' })}
 		{@const url = URL.createObjectURL(blob)}
 		<div class="grid justify-items-center">
@@ -26,7 +41,11 @@
 	{:else}
 		<p>No structure found</p>
 	{/if}
-
+	<!-- <div
+		class="position-relative border-black border-2 w-full"
+		id="viewer"
+		bind:this={viewerElement}
+	></div> -->
 	<div class="grid content-center">
 		<h2><em class="font-bold">Chemical formula: </em>{@html species.name_html}</h2>
 		{$edit_mode ? `(id = ${species.id})` : ''}
