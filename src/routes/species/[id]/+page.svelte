@@ -11,6 +11,7 @@
 	import { AlertCircle, ArrowBigLeft, HelpCircle } from 'lucide-svelte';
 	import * as Alert from '$lib/components/ui/alert';
 	import { base } from '$app/paths';
+	import SpeciesData from './species-data.svelte';
 
 	export let data: LayoutData;
 
@@ -29,15 +30,6 @@
 		{ name: 'Contributors', value: 'data_contributor' },
 		{ name: 'Notes', value: 'notes' }
 	];
-
-	const chemdraw = (node: HTMLCanvasElement, smiles: string) => {
-		console.log('drawing ' + smiles);
-		const molecule = window.RDKit.get_mol(smiles);
-		if (!molecule) return;
-
-		molecule.draw_to_canvas(node, -1, -1);
-		return '';
-	};
 
 	onMount(() => {
 		if (!$edit_mode) return;
@@ -88,25 +80,7 @@
 			</div>
 		{:then { species, meta }}
 			{#if species}
-				<div class="grid grid-cols-2 gap-4 justify-items-start my-2">
-					<div class="">
-						<h1 class="text-xl font-300">
-							{@html species.name_html}
-							{$edit_mode ? `(id = ${species.id})` : ''}
-						</h1>
-						<h1 class="text-xl font-500">{species.iupac_name}</h1>
-						<h2>{Number(species.molecular_mass).toFixed(2)} atomic mass</h2>
-						<h2><em class="font-bold">SMILES: </em>{species.smiles}</h2>
-						<h2><em class="font-bold">Standard InChI: </em>{species.standard_inchi}</h2>
-						<h2><em class="font-bold">InChIkey: </em>{species.standard_inchi_key}</h2>
-						<h2><em class="font-bold">SELFIES: </em>{species.selfies}</h2>
-						<h2>{species.notes}</h2>
-					</div>
-					<div class="grid justify-items-center">
-						<canvas use:chemdraw={species.smiles} id="mol-canvas"></canvas>
-						<p>Molecular structure</p>
-					</div>
-				</div>
+				<SpeciesData {species} />
 			{:else}
 				<p>No species found</p>
 			{/if}

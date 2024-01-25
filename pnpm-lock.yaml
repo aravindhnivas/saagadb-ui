@@ -55,6 +55,9 @@ devDependencies:
   '@iconify/json':
     specifier: ^2.2.174
     version: 2.2.174
+  '@rdkit/rdkit':
+    specifier: 2023.9.2-1.0.0
+    version: 2023.9.2-1.0.0
   '@svelte-parts/drop-file':
     specifier: ^0.0.23
     version: 0.0.23(svelte@4.2.9)
@@ -1063,6 +1066,10 @@ packages:
 
   /@polka/url@1.0.0-next.24:
     resolution: {integrity: sha512-2LuNTFBIO0m7kKIQvvPHN6UE63VjpmL9rnEEaOOaiSPbZK+zUOYIzBAWcED+3XYzhYsd/0mD57VdxAEqqV52CQ==}
+
+  /@rdkit/rdkit@2023.9.2-1.0.0:
+    resolution: {integrity: sha512-dHRex6db9J5NexCPUqV5cCJR28zduTUZv0vriBhl4sJMvmFT1jcViPWBoRUB4Tee0PPHRWUi2sqXtfj4vgbvhg==}
+    dev: true
 
   /@rollup/plugin-commonjs@25.0.7(rollup@4.9.6):
     resolution: {integrity: sha512-nEvcR+LRjEjsaSsc4x3XZfCCvZIaSMenZu/OiwOKGN2UhQpAYI7ru7czFvyWbErlpoGjnSX3D5Ch5FcMA3kRWQ==}

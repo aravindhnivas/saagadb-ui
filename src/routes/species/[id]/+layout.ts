@@ -1,7 +1,6 @@
 import { base } from '$app/paths';
 import type { LayoutLoad } from './$types';
 import { z } from 'zod';
-import specieSchema from '$lib/schemas/species';
 import { Schemas } from '$lib/schemas/metadata';
 
 export const load: LayoutLoad = async ({ fetch, params }) => {
@@ -13,7 +12,7 @@ export const load: LayoutLoad = async ({ fetch, params }) => {
 			)
 		]);
 		return { species, meta } as {
-			species: z.infer<typeof specieSchema>;
+			species: Species;
 			meta: z.infer<(typeof Schemas)['species-metadata']>[];
 		};
 	};
