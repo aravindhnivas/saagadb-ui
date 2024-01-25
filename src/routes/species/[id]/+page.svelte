@@ -72,7 +72,7 @@
 		>
 	</Button>
 
-	<div class="overflow-auto">
+	<div class="overflow-auto sm:w-full lg:w-2xl">
 		{#await data.load_species_metadata}
 			<div class="flex gap-2 items-center items-center">
 				<span class="loading loading-spinner"></span>
@@ -86,7 +86,7 @@
 			{/if}
 
 			{#if species && meta.length > 0}
-				<Table.Root class="lg:w-2xl sm:w-full ">
+				<Table.Root class="">
 					<Table.Caption>Species-metadata</Table.Caption>
 					<Table.Header>
 						<Table.Row>
