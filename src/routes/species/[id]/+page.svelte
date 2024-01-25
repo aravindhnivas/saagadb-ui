@@ -8,11 +8,9 @@
 	import { page } from '$app/stores';
 	import MetaPage from './meta-page.svelte';
 	import { Button } from '$lib/components/ui/button';
-	import { AlertCircle, ArrowBigLeft, HelpCircle, Terminal } from 'lucide-svelte';
+	import { AlertCircle, ArrowBigLeft, HelpCircle } from 'lucide-svelte';
 	import * as Alert from '$lib/components/ui/alert';
 	import { base } from '$app/paths';
-	// import initRDKitModule from '@rdkit/rdkit';
-	// import type { RDKitModule } from '@rdkit/rdkit';
 
 	export let data: LayoutData;
 
@@ -32,15 +30,12 @@
 		{ name: 'Notes', value: 'notes' }
 	];
 
-	// let molecule: ReturnType<typeof window.RDKit.get_mol>;
 	const chemdraw = (node: HTMLCanvasElement, smiles: string) => {
 		console.log('drawing ' + smiles);
-		// const molecule = window.RDKit.get_mol('CC(=O)Oc1ccccc1C(=O)O');
 		const molecule = window.RDKit.get_mol(smiles);
 		if (!molecule) return;
 
 		molecule.draw_to_canvas(node, -1, -1);
-		// console.log(molecule);
 		return '';
 	};
 
