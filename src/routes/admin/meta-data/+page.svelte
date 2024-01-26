@@ -14,6 +14,9 @@
 	import { Input } from '$lib/components/ui/input';
 	import { toast } from 'svelte-sonner';
 	import { get } from 'svelte/store';
+	import { oO } from '@zmotivat0r/o0';
+	import Error from '../../+error.svelte';
+	import { message } from 'sveltekit-superforms/client';
 
 	export let data: PageData;
 
@@ -45,25 +48,34 @@
 
 	let species_id = 0;
 	let linelist_id = 0;
-	let ref_doi = '10.1016/0022-2852(87)90007-5';
-	$: console.log({ species_id, linelist_id, ref_doi });
+	let ref_doi = '';
+	// $: console.log({ species_id, linelist_id, ref_doi });
 
-	async function fetch_meta_id(): Promise<string | number> {
+	async function fetch_meta_id(): Promise<string | number | undefined> {
 		if (!(species_id && linelist_id)) return toast.error('Please enter a species and linelist');
 		const res = await fetch(
 			`/api/data/species-metadata/query/?species_id=${species_id}&linelist_id=${linelist_id}`
 		);
-		const [data] = (await res.json()) as Species[];
+		const data = (await res.json()) as Species[];
 		console.log(data);
-		return data.id;
+
+		if (data.length === 0) {
+			toast.error('No metadata found for this species and linelist');
+			return;
+		}
+		return data[0].id;
 	}
 
-	async function fetch_ref_id(): Promise<string | number> {
+	async function fetch_ref_id(): Promise<string | number | undefined> {
 		if (!ref_doi) return toast.error('Please enter a doi');
 		const res = await fetch(`/api/data/reference?doi=${ref_doi}`);
-		const [data] = (await res.json()) as Reference[];
+		const data = (await res.json()) as Reference[];
 		console.log(data);
-		return data.id;
+		if (data.length === 0) {
+			toast.error('No reference found for this doi');
+			return;
+		}
+		return data[0].id;
 	}
 </script>
 
@@ -112,14 +124,14 @@
 					/>
 					<Button
 						variant="outline"
-						on:click={() =>
-							fetch_meta_id().then((id) => {
-								console.log(id);
-								formStore.update((f) => {
-									f.meta = id;
-									return f;
-								});
-							})}>Fetch meta_id</Button
+						on:click={async () => {
+							const [err, id] = await oO(fetch_meta_id());
+							if (err instanceof Error) return toast.error(err.message);
+							formStore.update((f) => {
+								f.meta = id;
+								return f;
+							});
+						}}>Fetch meta_id</Button
 					>
 				{/if}
 			</div>
@@ -128,13 +140,12 @@
 					<Input bind:value={ref_doi} placeholder="Enter reference doi" />
 					<Button
 						variant="outline"
-						on:click={() => {
-							fetch_ref_id().then((id) => {
-								console.log(id);
-								formStore.update((f) => {
-									f.ref = id;
-									return f;
-								});
+						on:click={async () => {
+							const [err, id] = await oO(fetch_ref_id());
+							if (err instanceof Error) return toast.error(err.message);
+							formStore.update((f) => {
+								f.ref = id;
+								return f;
 							});
 						}}>Fetch ref_id</Button
 					>
