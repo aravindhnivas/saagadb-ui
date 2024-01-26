@@ -11,7 +11,7 @@
 	let show_password = false;
 </script>
 
-<FormComponent footer={false} schema={userSchema} form={data.form} let:config>
+<FormComponent class="w-max" footer={false} schema={userSchema} form={data.form} let:config>
 	<Card.Root>
 		<Card.Header>
 			<Card.Title>Create new user</Card.Title>
