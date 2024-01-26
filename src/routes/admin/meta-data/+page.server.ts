@@ -1,19 +1,21 @@
 import type { Actions, PageServerLoad } from './$types';
 import { message, setError, superValidate } from 'sveltekit-superforms/server';
-import { Schemas, ids, fileInputs } from '$lib/schemas/metadata';
+import { Schemas, fileInputs } from '$lib/schemas/metadata';
 import type { SuperValidated } from 'sveltekit-superforms';
 import { fail } from '@sveltejs/kit';
 import { DB_URL } from '$lib/server';
 
-export const load: PageServerLoad = async () => {
-	const forms: {
-		[key: string]: SuperValidated<(typeof Schemas)[number]>;
-	} = {};
+type FormKeys = keyof typeof Schemas;
 
-	for (const id of ids) {
-		const schema = Schemas[id];
-		forms[id] = await superValidate(schema, { id });
-	}
+export const load: PageServerLoad = async () => {
+	const forms: Record<FormKeys, SuperValidated<(typeof Schemas)[FormKeys]>> = {
+		'species-metadata': await superValidate(Schemas['species-metadata'], {
+			id: 'species-metadata'
+		}),
+		reference: await superValidate(Schemas['reference'], { id: 'reference' }),
+		'meta-reference': await superValidate(Schemas['meta-reference'], { id: 'meta-reference' }),
+		line: await superValidate(Schemas['line'], { id: 'line' })
+	};
 
 	return { forms };
 };
@@ -21,7 +23,7 @@ export const load: PageServerLoad = async () => {
 export const actions: Actions = {
 	default: async ({ request, fetch }) => {
 		const formData = await request.formData();
-		const metaid = formData.get('__superform_id') as string;
+		const metaid = formData.get('__superform_id') as FormKeys;
 		// console.log('formData', { formData, metaid });
 
 		const form = await superValidate(formData, Schemas[metaid]);

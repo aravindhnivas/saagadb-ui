@@ -9,7 +9,9 @@
 	import type { PageData } from './$types';
 	import MessageAlert from '$lib/components/forms/message-alert.svelte';
 	import type { FormOptions } from 'formsnap';
-
+	import Combobox from '$lib/components/combobox/combobox.svelte';
+	import { Button } from '$lib/components/ui/button';
+	import { Input } from '$lib/components/ui/input';
 	export let data: PageData;
 
 	const check_key_to_include = (metaid: string, key: string) => {
@@ -37,11 +39,22 @@
 			console.error(e);
 		}
 	};
+
+	let species_id = 0;
+	let linelist_id = 0;
+	let ref_doi = '';
+	$: console.log({ species_id, linelist_id, ref_doi });
+
+	function fetch_meta_id(): void {
+		throw new Error('Function not implemented.');
+	}
+
+	function fetch_ref_id(): void {
+		throw new Error('Function not implemented.');
+	}
 </script>
 
 {#each metadata_items as { value: metaid } (metaid)}
-	<!-- <TabContents footer={false} value={metaid} title="Upload config YAML file"> -->
-
 	{@const schema = Schemas[metaid]}
 	{@const form = data.forms[metaid]}
 
@@ -59,6 +72,40 @@
 		<svelte:fragment slot="description">
 			<Dropfile />
 		</svelte:fragment>
+
+		<div class="grid gap-2 border-gray border-2 p-2 rounded-4">
+			<div class="flex gap-2 items-end">
+				{#if metaid === 'meta-reference' || metaid === 'line'}
+					<Combobox
+						label="species"
+						items={data.species.map((f) => ({
+							value: `${f.id}`,
+							label: f.name_formula
+						}))}
+						on:change={(e) => {
+							species_id = e.detail.value;
+						}}
+					/>
+					<Combobox
+						label="linelist"
+						items={data.linelist.map((f) => ({
+							value: `${f.id}`,
+							label: f.linelist_name
+						}))}
+						on:change={(e) => {
+							linelist_id = e.detail.value;
+						}}
+					/>
+					<Button variant="outline" on:click={() => fetch_meta_id()}>Fetch meta_id</Button>
+				{/if}
+			</div>
+			{#if metaid === 'meta-reference'}
+				<div class="flex gap-2">
+					<Input bind:value={ref_doi} placeholder="Enter reference doi">Doi</Input>
+					<Button variant="outline" on:click={() => fetch_ref_id()}>Fetch ref_id</Button>
+				</div>
+			{/if}
+		</div>
 
 		<div class="grid-auto-fill lg:max-w-md sm:max-w-full">
 			{#each dropdowns[metaid] as { id, name, key } (id)}

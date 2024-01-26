@@ -83,20 +83,23 @@ export const dropdowns: {
 	],
 	reference: [],
 	'meta-reference': [
-		{ id: uuidv4(), name: 'meta', key: '' },
-		{ id: uuidv4(), name: 'ref', key: '' }
+		// { id: uuidv4(), name: 'species', key: 'name_formula' },
+		// { id: uuidv4(), name: 'linelist', key: 'linelist_name' },
+		// { id: uuidv4(), name: 'meta', key: '' },
+		// { id: uuidv4(), name: 'ref', key: '' }
 	],
-	line: [{ id: uuidv4(), name: 'meta', key: '' }]
+	line: [
+		// { id: uuidv4(), name: 'species', key: 'name_formula' },
+		// { id: uuidv4(), name: 'linelist', key: 'linelist_name' },
+		// { id: uuidv4(), name: 'meta', key: '' }
+	]
 };
 
 export const ids = ['species-metadata', 'reference', 'meta-reference', 'line'] as const;
 
-export const metadata_items: {
-	value: (typeof ids)[number];
-	name: string;
-}[] = [
+export const metadata_items = [
 	{ value: 'species-metadata', name: 'Species metadata' },
 	{ value: 'reference', name: 'Reference' },
 	{ value: 'meta-reference', name: 'Meta reference' },
 	{ value: 'line', name: 'Line' }
-];
+] as const;
