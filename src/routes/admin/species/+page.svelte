@@ -9,6 +9,7 @@
 </script>
 
 <FormComponent
+	class="max-w-md"
 	footer={false}
 	schema={speciesSchema}
 	form={data.form}
