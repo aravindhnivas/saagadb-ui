@@ -6,7 +6,7 @@
 	export let data: LayoutData;
 </script>
 
-<div class="flex gap-4">
+<div class="flex gap-4 overflow-hidden">
 	<div class="basis-1/4 p-4">
 		{#await data.load}
 			<div class="flex gap-2 items-center">
@@ -23,5 +23,5 @@
 			</Alert.Root>
 		{/await}
 	</div>
-	<div class="basis-3/4 p-4"><slot /></div>
+	<div class="basis-3/4 p-4 overflow-auto"><slot /></div>
 </div>
