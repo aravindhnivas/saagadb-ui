@@ -1,31 +1,46 @@
 <script lang="ts">
-	import { edit_mode } from '$lib/utils/stores';
+	// import { edit_mode } from '$lib/utils/stores';
+	// import * as Dmol from '3dmol';
 	import { Download } from 'lucide-svelte';
-	import * as Dmol from '3dmol';
-	import { onMount } from 'svelte';
-
+	// import { onMount } from 'svelte';
+	import * as Table from '$lib/components/ui/table';
 	export let species: Species;
 
 	const mol = window?.RDKit.get_mol(species.smiles);
 	const mol_descriptor: MolecularDescriptor = mol ? JSON.parse(mol.get_descriptors()) : null;
-	let viewerElement: HTMLDivElement;
-	let molBlock = mol?.get_v3Kmolblock();
+	// let viewerElement: HTMLDivElement;
+	// let molBlock = mol?.get_v3Kmolblock();
+
+	console.log(mol_descriptor);
+
+	const species_metadata_table = {
+		'Chemical formula': species.name_html,
+		'Molar mass': (mol_descriptor ? mol_descriptor.amw : species.molecular_mass) + ' g/mol',
+		'Canonical SMILES': mol?.get_smiles(),
+		SMARTS: mol?.get_smarts(),
+		InChI: mol?.get_inchi(),
+		InChIkey: window.RDKit.get_inchikey_for_inchi(mol?.get_inchi()),
+		SELFIES: species.selfies,
+		Notes: species.notes
+	} as const;
 
 	// console.log(molBlock);
-	onMount(() => {
-		if (!(molBlock && viewerElement)) return;
-		// Initialize 3Dmol.js
-		const viewer = Dmol.createViewer(viewerElement);
+	// onMount(() => {
+	// 	if (!(molBlock && viewerElement)) return;
+	// 	// Initialize 3Dmol.js
+	// 	const viewer = Dmol.createViewer(viewerElement);
 
-		// Add the molblock to the viewer
-		viewer.addModel(molBlock, 'mol');
-		viewer.zoomTo();
-		viewer.render();
-	});
+	// 	// Add the molblock to the viewer
+	// 	viewer.addModel(molBlock, 'mol');
+	// 	viewer.zoomTo();
+	// 	viewer.render();
+	// });
 </script>
 
 {#if species}
-	<div class="max-w-4xl text-2xl font-400 flex justify-center">{species.iupac_name}</div>
+	<div class="max-w-4xl text-2xl font-400 flex justify-center mb-[2rem]">
+		{species.iupac_name?.toLocaleUpperCase()}
+	</div>
 
 	<div class="grid grid-cols-2 gap-4 my-2 max-w-4xl">
 		{#if mol}
@@ -42,15 +57,19 @@
 		{:else}
 			<p>No structure found</p>
 		{/if}
-		<!-- <div
-		class="position-relative border-black border-2 w-full"
-		id="viewer"
-		bind:this={viewerElement}
-	></div> -->
-		<div class="grid content-center">
+		<Table.Root>
+			<Table.Body>
+				{#each Object.keys(species_metadata_table) as key}
+					<Table.Row>
+						<Table.Cell class="font-medium p-0.5">{key}</Table.Cell>
+						<Table.Cell class="p-0.5">{@html species_metadata_table[key]}</Table.Cell>
+					</Table.Row>
+				{/each}
+			</Table.Body>
+		</Table.Root>
+		<!-- <div class="grid content-center">
 			<h2><em class="font-bold">Chemical formula: </em>{@html species.name_html}</h2>
 			{$edit_mode ? `(id = ${species.id})` : ''}
-			<!-- <h2><em class="font-bold">IUPAC Name: </em> {species.iupac_name}</h2> -->
 			<h2>
 				<em class="font-bold">Molar mass: </em>{mol_descriptor
 					? mol_descriptor.amw
@@ -76,7 +95,7 @@
 			{#if species.notes}
 				<h2>{species.notes}</h2>
 			{/if}
-		</div>
+		</div> -->
 	</div>
 {:else}
 	<p>No species found</p>
