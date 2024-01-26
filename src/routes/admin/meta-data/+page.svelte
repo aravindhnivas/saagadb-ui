@@ -51,7 +51,7 @@
 	async function fetch_meta_id(): Promise<string | number> {
 		if (!(species_id && linelist_id)) return toast.error('Please enter a species and linelist');
 		const res = await fetch(
-			`/api/data/species?species_id=${species_id}&linelist_id=${linelist_id}`
+			`/api/data/species-metadata/query/?species_id=${species_id}&linelist_id=${linelist_id}`
 		);
 		const [data] = (await res.json()) as Species[];
 		console.log(data);
