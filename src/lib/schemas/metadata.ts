@@ -12,8 +12,8 @@ export const Schemas = {
 	'species-metadata': z.object({
 		species: zint(),
 		linelist: zint(),
-		degree_of_freedom: z.string().min(1),
-		molecule_tag: z.string().min(1).optional(),
+		degree_of_freedom: z.union([z.string(), z.number().int()]),
+		molecule_tag: z.union([z.string(), z.number().int()]).optional(),
 		hyperfine: z.boolean(),
 		category: z.string().min(1),
 		mu_a: z.string().nullable(),
@@ -34,7 +34,7 @@ export const Schemas = {
 		var_file: z.string().optional(),
 		fit_file: z.string().optional(),
 		lin_file: z.string().optional(),
-		notes: z.string().min(5).optional()
+		notes: z.string().optional()
 	}),
 	reference: z.object({
 		doi: z.string().min(5),
