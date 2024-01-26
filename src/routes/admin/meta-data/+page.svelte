@@ -99,9 +99,9 @@
 			<Dropfile />
 		</svelte:fragment>
 
-		<div class="grid gap-2 border-gray border-2 p-2 rounded-4">
-			<div class="flex gap-2 items-end">
-				{#if metaid === 'meta-reference' || metaid === 'line'}
+		{#if metaid === 'meta-reference' || metaid === 'line'}
+			<div class="grid gap-2 border-gray border-2 p-2 rounded-4">
+				<div class="flex gap-2 items-end">
 					<Combobox
 						label="species"
 						items={data.species.map((f) => ({
@@ -133,25 +133,25 @@
 							});
 						}}>Fetch meta_id</Button
 					>
+				</div>
+				{#if metaid === 'meta-reference'}
+					<div class="flex gap-2">
+						<Input bind:value={ref_doi} placeholder="Enter reference doi" />
+						<Button
+							variant="outline"
+							on:click={async () => {
+								const [err, id] = await oO(fetch_ref_id());
+								if (err instanceof Error) return toast.error(err.message);
+								formStore.update((f) => {
+									f.ref = id;
+									return f;
+								});
+							}}>Fetch ref_id</Button
+						>
+					</div>
 				{/if}
 			</div>
-			{#if metaid === 'meta-reference'}
-				<div class="flex gap-2">
-					<Input bind:value={ref_doi} placeholder="Enter reference doi" />
-					<Button
-						variant="outline"
-						on:click={async () => {
-							const [err, id] = await oO(fetch_ref_id());
-							if (err instanceof Error) return toast.error(err.message);
-							formStore.update((f) => {
-								f.ref = id;
-								return f;
-							});
-						}}>Fetch ref_id</Button
-					>
-				</div>
-			{/if}
-		</div>
+		{/if}
 
 		<div class="grid-auto-fill lg:max-w-md sm:max-w-full">
 			{#each dropdowns[metaid] as { id, name, key } (id)}
