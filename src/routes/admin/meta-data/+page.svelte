@@ -12,6 +12,9 @@
 	import Combobox from '$lib/components/combobox/combobox.svelte';
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
+	import { toast } from 'svelte-sonner';
+	import { get } from 'svelte/store';
+
 	export let data: PageData;
 
 	const check_key_to_include = (metaid: string, key: string) => {
@@ -42,15 +45,25 @@
 
 	let species_id = 0;
 	let linelist_id = 0;
-	let ref_doi = '';
+	let ref_doi = '10.1016/0022-2852(87)90007-5';
 	$: console.log({ species_id, linelist_id, ref_doi });
 
-	function fetch_meta_id(): void {
-		throw new Error('Function not implemented.');
+	async function fetch_meta_id(): Promise<string | number> {
+		if (!(species_id && linelist_id)) return toast.error('Please enter a species and linelist');
+		const res = await fetch(
+			`/api/data/species?species_id=${species_id}&linelist_id=${linelist_id}`
+		);
+		const [data] = (await res.json()) as Species[];
+		console.log(data);
+		return data.id;
 	}
 
-	function fetch_ref_id(): void {
-		throw new Error('Function not implemented.');
+	async function fetch_ref_id(): Promise<string | number> {
+		if (!ref_doi) return toast.error('Please enter a doi');
+		const res = await fetch(`/api/data/reference?doi=${ref_doi}`);
+		const [data] = (await res.json()) as Reference[];
+		console.log(data);
+		return data.id;
 	}
 </script>
 
@@ -67,6 +80,7 @@
 		let:config
 		{options}
 		debug={import.meta.env.DEV}
+		let:formStore
 	>
 		<MessageAlert />
 		<svelte:fragment slot="description">
@@ -96,13 +110,34 @@
 							linelist_id = e.detail.value;
 						}}
 					/>
-					<Button variant="outline" on:click={() => fetch_meta_id()}>Fetch meta_id</Button>
+					<Button
+						variant="outline"
+						on:click={() =>
+							fetch_meta_id().then((id) => {
+								console.log(id);
+								formStore.update((f) => {
+									f.meta = id;
+									return f;
+								});
+							})}>Fetch meta_id</Button
+					>
 				{/if}
 			</div>
 			{#if metaid === 'meta-reference'}
 				<div class="flex gap-2">
-					<Input bind:value={ref_doi} placeholder="Enter reference doi">Doi</Input>
-					<Button variant="outline" on:click={() => fetch_ref_id()}>Fetch ref_id</Button>
+					<Input bind:value={ref_doi} placeholder="Enter reference doi" />
+					<Button
+						variant="outline"
+						on:click={() => {
+							fetch_ref_id().then((id) => {
+								console.log(id);
+								formStore.update((f) => {
+									f.ref = id;
+									return f;
+								});
+							});
+						}}>Fetch ref_id</Button
+					>
 				</div>
 			{/if}
 		</div>

@@ -26,6 +26,7 @@
 			{options}
 			{...$$restProps}
 			let:config
+			let:formStore
 		>
 			<Card.Header>
 				<Card.Title>{title || 'Upload config (.yaml) file'}</Card.Title>
@@ -34,7 +35,7 @@
 				</Card.Description>
 			</Card.Header>
 			<Card.Content class="space-y-2 {className}">
-				<slot {config} />
+				<slot {config} {formStore} />
 			</Card.Content>
 
 			{#if footer}
