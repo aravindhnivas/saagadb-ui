@@ -11,7 +11,7 @@
 	// let viewerElement: HTMLDivElement;
 	// let molBlock = mol?.get_v3Kmolblock();
 
-	console.log(mol_descriptor);
+	// console.log(mol_descriptor);
 
 	const species_metadata_table = {
 		'Chemical formula': species.name_html,
