@@ -1,17 +1,13 @@
 <script lang="ts">
-	// import { edit_mode } from '$lib/utils/stores';
-	// import * as Dmol from '3dmol';
 	import { Download } from 'lucide-svelte';
-	// import { onMount } from 'svelte';
 	import * as Table from '$lib/components/ui/table';
+	import { Compound } from 'pubchem';
+	import { onMount } from 'svelte';
+
 	export let species: Species;
 
 	const mol = window?.RDKit.get_mol(species.smiles);
 	const mol_descriptor: MolecularDescriptor = mol ? JSON.parse(mol.get_descriptors()) : null;
-	// let viewerElement: HTMLDivElement;
-	// let molBlock = mol?.get_v3Kmolblock();
-
-	// console.log(mol_descriptor);
 
 	const species_metadata_table = {
 		'Chemical formula': species.name_html,
@@ -22,19 +18,14 @@
 		InChIkey: window.RDKit.get_inchikey_for_inchi(mol?.get_inchi()),
 		SELFIES: species.selfies,
 		Notes: species.notes
-	} as const;
+	};
 
-	// console.log(molBlock);
-	// onMount(() => {
-	// 	if (!(molBlock && viewerElement)) return;
-	// 	// Initialize 3Dmol.js
-	// 	const viewer = Dmol.createViewer(viewerElement);
-
-	// 	// Add the molblock to the viewer
-	// 	viewer.addModel(molBlock, 'mol');
-	// 	viewer.zoomTo();
-	// 	viewer.render();
-	// });
+	onMount(async () => {
+		if (!(species && species.smiles)) return;
+		const compound = await Compound.fromSmiles(species.smiles);
+		const compoundData = await compound.getData();
+		console.log(compound, compoundData);
+	});
 </script>
 
 {#if species}
@@ -50,7 +41,7 @@
 			<div class="grid justify-items-center">
 				<div>{@html svg}</div>
 				<div class="flex gap-4">
-					<span>{@html species.name_html} molecular structure </span>
+					<span>Molecular structure </span>
 					<a href={url} download="{species.iupac_name}.svg"><Download /></a>
 				</div>
 			</div>

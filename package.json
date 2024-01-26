@@ -70,6 +70,7 @@
 		"formsnap": "^0.4.3",
 		"lodash-es": "^4.17.21",
 		"lucide-svelte": "^0.312.0",
+		"pubchem": "^1.1.0",
 		"tabulator-tables": "^5.5.3",
 		"tailwind-merge": "^2.2.1",
 		"tailwind-variants": "^0.1.20",
