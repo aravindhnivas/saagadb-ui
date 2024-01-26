@@ -52,7 +52,7 @@
 	// $: console.log({ species_id, linelist_id, ref_doi });
 
 	async function fetch_meta_id(): Promise<string | number | undefined> {
-		if (!(species_id && linelist_id)) return toast.error('Please enter a species and linelist');
+		if (!(species_id && linelist_id)) throw toast.error('Please enter a species and linelist');
 		const res = await fetch(
 			`/api/data/species-metadata/query/?species_id=${species_id}&linelist_id=${linelist_id}`
 		);
@@ -67,7 +67,7 @@
 	}
 
 	async function fetch_ref_id(): Promise<string | number | undefined> {
-		if (!ref_doi) return toast.error('Please enter a doi');
+		if (!ref_doi) throw toast.error('Please enter a doi');
 		const res = await fetch(`/api/data/reference?doi=${ref_doi}`);
 		const data = (await res.json()) as Reference[];
 		console.log(data);
