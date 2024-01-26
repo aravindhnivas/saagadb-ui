@@ -11,7 +11,7 @@
 	let viewerElement: HTMLDivElement;
 	let molBlock = mol?.get_v3Kmolblock();
 
-	console.log(molBlock);
+	// console.log(molBlock);
 	onMount(() => {
 		if (!(molBlock && viewerElement)) return;
 		// Initialize 3Dmol.js

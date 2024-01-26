@@ -8,7 +8,7 @@
 	export let data: LayoutData;
 </script>
 
-<div class="overflow-auto grid justify-center">
+<div class="overflow-auto grid">
 	{#await data.load_species_metadata}
 		<div class="flex gap-2 items-center items-center">
 			<span class="loading loading-spinner"></span>
