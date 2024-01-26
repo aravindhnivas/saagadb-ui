@@ -13,10 +13,8 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
 	import { toast } from 'svelte-sonner';
-	import { get } from 'svelte/store';
 	import { oO } from '@zmotivat0r/o0';
 	import Error from '../../+error.svelte';
-	import { message } from 'sveltekit-superforms/client';
 
 	export let data: PageData;
 
