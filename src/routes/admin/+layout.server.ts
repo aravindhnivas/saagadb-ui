@@ -11,7 +11,7 @@ export const load: LayoutServerLoad = async ({ fetch }) => {
 	const [species, linelist] = (await Promise.all([
 		fetchFunc(`${base}/api/data/species`),
 		fetchFunc(`${base}/api/data/linelist`)
-	])) as [{ [key: string]: string }[], { id: string; linelist_name: string }[]];
+	])) as [Species[], Linelist[]];
 
 	return { species, linelist };
 };
