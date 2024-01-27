@@ -27,6 +27,11 @@ declare global {
 		selfies: string;
 		notes: string;
 	}
+
+	interface Linelist {
+		id: number;
+		linelist_name: string;
+	}
 	interface Meta {}
 
 	interface Window {
