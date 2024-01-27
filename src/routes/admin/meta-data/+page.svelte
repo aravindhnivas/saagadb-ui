@@ -14,7 +14,6 @@
 	import { Input } from '$lib/components/ui/input';
 	import { toast } from 'svelte-sonner';
 	import { oO } from '@zmotivat0r/o0';
-	import Error from '../../+error.svelte';
 
 	export let data: PageData;
 
