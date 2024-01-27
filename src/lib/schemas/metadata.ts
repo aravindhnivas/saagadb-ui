@@ -82,17 +82,8 @@ export const dropdowns: {
 		{ id: uuidv4(), name: 'linelist', key: 'linelist_name' }
 	],
 	reference: [],
-	'meta-reference': [
-		// { id: uuidv4(), name: 'species', key: 'name_formula' },
-		// { id: uuidv4(), name: 'linelist', key: 'linelist_name' },
-		// { id: uuidv4(), name: 'meta', key: '' },
-		// { id: uuidv4(), name: 'ref', key: '' }
-	],
-	line: [
-		// { id: uuidv4(), name: 'species', key: 'name_formula' },
-		// { id: uuidv4(), name: 'linelist', key: 'linelist_name' },
-		// { id: uuidv4(), name: 'meta', key: '' }
-	]
+	'meta-reference': [],
+	line: []
 };
 
 export const ids = ['species-metadata', 'reference', 'meta-reference', 'line'] as const;

@@ -5,11 +5,11 @@
 	import * as Alert from '$lib/components/ui/alert';
 	import { Schemas, dropdowns, fileInputs, metadata_items } from '$lib/schemas/metadata';
 	import * as Form from '$lib/components/ui/form';
-	import FormCombobox from '$lib/components/combobox/form-combobox.svelte';
 	import type { PageData } from './$types';
 	import MessageAlert from '$lib/components/forms/message-alert.svelte';
 	import type { FormOptions } from 'formsnap';
 	import CommonHeader from './common-header.svelte';
+	import SpeciesMetadata from './species-metadata.svelte';
 
 	export let data: PageData;
 
@@ -53,7 +53,6 @@
 		let:config
 		{options}
 		debug={import.meta.env.DEV}
-		let:formStore
 	>
 		<MessageAlert />
 		<svelte:fragment slot="description">
@@ -61,16 +60,9 @@
 		</svelte:fragment>
 
 		<CommonHeader species={data.species} linelist={data.linelist} {metaid} />
-
-		<div class="grid-auto-fill lg:max-w-md sm:max-w-full">
-			{#each dropdowns[metaid] as { id, name, key } (id)}
-				{@const items = data[name]?.map((f) => ({
-					value: `${f.id}`,
-					label: f[key]
-				}))}
-				<FormCombobox val_type="number" {config} {name} {items} />
-			{/each}
-		</div>
+		{#if metaid === 'species-metadata'}
+			<SpeciesMetadata {config} species={data.species} linelist={data.linelist} />
+		{/if}
 
 		{#each Object.keys(form.data) as name (name)}
 			{#if check_key_to_include(metaid, name)}
