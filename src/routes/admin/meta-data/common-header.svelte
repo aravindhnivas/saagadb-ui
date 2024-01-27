@@ -8,7 +8,7 @@
 
 	export let species: Species[];
 	export let linelist: Linelist[];
-	export let include_ref = false;
+	// export let include_ref = false;
 	export let metaid: string;
 
 	let species_id = 0;
