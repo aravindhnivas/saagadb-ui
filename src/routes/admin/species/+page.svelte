@@ -5,11 +5,13 @@
 	import * as Form from '$lib/components/ui/form';
 	import * as Card from '$lib/components/ui/card';
 	import speciesSchema from '$lib/schemas/species';
+	import { Button } from '$lib/components/ui/button';
+
 	export let data: PageData;
 </script>
 
 <FormComponent
-	class="max-w-md"
+	class="max-w-4xl"
 	footer={false}
 	schema={speciesSchema}
 	form={data.form}
@@ -32,7 +34,8 @@
 				</Form.Field>
 			{/each}
 		</Card.Content>
-		<Card.Footer class="flex justify-center">
+		<Card.Footer class="flex gap-4 justify-center">
+			<Button variant="outline" class="w-[100px]">Auto fill</Button>
 			<Form.Button class="w-[150px]">Submit</Form.Button>
 		</Card.Footer>
 	</Card.Root>
