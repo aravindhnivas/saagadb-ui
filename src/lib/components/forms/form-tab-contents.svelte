@@ -39,9 +39,9 @@
 			</Card.Content>
 
 			{#if footer}
-				<Card.Footer>
+				<Card.Footer class="justify-center">
 					<slot name="footer">
-						<Form.Button>Submit</Form.Button>
+						<Form.Button class="w-[150px]">Upload</Form.Button>
 					</slot>
 				</Card.Footer>
 			{/if}

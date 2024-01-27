@@ -1,9 +1,10 @@
 <script lang="ts">
 	import FormCombobox from '$lib/components/combobox/form-combobox.svelte';
+	import { getContext } from 'svelte';
 
 	export let config;
-	export let species: Species[];
-	export let linelist: Linelist[];
+	const species = getContext('species') as Species[];
+	const linelist = getContext('linelist') as Linelist[];
 </script>
 
 <div class="grid-auto-fill lg:max-w-md sm:max-w-full">

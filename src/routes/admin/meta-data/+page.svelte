@@ -10,6 +10,7 @@
 	import type { FormOptions } from 'formsnap';
 	import CommonHeader from './common-header.svelte';
 	import SpeciesMetadata from './species-metadata.svelte';
+	import { setContext } from 'svelte';
 
 	export let data: PageData;
 
@@ -19,6 +20,9 @@
 		const arr = new Set([...arr_file_input, ...arr_dropdown]);
 		return !arr.has(key);
 	};
+
+	setContext('species', data.species);
+	setContext('linelist', data.linelist);
 
 	let error_message = '';
 	const options: FormOptions<(typeof Schemas)[number]> = {
@@ -58,10 +62,11 @@
 		<svelte:fragment slot="description">
 			<Dropfile />
 		</svelte:fragment>
-
-		<CommonHeader species={data.species} linelist={data.linelist} {metaid} />
+		{#if metaid === 'meta-reference' || metaid === 'line'}
+			<CommonHeader {metaid} />
+		{/if}
 		{#if metaid === 'species-metadata'}
-			<SpeciesMetadata {config} species={data.species} linelist={data.linelist} />
+			<SpeciesMetadata {config} />
 		{/if}
 
 		{#each Object.keys(form.data) as name (name)}
