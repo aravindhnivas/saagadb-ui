@@ -34,7 +34,7 @@ export const Schemas = {
 		var_file: z.string().optional(),
 		fit_file: z.string().optional(),
 		lin_file: z.string().optional(),
-		notes: z.string().optional()
+		notes: z.string().default('').optional()
 	}),
 	reference: z.object({
 		doi: z.string().min(5),
