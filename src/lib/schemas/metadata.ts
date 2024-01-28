@@ -39,7 +39,7 @@ export const Schemas = {
 	reference: z.object({
 		doi: z.string().min(5),
 		ref_url: z.string().min(5),
-		notes: z.string().optional(),
+		notes: z.string().default('').optional(),
 		bibtex: z.string().optional()
 	}),
 	'meta-reference': z.object({
@@ -47,7 +47,7 @@ export const Schemas = {
 		ref: zint(),
 		dipole_moment: z.boolean(),
 		spectrum: z.boolean(),
-		notes: z.string().optional()
+		notes: z.string().default('').optional()
 	}),
 	line: z.object({
 		meta: zint(),
@@ -55,7 +55,7 @@ export const Schemas = {
 		qn_label_str: z.string().min(1),
 		contains_rovibrational: z.boolean(),
 		vib_qn: z.string().optional(),
-		notes: z.string().optional()
+		notes: z.string().default('').optional()
 	})
 } as const;
 

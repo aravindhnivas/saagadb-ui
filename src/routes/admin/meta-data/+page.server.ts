@@ -92,7 +92,7 @@ export const actions: Actions = {
 			console.log('trying text parsing after 500 Internal error');
 			const msg = await res.text();
 			console.log({ msg });
-			message(form, msg);
+			message(form, { type: 'error', text: msg });
 			return fail(500, { form });
 			// return { form };
 		}
