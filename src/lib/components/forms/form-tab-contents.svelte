@@ -4,6 +4,11 @@
 	import * as Form from '$lib/components/ui/form';
 	import type { FormOptions, SuperValidated } from 'formsnap';
 	import type { AnyZodObject } from 'zod';
+	import MessageAlert from './message-alert.svelte';
+	import Dropfile from '$lib/components/file-drop.svelte';
+	import { AlertCircle } from 'lucide-svelte';
+	import * as Alert from '$lib/components/ui/alert';
+	import { createEventDispatcher } from 'svelte';
 
 	export let value: string;
 	export let footer = true;
@@ -11,10 +16,34 @@
 	export let description: string = '';
 	export let form: SuperValidated<AnyZodObject>;
 	export let schema: AnyZodObject;
-	export let options: FormOptions<AnyZodObject> = {};
+	export let opts: FormOptions<AnyZodObject> = {};
+	export let include_dropfile = true;
 
 	let className = '';
 	export { className as class };
+
+	let error_message = '';
+	const dispatch = createEventDispatcher();
+	const options: FormOptions<typeof schema> = {
+		resetForm: false,
+		// applyAction: false,
+		invalidateAll: false,
+		taintedMessage: null,
+		onResult: ({ result }) => {
+			dispatch('result', result);
+			if (result.type === 'failure') {
+				error_message = 'Please check the form above for errors';
+			} else {
+				error_message = '';
+			}
+		},
+		onError: (e) => {
+			dispatch('error', e);
+			// do something else
+			console.error(e);
+		},
+		...opts
+	};
 </script>
 
 <Tabs.Content {value}>
@@ -27,15 +56,31 @@
 			{...$$restProps}
 			let:config
 			let:formStore
+			debug={import.meta.env.DEV}
 		>
 			<Card.Header>
 				<Card.Title>{title || 'Upload config (.yaml) file'}</Card.Title>
 				<Card.Description>
-					<slot name="description">{description}</slot>
+					<slot name="description">
+						{description}
+					</slot>
+					{#if include_dropfile}
+						<Dropfile />
+					{/if}
 				</Card.Description>
 			</Card.Header>
 			<Card.Content class="space-y-2 {className}">
+				<MessageAlert />
+
 				<slot {config} {formStore} />
+
+				{#if error_message}
+					<Alert.Root variant="destructive">
+						<AlertCircle class="h-4 w-4" />
+						<Alert.Title>Error</Alert.Title>
+						<Alert.Description>{error_message}</Alert.Description>
+					</Alert.Root>
+				{/if}
 			</Card.Content>
 
 			{#if footer}
