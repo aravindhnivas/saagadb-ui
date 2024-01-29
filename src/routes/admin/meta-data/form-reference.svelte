@@ -14,6 +14,7 @@
 	const value = 'reference';
 	const schema = Schemas[value];
 	let auto_fill = false;
+	let fetching = false;
 </script>
 
 <FormTabContents {value} enctype="multipart/form-data" {schema} {form} let:config let:formStore>
@@ -33,16 +34,29 @@
 				class="h-8"
 				variant="outline"
 				on:click={async () => {
-					const doi = get(formStore)['doi'];
-					if (!doi) return toast.error('doi is required');
-					const { href, bibtex_text } = await fetch_bibfile({ doi });
-					formStore.update((f) => {
-						f.ref_url = href;
-						f.bibtex = bibtex_text;
-						return f;
-					});
+					try {
+						fetching = true;
+						const doi = get(formStore)['doi'];
+						if (!doi) throw new Error('DOI is required');
+						const { href, bibtex_text } = await fetch_bibfile({ doi });
+						formStore.update((f) => {
+							f.ref_url = href;
+							f.bibtex = bibtex_text;
+							return f;
+						});
+					} catch (error) {
+						if (error instanceof Error) toast.error(error.message);
+					} finally {
+						fetching = false;
+					}
 				}}>fetch</Button
 			>
+			{#if fetching}
+				<div class="flex gap-2 items-center h-10">
+					<span class="loading loading-spinner"></span>
+					<span>Fetching...</span>
+				</div>
+			{/if}
 		{/if}
 	</div>
 
