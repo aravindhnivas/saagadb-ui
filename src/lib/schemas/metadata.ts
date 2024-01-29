@@ -60,18 +60,18 @@ export const Schemas = {
 } as const;
 
 export const fileInputs: {
-	[key: string]: { id: string; name: string; required: boolean }[];
+	[key: string]: { id: string; name: string; required: boolean; extension: string }[];
 } = {
 	'species-metadata': [
-		{ id: uuidv4(), name: 'qpart_file', required: true },
-		{ id: uuidv4(), name: 'int_file', required: false },
-		{ id: uuidv4(), name: 'var_file', required: false },
-		{ id: uuidv4(), name: 'fit_file', required: false },
-		{ id: uuidv4(), name: 'lin_file', required: false }
+		{ id: uuidv4(), name: 'qpart_file', required: true, extension: '.qpart' },
+		{ id: uuidv4(), name: 'int_file', required: false, extension: '.int' },
+		{ id: uuidv4(), name: 'var_file', required: false, extension: '.var' },
+		{ id: uuidv4(), name: 'fit_file', required: false, extension: '.fit' },
+		{ id: uuidv4(), name: 'lin_file', required: false, extension: '.lin' }
 	],
-	reference: [{ id: uuidv4(), name: 'bibtex', required: true }],
+	reference: [{ id: uuidv4(), name: 'bibtex', required: true, extension: '.bib' }],
 	'meta-reference': [],
-	line: [{ id: uuidv4(), name: 'cat_file', required: true }]
+	line: [{ id: uuidv4(), name: 'cat_file', required: true, extension: '.cat' }]
 };
 
 export const dropdowns: {

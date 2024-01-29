@@ -41,6 +41,9 @@ export const actions: Actions = {
 		for (const key of fileInputs[metaid]) {
 			const file = formData.get(key.name);
 			if (file instanceof File) {
+				if (!file.name.endsWith(key.extension)) {
+					return setError(form, key.name, `File must have extension ${key.extension}`);
+				}
 				if (!file.name || !file.size) {
 					if (key.required) return setError(form, key.name, 'File is required');
 					continue;
@@ -54,7 +57,7 @@ export const actions: Actions = {
 				}
 				console.log('append file string', key.name, file, 'to formBody');
 				const binaryData = new TextEncoder().encode(file);
-				const fileInstance = new File([binaryData], 'filename.bib', {
+				const fileInstance = new File([binaryData], `${key.name}${key.extension}`, {
 					type: 'application/octet-stream'
 				});
 				formBody.append(key.name, fileInstance);
