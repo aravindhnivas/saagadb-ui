@@ -21,7 +21,7 @@ export const load: LayoutLoad = async ({ fetch }) => {
 	const fetch_linelist = async () => {
 		const [, res] = await oO(fetch(`${base}/api/data/linelist`));
 		if (!(res && res?.ok)) return null;
-		const data = (await res.json()) as { id: string; linelist_name: string }[];
+		const data = (await res.json()) as Linelist[];
 		return data;
 	};
 

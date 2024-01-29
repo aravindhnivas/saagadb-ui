@@ -11,7 +11,7 @@
 
 	export let species: Species;
 	export let meta: Meta[] = [];
-	export let linelist = [];
+	export let linelist: Linelist[] = [];
 
 	let metadata_keys = [
 		{ name: 'Category', value: 'category' },

@@ -11,6 +11,8 @@ export const load: LayoutLoad = async ({ fetch, params }) => {
 				res.json()
 			)
 		]);
+
+		// console.log({ species, meta });
 		return { species, meta } as {
 			species: Species;
 			meta: z.infer<(typeof Schemas)['species-metadata']>[];

@@ -26,6 +26,7 @@ declare global {
 		standard_inchi_key: string;
 		selfies: string;
 		notes: string;
+		message?: string;
 	}
 
 	interface Linelist {

@@ -1,7 +1,7 @@
 <script lang="ts">
+	import Loader from '$lib/components/utils/loader.svelte';
+	import AlertBox from '$lib/components/utils/alert-box.svelte';
 	import type { LayoutData } from './$types';
-	import { AlertCircle } from 'lucide-svelte';
-	import * as Alert from '$lib/components/ui/alert';
 	import SpeciesData from './species-data.svelte';
 	import MetaTable from './meta-table.svelte';
 
@@ -10,18 +10,17 @@
 
 <div class="overflow-auto grid">
 	{#await data.load_species_metadata}
-		<div class="flex gap-2 items-center items-center">
-			<span class="loading loading-spinner"></span>
-			<span>Fetching data please wait...</span>
-		</div>
+		<Loader />
 	{:then { species, meta }}
-		<SpeciesData {species} />
-		<MetaTable {meta} {species} linelist={data.linelist} />
+		{#if species?.message}
+			<AlertBox message={species.message} variant="destructive" />
+		{:else if species}
+			<SpeciesData {species} />
+			{#if meta.length > 0 && data.linelist}
+				<MetaTable {meta} {species} linelist={data.linelist} />
+			{/if}
+		{/if}
 	{:catch error}
-		<Alert.Root variant="destructive">
-			<AlertCircle class="h-4 w-4" />
-			<Alert.Title>Error</Alert.Title>
-			<Alert.Description>{error?.message ?? error}</Alert.Description>
-		</Alert.Root>
+		<AlertBox message={error.message} variant="destructive" />
 	{/await}
 </div>

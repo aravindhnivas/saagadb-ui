@@ -1,30 +1,37 @@
 <script lang="ts">
 	import { Download } from 'lucide-svelte';
 	import * as Table from '$lib/components/ui/table';
-	import { Compound } from 'pubchem';
+	// import { Compound } from 'pubchem';
 	import { onMount } from 'svelte';
 
 	export let species: Species;
+	// console.log(species);
 
-	const mol = window?.RDKit.get_mol(species.smiles);
-	const mol_descriptor: MolecularDescriptor = mol ? JSON.parse(mol.get_descriptors()) : null;
+	let mol;
+	let mol_descriptor: MolecularDescriptor;
+	let species_metadata_table = {};
 
-	const species_metadata_table = {
-		'Chemical formula': species.name_html,
-		'Molar mass': (mol_descriptor ? mol_descriptor.amw : species.molecular_mass) + ' g/mol',
-		'Canonical SMILES': mol?.get_smiles(),
-		SMARTS: mol?.get_smarts(),
-		InChI: mol?.get_inchi(),
-		InChIkey: window.RDKit.get_inchikey_for_inchi(mol?.get_inchi()),
-		SELFIES: species.selfies,
-		Notes: species.notes
+	const load_all_data = () => {
+		mol = window.RDKit.get_mol(species.smiles);
+		mol_descriptor = mol ? JSON.parse(mol.get_descriptors()) : null;
+
+		species_metadata_table = {
+			'Chemical formula': species.name_html,
+			'Molar mass': (mol_descriptor ? mol_descriptor.amw : species.molecular_mass) + ' g/mol',
+			'Canonical SMILES': mol?.get_smiles(),
+			SMARTS: mol?.get_smarts(),
+			InChI: mol?.get_inchi(),
+			InChIkey: window.RDKit.get_inchikey_for_inchi(mol?.get_inchi()),
+			SELFIES: species.selfies,
+			Notes: species.notes
+		};
 	};
-
 	onMount(async () => {
+		if (window.RDKit) load_all_data();
 		if (!(species && species.smiles)) return;
-		const compound = await Compound.fromSmiles(species.smiles);
-		const compoundData = await compound.getData();
-		console.log(compound, compoundData);
+		// const compound = await Compound.fromSmiles(species.smiles);
+		// const compoundData = await compound.getData();
+		// console.log(compound, compoundData);
 	});
 </script>
 
