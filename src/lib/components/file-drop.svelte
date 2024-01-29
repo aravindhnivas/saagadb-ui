@@ -6,8 +6,11 @@
 	import * as YAML from 'js-yaml';
 	import { createEventDispatcher } from 'svelte';
 
+	export let update_form = true;
+
 	const { form } = getForm();
 	const dispatch = createEventDispatcher();
+
 	let fileOver = false;
 	let filename = '';
 
@@ -23,6 +26,9 @@
 			const fileContents = await file.text();
 			const parsed = YAML.load(fileContents) as Record<string, unknown>;
 			dispatch('parsed', { parsed });
+
+			if (!update_form) return;
+			if (!$form) throw toast.error('Form not found');
 
 			const keys = Object.keys(parsed);
 			keys.forEach((key) => {
