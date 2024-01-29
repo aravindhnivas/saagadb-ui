@@ -23,8 +23,8 @@
 </script>
 
 <!-- show back button only in non-dialog mode -->
-{#if $page.params.metaId}
-	{#await load_species_metadata() then { species, meta }}
+{#await load_species_metadata() then { species, meta }}
+	{#if $page.params.metaId}
 		{@const metadata = meta.find((f) => f.id == $page.params.metaId)}
 		{@const key = data.linelist?.find((f) => f.id == metadata?.linelist)?.linelist_name}
 		{@const meta_name = key ? key.toUpperCase() : 'Unknown'}
@@ -35,19 +35,19 @@
 				database</span
 			>
 		</div>
-	{:catch error}
-		<AlertBox message={error.message} variant="destructive" />
-	{/await}
-	{#if species_loaded}
-		<Button class="flex items-center w-[200px]" variant="outline">
-			<a
-				href="{base}/species/{$page.params.id}"
-				class="w-full flex gap-2 items-center justify-center"
-				><ArrowBigLeft /><span>Go back</span></a
-			>
-		</Button>
+		{#if species_loaded}
+			<Button class="flex items-center w-[200px]" variant="outline">
+				<a
+					href="{base}/species/{$page.params.id}"
+					class="w-full flex gap-2 items-center justify-center"
+					><ArrowBigLeft /><span>Go back</span></a
+				>
+			</Button>
+		{/if}
 	{/if}
-{/if}
+{:catch error}
+	<AlertBox message={error.message} variant="destructive" />
+{/await}
 
 {#if species_loaded}
 	{#await data.load_meta_reference}
