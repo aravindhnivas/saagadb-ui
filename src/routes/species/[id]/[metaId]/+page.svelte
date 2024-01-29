@@ -11,7 +11,7 @@
 	export let data: PageData;
 	// export let info: string;
 
-	console.log(data);
+	// console.log(data);
 </script>
 
 <!-- show back button only in non-dialog mode -->
