@@ -61,6 +61,20 @@
 			goto(href);
 		}
 	};
+	const fetch_from_database = (tag: number | string, database: 'CDMS' | 'JPL') => {
+		if (!tag) return;
+		const tag_val = tag.toString().padStart(6, '0');
+
+		if (database === 'CDMS') {
+			const url = 'https://cdms.astro.uni-koeln.de/cgi-bin';
+			const fileinfo = `${url}/cdmsinfo?file=e${tag_val}.cat`;
+			return { fileinfo, tag_val };
+		} else if (database === 'JPL') {
+			const url = 'https://spec.jpl.nasa.gov/ftp/pub/catalog/doc';
+			const fileinfo = `${url}/d${tag_val}.pdf`;
+			return { fileinfo, tag_val };
+		}
+	};
 </script>
 
 {#if species && meta.length > 0}
@@ -78,18 +92,22 @@
 					</span>
 				</Table.Head>
 				{#each meta as metadata}
-					{@const key = linelist?.find((f) => f.id === metadata.linelist)?.linelist_name}
-					<Table.Head class="text-center font-bold">
-						<a
-							href="{base}/species/{species.id}/{metadata.id}"
-							on:click={(e) => {
-								if (key) meta_name = key.toLocaleUpperCase();
-								nav_to_ref(e);
-							}}
-						>
-							<span class="underline hover:text-blue">{key?.toLocaleUpperCase()}</span>
-						</a>
-					</Table.Head>
+					{@const linelist_name = linelist
+						?.find((f) => f.id === metadata.linelist)
+						?.linelist_name?.toLocaleUpperCase()}
+					{#if linelist_name}
+						<Table.Head class="text-center font-bold">
+							<a
+								href="{base}/species/{species.id}/{metadata.id}"
+								on:click={(e) => {
+									if (linelist_name) meta_name = linelist_name;
+									nav_to_ref(e);
+								}}
+							>
+								<span class="underline hover:text-blue">{linelist_name}</span>
+							</a>
+						</Table.Head>
+					{/if}
 				{/each}
 			</Table.Row>
 		</Table.Header>
@@ -98,10 +116,18 @@
 				<Table.Row>
 					<Table.Cell class={cell_padding}>{@html key.name}</Table.Cell>
 					{#each meta as metadata (metadata.id)}
+						{@const linelist_name = linelist
+							?.find((f) => f.id === metadata.linelist)
+							?.linelist_name?.toLocaleUpperCase()}
 						{@const val = metadata[key.value]}
 						<Table.Cell class="text-center {cell_padding}">
 							{#if typeof val === 'boolean' || ['true', 'false'].includes(val)}
 								{val === 'true' ? '✅' : '❌'}
+							{:else if key.value === 'molecule_tag'}
+								{@const info = fetch_from_database(val, linelist_name)}
+								<a class="underline hover:text-blue" href={info?.fileinfo} target="_blank"
+									>{info?.tag_val ?? val}
+								</a>
 							{:else}
 								{val ?? '-'}
 							{/if}
