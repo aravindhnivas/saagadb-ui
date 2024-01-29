@@ -7,5 +7,3 @@ export const referenceSchema = z.object({
 	bibtex: z.string(),
 	notes: z.string().optional()
 });
-
-export interface Reference extends z.infer<typeof referenceSchema> {}

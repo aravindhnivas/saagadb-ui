@@ -38,30 +38,44 @@ export const actions: Actions = {
 		// message(form, { type: 'success', text: 'Form is valid' });
 		// return { form };
 
-		console.log('form.valid', form.data, { formData, metaid });
+		// console.log('form.valid', form.data, { formData, metaid });
 		const fileKeys = fileInputs[metaid];
-		const fileData: {
-			[key: string]: Buffer;
-		} = {};
 
+		// Create a FormData object
+		const formBody = new FormData();
+
+		// Append the file data
 		for (const key of fileKeys) {
-			console.log('key', key);
 			const file = formData.get(key.name);
-			console.log('file', file);
-			if (!(file instanceof File)) {
-				if (key.required) {
-					return setError(form, key.name, 'File is required');
-				}
+			if (!file) {
+				if (key.required) return setError(form, key.name, 'File is required');
 				continue;
 			}
-			const contents = await file.arrayBuffer();
-			const binaryContent = Buffer.from(contents);
-			fileData[key.name] = binaryContent;
+			if (file instanceof File) {
+				console.log('append file instance', key.name, file, 'to formBody');
+				formBody.append(key.name, file);
+			} else if (typeof file === 'string') {
+				console.log('append file string', key.name, file, 'to formBody');
+				const binaryData = new TextEncoder().encode(file);
+				const fileInstance = new File([binaryData], 'filename.bib', {
+					type: 'application/octet-stream'
+				});
+				formBody.append(key.name, fileInstance);
+			}
 		}
 
+		// Append the other form data
+		for (const key in form.data) {
+			formBody.append(key, form.data[key]);
+		}
+
+		console.log('formBody', Array.from(formBody.keys()));
+		// return { form };
+
+		// Send the FormData object
 		const res = await fetch(`${DB_URL}/data/${metaid}/`, {
 			method: 'POST',
-			body: JSON.stringify(form.data)
+			body: formBody
 		});
 
 		console.log({
@@ -84,7 +98,7 @@ export const actions: Actions = {
 		}
 
 		let res_data;
-		if (res.ok && res.status === 200) {
+		if (res.ok && res.status === 201) {
 			res_data = await res.json();
 			message(form, { type: 'success', text: 'Form submitted succesfully' });
 			return { form, response: res_data };
@@ -94,7 +108,6 @@ export const actions: Actions = {
 			console.log({ msg });
 			message(form, { type: 'error', text: msg });
 			return fail(500, { form });
-			// return { form };
 		}
 	}
 };
