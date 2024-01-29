@@ -7,7 +7,7 @@
 	export let species: Species;
 	// console.log(species);
 
-	let mol;
+	let mol: ReturnType<typeof window.RDKit.get_mol>;
 	let mol_descriptor: MolecularDescriptor;
 	let species_metadata_table = {};
 
