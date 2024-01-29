@@ -35,26 +35,23 @@ export const actions: Actions = {
 			return fail(400, { form });
 		}
 
-		// message(form, { type: 'success', text: 'Form is valid' });
-		// return { form };
-
-		// console.log('form.valid', form.data, { formData, metaid });
-		const fileKeys = fileInputs[metaid];
-
-		// Create a FormData object
 		const formBody = new FormData();
 
 		// Append the file data
-		for (const key of fileKeys) {
+		for (const key of fileInputs[metaid]) {
 			const file = formData.get(key.name);
-			if (!file) {
-				if (key.required) return setError(form, key.name, 'File is required');
-				continue;
-			}
 			if (file instanceof File) {
+				if (!file.name || !file.size) {
+					if (key.required) return setError(form, key.name, 'File is required');
+					continue;
+				}
 				console.log('append file instance', key.name, file, 'to formBody');
 				formBody.append(key.name, file);
 			} else if (typeof file === 'string') {
+				if (!file) {
+					if (key.required) return setError(form, key.name, 'File is required');
+					continue;
+				}
 				console.log('append file string', key.name, file, 'to formBody');
 				const binaryData = new TextEncoder().encode(file);
 				const fileInstance = new File([binaryData], 'filename.bib', {
