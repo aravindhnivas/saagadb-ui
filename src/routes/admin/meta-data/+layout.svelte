@@ -56,6 +56,6 @@
 				<Tabs.Trigger {value}>{name}</Tabs.Trigger>
 			{/each}
 		</Tabs.List>
-		<slot {parsed} />
+		<slot />
 	</Tabs.Root>
 </div>
