@@ -20,7 +20,7 @@
 				<Form.Field {config} name="email">
 					<Form.Item>
 						<Form.Label>Email</Form.Label>
-						<Form.Input type="email" class="w-[300px]" />
+						<Form.Input type="email" class="w-[300px]" required />
 						<Form.Validation />
 					</Form.Item>
 				</Form.Field>
@@ -28,7 +28,7 @@
 					<Form.Item>
 						<Form.Label>Password</Form.Label>
 						<div class="flex items-center gap-4">
-							<Form.Input class="w-[300px]" type={show_password ? 'string' : 'password'} />
+							<Form.Input class="w-[300px]" type={show_password ? 'string' : 'password'} required />
 							<button type="button" on:click={() => (show_password = !show_password)}>
 								{#if show_password}
 									<Eye />
