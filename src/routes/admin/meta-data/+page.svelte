@@ -5,8 +5,12 @@
 	import FormMetaReference from './form-meta-reference.svelte';
 	import FormLine from './form-line.svelte';
 	import FormSpeciesMetadata from './form-species-metadata.svelte';
+	import { parsed_file_data } from './stores';
 
 	export let data: PageData;
+
+	$: console.log({ $parsed_file_data });
+
 	setContext('species', data.species);
 	setContext('linelist', data.linelist);
 </script>
