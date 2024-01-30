@@ -31,7 +31,8 @@ export const actions: Actions = {
 
 		const res = await fetch(`${DB_URL}/user/token/`, {
 			method: 'POST',
-			body: JSON.stringify({ email, password })
+			body: JSON.stringify({ email, password }),
+			headers: { 'Content-Type': 'application/json' }
 		});
 
 		if (res.status !== 200) {
