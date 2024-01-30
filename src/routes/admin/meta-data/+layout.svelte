@@ -45,6 +45,9 @@
 				<Upload />
 				<span>Drag & drop or Upload file here</span>
 			{/if}
+			{#if filename}
+				<div class="text-sm text-blue-400">{filename}</div>
+			{/if}
 		</div>
 	</DropFile>
 	<Tabs.Root {value}>
