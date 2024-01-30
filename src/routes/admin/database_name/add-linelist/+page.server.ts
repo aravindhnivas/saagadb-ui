@@ -28,7 +28,8 @@ export const actions: Actions = {
 
 		const res = await fetch(`${DB_URL}/data/linelist/`, {
 			method: 'POST',
-			body: JSON.stringify(form.data)
+			body: JSON.stringify(form.data),
+			headers: { 'Content-Type': 'application/json' }
 		});
 
 		if (!res.ok) {

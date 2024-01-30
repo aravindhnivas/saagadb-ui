@@ -29,7 +29,8 @@ export const actions: Actions = {
 		// TODO: Do something with the validated form.data
 		const res = await fetch(`${DB_URL}/data/species/`, {
 			method: 'POST',
-			body: JSON.stringify({ name: name_arr, ...restData })
+			body: JSON.stringify({ name: name_arr, ...restData }),
+			headers: { 'Content-Type': 'application/json' }
 		});
 
 		if (!res.ok) {

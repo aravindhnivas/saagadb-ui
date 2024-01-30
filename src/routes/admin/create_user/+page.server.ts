@@ -26,7 +26,8 @@ export const actions: Actions = {
 		// TODO: Do something with the validated form.data
 		const res = await fetch(`${DB_URL}/user/create/`, {
 			method: 'POST',
-			body: JSON.stringify(form.data)
+			body: JSON.stringify(form.data),
+			headers: { 'Content-Type': 'application/json' }
 		});
 
 		if (!res.ok) {
