@@ -52,5 +52,5 @@
 >
 
 {#if mol}
-	<div>{@html mol?.get_svg()}</div>
+	<div>{@html mol?.get_svg(100, 50)}</div>
 {/if}
