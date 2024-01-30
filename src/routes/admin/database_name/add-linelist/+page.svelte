@@ -11,7 +11,7 @@
 	<Form.Field {config} name="linelist_name">
 		<Form.Item class="max-w-md">
 			<Form.Label>Name</Form.Label>
-			<Form.Input />
+			<Form.Input required />
 			<Form.Description>Enter the name of the database</Form.Description>
 			<Form.Validation />
 		</Form.Item>
