@@ -4,7 +4,26 @@
 	import { getForm } from 'formsnap';
 
 	const { message } = getForm();
+
+	let modal: HTMLDialogElement;
+	$: if (modal && $message && $message.text && $message.type === 'success') {
+		modal.showModal();
+	}
 </script>
+
+<dialog bind:this={modal} class="modal">
+	{#if $message && $message.text && $message.type === 'success'}
+		<div class="modal-box">
+			<h3 class="font-bold text-lg">Form submitted succesfully!!!</h3>
+			<p class="py-4">{@html $message.text}</p>
+			<div class="modal-action">
+				<form method="dialog">
+					<button class="btn">Close</button>
+				</form>
+			</div>
+		</div>
+	{/if}
+</dialog>
 
 {#if $message && $message.text && $message.type}
 	<Alert.Root class="my" variant={$message.type === 'error' ? 'destructive' : 'default'}>
