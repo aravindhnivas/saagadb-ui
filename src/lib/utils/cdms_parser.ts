@@ -40,8 +40,12 @@ export function CDMS_Parser(cdms_data: string) {
 
 	const heading = C$("caption font:not([color='red'])");
 	const [name_formula, ...name_formula_meta] = heading.text()?.trim()?.split(/[, ]/g);
-	const [name_html, ...name_html_meta] = heading.html()?.split(/[, ]/g) ?? '';
-	const iupac_name = C$('caption').text().split('\n')[1].split(/[,;]/g)[0];
+	const [name_html, ...name_html_meta] =
+		heading
+			.html()
+			?.replace(/<\/?font.*?>/g, '')
+			.split(/[, ]/g) ?? '';
+	const default_name = C$('caption').text().split('\n')[1].split(/[,;]/g)[0];
 	const [, ...name_meta] =
 		C$('caption')
 			.html()
@@ -50,7 +54,7 @@ export function CDMS_Parser(cdms_data: string) {
 			.map((f) => endash_str(f.trim())) ?? [];
 
 	const name = {
-		default: endash_str(iupac_name),
+		default: endash_str(default_name),
 		meta: name_meta.join(', '),
 		formula: {
 			default: endash_str(name_formula),
