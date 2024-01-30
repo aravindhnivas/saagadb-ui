@@ -8,7 +8,7 @@ export const actions: Actions = {
 		const method = url.searchParams.get('method') as 'DELETE' | 'PATCH' | 'PUT';
 		const _change_reason = data.get('reason') as string;
 		const linelist_name = data.get('changed_name') as string;
-		console.log({ id, method, _change_reason, linelist_name });
+		// console.log({ id, method, _change_reason, linelist_name });
 		// return { success: false, message: 'method not implemented' };
 		if (!(id && _change_reason)) {
 			return { success: false, message: 'id and reason are required' };
@@ -18,13 +18,15 @@ export const actions: Actions = {
 		if (method === 'PATCH' || method === 'PUT') {
 			res = await fetch(`${DB_URL}/data/linelist/${id}/`, {
 				method,
-				body: JSON.stringify({ _change_reason, linelist_name })
+				body: JSON.stringify({ _change_reason, linelist_name }),
+				headers: { 'Content-Type': 'application/json' }
 			});
 		} else if (method === 'DELETE') {
 			res = await fetch(
 				`${DB_URL}/data/linelist/${id}/?delete_reason=${encodeURIComponent(_change_reason)}`,
 				{
-					method: 'DELETE'
+					method: 'DELETE',
+					headers: { 'Content-Type': 'application/json' }
 				}
 			);
 		} else {

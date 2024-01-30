@@ -34,9 +34,7 @@
 				if (data.success) {
 					toast.success(data.message);
 				} else {
-					const { error } = data.message;
-					message = `${error?.message} (${error?.type})`;
-					toast.error(message);
+					message = data.message?.detail || data.message;
 				}
 			}
 
