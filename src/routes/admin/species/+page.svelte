@@ -5,7 +5,8 @@
 	import * as Form from '$lib/components/ui/form';
 	import * as Card from '$lib/components/ui/card';
 	import speciesSchema from '$lib/schemas/species';
-	import { Button } from '$lib/components/ui/button';
+	import AutoFillInchi from './auto-fill-inchi.svelte';
+	import AutoFillName from './auto-fill-name.svelte';
 
 	export let data: PageData;
 </script>
@@ -16,6 +17,7 @@
 	schema={speciesSchema}
 	form={data.form}
 	let:config
+	let:formStore
 	debug={import.meta.env.DEV}
 >
 	<Card.Root>
@@ -25,17 +27,33 @@
 		</Card.Header>
 		<Card.Content>
 			{#each Object.keys(data.form.data) as name}
+				{#if name === 'name'}
+					<AutoFillName />
+				{/if}
+
+				<!-- {#if name === 'standard_inchi'}
+					<AutoFillInchi />
+				{/if} -->
 				<Form.Field {config} {name}>
 					<Form.Item>
 						<Form.Label>{name}</Form.Label>
-						<Form.Input />
+						{#if name === 'notes'}
+							<Form.Textarea />
+						{:else if name === 'smiles'}
+							<div class="grid grid-cols-4 gap-4">
+								<Form.Input required class="col-span-3" />
+								<AutoFillInchi />
+							</div>
+						{:else}
+							<Form.Input required />
+						{/if}
+
 						<Form.Validation />
 					</Form.Item>
 				</Form.Field>
 			{/each}
 		</Card.Content>
 		<Card.Footer class="flex gap-4 justify-center">
-			<Button variant="outline" class="w-[100px]">Auto fill</Button>
 			<Form.Button class="w-[150px]">Submit</Form.Button>
 		</Card.Footer>
 	</Card.Root>

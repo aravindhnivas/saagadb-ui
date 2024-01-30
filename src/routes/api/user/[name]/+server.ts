@@ -1,4 +1,4 @@
-import { error, json } from '@sveltejs/kit';
+import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { DB_ORIGIN } from '$lib/server';
 import { delete_token } from '$lib/server/cookies';
