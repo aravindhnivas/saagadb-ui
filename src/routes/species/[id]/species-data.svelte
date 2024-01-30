@@ -1,11 +1,9 @@
 <script lang="ts">
 	import { Download } from 'lucide-svelte';
 	import * as Table from '$lib/components/ui/table';
-	// import { Compound } from 'pubchem';
 	import { onMount } from 'svelte';
 
 	export let species: Species;
-	// console.log(species);
 
 	let mol: ReturnType<typeof window.RDKit.get_mol>;
 	let mol_descriptor: MolecularDescriptor;
@@ -29,9 +27,6 @@
 	onMount(async () => {
 		if (window.RDKit) load_all_data();
 		if (!(species && species.smiles)) return;
-		// const compound = await Compound.fromSmiles(species.smiles);
-		// const compoundData = await compound.getData();
-		// console.log(compound, compoundData);
 	});
 </script>
 

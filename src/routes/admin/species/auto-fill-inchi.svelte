@@ -26,9 +26,15 @@
 		}
 	};
 
+	let mol: ReturnType<typeof window.RDKit.get_mol>;
+
 	const auto_fill_properties = async () => {
 		if (!$form.smiles) return toast.error('Please enter a SMILES string first');
-		const mol = window.RDKit.get_mol($form.smiles);
+
+		$form.standard_inchi = '';
+		$form.standard_inchi_key = '';
+
+		mol = window.RDKit.get_mol($form.smiles);
 		if (!mol) return toast.error('Invalid SMILES string');
 		const InChI = mol?.get_inchi();
 		const InChIkey = window.RDKit.get_inchikey_for_inchi(mol?.get_inchi());
@@ -44,3 +50,7 @@
 <Button type="button" class="btn btn-sm" on:click={async () => await auto_fill_properties()}
 	>Auto fill InChI</Button
 >
+
+{#if mol}
+	<div>{@html mol?.get_svg()}</div>
+{/if}

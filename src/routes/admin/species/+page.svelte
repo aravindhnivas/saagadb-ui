@@ -36,11 +36,11 @@
 						{#if name === 'notes'}
 							<Form.Textarea />
 						{:else if name === 'smiles'}
-							<div class="grid grid-cols-4 gap-4">
+							<div class="grid grid-cols-6 gap-4 items-start">
 								<Form.Input required class="col-span-2" />
 								<AutoFillInchi />
 							</div>
-							<span class="text-sm"
+							<span class="text-sm text-gray-500"
 								>Write isotopes mass within "[]" i.e., [15N] and connected hydrogens must be
 								specified inside brackets i.e., [15NH].
 							</span>
