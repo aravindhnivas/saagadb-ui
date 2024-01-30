@@ -9,7 +9,7 @@
 
 	export let data: PageData;
 
-	$: console.log({ $parsed_file_data });
+	// $: console.log({ $parsed_file_data });
 
 	setContext('species', data.species);
 	setContext('linelist', data.linelist);
