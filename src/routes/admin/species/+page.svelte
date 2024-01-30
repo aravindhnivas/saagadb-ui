@@ -7,7 +7,6 @@
 	import speciesSchema from '$lib/schemas/species';
 	import AutoFillInchi from './auto-fill-inchi.svelte';
 	import AutoFillName from './auto-fill-name.svelte';
-	import { get } from 'svelte/store';
 	import NameHtml from './name-html.svelte';
 	export let data: PageData;
 </script>
@@ -38,9 +37,13 @@
 							<Form.Textarea />
 						{:else if name === 'smiles'}
 							<div class="grid grid-cols-4 gap-4">
-								<Form.Input required class="col-span-3" />
+								<Form.Input required class="col-span-2" />
 								<AutoFillInchi />
 							</div>
+							<span class="text-sm"
+								>Write isotopes mass within "[]" i.e., [15N] and connected hydrogens must be
+								specified inside brackets i.e., [15NH].
+							</span>
 						{:else if name === 'name_html'}
 							<div class="grid grid-cols-4 gap-4 items-center">
 								<Form.Input required class="col-span-3" />

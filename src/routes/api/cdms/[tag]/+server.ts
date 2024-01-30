@@ -15,7 +15,9 @@ export const GET: RequestHandler = async ({ fetch, params }) => {
 		return fail(res.status, res.statusText);
 	}
 	const data = await res.text();
-	if (data.includes('Something went through the roof!'))
+	if (data.includes('Something went through the roof!')) {
 		return text('Something went through the roof!', { status: 404 });
+	}
+
 	return text(data, { status: 200 });
 };
