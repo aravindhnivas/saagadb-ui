@@ -38,7 +38,7 @@
 			<div class="space-y-1 leading-none">
 				<Form.Label>Dipole moment</Form.Label>
 			</div>
-			<Form.Checkbox />
+			<Form.Checkbox checked="indeterminate" />
 			<Form.Validation />
 		</Form.Item>
 	</Form.Field>
@@ -48,7 +48,7 @@
 			<div class="space-y-1 leading-none">
 				<Form.Label>Spectrum</Form.Label>
 			</div>
-			<Form.Checkbox />
+			<Form.Checkbox checked="indeterminate" />
 			<Form.Validation />
 		</Form.Item>
 	</Form.Field>

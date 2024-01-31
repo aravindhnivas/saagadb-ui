@@ -28,7 +28,7 @@
 
 	<div class="flex gap-4 items-center">
 		<span>Auto fill from doi</span>
-		<Switch bind:checked={auto_fill} />
+		<Switch bind:checked={auto_fill} on:onCheckedChange={(e) => console.log(e)} />
 		{#if auto_fill}
 			<Button
 				class="h-8"
@@ -49,7 +49,7 @@
 					} finally {
 						fetching = false;
 					}
-				}}>fetch</Button
+				}}>Auto-fill from DOI</Button
 			>
 			{#if fetching}
 				<div class="flex gap-2 items-center h-10">
@@ -85,7 +85,7 @@
 			</Form.Item>
 		</Form.Field>
 	{:else}
-		<Form.Field {config} name="bibtex">
+		<Form.Field {config} name="bibtex_file">
 			<Form.Item>
 				<div class="grid w-full max-w-sm items-center gap-1.5">
 					<Form.Label>bibtex</Form.Label>

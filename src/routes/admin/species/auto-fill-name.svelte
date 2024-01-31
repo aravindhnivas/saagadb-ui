@@ -29,7 +29,7 @@
 				const { name } = cdms_fetched_data;
 				console.log(cdms_fetched_data);
 				$form.name = name.default;
-				// $form.iupac_name = name.default;
+				$form.iupac_name = '';
 				$form.name_formula = name.formula.default;
 				$form.name_html = name.html.default;
 			} catch (error) {

@@ -8,10 +8,10 @@
 
 	const fetch_smiles = async () => {
 		if (!$form.name) return toast.error('Please enter a name first');
-		console.log(`Fetching SMILES for ${$form.name}`);
+		// console.log(`Fetching SMILES for ${$form.name}`);
 		const res = await fetch(`${base}/api/pubchem/${$form.name}/CanonicalSMILES`);
-		console.log(`Received response ${res.status} ${res.statusText}`);
-		if (!res.ok) return toast.error(res.statusText);
+		// console.log(`Received response ${res.status} ${res.statusText}`);
+		if (!res.ok) return toast.error(res.statusText + ': could not fetch SMILES');
 
 		const pubchem_data = (await res.json()) as { CID: string; CanonicalSMILES: string }[];
 
@@ -31,9 +31,6 @@
 	const auto_fill_properties = async () => {
 		if (!$form.smiles) return toast.error('Please enter a SMILES string first');
 
-		$form.standard_inchi = '';
-		$form.standard_inchi_key = '';
-
 		mol = window.RDKit.get_mol($form.smiles);
 		if (!mol) return toast.error('Invalid SMILES string');
 		const InChI = mol?.get_inchi();
@@ -43,13 +40,16 @@
 	};
 </script>
 
-<Button type="button" class="btn btn-sm" on:click={async () => await fetch_smiles()}
-	>Fetch SMILES</Button
+<Button
+	on:keyup={async (e) => {
+		e.preventDefault();
+		if (e.key === 'Enter') {
+			await auto_fill_properties();
+		}
+	}}
+	on:click={async () => await fetch_smiles()}>Fetch SMILES (PubChem)</Button
 >
-
-<Button type="button" class="btn btn-sm" on:click={async () => await auto_fill_properties()}
-	>Auto fill InChI</Button
->
+<Button on:click={async () => await auto_fill_properties()}>Draw & fill InChI</Button>
 
 {#if mol}
 	<div>{@html mol?.get_svg(100, 50)}</div>

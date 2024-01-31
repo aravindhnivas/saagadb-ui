@@ -51,7 +51,7 @@
 		</div>
 	</DropFile>
 	<Tabs.Root {value}>
-		<Tabs.List class="grid w-full grid-cols-4">
+		<Tabs.List class="grid grid-cols-4 w-xl">
 			{#each metadata_items as { value, name }}
 				<Tabs.Trigger {value}>{name}</Tabs.Trigger>
 			{/each}
