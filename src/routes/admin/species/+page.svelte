@@ -8,17 +8,14 @@
 	import AutoFillInchi from './auto-fill-inchi.svelte';
 	import AutoFillName from './auto-fill-name.svelte';
 	import NameHtml from './name-html.svelte';
-	import Input from '$lib/components/ui/input/input.svelte';
 	export let data: PageData;
 </script>
 
 <FormComponent
-	class="max-w-4xl"
 	footer={false}
 	schema={speciesSchema}
 	form={data.form}
 	let:config
-	let:formStore
 	debug={import.meta.env.DEV}
 >
 	<Card.Root>
