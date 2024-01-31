@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
+	import { Label } from '$lib/components/ui/label';
 	import { getForm } from 'formsnap';
 	import { toast } from 'svelte-sonner';
 	import { CDMS_Parser } from '$lib/utils/cdms_parser';
@@ -11,8 +12,11 @@
 	let fetching = false;
 </script>
 
-<div class="grid grid-cols-5 gap-4 items-center">
-	<Input bind:value={cdms_tag} placeholder="Enter CDMS molecule tag" class="col-span-2" />
+<div class="grid grid-cols-5 gap-4 items-end">
+	<div class="flex flex-col gap-4">
+		<Label>molecule tag</Label>
+		<Input bind:value={cdms_tag} placeholder="Enter CDMS molecule tag" />
+	</div>
 	<Button
 		on:click={async () => {
 			try {
@@ -35,5 +39,5 @@
 			}
 		}}>Auto fill CDMS tag</Button
 	>
-	<Loader {fetching} class="col-span-2" />
+	<Loader {fetching} class="col-span-3" />
 </div>
