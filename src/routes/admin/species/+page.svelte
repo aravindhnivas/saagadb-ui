@@ -8,6 +8,7 @@
 	import AutoFillInchi from './auto-fill-inchi.svelte';
 	import AutoFillName from './auto-fill-name.svelte';
 	import NameHtml from './name-html.svelte';
+	import Input from '$lib/components/ui/input/input.svelte';
 	export let data: PageData;
 </script>
 
@@ -26,36 +27,80 @@
 			<Card.Description><Dropfile /></Card.Description>
 		</Card.Header>
 		<Card.Content>
-			{#each Object.keys(data.form.data) as name}
-				{#if name === 'name'}
-					<AutoFillName />
-				{/if}
-				<Form.Field {config} {name}>
-					<Form.Item>
-						<Form.Label>{name}</Form.Label>
-						{#if name === 'notes'}
-							<Form.Textarea />
-						{:else if name === 'smiles'}
-							<div class="grid grid-cols-6 gap-4 items-start">
-								<Form.Input required class="col-span-2" />
-								<AutoFillInchi />
-							</div>
-							<span class="text-sm text-gray-500"
-								>Write isotopes mass within "[]" i.e., [15N] and connected hydrogens must be
-								specified inside brackets i.e., [15NH].
-							</span>
-						{:else if name === 'name_html'}
-							<div class="grid grid-cols-4 gap-4 items-center">
-								<Form.Input required class="col-span-3" />
-								<NameHtml />
-							</div>
-						{:else}
-							<Form.Input required />
-						{/if}
-						<Form.Validation />
-					</Form.Item>
-				</Form.Field>
-			{/each}
+			<AutoFillName />
+			<Form.Field {config} name="name">
+				<Form.Item>
+					<Form.Label>name</Form.Label>
+					<Form.Input required />
+					<Form.Validation />
+				</Form.Item>
+			</Form.Field>
+
+			<Form.Field {config} name="iupac_name">
+				<Form.Item>
+					<Form.Label>iupac_name</Form.Label>
+					<Form.Input required />
+					<Form.Validation />
+				</Form.Item>
+			</Form.Field>
+
+			<Form.Field {config} name="name_formula">
+				<Form.Item>
+					<Form.Label>name_formula</Form.Label>
+					<Form.Input required />
+					<Form.Validation />
+				</Form.Item>
+			</Form.Field>
+
+			<Form.Field {config} name="name_html">
+				<Form.Item>
+					<Form.Label>name_html</Form.Label>
+					<div class="grid grid-cols-4 gap-4 items-center">
+						<Form.Input required class="col-span-3" />
+						<NameHtml />
+					</div>
+					<Form.Validation />
+				</Form.Item>
+			</Form.Field>
+
+			<Form.Field {config} name="smiles">
+				<Form.Item>
+					<Form.Label>smiles</Form.Label>
+					<div class="grid grid-cols-5 gap-4 items-start">
+						<Form.Input required class="col-span-2" />
+						<AutoFillInchi />
+					</div>
+					<span class="text-sm text-gray-500"
+						>Write isotopes mass within "[]" i.e., [15N] and connected hydrogens must be specified
+						inside brackets i.e., [15NH].
+					</span>
+					<Form.Validation />
+				</Form.Item>
+			</Form.Field>
+
+			<Form.Field {config} name="standard_inchi">
+				<Form.Item>
+					<Form.Label>InChI</Form.Label>
+					<Form.Input required />
+					<Form.Validation />
+				</Form.Item>
+			</Form.Field>
+
+			<Form.Field {config} name="standard_inchi_key">
+				<Form.Item>
+					<Form.Label>InChI Key</Form.Label>
+					<Form.Input required />
+					<Form.Validation />
+				</Form.Item>
+			</Form.Field>
+
+			<Form.Field {config} name="notes">
+				<Form.Item>
+					<Form.Label>notes</Form.Label>
+					<Form.Textarea />
+					<Form.Validation />
+				</Form.Item>
+			</Form.Field>
 		</Card.Content>
 		<Card.Footer class="flex gap-4 justify-center">
 			<Form.Button class="w-[150px]">Submit</Form.Button>
