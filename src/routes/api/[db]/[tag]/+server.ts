@@ -26,7 +26,7 @@ export const GET: RequestHandler = async ({ fetch, params }) => {
 	const res = await fetch(fetch_url);
 
 	if (!res.ok) {
-		return fail(res.status, res.statusText);
+		return text('Something went wrong', { status: 404 });
 	}
 	const data = await res.text();
 	if (data.includes('Something went through the roof!')) {
