@@ -4,7 +4,7 @@
 	import Navitems from './nav/navitems.svelte';
 </script>
 
-<div class="navbar bg-base-100">
+<div class="navbar">
 	<div class="navbar-start">
 		<div class="dropdown">
 			<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
@@ -25,10 +25,7 @@
 				>
 			</label>
 			<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-			<ul
-				tabindex="0"
-				class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
-			>
+			<ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow rounded-box w-52">
 				<Navitems />
 			</ul>
 		</div>
@@ -48,7 +45,7 @@
 				<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 				<ul
 					tabindex="0"
-					class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52"
+					class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content rounded-box w-52"
 				>
 					<li><a href="{base}/admin/dashboard">Dashboard</a></li>
 					<li>

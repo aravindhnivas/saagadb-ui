@@ -3,7 +3,7 @@
 	import Button from '$lib/components/ui/button/button.svelte';
 	import { getForm } from 'formsnap';
 	import { toast } from 'svelte-sonner';
-
+	import * as Form from '$lib/components/ui/form';
 	const { form } = getForm();
 
 	const fetch_smiles = async () => {
@@ -40,17 +40,24 @@
 	};
 </script>
 
-<Button
-	on:keyup={async (e) => {
-		e.preventDefault();
-		if (e.key === 'Enter') {
-			await auto_fill_properties();
-		}
-	}}
-	on:click={async () => await fetch_smiles()}>Fetch SMILES (PubChem)</Button
->
-<Button on:click={async () => await auto_fill_properties()}>Draw & fill InChI</Button>
+<div class="grid grid-cols-5 gap-4 items-start">
+	<Button
+		on:keyup={async (e) => {
+			e.preventDefault();
+			if (e.key === 'Enter') {
+				await auto_fill_properties();
+			}
+		}}
+		on:click={async () => await fetch_smiles()}>Fetch SMILES (PubChem)</Button
+	>
+	<Form.Input required class="col-span-2" placeholder="Enter smiles string" />
+	<Button on:click={async () => await auto_fill_properties()}>Draw & fill InChI</Button>
 
-{#if mol}
-	<div>{@html mol?.get_svg(100, 50)}</div>
-{/if}
+	{#if mol}
+		<div>{@html mol?.get_svg(100, 50)}</div>
+	{/if}
+</div>
+<span class="text-sm text-gray-500"
+	>Write isotopes mass within "[]" i.e., [15N] and connected hydrogens must be specified inside
+	brackets i.e., [15NH].
+</span>

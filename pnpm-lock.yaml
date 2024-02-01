@@ -17,6 +17,9 @@ dependencies:
   bits-ui:
     specifier: ^0.15.1
     version: 0.15.1(svelte@4.2.9)
+  cdms-jpl-api:
+    specifier: ^0.0.2
+    version: 0.0.2
   cheerio:
     specifier: 1.0.0-rc.12
     version: 1.0.0-rc.12
@@ -1959,6 +1962,12 @@ packages:
   /caniuse-lite@1.0.30001579:
     resolution: {integrity: sha512-u5AUVkixruKHJjw/pj9wISlcMpgFWzSrczLZbrqBSxukQixmg0SJ5sZTpvaFvxU0HoQKd4yoyAogyrAz9pzJnA==}
     dev: true
+
+  /cdms-jpl-api@0.0.2:
+    resolution: {integrity: sha512-ILV98pjiOaeyEO3rl3btgMUX+rpyll8TZblwW5Rx4usCHSOrTIQ094w6r2U3Jiyhks0X8WU07UZQ5YQdtnfbLQ==}
+    dependencies:
+      cheerio: 1.0.0-rc.12
+    dev: false
 
   /chalk@2.4.2:
     resolution: {integrity: sha512-Mti+f9lpJNcwF4tWV8/OrTTtF1gZi+f8FqlyAdouralcFWFQWF2+NgCHShjkCb+IFBLq9buZwE1xckQU4peSuQ==}

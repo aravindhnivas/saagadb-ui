@@ -63,14 +63,7 @@
 			<Form.Field {config} name="smiles">
 				<Form.Item>
 					<Form.Label>smiles</Form.Label>
-					<div class="grid grid-cols-5 gap-4 items-start">
-						<Form.Input required class="col-span-2" />
-						<AutoFillInchi />
-					</div>
-					<span class="text-sm text-gray-500"
-						>Write isotopes mass within "[]" i.e., [15N] and connected hydrogens must be specified
-						inside brackets i.e., [15NH].
-					</span>
+					<AutoFillInchi />
 					<Form.Validation />
 				</Form.Item>
 			</Form.Field>

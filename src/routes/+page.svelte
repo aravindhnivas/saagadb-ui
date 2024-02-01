@@ -3,7 +3,7 @@
 	import { Button } from '$lib/components/ui/button';
 </script>
 
-<div class="hero bg-base-200 card shadow-xl h-full">
+<div class="hero card shadow-xl h-full">
 	<div class="hero-content text-center">
 		<div class="">
 			<h1 class="text-5xl font-bold">SAAGAdb</h1>
