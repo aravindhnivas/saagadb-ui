@@ -4,7 +4,7 @@
 
 	const { form } = getForm();
 	const callback = (db: string, data: Object) => {
-		console.log({ db, data, form });
+		console.log({ db, data, $form });
 	};
 </script>
 
