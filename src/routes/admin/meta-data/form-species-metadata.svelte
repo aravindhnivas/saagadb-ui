@@ -5,9 +5,9 @@
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import * as Form from '$lib/components/ui/form';
 	import FormCombobox from '$lib/components/combobox/form-combobox.svelte';
+	import AutoFillMetadata from './auto-fill-metadata.svelte';
 
 	export let form: SuperValidated<(typeof Schemas)['species-metadata']>;
-
 	const value = 'species-metadata';
 	const schema = Schemas[value];
 
@@ -15,7 +15,19 @@
 	const linelist = getContext('linelist') as Linelist[];
 </script>
 
-<FormTabContents {value} enctype="multipart/form-data" {schema} {form} let:config>
+<FormTabContents
+	{value}
+	enctype="multipart/form-data"
+	{schema}
+	{form}
+	let:config
+	let:formStore
+	include_dropfile={false}
+	title="Species Metadata"
+	description="Add new species metadata"
+>
+	<AutoFillMetadata />
+
 	<div class="grid-auto-fill lg:max-w-md sm:max-w-full">
 		<FormCombobox
 			val_type="number"

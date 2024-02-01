@@ -6,7 +6,7 @@
 	import * as Card from '$lib/components/ui/card';
 	import speciesSchema from '$lib/schemas/species';
 	import AutoFillInchi from './auto-fill-inchi.svelte';
-	import AutoFillName from './auto-fill-name.svelte';
+	import AutoFillName from '../auto-fill-name.svelte';
 	import NameHtml from './name-html.svelte';
 	export let data: PageData;
 </script>
@@ -16,6 +16,7 @@
 	schema={speciesSchema}
 	form={data.form}
 	let:config
+	let:formStore
 	debug={import.meta.env.DEV}
 >
 	<Card.Root>
@@ -24,7 +25,27 @@
 			<Card.Description><Dropfile /></Card.Description>
 		</Card.Header>
 		<Card.Content>
-			<AutoFillName />
+			<AutoFillName
+				callback={(db, data) => {
+					console.log({ db, data });
+					if (db === 'cdms') {
+						const { name } = data;
+						formStore.update((f) => {
+							f.name = name.default;
+							f.iupac_name = '';
+							f.name_formula = name.formula.default;
+							f.name_html = name.html.default;
+							return f;
+						});
+					} else if (db === 'jpl') {
+						formStore.update((f) => {
+							f.name = data.name_meta.join(', ');
+							f.name_formula = data.Name;
+							return f;
+						});
+					}
+				}}
+			/>
 			<Form.Field {config} name="name">
 				<Form.Item>
 					<Form.Label>name</Form.Label>
