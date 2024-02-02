@@ -22,36 +22,43 @@
 		return formattedDate;
 	};
 	const callback = (db: string, data: Object) => {
-		$form.molecule_tag = data['Species tag'];
-		console.log({ db, data, $form }, data['Species tag']);
+		const tag_key = Object.keys(data).filter((k) => k.match(/species tag/i))[0];
+		if (tag_key) $form['molecule_tag'] = data[tag_key];
+
+		console.log({ db, data, $form });
+
 		const qpart = [];
 		for (const key in data) {
 			if (!key.match(/Q\(\d+.(\d+)?\)/g)) continue;
-			// qpart[key.replace(/[Q\(\)]/g, '')] = data[key];
 			const temp = key.replace(/[Q\(\)]/g, '');
 			const val = data[key];
 			qpart.push(`${temp}\t${val}`);
 		}
+
 		$form.qpart_file = qpart.join('\n');
-		// console.log(qpart, data['µa / D']);
 		$form.data_contributor = data['Contributor']?.join(', ');
 
+		const dipole_keys = Object.keys(data).filter((k) => k.match(/(µ|mu_)[a-c]( \/ D)?/g));
+		for (const dipole_key of dipole_keys) {
+			const fkey = dipole_key
+				.replace(/(µ|mu_)/g, '')
+				.replace(/ \/ D/g, '')
+				.toLowerCase();
+			// console.log(`mu_${fkey}`, data[dipole_key]);
+			$form[`mu_${fkey}`] = data[dipole_key];
+		}
+
+		const rot_const_keys = Object.keys(data).filter((k) => k.match(/[A-C]( \/ MHz)?/g));
+		for (const rot_key of rot_const_keys) {
+			const fkey = rot_key.replace(/ \/ MHz/g, '').toLowerCase();
+			// console.log(rot_key, data[rot_key]);
+			$form[`${fkey}_const`] = data[rot_key];
+		}
+
+		const date_key = Object.keys(data).filter((k) => k.match(/(Date)/g))[0];
+		if (date_key) $form['data_date'] = date_formatter(data[date_key]);
+
 		if (db === 'cdms') {
-			const rot_const_keys = Object.keys(data).filter((k) => k.match(/[A-C]( \/ MHz)?/g));
-			for (const rot_key of rot_const_keys) {
-				const fkey = rot_key.replace(/ \/ MHz/g, '').toLowerCase();
-				console.log(rot_key, data[rot_key]);
-				$form[`${fkey}_const`] = data[rot_key];
-			}
-
-			const dipole_keys = Object.keys(data).filter((k) => k.match(/µ[a-c]( \/ D)?/g));
-			for (const dipole_key of dipole_keys) {
-				const fkey = dipole_key.replace(/µ/g, '').replace(/ \/ D/g, '').toLowerCase();
-				console.log(`mu_${fkey}`, data[dipole_key]);
-				$form[`mu_${fkey}`] = data[dipole_key];
-			}
-
-			$form['data_date'] = date_formatter(data['Date of Entry']);
 			const { name } = data;
 
 			const found_species = species.find((s) => s.name_formula === name.formula.default);
@@ -61,18 +68,13 @@
 
 			$form.species = found_species?.id;
 			$form.linelist = found_linelist?.id;
-
-			// console.log({ found_species, name, species });
 		} else if (db === 'jpl') {
-			$form['data_date'] = date_formatter(data['Date']);
-			if (data['mu_a']) $form.mu_a = data['mu_a'];
-			if (data['mu_b']) $form.mu_b = data['mu_b'];
-			if (data['mu_c']) $form.mu_c = data['mu_c'];
-			for (const rot_key of ['A', 'B', 'C']) {
-				console.log(rot_key, data[rot_key]);
-				const fkey = rot_key.toLowerCase();
-				$form[`${fkey}_const`] = data[rot_key];
-			}
+			const found_species = species.find((s) => s.name_formula === data.Name);
+			const found_linelist = linelist.find(
+				(l) => l.linelist_name.toLowerCase() === db.toLowerCase()
+			);
+			$form.species = found_species?.id;
+			$form.linelist = found_linelist?.id;
 		}
 	};
 </script>
