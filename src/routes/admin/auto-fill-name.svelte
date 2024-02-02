@@ -37,10 +37,8 @@
 			} else {
 				throw new Error('Invalid database type');
 			}
-
 			status = 'Data fetched successfully';
 			callback(database_type, fetched_data);
-			// console.log(fetched_data);
 		} catch (error) {
 			if (error instanceof Error) {
 				toast.error(error.message);
@@ -52,7 +50,7 @@
 	};
 </script>
 
-<div class="grid grid-cols-6 gap-4 items-end {className}">
+<div class="grid-fit-content items-end {className}">
 	<Combobox
 		label="database"
 		items={[
@@ -63,12 +61,12 @@
 	/>
 	<div class="flex flex-col gap-1">
 		<Label>molecule tag</Label>
-		<Input bind:value={molecule_tag} placeholder="Enter {database_type} molecule tag" />
+		<Input bind:value={molecule_tag} placeholder="Enter molecule tag" />
 	</div>
 
 	<Button on:click={async () => await fetch_from_database()}>Fetch & auto-fill</Button>
-	<Loader {fetching} class="col-span-3" />
+	<Loader {fetching} />
 	{#if !fetching && status}
-		<p class="col-span-3">{status}</p>
+		<p>{status}</p>
 	{/if}
 </div>

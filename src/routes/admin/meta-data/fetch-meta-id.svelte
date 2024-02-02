@@ -39,7 +39,7 @@
 	let fetching_meta_id = false;
 </script>
 
-<div class="grid grid-cols-4 gap-4 items-end">
+<div class="grid-fit-content items-end">
 	<Combobox
 		label="species"
 		items={species.map((f) => ({

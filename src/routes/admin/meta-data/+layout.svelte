@@ -33,7 +33,7 @@
 	};
 </script>
 
-<div class="grid gap-4">
+<div class="flex flex-col gap-4 max-w-full">
 	<DropFile {onDrop} onEnter={() => (fileOver = true)} onLeave={() => (fileOver = false)}>
 		<div
 			class="max-w-xs border-gray border-2 rounded-2 flex items-center gap-2 space-y-2 cursor-pointer"

@@ -46,13 +46,12 @@
 	{schema}
 	{form}
 	let:config
-	let:formStore
 	include_dropfile={false}
 	title="Species Metadata"
 	description="Add new species metadata"
 >
 	<AutoFillMetadata />
-	<div class="grid-auto-fill lg:max-w-md sm:max-w-full">
+	<div class="grid-auto-fill">
 		<FormCombobox
 			val_type="number"
 			{config}
@@ -81,16 +80,17 @@
 			}))}
 		/>
 	</div>
-
-	{#each keys as name}
-		<Form.Field {config} {name}>
-			<Form.Item>
-				<Form.Label>{name}</Form.Label>
-				<Form.Input />
-				<Form.Validation />
-			</Form.Item>
-		</Form.Field>
-	{/each}
+	<div class="grid-auto-fill">
+		{#each keys as name}
+			<Form.Field {config} {name}>
+				<Form.Item>
+					<Form.Label>{name}</Form.Label>
+					<Form.Input />
+					<Form.Validation />
+				</Form.Item>
+			</Form.Field>
+		{/each}
+	</div>
 
 	<Form.Field {config} name="notes">
 		<Form.Item>
@@ -113,16 +113,6 @@
 			<Input type="file" required={false} />
 		</div>
 	</div>
-
-	<!-- <Form.Field {config} name="qpart_file">
-		<Form.Item>
-			<div class="grid w-full max-w-sm items-center gap-1.5">
-				<Form.Label>qpart_file</Form.Label>
-				<Form.Input type="file" required />
-			</div>
-			<Form.Validation />
-		</Form.Item>
-	</Form.Field> -->
 
 	<div class="grid-auto-fill">
 		{#each ['int_file', 'var_file', 'fit_file'] as name}
