@@ -4,6 +4,7 @@
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import * as Form from '$lib/components/ui/form';
 	import FetchMetaId from './fetch-meta-id.svelte';
+	import { HelpCircle } from 'lucide-svelte';
 
 	export let form: SuperValidated<(typeof Schemas)['line']>;
 
@@ -35,7 +36,18 @@
 
 	<Form.Field {config} name="qn_label_str">
 		<Form.Item>
-			<Form.Label>qn_label_str</Form.Label>
+			<Form.Label>
+				<div class="flex gap-4 items-center">
+					<span>qn_label_str</span>
+					<span
+						aria-label="comma-separated string of quantum number labels. It must follow the order in which the quantum
+						numbers are stated in the .cat file"
+						data-cooltipz-dir="down"
+					>
+						<HelpCircle />
+					</span>
+				</div>
+			</Form.Label>
 			<Form.Input />
 			<Form.Validation />
 		</Form.Item>
@@ -43,7 +55,19 @@
 
 	<Form.Field {config} name="vib_qn">
 		<Form.Item>
-			<Form.Label>vib_qn</Form.Label>
+			<Form.Label>
+				<div class="flex gap-4 items-center">
+					<span>vib_qn</span>
+					<span
+						aria-label="Indicates the quantum number label that corresponds to the vibrational
+						quantum number. The quantum number label must be one
+						of the values in qn_label_str"
+						data-cooltipz-dir="down"
+					>
+						<HelpCircle />
+					</span>
+				</div>
+			</Form.Label>
 			<Form.Input />
 			<Form.Validation />
 		</Form.Item>
