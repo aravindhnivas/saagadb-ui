@@ -33,7 +33,7 @@
 		if (!$form.smiles) return toast.error('Please enter a SMILES string first');
 		mol = window.RDKit.get_mol($form.smiles);
 		if (!mol) {
-			console.log(mol);
+			// console.log(mol);
 			return toast.error('Invalid SMILES string');
 		}
 		const InChI = mol?.get_inchi();
