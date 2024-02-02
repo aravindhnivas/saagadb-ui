@@ -11,7 +11,15 @@
 	const schema = Schemas[value];
 </script>
 
-<FormTabContents {value} {schema} {form} let:config include_dropfile={false}>
+<FormTabContents
+	{value}
+	{schema}
+	{form}
+	let:config
+	include_dropfile={false}
+	title="Meta-reference"
+	description="Enter the meta-reference details"
+>
 	<div class="grid gap-2 border-gray border-2 p-2 rounded-4">
 		<FetchMetaId />
 		<FetchRefId />

@@ -18,6 +18,8 @@
 	{form}
 	let:config
 	include_dropfile={false}
+	title="Line frequency"
+	description="Enter the line details"
 >
 	<div class="grid gap-2 border-gray border-2 p-2 rounded-4">
 		<FetchMetaId />
