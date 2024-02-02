@@ -13,6 +13,29 @@
 
 	const species = getContext('species') as Species[];
 	const linelist = getContext('linelist') as Linelist[];
+
+	const category = [
+		'diatomic',
+		'linear',
+		'asymmetric top',
+		'spherical top',
+		'symmetric top',
+		'prolate symmetric top',
+		'oblate symmetric top'
+	];
+
+	const keys = [
+		'degree_of_freedom',
+		'molecule_tag',
+		'mu_a',
+		'mu_b',
+		'mu_c',
+		'a_const',
+		'b_const',
+		'c_const',
+		'data_date',
+		'data_contributor'
+	];
 </script>
 
 <FormTabContents
@@ -48,31 +71,17 @@
 		/>
 	</div>
 
-	<Form.Field {config} name="degree_of_freedom">
-		<Form.Item>
-			<Form.Label>degree_of_freedom</Form.Label>
-			<Form.Input />
-			<Form.Validation />
-		</Form.Item>
-	</Form.Field>
+	<FormCombobox
+		val_type="number"
+		{config}
+		name={'category'}
+		items={category.map((f) => ({
+			value: f,
+			label: f
+		}))}
+	/>
 
-	<Form.Field {config} name="molecule_tag">
-		<Form.Item>
-			<Form.Label>molecule_tag</Form.Label>
-			<Form.Input />
-			<Form.Validation />
-		</Form.Item>
-	</Form.Field>
-
-	<Form.Field {config} name="category">
-		<Form.Item>
-			<Form.Label>category</Form.Label>
-			<Form.Input />
-			<Form.Validation />
-		</Form.Item>
-	</Form.Field>
-
-	{#each ['mu_a', 'mu_b', 'mu_c', 'a_const', 'b_const', 'c_const'] as name}
+	{#each keys as name}
 		<Form.Field {config} {name}>
 			<Form.Item>
 				<Form.Label>{name}</Form.Label>
@@ -81,22 +90,6 @@
 			</Form.Item>
 		</Form.Field>
 	{/each}
-
-	<Form.Field {config} name="data_date">
-		<Form.Item>
-			<Form.Label>data_date</Form.Label>
-			<Form.Input />
-			<Form.Validation />
-		</Form.Item>
-	</Form.Field>
-
-	<Form.Field {config} name="data_contributor">
-		<Form.Item>
-			<Form.Label>data_contributor</Form.Label>
-			<Form.Input />
-			<Form.Validation />
-		</Form.Item>
-	</Form.Field>
 
 	<Form.Field {config} name="notes">
 		<Form.Item>
