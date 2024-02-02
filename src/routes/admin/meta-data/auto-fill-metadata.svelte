@@ -47,7 +47,7 @@
 				}
 			}
 
-			const dipole_keys = Object.keys(data).filter((k) => k.match(/µ[a-c]( \/ D).?/g));
+			const dipole_keys = Object.keys(data).filter((k) => k.match(/µ[a-c]( \/ D)?/g));
 			for (const dipole_key of dipole_keys) {
 				const fkey = dipole_key.replace(/µ/g, '').replace(/ \/ D/g, '').toLowerCase();
 				console.log(`mu_${fkey}`);
