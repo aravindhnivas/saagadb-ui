@@ -5,7 +5,7 @@
 
 	const species = getContext('species') as Species[];
 	const linelist = getContext('linelist') as Linelist[];
-	console.log({ species, linelist });
+	// console.log({ species, linelist });
 
 	const { form } = getForm();
 	const date_formatter = (dateStr: string) => {
