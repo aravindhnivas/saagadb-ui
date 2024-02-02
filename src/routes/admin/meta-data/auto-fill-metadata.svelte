@@ -47,9 +47,13 @@
 				}
 			}
 
-			if (data['µa / D']) $form.mu_a = data['µa / D'];
-			if (data['μb / D']) $form.mu_b = data['μb / D'];
-			if (data['μc / D']) $form.mu_c = data['μc / D'];
+			const dipole_keys = Object.keys(data).filter((k) => k.match(/µ[a-c]( \/ D).?/g));
+			for (const dipole_key of dipole_keys) {
+				const fkey = dipole_key.replace(/µ/g, '').replace(/ \/ D/g, '').toLowerCase();
+				console.log(`mu_${fkey}`);
+				$form[`mu_${fkey}`] = data[dipole_key];
+			}
+
 			$form['data_date'] = date_formatter(data['Date of Entry']);
 			const { name } = data;
 
