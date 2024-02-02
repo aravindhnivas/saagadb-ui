@@ -6,11 +6,13 @@
 	import * as Form from '$lib/components/ui/form';
 	import FormCombobox from '$lib/components/combobox/form-combobox.svelte';
 	import AutoFillMetadata from './auto-fill-metadata.svelte';
+	import { Label } from '$lib/components/ui/label';
+	import { Input } from '$lib/components/ui/input';
 
 	export let form: SuperValidated<(typeof Schemas)['species-metadata']>;
+
 	const value = 'species-metadata';
 	const schema = Schemas[value];
-
 	const species = getContext('species') as Species[];
 	const linelist = getContext('linelist') as Linelist[];
 
@@ -99,16 +101,31 @@
 		</Form.Item>
 	</Form.Field>
 
-	<div class="grid-auto-fill">
+	<div class="flex gap-4 w-full items-baseline">
 		<Form.Field {config} name="qpart_file">
-			<Form.Item>
-				<div class="grid w-full max-w-sm items-center gap-1.5">
-					<Form.Label>qpart_file</Form.Label>
-					<Form.Input type="file" required />
-				</div>
+			<Form.Item class="basis-3/4">
+				<Form.Label>qpart_file</Form.Label>
+				<Form.Textarea required />
 				<Form.Validation />
 			</Form.Item>
 		</Form.Field>
+		<div class="grid w-full max-w-sm items-center gap-1.5">
+			<Label>OR choose qpart file</Label>
+			<Input type="file" required={false} />
+		</div>
+	</div>
+
+	<!-- <Form.Field {config} name="qpart_file">
+		<Form.Item>
+			<div class="grid w-full max-w-sm items-center gap-1.5">
+				<Form.Label>qpart_file</Form.Label>
+				<Form.Input type="file" required />
+			</div>
+			<Form.Validation />
+		</Form.Item>
+	</Form.Field> -->
+
+	<div class="grid-auto-fill">
 		{#each ['int_file', 'var_file', 'fit_file'] as name}
 			<Form.Field {config} {name}>
 				<Form.Item>

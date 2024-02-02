@@ -19,12 +19,15 @@
 	const callback = (db: string, data: Object) => {
 		$form.molecule_tag = data['Species tag'];
 		console.log({ db, data, $form }, data['Species tag']);
-		const qpart = {};
+		const qpart = [];
 		for (const key in data) {
 			if (!key.match(/Q\(\d+.(\d+)?\)/g)) continue;
-			qpart[key.replace(/[Q\(\)]/g, '')] = data[key];
+			// qpart[key.replace(/[Q\(\)]/g, '')] = data[key];
+			const temp = key.replace(/[Q\(\)]/g, '');
+			const val = data[key];
+			qpart.push(`${temp}\t${val}`);
 		}
-
+		$form.qpart_file = qpart.join('\n');
 		console.log(qpart, data['µa / D']);
 		$form.data_contributor = data['Contributor']?.join(', ');
 
