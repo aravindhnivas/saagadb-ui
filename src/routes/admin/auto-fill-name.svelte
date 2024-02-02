@@ -65,9 +65,8 @@
 		<Input
 			bind:value={molecule_tag}
 			placeholder="Enter molecule tag"
-			on:keydown={async (e) => {
+			on:keyup={async (e) => {
 				if (e.key === 'Enter') {
-					e.preventDefault();
 					await fetch_from_database();
 				}
 			}}

@@ -57,9 +57,8 @@
 		required
 		class="col-span-2"
 		placeholder="Enter smiles string"
-		on:keydown={async (e) => {
+		on:keyup={async (e) => {
 			if (e.key === 'Enter') {
-				e.preventDefault();
 				await auto_fill_properties();
 			}
 		}}
