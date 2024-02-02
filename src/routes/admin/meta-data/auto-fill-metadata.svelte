@@ -33,24 +33,21 @@
 			qpart.push(`${temp}\t${val}`);
 		}
 		$form.qpart_file = qpart.join('\n');
-		console.log(qpart, data['µa / D']);
+		// console.log(qpart, data['µa / D']);
 		$form.data_contributor = data['Contributor']?.join(', ');
 
 		if (db === 'cdms') {
-			for (const rot_key of ['A', 'B', 'C']) {
-				const key1 = `${rot_key} / MHz`;
-				const fkey = rot_key.toLowerCase();
-				if (key1 in data) {
-					$form[`${fkey}_const`] = data[key1];
-				} else if (rot_key in data[rot_key]) {
-					$form[`${fkey}_const`] = data[rot_key];
-				}
+			const rot_const_keys = Object.keys(data).filter((k) => k.match(/[A-C]( \/ MHz)?/g));
+			for (const rot_key of rot_const_keys) {
+				const fkey = rot_key.replace(/ \/ MHz/g, '').toLowerCase();
+				console.log(rot_key, data[rot_key]);
+				$form[`${fkey}_const`] = data[rot_key];
 			}
 
 			const dipole_keys = Object.keys(data).filter((k) => k.match(/µ[a-c]( \/ D)?/g));
 			for (const dipole_key of dipole_keys) {
 				const fkey = dipole_key.replace(/µ/g, '').replace(/ \/ D/g, '').toLowerCase();
-				console.log(`mu_${fkey}`);
+				console.log(`mu_${fkey}`, data[dipole_key]);
 				$form[`mu_${fkey}`] = data[dipole_key];
 			}
 
