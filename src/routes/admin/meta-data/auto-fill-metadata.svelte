@@ -28,23 +28,31 @@
 		console.log(qpart, data['µa / D']);
 		$form.data_contributor = data['Contributor']?.join(', ');
 
-		for (const rot_key of ['A', 'B', 'C']) {
-			const key1 = `${rot_key} / MHz`;
-			const fkey = rot_key.toLowerCase();
-			if (key1 in data) {
-				$form[`${fkey}_const`] = data[key1];
-			} else if (rot_key in data[rot_key]) {
-				$form[`${fkey}_const`] = data[rot_key];
-			}
-		}
-
 		if (db === 'cdms') {
+			for (const rot_key of ['A', 'B', 'C']) {
+				const key1 = `${rot_key} / MHz`;
+				const fkey = rot_key.toLowerCase();
+				if (key1 in data) {
+					$form[`${fkey}_const`] = data[key1];
+				} else if (rot_key in data[rot_key]) {
+					$form[`${fkey}_const`] = data[rot_key];
+				}
+			}
+
 			if (data['µa / D']) $form.mu_a = data['µa / D'];
 			if (data['μb / D']) $form.mu_b = data['μb / D'];
 			if (data['μc / D']) $form.mu_c = data['μc / D'];
-			const date = data['Date of Entry'];
-			$form['data_date'] = date_formatter(date);
+			$form['data_date'] = date_formatter(data['Date of Entry']);
 		} else if (db === 'jpl') {
+			$form['data_date'] = date_formatter(data['Date']);
+			if (data['mu_a']) $form.mu_a = data['mu_a'];
+			if (data['mu_b']) $form.mu_b = data['mu_b'];
+			if (data['mu_c']) $form.mu_c = data['mu_c'];
+			for (const rot_key of ['A', 'B', 'C']) {
+				console.log(rot_key, data[rot_key]);
+				const fkey = rot_key.toLowerCase();
+				$form[`${fkey}_const`] = data[rot_key];
+			}
 		}
 	};
 </script>
