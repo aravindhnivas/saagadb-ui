@@ -11,7 +11,14 @@
 	const schema = Schemas[value];
 </script>
 
-<FormTabContents {value} enctype="multipart/form-data" {schema} {form} let:config>
+<FormTabContents
+	{value}
+	enctype="multipart/form-data"
+	{schema}
+	{form}
+	let:config
+	include_dropfile={false}
+>
 	<div class="grid gap-2 border-gray border-2 p-2 rounded-4">
 		<FetchMetaId />
 	</div>

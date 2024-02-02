@@ -16,7 +16,15 @@
 	let fetching = false;
 </script>
 
-<FormTabContents {value} enctype="multipart/form-data" {schema} {form} let:config let:formStore>
+<FormTabContents
+	{value}
+	enctype="multipart/form-data"
+	{schema}
+	{form}
+	let:config
+	let:formStore
+	include_dropfile={false}
+>
 	<Form.Field {config} name="doi">
 		<Form.Item>
 			<Form.Label>doi</Form.Label>

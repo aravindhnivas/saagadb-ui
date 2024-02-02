@@ -34,7 +34,7 @@
 </script>
 
 <div class="flex flex-col gap-4 max-w-full">
-	<DropFile {onDrop} onEnter={() => (fileOver = true)} onLeave={() => (fileOver = false)}>
+	<!-- <DropFile {onDrop} onEnter={() => (fileOver = true)} onLeave={() => (fileOver = false)}>
 		<div
 			class="max-w-xs border-gray border-2 rounded-2 flex items-center gap-2 space-y-2 cursor-pointer"
 		>
@@ -49,7 +49,7 @@
 				<div class="text-sm text-blue-400">{filename}</div>
 			{/if}
 		</div>
-	</DropFile>
+	</DropFile> -->
 	<Tabs.Root {value}>
 		<Tabs.List class="grid grid-cols-4 w-xl">
 			{#each metadata_items as { value, name }}
