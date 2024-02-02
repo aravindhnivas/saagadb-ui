@@ -71,16 +71,16 @@
 				label: f.linelist_name
 			}))}
 		/>
-	</div>
 
-	<FormCombobox
-		{config}
-		name={'category'}
-		items={category.map((f) => ({
-			value: f,
-			label: f
-		}))}
-	/>
+		<FormCombobox
+			{config}
+			name={'category'}
+			items={category.map((f) => ({
+				value: f,
+				label: f
+			}))}
+		/>
+	</div>
 
 	{#each keys as name}
 		<Form.Field {config} {name}>
