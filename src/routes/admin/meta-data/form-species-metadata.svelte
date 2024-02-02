@@ -58,11 +58,13 @@
 	{schema}
 	{form}
 	let:config
+	let:formStore
 	include_dropfile={false}
 	title="Species Metadata"
 	description="Add new species metadata"
 >
 	<AutoFillMetadata />
+
 	<div class="grid-auto-fill">
 		<FormCombobox
 			val_type="number"
@@ -73,6 +75,7 @@
 				label: f.name_formula
 			}))}
 		/>
+
 		<FormCombobox
 			val_type="number"
 			{config}
@@ -90,6 +93,13 @@
 				value: f,
 				label: f
 			}))}
+			on:change={(e) => {
+				const degree_of_freedom = e.detail === 'diatomic' || e.detail === 'linear' ? 2 : 3;
+				formStore.update((f) => {
+					f.degree_of_freedom = degree_of_freedom;
+					return f;
+				});
+			}}
 		/>
 	</div>
 	<div class="grid-auto-fill">

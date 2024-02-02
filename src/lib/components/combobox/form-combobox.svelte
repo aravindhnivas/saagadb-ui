@@ -4,7 +4,7 @@
 	import * as Popover from '$lib/components/ui/popover';
 	import { Button } from '$lib/components/ui/button';
 	import { cn } from '$lib/utils';
-	import { tick } from 'svelte';
+	import { createEventDispatcher, tick } from 'svelte';
 	import * as Form from '$lib/components/ui/form';
 	export let items: {
 		label: string;
@@ -15,6 +15,8 @@
 	export let name: string;
 	export let val_type: 'string' | 'number' = 'string';
 	export let description: string = '';
+
+	const dispatch = createEventDispatcher();
 	let open = false;
 	// console.log({ config });
 	// We want to refocus the trigger button when the user selects
@@ -61,6 +63,7 @@
 										setValue(Number(item.value));
 									} else {
 										setValue(item.value);
+										dispatch('change', item.value);
 									}
 
 									closeAndFocusTrigger(ids.trigger);
