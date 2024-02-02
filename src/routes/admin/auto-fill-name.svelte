@@ -8,6 +8,7 @@
 	import { base } from '$app/paths';
 	import Loader from '$lib/components/utils/loader.svelte';
 	import { CDMS, JPL } from 'cdms-jpl-api';
+	import { Link } from 'lucide-svelte';
 
 	export let callback: (db: string, data: Object) => void;
 
@@ -19,6 +20,7 @@
 	let fetching = false;
 	let database_type: 'cdms' | 'jpl' = 'cdms';
 	let status = '';
+	let link = '';
 
 	const fetch_from_database = async () => {
 		if (!molecule_tag) return toast.error('Please enter a molecule tag tag first');
@@ -28,8 +30,9 @@
 			fetching = true;
 			if (!molecule_tag) return toast.error('Please enter a molecule tag tag first');
 			const res = await fetch(`${base}/api/${database_type}/${molecule_tag}`);
-			if (!res.ok) return toast.error(res.statusText);
-			const html_data = await res.text();
+			if (!res.ok) return toast.error(await res.text());
+			const { html_data, source_url } = await res.json();
+			link = source_url;
 			let fetched_data;
 			if (database_type === 'cdms') {
 				fetched_data = await CDMS(html_data);
@@ -72,10 +75,10 @@
 			}}
 		/>
 	</div>
-
 	<Button on:click={async () => await fetch_from_database()}>Fetch & auto-fill</Button>
 	<Loader {fetching} />
-	{#if !fetching && status}
+	{#if !fetching && status && link}
 		<p>{status}</p>
+		<a href={link} target="_blank" class="underline">{database_type} source</a>
 	{/if}
 </div>

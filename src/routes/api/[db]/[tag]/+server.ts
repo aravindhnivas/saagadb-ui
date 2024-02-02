@@ -1,4 +1,4 @@
-import { fail, text } from '@sveltejs/kit';
+import { json, text } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
 const url_from_jpl_tag = (tag: string) => {
@@ -28,10 +28,10 @@ export const GET: RequestHandler = async ({ fetch, params }) => {
 	if (!res.ok) {
 		return text('Something went wrong', { status: 404 });
 	}
-	const data = await res.text();
-	if (data.includes('Something went through the roof!')) {
+	const html_data = await res.text();
+	if (html_data.includes('Something went through the roof!')) {
 		return text('Something went through the roof!', { status: 404 });
 	}
-
-	return text(data, { status: 200 });
+	const source_url = params.db === 'cdms' ? fetch_url : fetch_url.replace('.cat', '.pdf');
+	return json({ html_data, source_url }, { status: 200 });
 };
