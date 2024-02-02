@@ -6,14 +6,13 @@
 	import { Button } from '$lib/components/ui/button';
 	import fetch_bibfile from '$lib/utils/bibfile';
 	import { get } from 'svelte/store';
-	import Switch from '$lib/components/ui/switch/switch.svelte';
 	import { toast } from 'svelte-sonner';
-
+	import { Label } from '$lib/components/ui/label';
+	import { Input } from '$lib/components/ui/input';
 	export let form: SuperValidated<(typeof Schemas)['reference']>;
 
 	const value = 'reference';
 	const schema = Schemas[value];
-	let auto_fill = false;
 	let fetching = false;
 </script>
 
@@ -26,44 +25,39 @@
 		</Form.Item>
 	</Form.Field>
 
-	<div class="flex gap-4 items-center">
-		<span>Auto fill from doi</span>
-		<Switch bind:checked={auto_fill} on:onCheckedChange={(e) => console.log(e)} />
-		{#if auto_fill}
-			<Button
-				class="h-8"
-				variant="outline"
-				on:click={async () => {
-					try {
-						fetching = true;
-						const doi = get(formStore)['doi'];
-						if (!doi) throw new Error('DOI is required');
-						const { href, bibtex_text } = await fetch_bibfile({ doi });
-						formStore.update((f) => {
-							f.ref_url = href;
-							f.bibtex = bibtex_text;
-							return f;
-						});
-					} catch (error) {
-						if (error instanceof Error) toast.error(error.message);
-					} finally {
-						fetching = false;
-					}
-				}}>Auto-fill from DOI</Button
-			>
-			{#if fetching}
-				<div class="flex gap-2 items-center h-10">
-					<span class="loading loading-spinner"></span>
-					<span>Fetching...</span>
-				</div>
-			{/if}
-		{/if}
-	</div>
+	<Button
+		class="h-8"
+		variant="outline"
+		on:click={async () => {
+			try {
+				fetching = true;
+				const doi = get(formStore)['doi'];
+				if (!doi) throw new Error('DOI is required');
+				const { href, bibtex_text } = await fetch_bibfile({ doi });
+				formStore.update((f) => {
+					f.ref_url = href;
+					f.bibtex = bibtex_text;
+					return f;
+				});
+			} catch (error) {
+				if (error instanceof Error) toast.error(error.message);
+			} finally {
+				fetching = false;
+			}
+		}}>Auto-fill from DOI</Button
+	>
+
+	{#if fetching}
+		<div class="flex gap-2 items-center h-10">
+			<span class="loading loading-spinner"></span>
+			<span>Fetching...</span>
+		</div>
+	{/if}
 
 	<Form.Field {config} name="ref_url">
 		<Form.Item>
 			<Form.Label>ref_url</Form.Label>
-			<Form.Input />
+			<Form.Input required />
 			<Form.Validation />
 		</Form.Item>
 	</Form.Field>
@@ -76,23 +70,17 @@
 		</Form.Item>
 	</Form.Field>
 
-	{#if auto_fill}
+	<div class="flex gap-4 w-full items-baseline">
 		<Form.Field {config} name="bibtex">
-			<Form.Item>
+			<Form.Item class="basis-3/4">
 				<Form.Label>bibtex</Form.Label>
-				<Form.Textarea />
+				<Form.Textarea required />
 				<Form.Validation />
 			</Form.Item>
 		</Form.Field>
-	{:else}
-		<Form.Field {config} name="bibtex_file">
-			<Form.Item>
-				<div class="grid w-full max-w-sm items-center gap-1.5">
-					<Form.Label>bibtex</Form.Label>
-					<Form.Input type="file" required={false} />
-				</div>
-				<Form.Validation />
-			</Form.Item>
-		</Form.Field>
-	{/if}
+		<div class="grid w-full max-w-sm items-center gap-1.5">
+			<Label>OR choose bibtex file</Label>
+			<Input type="file" required={false} />
+		</div>
+	</div>
 </FormTabContents>

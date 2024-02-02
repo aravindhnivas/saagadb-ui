@@ -27,7 +27,6 @@
 	description="Add new species metadata"
 >
 	<AutoFillMetadata />
-
 	<div class="grid-auto-fill lg:max-w-md sm:max-w-full">
 		<FormCombobox
 			val_type="number"
@@ -73,53 +72,15 @@
 		</Form.Item>
 	</Form.Field>
 
-	<Form.Field {config} name="mu_a">
-		<Form.Item>
-			<Form.Label>mu_a</Form.Label>
-			<Form.Input />
-			<Form.Validation />
-		</Form.Item>
-	</Form.Field>
-
-	<Form.Field {config} name="mu_b">
-		<Form.Item>
-			<Form.Label>mu_b</Form.Label>
-			<Form.Input />
-			<Form.Validation />
-		</Form.Item>
-	</Form.Field>
-
-	<Form.Field {config} name="mu_c">
-		<Form.Item>
-			<Form.Label>mu_c</Form.Label>
-			<Form.Input />
-			<Form.Validation />
-		</Form.Item>
-	</Form.Field>
-
-	<Form.Field {config} name="a_const">
-		<Form.Item>
-			<Form.Label>a_const</Form.Label>
-			<Form.Input />
-			<Form.Validation />
-		</Form.Item>
-	</Form.Field>
-
-	<Form.Field {config} name="b_const">
-		<Form.Item>
-			<Form.Label>b_const</Form.Label>
-			<Form.Input />
-			<Form.Validation />
-		</Form.Item>
-	</Form.Field>
-
-	<Form.Field {config} name="c_const">
-		<Form.Item>
-			<Form.Label>c_const</Form.Label>
-			<Form.Input />
-			<Form.Validation />
-		</Form.Item>
-	</Form.Field>
+	{#each ['mu_a', 'mu_b', 'mu_c', 'a_const', 'b_const', 'c_const'] as name}
+		<Form.Field {config} {name}>
+			<Form.Item>
+				<Form.Label>{name}</Form.Label>
+				<Form.Input />
+				<Form.Validation />
+			</Form.Item>
+		</Form.Field>
+	{/each}
 
 	<Form.Field {config} name="data_date">
 		<Form.Item>
@@ -155,11 +116,11 @@
 				<Form.Validation />
 			</Form.Item>
 		</Form.Field>
-		{#each ['int_file', 'var_file', 'fit_file'] as item}
-			<Form.Field {config} name="qpart_file">
+		{#each ['int_file', 'var_file', 'fit_file'] as name}
+			<Form.Field {config} {name}>
 				<Form.Item>
 					<div class="grid w-full max-w-sm items-center gap-1.5">
-						<Form.Label>qpart_file</Form.Label>
+						<Form.Label>{name}</Form.Label>
 						<Form.Input type="file" />
 					</div>
 					<Form.Validation />

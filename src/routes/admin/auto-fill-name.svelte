@@ -11,14 +11,19 @@
 
 	export let callback: (db: string, data: Object) => void;
 
+	let className = '';
+	export { className as class };
+
 	const { reset } = getForm();
 	let molecule_tag = '';
 	let fetching = false;
 	let database_type: 'cdms' | 'jpl' = 'cdms';
+	let status = '';
 
 	const fetch_from_database = async () => {
 		reset();
 		try {
+			status = '';
 			fetching = true;
 			if (!molecule_tag) return toast.error('Please enter a molecule tag tag first');
 			const res = await fetch(`${base}/api/${database_type}/${molecule_tag}`);
@@ -32,17 +37,22 @@
 			} else {
 				throw new Error('Invalid database type');
 			}
+
+			status = 'Data fetched successfully';
 			callback(database_type, fetched_data);
 			// console.log(fetched_data);
 		} catch (error) {
-			if (error instanceof Error) toast.error(error.message);
+			if (error instanceof Error) {
+				toast.error(error.message);
+				status = error.message;
+			}
 		} finally {
 			fetching = false;
 		}
 	};
 </script>
 
-<div class="grid grid-cols-6 gap-4 items-end">
+<div class="grid grid-cols-6 gap-4 items-end {className}">
 	<Combobox
 		label="database"
 		items={[
@@ -55,6 +65,10 @@
 		<Label>molecule tag</Label>
 		<Input bind:value={molecule_tag} placeholder="Enter {database_type} molecule tag" />
 	</div>
-	<Button on:click={async () => await fetch_from_database()}>Auto fill</Button>
+
+	<Button on:click={async () => await fetch_from_database()}>Fetch & auto-fill</Button>
 	<Loader {fetching} class="col-span-3" />
+	{#if !fetching && status}
+		<p class="col-span-3">{status}</p>
+	{/if}
 </div>
