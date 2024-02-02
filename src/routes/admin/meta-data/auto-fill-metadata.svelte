@@ -27,11 +27,11 @@
 
 		console.log({ db, data, $form });
 
+		const qpart_keys = Object.keys(data).filter((k) => k.match(/Q\(\d+.(\d+)?\)/g));
 		const qpart = [];
-		for (const key in data) {
-			if (!key.match(/Q\(\d+.(\d+)?\)/g)) continue;
-			const temp = key.replace(/[Q\(\)]/g, '');
-			const val = data[key];
+		for (const qpart_key of qpart_keys) {
+			const temp = qpart_key.replace(/[Q\(\)]/g, '');
+			const val = data[qpart_key];
 			qpart.push(`${temp}\t${val}`);
 		}
 
