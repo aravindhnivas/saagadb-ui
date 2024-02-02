@@ -29,10 +29,13 @@
 	let mol: ReturnType<typeof window.RDKit.get_mol>;
 
 	const auto_fill_properties = async () => {
+		$form.smiles = $form.smiles.trim();
 		if (!$form.smiles) return toast.error('Please enter a SMILES string first');
-
 		mol = window.RDKit.get_mol($form.smiles);
-		if (!mol) return toast.error('Invalid SMILES string');
+		if (!mol) {
+			console.log(mol);
+			return toast.error('Invalid SMILES string');
+		}
 		const InChI = mol?.get_inchi();
 		const InChIkey = window.RDKit.get_inchikey_for_inchi(mol?.get_inchi());
 		$form.standard_inchi = InChI;
@@ -50,7 +53,17 @@
 		}}
 		on:click={async () => await fetch_smiles()}>Fetch SMILES (PubChem)</Button
 	>
-	<Form.Input required class="col-span-2" placeholder="Enter smiles string" />
+	<Form.Input
+		required
+		class="col-span-2"
+		placeholder="Enter smiles string"
+		on:keydown={async (e) => {
+			if (e.key === 'Enter') {
+				e.preventDefault();
+				await auto_fill_properties();
+			}
+		}}
+	/>
 	<Button on:click={async () => await auto_fill_properties()}>Draw & fill InChI</Button>
 
 	{#if mol}

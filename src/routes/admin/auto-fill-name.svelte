@@ -21,8 +21,9 @@
 	let status = '';
 
 	const fetch_from_database = async () => {
-		reset();
+		if (!molecule_tag) return toast.error('Please enter a molecule tag tag first');
 		try {
+			reset();
 			status = '';
 			fetching = true;
 			if (!molecule_tag) return toast.error('Please enter a molecule tag tag first');
@@ -61,7 +62,16 @@
 	/>
 	<div class="flex flex-col gap-1">
 		<Label>molecule tag</Label>
-		<Input bind:value={molecule_tag} placeholder="Enter molecule tag" />
+		<Input
+			bind:value={molecule_tag}
+			placeholder="Enter molecule tag"
+			on:keydown={async (e) => {
+				if (e.key === 'Enter') {
+					e.preventDefault();
+					await fetch_from_database();
+				}
+			}}
+		/>
 	</div>
 
 	<Button on:click={async () => await fetch_from_database()}>Fetch & auto-fill</Button>
