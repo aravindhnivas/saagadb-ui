@@ -8,6 +8,7 @@
 	import AutoFillMetadata from './auto-fill-metadata.svelte';
 	import { Label } from '$lib/components/ui/label';
 	import { Input } from '$lib/components/ui/input';
+	import { HelpCircle } from 'lucide-svelte';
 
 	export let form: SuperValidated<(typeof Schemas)['species-metadata']>;
 
@@ -37,6 +38,17 @@
 		'c_const',
 		'data_date',
 		'data_contributor'
+	];
+	const files_keys = [
+		{
+			name: 'int_file',
+			description: 'mu_a, mu_b, and mu_c dipoles will be extracted from this file'
+		},
+		{
+			name: 'var_file',
+			description: 'A, B, and C rotational constants will be extracted from this file'
+		},
+		{ name: 'fit_file', description: '.fit file of the species' }
 	];
 </script>
 
@@ -103,7 +115,14 @@
 	<div class="flex gap-4 w-full items-baseline">
 		<Form.Field {config} name="qpart_file">
 			<Form.Item class="basis-3/4">
-				<Form.Label>qpart_file</Form.Label>
+				<Form.Label>
+					<div class="flex gap-4 items-center">
+						<span>qpart_file</span>
+						<span aria-label="Quantum partition function" data-cooltipz-dir="down">
+							<HelpCircle />
+						</span>
+					</div>
+				</Form.Label>
 				<Form.Textarea required />
 				<Form.Validation />
 			</Form.Item>
@@ -115,11 +134,18 @@
 	</div>
 
 	<div class="grid-auto-fill">
-		{#each ['int_file', 'var_file', 'fit_file'] as name}
+		{#each files_keys as { name, description }}
 			<Form.Field {config} {name}>
 				<Form.Item>
 					<div class="grid w-full max-w-sm items-center gap-1.5">
-						<Form.Label>{name}</Form.Label>
+						<Form.Label>
+							<div class="flex gap-4 items-center">
+								<span>{name}</span>
+								<span aria-label={description} data-cooltipz-dir="down">
+									<HelpCircle />
+								</span>
+							</div>
+						</Form.Label>
 						<Form.Input type="file" />
 					</div>
 					<Form.Validation />
