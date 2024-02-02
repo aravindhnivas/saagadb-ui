@@ -78,7 +78,7 @@
 			<div class="space-y-1 leading-none">
 				<Form.Label>contains_rovibrational</Form.Label>
 			</div>
-			<Form.Checkbox />
+			<Form.Checkbox checked="indeterminate" />
 			<Form.Validation />
 		</Form.Item>
 	</Form.Field>
