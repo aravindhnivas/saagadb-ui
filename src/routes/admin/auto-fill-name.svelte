@@ -7,8 +7,8 @@
 	import { toast } from 'svelte-sonner';
 	import { base } from '$app/paths';
 	import Loader from '$lib/components/utils/loader.svelte';
-	import { CDMS, JPL } from 'cdms-jpl-api';
-	import { Link } from 'lucide-svelte';
+	// import { CDMS, JPL } from 'cdms-jpl-api';
+	import { CDMS, JPL } from '$lib/utils/cdms-jpl-parser';
 
 	export let callback: (db: string, data: Object) => void;
 
