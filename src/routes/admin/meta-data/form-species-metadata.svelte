@@ -74,7 +74,6 @@
 	</div>
 
 	<FormCombobox
-		val_type="number"
 		{config}
 		name={'category'}
 		items={category.map((f) => ({
