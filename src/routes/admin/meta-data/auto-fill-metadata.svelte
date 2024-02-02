@@ -1,6 +1,11 @@
 <script lang="ts">
 	import { getForm } from 'formsnap';
 	import AutoFillName from '../auto-fill-name.svelte';
+	import { getContext } from 'svelte';
+
+	const species = getContext('species') as Species[];
+	const linelist = getContext('linelist') as Linelist[];
+	console.log({ species, linelist });
 
 	const { form } = getForm();
 	const date_formatter = (dateStr: string) => {
@@ -46,6 +51,17 @@
 			if (data['μb / D']) $form.mu_b = data['μb / D'];
 			if (data['μc / D']) $form.mu_c = data['μc / D'];
 			$form['data_date'] = date_formatter(data['Date of Entry']);
+			const { name } = data;
+
+			const found_species = species.find((s) => s.name_formula === name.formula.default);
+			const found_linelist = linelist.find(
+				(l) => l.linelist_name.toLowerCase() === db.toLowerCase()
+			);
+
+			$form.species = found_species?.id;
+			$form.linelist = found_linelist?.id;
+
+			// console.log({ found_species, name, species });
 		} else if (db === 'jpl') {
 			$form['data_date'] = date_formatter(data['Date']);
 			if (data['mu_a']) $form.mu_a = data['mu_a'];
