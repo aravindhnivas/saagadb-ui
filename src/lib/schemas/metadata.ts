@@ -51,7 +51,7 @@ export const Schemas = {
 	}),
 	line: z.object({
 		meta: zint(),
-		cat_file: z.string().optional(),
+		cat_file: z.string().default('').optional(),
 		qn_label_str: z.string().min(1),
 		contains_rovibrational: z.boolean(),
 		vib_qn: z.string().optional(),
