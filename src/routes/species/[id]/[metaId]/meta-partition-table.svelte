@@ -9,6 +9,9 @@
 	const { partition_function, qpart_file } = current_meta ?? {};
 	const qpart_filename = qpart_file?.split('/').pop();
 	const cell_padding = 'p-2';
+	// console.log(partition_function);
+
+	const qpart_arr = Object.entries(partition_function).sort((a, b) => a[1].localeCompare(b[1]));
 </script>
 
 {#if partition_function}
@@ -26,7 +29,7 @@
 		</Table.Header>
 
 		<Table.Body>
-			{#each Object.entries(partition_function) as [key, value]}
+			{#each qpart_arr as [key, value]}
 				<Table.Row>
 					<Table.Cell class={cell_padding}>{key}</Table.Cell>
 					<Table.Cell class={cell_padding}>{value}</Table.Cell>
