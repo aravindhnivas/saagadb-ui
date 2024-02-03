@@ -2,7 +2,7 @@
 	import { AlertCircle, CheckCheck, AlertTriangle } from 'lucide-svelte';
 	import * as Alert from '$lib/components/ui/alert';
 	import { getForm } from 'formsnap';
-
+	import { confetti } from '@neoconfetti/svelte';
 	const { message } = getForm();
 
 	let modal: HTMLDialogElement;
@@ -13,6 +13,7 @@
 
 <dialog bind:this={modal} class="modal">
 	{#if $message && $message.text && $message.type === 'success'}
+		<div use:confetti />
 		<div class="modal-box">
 			<h3 class="font-bold text-lg">Form submitted succesfully!!!</h3>
 			<p class="py-4">{@html $message.text}</p>

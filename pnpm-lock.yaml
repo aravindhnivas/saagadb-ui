@@ -8,6 +8,9 @@ dependencies:
   3dmol:
     specifier: ^2.0.6
     version: 2.0.6
+  '@neoconfetti/svelte':
+    specifier: ^2.2.1
+    version: 2.2.1
   '@orcid/bibtex-parse-js':
     specifier: ^0.0.25
     version: 0.0.25
@@ -1016,6 +1019,10 @@ packages:
       focus-trap: 7.5.4
       nanoid: 5.0.4
       svelte: 4.2.9
+    dev: false
+
+  /@neoconfetti/svelte@2.2.1:
+    resolution: {integrity: sha512-2Ts0Rxaf6clW2qG+AKhTwpl01AAyZEAe03XeuQ7Vp+qYIaM3ycuI94j546fmEkUxwACwGI3Zl2cZ/pncTuNcJg==}
     dev: false
 
   /@nodelib/fs.scandir@2.1.5:
