@@ -25,8 +25,8 @@
 		// resetForm: true,
 		onResult: ({ result }) => {
 			console.log(result);
-			if (result.type === 'failure') {
-				error_message = 'Please check the form above for errors';
+			if (result.type === '"error"') {
+				error_message = result?.error?.message;
 			} else if (result.type === 'success') {
 				dispatch('success', { result });
 				error_message = '';
