@@ -27,7 +27,7 @@ export const actions: Actions = {
 		// console.log('formData', { formData, metaid });
 
 		const form = await superValidate(formData, Schemas[metaid]);
-		console.log('POST', form.data);
+		console.log('posting', form.data);
 
 		// Convenient validation check:
 		if (!form.valid) {
@@ -41,38 +41,49 @@ export const actions: Actions = {
 		for (const key of fileInputs[metaid]) {
 			const file = formData.get(key.name);
 			if (file instanceof File) {
-				if (!file.name.endsWith(key.extension)) {
+				if (file.name && !file.name.endsWith(key.extension)) {
 					return setError(form, key.name, `File must have extension ${key.extension}`);
 				}
 				if (!file.name || !file.size) {
 					if (key.required) return setError(form, key.name, 'File is required');
+					console.log('file not required', key.name, file, 'skipping...');
+					formBody.append(key.name, '');
 					continue;
 				}
-				console.log('append file instance', key.name, file, 'to formBody');
+				console.log('append file instance', key.name, 'to formBody');
 				formBody.append(key.name, file);
 			} else if (typeof file === 'string') {
 				if (!file) {
 					if (key.required) return setError(form, key.name, 'File is required');
+					console.log('file not required', key.name, file, 'skipping...');
+					formBody.append(key.name, '');
 					continue;
 				}
-				console.log('append file string', key.name, file, 'to formBody');
+				console.log('append file string', key.name, 'to formBody');
 				const binaryData = new TextEncoder().encode(file);
 				const fileInstance = new File([binaryData], `${key.name}${key.extension}`, {
 					type: 'application/octet-stream'
 				});
+
 				formBody.append(key.name, fileInstance);
 			}
 		}
 
 		// Append the other form data
 		for (const key in form.data) {
+			if (formBody.has(key)) continue;
 			formBody.append(key, form.data[key]);
 		}
 
-		console.log('formBody', Array.from(formBody.keys()));
-		// return { form };
+		for (const [key, value] of formBody.entries()) {
+			if (value === 'undefined') {
+				console.log('undefined value', key, value);
+				formBody.set(key, '');
+			}
+			console.log({ key, value });
+		}
+		console.log('formBody', Array.from(formBody.entries()));
 
-		// Send the FormData object
 		const res = await fetch(`${DB_URL}/data/${metaid}/`, {
 			method: 'POST',
 			body: formBody

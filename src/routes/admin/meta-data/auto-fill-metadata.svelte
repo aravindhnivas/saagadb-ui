@@ -39,19 +39,22 @@
 		$form.data_contributor = data['Contributor']?.join(', ');
 
 		const dipole_keys = Object.keys(data).filter((k) => k.match(/(µ|mu_)[a-c]( \/ D)?/g));
+		console.log({ dipole_keys });
 		for (const dipole_key of dipole_keys) {
 			const fkey = dipole_key
 				.replace(/(µ|mu_)/g, '')
 				.replace(/ \/ D/g, '')
 				.toLowerCase();
-			// console.log(`mu_${fkey}`, data[dipole_key]);
+			console.log(`mu_${fkey}`, data[dipole_key]);
 			$form[`mu_${fkey}`] = data[dipole_key];
 		}
 
-		const rot_const_keys = Object.keys(data).filter((k) => k.match(/[A-C]( \/ MHz)?/g));
+		const rot_const_keys = Object.keys(data).filter((k) => k.match(/\b(A|B|C)( \/ MHz)?\b/g));
+		// Word boundaries (\b) ensure that the match is a whole word and not part of a larger word.
+		console.log({ rot_const_keys });
 		for (const rot_key of rot_const_keys) {
 			const fkey = rot_key.replace(/ \/ MHz/g, '').toLowerCase();
-			// console.log(rot_key, data[rot_key]);
+			console.log(`${fkey}_const`, data[rot_key]);
 			$form[`${fkey}_const`] = data[rot_key];
 		}
 
@@ -76,6 +79,7 @@
 			$form.species = found_species?.id;
 			$form.linelist = found_linelist?.id;
 		}
+		console.log('parsed', { $form });
 	};
 </script>
 

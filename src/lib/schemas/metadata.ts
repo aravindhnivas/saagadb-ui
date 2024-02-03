@@ -16,12 +16,12 @@ export const Schemas = {
 		molecule_tag: z.union([z.string(), z.number().int()]).optional(),
 		hyperfine: z.boolean(),
 		category: z.string().min(1),
-		mu_a: z.string().nullable(),
-		mu_b: z.string().nullable(),
-		mu_c: z.string().nullable(),
-		a_const: z.string().nullable(),
-		b_const: z.string().nullable(),
-		c_const: z.string().nullable(),
+		mu_a: z.string().default(''),
+		mu_b: z.string().default(''),
+		mu_c: z.string().default(''),
+		a_const: z.string().default(''),
+		b_const: z.string().default(''),
+		c_const: z.string().default(''),
 		data_date: z
 			.string()
 			.min(1)
@@ -30,10 +30,10 @@ export const Schemas = {
 			}),
 		data_contributor: z.string().min(1),
 		qpart_file: z.string().optional(),
-		int_file: z.string().optional(),
-		var_file: z.string().optional(),
-		fit_file: z.string().optional(),
-		lin_file: z.string().optional(),
+		int_file: z.string().default('').optional(),
+		var_file: z.string().default('').optional(),
+		fit_file: z.string().default('').optional(),
+		lin_file: z.string().default('').optional(),
 		notes: z.string().default('').optional()
 	}),
 	reference: z.object({

@@ -48,7 +48,8 @@
 			name: 'var_file',
 			description: 'A, B, and C rotational constants will be extracted from this file'
 		},
-		{ name: 'fit_file', description: '.fit file of the species' }
+		{ name: 'fit_file', description: '.fit file of the species' },
+		{ name: 'lin_file', description: 'Line list file' }
 	];
 </script>
 
@@ -101,6 +102,15 @@
 				});
 			}}
 		/>
+		<Form.Field {config} name="hyperfine">
+			<Form.Item class="flex flex-row items-end space-x-3 space-y-0 rounded-md border p-4">
+				<div class="space-y-1 leading-none">
+					<Form.Label>hyperfine</Form.Label>
+				</div>
+				<Form.Checkbox checked="indeterminate" />
+				<Form.Validation />
+			</Form.Item>
+		</Form.Field>
 	</div>
 	<div class="grid-auto-fill">
 		{#each keys as name}
@@ -156,7 +166,7 @@
 								</span>
 							</div>
 						</Form.Label>
-						<Form.Input type="file" />
+						<Form.Input type="file" required={false} />
 					</div>
 					<Form.Validation />
 				</Form.Item>
