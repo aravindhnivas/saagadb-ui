@@ -1,17 +1,17 @@
 import { z } from 'zod';
 import { v4 as uuidv4 } from 'uuid';
 
-const zint = () => {
-	return z
-		.number()
-		.int()
-		.default(undefined as unknown as number);
-};
+// const zint = () => {
+// 	return z
+// 		.number()
+// 		.int()
+// 		.default(undefined as unknown as number);
+// };
 
 export const Schemas = {
 	'species-metadata': z.object({
-		species: zint(),
-		linelist: zint(),
+		species: z.union([z.string(), z.number().int()]),
+		linelist: z.union([z.string(), z.number().int()]),
 		degree_of_freedom: z.union([z.string(), z.number().int()]),
 		molecule_tag: z.union([z.string(), z.number().int()]).optional(),
 		hyperfine: z.boolean(),
@@ -43,14 +43,14 @@ export const Schemas = {
 		bibtex: z.string().optional()
 	}),
 	'meta-reference': z.object({
-		meta: zint(),
-		ref: zint(),
+		meta: z.union([z.string(), z.number().int()]),
+		ref: z.union([z.string(), z.number().int()]),
 		dipole_moment: z.boolean(),
 		spectrum: z.boolean(),
 		notes: z.string().default('').optional()
 	}),
 	line: z.object({
-		meta: zint(),
+		meta: z.union([z.string(), z.number().int()]),
 		cat_file: z.string().default('').optional(),
 		qn_label_str: z.string().min(1),
 		contains_rovibrational: z.boolean(),
