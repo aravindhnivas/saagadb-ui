@@ -35,7 +35,7 @@
 			qpart.push(`${temp}\t${val}`);
 		}
 
-		$form.qpart_file = qpart.join('\n');
+		$form.qpart_file = '#form : interpolation \n' + qpart.join('\n');
 		$form.data_contributor = data['Contributor']?.join(', ');
 
 		const dipole_keys = Object.keys(data).filter((k) => k.match(/(µ|mu_)[a-c]( \/ D)?/g));
