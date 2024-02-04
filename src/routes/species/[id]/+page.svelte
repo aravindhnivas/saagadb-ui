@@ -21,6 +21,6 @@
 			{/if}
 		{/if}
 	{:catch error}
-		<AlertBox message={error.message} variant="destructive" />
+		<AlertBox {error} />
 	{/await}
 </div>

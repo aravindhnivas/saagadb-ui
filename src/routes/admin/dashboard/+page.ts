@@ -1,9 +1,19 @@
+import { base } from '$app/paths';
 import type { PageLoad } from './$types';
 
 export const load: PageLoad = async ({ fetch, parent }) => {
-	const { user } = await parent();
-	if (!user) return;
+	const fetch_ref_and_species = async (userId: string | number) => {
+		await parent();
+		if (!userId) throw new Error('User ID not provided');
+		const res = await fetch(`${base}/api/data/meta-ref-and-species?uploaded_by=${userId}`);
+		const ref_and_species = (await res.json()) as {
+			MetaReference: MetaReference[];
+			SpeciesMetadata: SpeciesMetadata[];
+		};
+		return ref_and_species;
+	};
 
-	// const linelist_uploaded_by_me = await fetch('/api/linelist?uploaded_by_me=true');
-	// console.log(user);
+	return {
+		fetch_ref_and_species
+	};
 };

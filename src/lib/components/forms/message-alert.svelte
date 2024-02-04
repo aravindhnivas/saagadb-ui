@@ -6,7 +6,6 @@
 
 	const { message } = getForm();
 	let modal: HTMLDialogElement;
-	$: console.log($message);
 	$: if (modal && $message && $message.text && $message.type === 'success') {
 		modal.showModal();
 	}

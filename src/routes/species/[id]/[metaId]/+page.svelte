@@ -46,7 +46,7 @@
 		{/if}
 	{/if}
 {:catch error}
-	<AlertBox message={error.message} variant="destructive" />
+	<AlertBox {error} />
 {/await}
 
 {#if species_loaded}
@@ -69,11 +69,11 @@
 						<p class="text-center">No partition table available</p>
 					{/if}
 				{:catch error}
-					<AlertBox message={error.message} variant="destructive" />
+					<AlertBox {error} />
 				{/await}
 			</div>
 		</div>
 	{:catch error}
-		<AlertBox message={error.message} variant="destructive" />
+		<AlertBox {error} />
 	{/await}
 {/if}

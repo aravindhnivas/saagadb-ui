@@ -10,7 +10,7 @@
 	import MetaPage from './meta-page.svelte';
 
 	export let species: Species;
-	export let meta: Meta[] = [];
+	export let meta: SpeciesMetadata[] = [];
 	export let linelist: Linelist[] = [];
 
 	let metadata_keys = [

@@ -2,13 +2,15 @@
 	import * as Alert from '$lib/components/ui/alert';
 	import { AlertCircle } from 'lucide-svelte';
 
-	// export let title: string = 'Alert';
 	export let variant: 'default' | 'destructive' = 'default';
 	export let message: string = '';
+	export let error: Error | null = null;
 </script>
 
-<Alert.Root {variant}>
+<Alert.Root class="select-text" variant={error ? 'destructive' : 'default'}>
 	<AlertCircle class="h-4 w-4" />
-	<Alert.Title>{variant === 'destructive' ? 'Error' : 'Alert/Info'}</Alert.Title>
-	<Alert.Description>{message}</Alert.Description>
+	<Alert.Title>{variant === 'destructive' || error ? 'Error' : 'Alert/Info'}</Alert.Title>
+	<Alert.Description
+		>{error ? (import.meta.env.DEV ? error.stack : error.message) : message}</Alert.Description
+	>
 </Alert.Root>

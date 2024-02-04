@@ -1,30 +1,32 @@
 <script lang="ts">
 	import { logged_in, edit_mode } from '$lib/utils/stores';
-	import type { LayoutServerData } from '../../$types';
-	export let data: LayoutServerData;
-
+	import * as Table from '$lib/components/ui/table';
+	import type { PageData } from './$types';
+	import AlertBox from '$lib/components/utils/alert-box.svelte';
+	import Loader from '$lib/components/utils/loader.svelte';
+	import MetaRef from './meta-ref.svelte';
+	import MetaSpecies from './meta-species.svelte';
+	export let data: PageData;
 	const { user } = data;
-	$: if (user?.name) logged_in.set(user.name);
+	// $: if (user?.name) logged_in.set(user.name);
 </script>
 
 {#if user}
-	<div class="form-control items-start">
-		<label class="label cursor-pointer gap-2">
-			<input type="checkbox" class="toggle" bind:checked={$edit_mode} />
-			<span class="label-text">Edit mode</span>
-		</label>
-	</div>
-
-	<div class="flex flex-col gap-4">
-		<div>
-			<div class="text-lg">Hello, {user?.name}</div>
-			<div>
-				Email: <em class="badge badge-ghost">{user.email}</em>
-			</div>
-			<div>
-				Organisation: <em class="badge badge-warning">{user.organization}</em>
-			</div>
-		</div>
+	<div class="space-y-2">
+		{#await data.fetch_ref_and_species(user.id)}
+			<Loader fetching={true} />
+		{:then value}
+			{#if value}
+				<div class="stats stats-horizontal shadow">
+					<MetaRef meta_ref={value.MetaReference} />
+					<MetaSpecies meta_species={value.SpeciesMetadata} />
+				</div>
+			{:else}
+				<p>Nothing uploaded by {user.name}</p>
+			{/if}
+		{:catch error}
+			<AlertBox {error} />
+		{/await}
 	</div>
 {:else}
 	<p>Invalid user</p>
