@@ -109,7 +109,7 @@ export const actions: Actions = {
 		}
 
 		let res_data;
-		if (res.ok && res.status === 201) {
+		if (res.ok) {
 			res_data = await res.json();
 			message(form, { type: 'success', text: 'Form submitted succesfully' });
 			return { form, response: res_data };
