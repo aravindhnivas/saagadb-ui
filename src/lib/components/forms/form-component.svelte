@@ -7,6 +7,7 @@
 	import { AlertCircle } from 'lucide-svelte';
 	import * as Alert from '$lib/components/ui/alert';
 	import { createEventDispatcher } from 'svelte';
+	import { get } from 'svelte/store';
 
 	export let schema: AnyZodObject;
 	export let form: SuperValidated<AnyZodObject>;
@@ -25,16 +26,18 @@
 		// resetForm: true,
 		onResult: ({ result }) => {
 			console.log(result);
-			if (result.type === '"error"') {
-				error_message = result?.error?.message;
-			} else if (result.type === 'success') {
+			if (result.type === 'success') {
 				dispatch('success', { result });
 				error_message = '';
+			} else if (result.type === 'failure') {
+				error_message = result.data?.form?.errors?.detail[0];
+				console.error({ error_message });
 			}
 		},
-		onError: (e) => {
+		onError: ({ result, message }) => {
 			// do something else
-			console.error(e);
+			console.error({ message: get(message), result });
+			error_message = result?.error?.message;
 		},
 		...opts
 	};
