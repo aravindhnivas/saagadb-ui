@@ -3,19 +3,24 @@ import { message, setError, superValidate } from 'sveltekit-superforms/server';
 import { fail } from '@sveltejs/kit';
 import { DB_URL } from '$lib/server';
 import userSchema from './schema';
+import { base } from '$app/paths';
 
-export const load: PageServerLoad = async () => {
+export const load: PageServerLoad = async ({ fetch }) => {
+	const fetch_url = `${base}/api/user/fetch?is_staff=true`;
+	const fetch_all_staff = await fetch(fetch_url);
+	const all_staff = (await fetch_all_staff.json()) as User[];
+
 	// Server API:
 	const form = await superValidate(userSchema);
 
 	// Unless you throw, always return { form } in load and form actions.
-	return { form };
+	return { form, all_staff };
 };
 
 export const actions: Actions = {
 	default: async ({ request, fetch }) => {
 		const form = await superValidate(request, userSchema);
-		// console.log('POST', form.data);
+		console.log('POST', form.data);
 
 		// Convenient validation check:
 		if (!form.valid) {

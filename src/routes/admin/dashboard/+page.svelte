@@ -2,6 +2,7 @@
 	import { logged_in, edit_mode } from '$lib/utils/stores';
 	import type { LayoutServerData } from '../../$types';
 	export let data: LayoutServerData;
+
 	const { user } = data;
 	$: if (user?.name) logged_in.set(user.name);
 </script>

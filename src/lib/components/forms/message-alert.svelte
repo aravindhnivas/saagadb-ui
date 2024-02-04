@@ -3,8 +3,8 @@
 	import * as Alert from '$lib/components/ui/alert';
 	import { getForm } from 'formsnap';
 	import { confetti } from '@neoconfetti/svelte';
-	const { message } = getForm();
 
+	const { message } = getForm();
 	let modal: HTMLDialogElement;
 	$: if (modal && $message && $message.text && $message.type === 'success') {
 		modal.showModal();

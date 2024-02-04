@@ -29,6 +29,17 @@ declare global {
 		message?: string;
 	}
 
+	interface User {
+		id: number;
+		name: string;
+		email: string;
+		password: string;
+		organization: string;
+		is_staff: boolean;
+		is_active: boolean;
+		is_superuser: boolean;
+	}
+
 	interface Linelist {
 		id: number;
 		linelist_name: string;
