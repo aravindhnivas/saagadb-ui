@@ -17,7 +17,7 @@
 		{:else if species}
 			<SpeciesData {species} />
 			{#if meta.length > 0 && data.linelist}
-				<MetaTable {meta} {species} linelist={data.linelist} />
+				<MetaTable species_metadata={meta} />
 			{/if}
 		{/if}
 	{:catch error}

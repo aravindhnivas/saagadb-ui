@@ -3,7 +3,11 @@
 	import { Atom } from 'lucide-svelte';
 	export let meta_species: SpeciesMetadata[];
 
-	const meta_species_grouped = Object.groupBy(meta_species, ({ species }) => species);
+	const meta_species_grouped = Object.groupBy(
+		meta_species,
+		({ species_formula }) => species_formula
+	);
+
 	console.log({ meta_species, meta_species_grouped });
 </script>
 
@@ -13,3 +17,7 @@
 		<span>Species-metadata</span>
 	</svelte:fragment>
 </StatComponent>
+
+<!-- <pre>
+	{JSON.stringify(meta_species_grouped, null, 2)}
+</pre> -->

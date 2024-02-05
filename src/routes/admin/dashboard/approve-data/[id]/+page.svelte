@@ -6,7 +6,7 @@
 	export let data: PageData;
 </script>
 
-<div class="grid gap-4">
+<div class="grid gap-4 px-2">
 	<a class="flex gap-4 btn btn-sm btn-dark w-[150px]" href="{base}/admin/dashboard"
 		><ArrowBigLeft /> Go back</a
 	>

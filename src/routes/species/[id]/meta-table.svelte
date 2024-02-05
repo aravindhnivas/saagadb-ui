@@ -9,11 +9,13 @@
 	import { page } from '$app/stores';
 	import MetaPage from './meta-page.svelte';
 
-	export let species: Species;
-	export let meta: SpeciesMetadata[] = [];
-	export let linelist: Linelist[] = [];
+	export let species_metadata: SpeciesMetadata[] = [];
 
-	let metadata_keys = [
+	const { species: species_id, species_name } = species_metadata[0] ?? {};
+	// $: console.log({ species, species_metadata });
+
+	type MetadataKey = { name: string; value: keyof SpeciesMetadata }[];
+	let metadata_keys: MetadataKey = [
 		{ name: 'Category', value: 'category' },
 		{ name: 'Molecule tag', value: 'molecule_tag' },
 		{ name: 'A <em>/ MHz</em>', value: 'a_const' },
@@ -30,8 +32,9 @@
 	];
 
 	onMount(() => {
-		if (!$edit_mode) return;
-		metadata_keys = [{ name: 'meta_id', value: 'id' }, ...metadata_keys];
+		if ($edit_mode) {
+			metadata_keys = [{ name: 'meta_id', value: 'id' }, ...metadata_keys];
+		}
 	});
 
 	const cell_padding = 'p-0.5';
@@ -61,7 +64,7 @@
 			goto(href);
 		}
 	};
-	const fetch_from_database = (tag: number | string, database: 'CDMS' | 'JPL') => {
+	const fetch_from_database = (tag: number | string, database: string) => {
 		if (!tag) return;
 		const tag_val = tag.toString().padStart(6, '0');
 
@@ -77,7 +80,7 @@
 	};
 </script>
 
-{#if species && meta.length > 0}
+{#if species_metadata.length > 0}
 	<Table.Root class="max-w-4xl">
 		<Table.Caption>Species-metadata</Table.Caption>
 		<Table.Header>
@@ -91,23 +94,18 @@
 						<HelpCircle />
 					</span>
 				</Table.Head>
-				{#each meta as metadata}
-					{@const linelist_name = linelist
-						?.find((f) => f.id === metadata.linelist)
-						?.linelist_name?.toLocaleUpperCase()}
-					{#if linelist_name}
-						<Table.Head class="text-center font-bold">
-							<a
-								href="{base}/species/{species.id}/{metadata.id}"
-								on:click={(e) => {
-									if (linelist_name) meta_name = linelist_name;
-									nav_to_ref(e);
-								}}
-							>
-								<span class="underline hover:text-blue">{linelist_name}</span>
-							</a>
-						</Table.Head>
-					{/if}
+				{#each species_metadata as { id, linelist_name } (id)}
+					<Table.Head class="text-center font-bold">
+						<a
+							href="{base}/species/{species_id}/{id}"
+							on:click={(e) => {
+								if (linelist_name) meta_name = linelist_name;
+								nav_to_ref(e);
+							}}
+						>
+							<span class="underline hover:text-blue">{linelist_name.toUpperCase()}</span>
+						</a>
+					</Table.Head>
 				{/each}
 			</Table.Row>
 		</Table.Header>
@@ -115,15 +113,13 @@
 			{#each metadata_keys as key}
 				<Table.Row>
 					<Table.Cell class={cell_padding}>{@html key.name}</Table.Cell>
-					{#each meta as metadata (metadata.id)}
-						{@const linelist_name = linelist
-							?.find((f) => f.id === metadata.linelist)
-							?.linelist_name?.toLocaleUpperCase()}
+					{#each species_metadata as metadata (metadata.id)}
 						{@const val = metadata[key.value]}
+						{@const linelist_name = metadata.linelist_name.toLocaleUpperCase()}
 						<Table.Cell class="text-center {cell_padding}">
-							{#if typeof val === 'boolean' || ['true', 'false'].includes(val)}
-								{val === 'true' ? '✅' : '❌'}
-							{:else if key.value === 'molecule_tag'}
+							{#if typeof val === 'boolean'}
+								{val ? '✅' : '❌'}
+							{:else if key.value === 'molecule_tag' && typeof val !== 'object'}
 								{@const info = fetch_from_database(val, linelist_name)}
 								<a class="underline hover:text-blue" href={info?.fileinfo} target="_blank"
 									>{info?.tag_val ?? val}
@@ -142,10 +138,5 @@
 {/if}
 
 {#if $page.state.ready}
-	<MetaPage
-		bind:open={open_meta_ref}
-		data={meta_page_data}
-		{meta_name}
-		species_name={species.iupac_name}
-	/>
+	<MetaPage bind:open={open_meta_ref} data={meta_page_data} {meta_name} {species_name} />
 {/if}

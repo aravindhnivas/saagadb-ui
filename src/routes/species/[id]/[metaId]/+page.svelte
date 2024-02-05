@@ -14,6 +14,7 @@
 	let species_loaded = false;
 	const load_species_metadata = async () => {
 		const { species, meta } = await data.load_species_metadata;
+		console.log({ species, meta });
 		if (species?.message)
 			throw new Error(`Species with id ${$page.params.id} - ${species.message}`);
 		if (meta.length === 0) throw new Error('No metadata found');
@@ -23,14 +24,12 @@
 </script>
 
 <!-- show back button only in non-dialog mode -->
-{#await load_species_metadata() then { species, meta }}
+{#await load_species_metadata() then { meta }}
 	{#if $page.params.metaId}
-		{@const metadata = meta.find((f) => f.id == $page.params.metaId)}
-		{@const key = data.linelist?.find((f) => f.id == metadata?.linelist)?.linelist_name}
-		{@const meta_name = key ? key.toUpperCase() : 'Unknown'}
+		{@const meta_name = meta[0].linelist_name.toUpperCase()}
 		<div class="text-lg font-400 flex justify-center">
 			<span
-				>Reference and metadata for <em class="font-bold">{species.iupac_name}</em>
+				>Reference and metadata for <em class="font-bold">{meta[0].species_name}</em>
 				from {meta_name}
 				database</span
 			>

@@ -5,6 +5,7 @@
 	import { toast } from 'svelte-sonner';
 	import { oO } from '@zmotivat0r/o0';
 	import { getContext } from 'svelte';
+	import { base } from '$app/paths';
 
 	let species_id = 0;
 	let linelist_id = 0;
@@ -20,11 +21,10 @@
 				return;
 			}
 			fetching_meta_id = true;
-			const res = await fetch(
-				`/api/data/species-metadata/query/?species_id=${species_id}&linelist_id=${linelist_id}`
-			);
+			const url = `${base}/api/data/species-metadata?species=${species_id}&linelist=${linelist_id}`;
+			const res = await fetch(url);
 			const data = (await res.json()) as Species[];
-
+			console.log({ url, species_id, linelist_id, data });
 			if (data.length === 0) {
 				toast.error('No metadata found for this species and linelist');
 				return;

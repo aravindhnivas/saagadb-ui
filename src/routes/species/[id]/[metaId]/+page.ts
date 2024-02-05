@@ -4,7 +4,7 @@ import type { PageLoad } from './$types';
 export const load: PageLoad = async ({ fetch, params }) => {
 	const fetch_data = async () => {
 		const meta_references = (await fetch(
-			`${base}/api/data/meta-reference/query?meta_id=${params.metaId}`
+			`${base}/api/data/meta-reference?meta=${params.metaId}`
 		).then((res) => res.json())) as MetaReference[];
 		const references = (await Promise.all(
 			meta_references.map(async ({ ref }) => {
