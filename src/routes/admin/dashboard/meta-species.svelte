@@ -1,12 +1,12 @@
 <script lang="ts">
+	import StatComponent from './stat-component.svelte';
+	import { Atom } from 'lucide-svelte';
 	export let meta_species: SpeciesMetadata[];
-	console.log({ meta_species });
 </script>
 
-<div class="stat">
-	<div class="stat-title">Species-metadata</div>
-	<div class="stat-value">
-		{meta_species.filter((f) => f.approved).length} / {meta_species.length} approved
-	</div>
-	<div class="stat-desc">Total {meta_species.length} uploaded</div>
-</div>
+<StatComponent total={meta_species.length} approved={meta_species.filter((f) => f.approved).length}>
+	<svelte:fragment slot="header">
+		<Atom />
+		<span>Species-metadata</span>
+	</svelte:fragment>
+</StatComponent>
