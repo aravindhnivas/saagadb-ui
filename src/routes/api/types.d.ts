@@ -60,6 +60,10 @@ interface SpeciesMetadata {
 	notes: string;
 	approved: boolean;
 	uploaded_by: number;
+	species_formula: string;
+	species_name: string;
+	linelist_name: string;
+	uploaded_by_name: string;
 }
 
 interface Reference {
