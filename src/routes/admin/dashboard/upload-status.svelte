@@ -27,21 +27,21 @@
 				{/if}
 				<div class="stats stats-horizontal shadow">
 					<StatComponent
-						total={meta_ref.length}
-						approved={meta_ref.filter((f) => f.approved).length}
-					>
-						<svelte:fragment slot="header">
-							<BookMarked />
-							<span>References-metadata</span>
-						</svelte:fragment>
-					</StatComponent>
-					<StatComponent
 						total={meta_species.length}
 						approved={meta_species.filter((f) => f.approved).length}
 					>
 						<svelte:fragment slot="header">
 							<Atom />
 							<span>Species-metadata</span>
+						</svelte:fragment>
+					</StatComponent>
+					<StatComponent
+						total={meta_ref.length}
+						approved={meta_ref.filter((f) => f.approved).length}
+					>
+						<svelte:fragment slot="header">
+							<BookMarked />
+							<span>Reference-metadata</span>
 						</svelte:fragment>
 					</StatComponent>
 				</div>
