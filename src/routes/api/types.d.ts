@@ -82,3 +82,14 @@ interface MetaReference {
 	uploaded_by: string;
 	approved: boolean;
 }
+
+interface User {
+	id: number;
+	name: string;
+	email: string;
+	organization: string;
+	is_active: boolean;
+	is_staff: boolean;
+	is_superuser: boolean;
+	approver: string;
+}

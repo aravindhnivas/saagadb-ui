@@ -1,10 +1,9 @@
 <script lang="ts">
-	import { logged_in, edit_mode } from '$lib/utils/stores';
+	import { edit_mode } from '$lib/utils/stores';
 	import * as Table from '$lib/components/ui/table';
 	import type { LayoutData } from '../$types';
 	export let data: LayoutData;
 	const { user } = data;
-	$: if (user?.name) logged_in.set(user.name);
 </script>
 
 {#if user}

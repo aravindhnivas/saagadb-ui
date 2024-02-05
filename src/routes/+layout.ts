@@ -7,15 +7,7 @@ export const load: LayoutLoad = async ({ fetch }) => {
 		try {
 			const [, res] = await oO(fetch('/api/user/me'));
 			if (!(res && res?.ok)) return null;
-			const data = (await res.json()) as {
-				id: number;
-				name: string;
-				email: string;
-				organization: string;
-				is_active: boolean;
-				is_staff: boolean;
-				is_superuser: boolean;
-			};
+			const data = (await res.json()) as User;
 			return data;
 		} catch (error) {
 			return null;

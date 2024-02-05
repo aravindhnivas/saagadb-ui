@@ -14,9 +14,7 @@
 	export let data: LayoutData;
 
 	const { user } = data;
-	$: if (user) {
-		logged_in.set(user.name);
-	}
+	$: if (user) logged_in.set(user.name); // don't delete - this keep the user logged in
 </script>
 
 <svelte:head>
