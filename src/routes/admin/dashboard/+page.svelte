@@ -8,10 +8,8 @@
 	import UploadStatus from './upload-status.svelte';
 	import { base } from '$app/paths';
 	export let data: PageData;
-	const { user } = data;
+	const { user, fetch_ref_and_species } = data;
 	$: if (user?.name) logged_in.set(user.name);
-
-	// console.log({ user });
 </script>
 
 <div class="grid gap-4 p-4">
@@ -28,7 +26,7 @@
 			{/await}
 		</div>
 
-		<UploadStatus {user} />
+		<UploadStatus {user} {fetch_ref_and_species} />
 
 		{#if user.is_staff}
 			{#await data.fetch_approving_users()}

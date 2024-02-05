@@ -27,8 +27,23 @@ export const load: PageLoad = async ({ fetch, parent }) => {
 		return approving_users;
 	};
 
+	const fetch_ref_and_species = async () => {
+		if (!user?.id) throw new Error('User ID not provided');
+
+		const res = await fetch(`${base}/api/data/meta-ref-and-species?uploaded_by=${user.id}`);
+		if (!res.ok) return { MetaReference: [], SpeciesMetadata: [] };
+
+		const ref_and_species = (await res.json()) as {
+			MetaReference: MetaReference[];
+			SpeciesMetadata: SpeciesMetadata[];
+		};
+
+		return ref_and_species;
+	};
+
 	return {
 		fetch_approving_users,
+		fetch_ref_and_species,
 		fetch_approver
 	};
 };
