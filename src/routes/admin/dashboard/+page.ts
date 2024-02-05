@@ -4,7 +4,7 @@ import type { PageLoad } from './$types';
 
 export const load: PageLoad = async ({ fetch, parent }) => {
 	const { user } = await parent();
-	console.log('parentData', user);
+	// console.log('parentData', user);
 
 	const fetch_approver = async () => {
 		if (!user?.approver) return;
