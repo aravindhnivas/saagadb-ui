@@ -1,68 +1,66 @@
 <script lang="ts">
 	import { logged_in } from '$lib/utils/stores';
 	import type { PageData } from './$types';
-	import AlertBox from '$lib/components/utils/alert-box.svelte';
-	import Loader from '$lib/components/utils/loader.svelte';
 	import { AlertCircle, ShieldCheck } from 'lucide-svelte';
-	import * as Table from '$lib/components/ui/table';
 	import UploadStatus from './upload-status.svelte';
-	import { base } from '$app/paths';
+	import DependentUser from './dependent-user.svelte';
+	import * as Tabs from '$lib/components/ui/tabs';
+	import * as Card from '$lib/components/ui/card';
 	export let data: PageData;
-	const { user, fetch_ref_and_species } = data;
+
+	const { user, fetch_ref_and_species, fetch_approving_users } = data;
 	$: if (user?.name) logged_in.set(user.name);
 </script>
 
-<div class="grid gap-4 p-4">
-	{#if user}
-		<div class="alert">
-			{#await data.fetch_approver() then approver}
-				{#if approver}
-					<ShieldCheck />
-					<span>Approver: {approver.name} ({approver.email})</span>
-				{:else}
-					<AlertCircle />
-					<span>No approver assigned</span>
-				{/if}
-			{/await}
-		</div>
-
-		<UploadStatus {user} {fetch_ref_and_species} />
-
-		{#if user.is_staff}
-			{#await data.fetch_approving_users()}
-				<Loader fetching={true} />
-			{:then approving_users}
-				<div class="flex flex-col">
-					<h1 class="text-2xl font-bold">Dependent users</h1>
-					<h2 class="text-gray-500">Approve the data uploaded by the following users</h2>
-				</div>
-				{#if approving_users.length > 0}
-					<div class="border-2 border-gray-500 max-w-md rounded-lg p-2">
-						<Table.Root class="text-md">
-							<Table.Body>
-								{#each approving_users as approving_user, ind}
-									<Table.Row>
-										<Table.Cell class="p-0.5">{ind + 1}</Table.Cell>
-										<Table.Cell class="font-medium p-0.5">
-											<a
-												href="{base}/admin/dashboard/approve-data/{approving_user.id}"
-												class="hover:underline">{approving_user.name}</a
-											>
-										</Table.Cell>
-										<Table.Cell class="p-0.5">{approving_user.email}</Table.Cell>
-									</Table.Row>
-								{/each}
-							</Table.Body>
-						</Table.Root>
+<div class="grid gap-4 p-4"></div>
+{#if user}
+	<Tabs.Root value="approve-data">
+		<Tabs.List class="grid w-full grid-cols-2 max-w-md">
+			<Tabs.Trigger value="approve-data">Approve data</Tabs.Trigger>
+			<Tabs.Trigger value="upload-statistics">Upload statistics</Tabs.Trigger>
+		</Tabs.List>
+		<Tabs.Content value="approve-data">
+			<Card.Root>
+				<Card.Header>
+					<Card.Title>Dependent users</Card.Title>
+					<Card.Description>Approve the data uploaded by the following users</Card.Description>
+				</Card.Header>
+				<Card.Content class="space-y-2"></Card.Content>
+				<Card.Footer>
+					{#if user.is_staff}
+						<DependentUser {fetch_approving_users} />
+					{:else}
+						<p>You are not authorized to approve data</p>
+					{/if}
+				</Card.Footer>
+			</Card.Root>
+		</Tabs.Content>
+		<Tabs.Content value="upload-statistics">
+			<Card.Root>
+				<Card.Header>
+					<Card.Title>Upload statistics</Card.Title>
+					<Card.Description>
+						You can see the statistics of the data uploaded by you and the approval status
+					</Card.Description>
+				</Card.Header>
+				<Card.Content class="space-y-2">
+					<div class="alert">
+						{#await data.fetch_approver() then approver}
+							{#if approver}
+								<ShieldCheck />
+								<span>Approver: {approver.name} ({approver.email})</span>
+							{:else}
+								<AlertCircle />
+								<span>No approver assigned</span>
+							{/if}
+						{/await}
 					</div>
-				{:else}
-					<span>No approving users</span>
-				{/if}
-			{:catch error}
-				<AlertBox {error} />
-			{/await}
-		{/if}
-	{:else}
-		<p>Invalid user</p>
-	{/if}
-</div>
+
+					<UploadStatus {user} {fetch_ref_and_species} show_header={false} />
+				</Card.Content>
+			</Card.Root>
+		</Tabs.Content>
+	</Tabs.Root>
+{:else}
+	<p>Invalid user</p>
+{/if}

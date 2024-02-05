@@ -1,14 +1,17 @@
 <script lang="ts">
 	import AlertBox from '$lib/components/utils/alert-box.svelte';
 	import Loader from '$lib/components/utils/loader.svelte';
-	import MetaRef from './meta-ref.svelte';
-	import MetaSpecies from './meta-species.svelte';
-	// import { fetch_ref_and_species } from '$lib/utils/fetch-data';
+	import { BookMarked, Atom } from 'lucide-svelte';
+	import ApprovalAccordian from './approval-accordian.svelte';
+	import StatComponent from './stat-component.svelte';
+
 	export let user: User;
 	export let fetch_ref_and_species: () => Promise<{
 		MetaReference: MetaReference[];
 		SpeciesMetadata: SpeciesMetadata[];
 	}>;
+
+	export let show_header = true;
 </script>
 
 {#if user}
@@ -17,11 +20,32 @@
 			<Loader fetching={true} />
 		{:then value}
 			{#if value}
-				<h1 class="text-2xl font-bold">Upload status for {user.name}</h1>
+				{@const meta_ref = value.MetaReference}
+				{@const meta_species = value.SpeciesMetadata}
+				{#if show_header}
+					<h1 class="text-2xl font-bold">Upload status for {user.name}</h1>
+				{/if}
 				<div class="stats stats-horizontal shadow">
-					<MetaRef meta_ref={value.MetaReference} />
-					<MetaSpecies meta_species={value.SpeciesMetadata} />
+					<StatComponent
+						total={meta_ref.length}
+						approved={meta_ref.filter((f) => f.approved).length}
+					>
+						<svelte:fragment slot="header">
+							<BookMarked />
+							<span>References-metadata</span>
+						</svelte:fragment>
+					</StatComponent>
+					<StatComponent
+						total={meta_species.length}
+						approved={meta_species.filter((f) => f.approved).length}
+					>
+						<svelte:fragment slot="header">
+							<Atom />
+							<span>Species-metadata</span>
+						</svelte:fragment>
+					</StatComponent>
 				</div>
+				<ApprovalAccordian {meta_ref} {meta_species} />
 			{:else}
 				<p>Nothing uploaded by {user.name}</p>
 			{/if}

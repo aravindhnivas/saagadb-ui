@@ -26,7 +26,7 @@
 
 		<div class="stat-value">
 			<span
-				class="flex gap-1 items-center hover:underline hover:cursor-pointer"
+				class="flex gap-1 items-center"
 				class:text-red={percent_approved < 0.5}
 				class:text-yellow-500={percent_approved >= 0.5 && percent_approved < 0.8}
 				class:text-green-500={percent_approved >= 0.8}
