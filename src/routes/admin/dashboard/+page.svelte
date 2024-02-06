@@ -8,7 +8,7 @@
 	import * as Card from '$lib/components/ui/card';
 	export let data: PageData;
 
-	const { user, fetch_ref_and_species, fetch_approving_users } = data;
+	const { user, fetch_ref_and_species, fetch_approving_users, fetch_approver } = data;
 	$: if (user?.name) logged_in.set(user.name);
 </script>
 
@@ -30,7 +30,7 @@
 				</Card.Header>
 				<Card.Content class="space-y-2">
 					<div class="alert">
-						{#await data.fetch_approver() then approver}
+						{#await fetch_approver() then approver}
 							{#if approver}
 								<ShieldCheck />
 								<span>Approver: {approver.name} ({approver.email})</span>

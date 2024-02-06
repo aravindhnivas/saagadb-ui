@@ -85,6 +85,12 @@ interface MetaReference {
 	notes: string;
 	uploaded_by: string;
 	approved: boolean;
+	species_formula: string;
+	species_name: string;
+	linelist_name: string;
+	doi: string;
+	ref_url: string;
+	uploaded_by_name: string;
 }
 
 interface User {
