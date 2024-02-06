@@ -11,12 +11,17 @@
 {:then { citeas, href, tooltip, parsed, bibtex_download_href, citation_key }}
 	<div class="flex gap-4 items-center justify-center">
 		<Button variant="link">
-			<a {href} target="_blank">
+			<a {href} target="_blank" rel="noopener noreferrer">
 				<span aria-label={tooltip} data-cooltipz-dir="top">{citeas}</span>
 			</a>
 		</Button>
 		<CopyButton text={parsed} />
-		<a href={bibtex_download_href} download={`${citation_key}.bib`} target="_blank"><Download /></a>
+		<a
+			href={bibtex_download_href}
+			download={`${citation_key}.bib`}
+			target="_blank"
+			rel="noopener noreferrer"><Download /></a
+		>
 	</div>
 {:catch error}
 	<div class="flex gap-2 items-center justify-center text-error">

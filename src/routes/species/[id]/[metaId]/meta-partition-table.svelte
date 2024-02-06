@@ -17,7 +17,9 @@
 {#if partition_function}
 	<div class="flex gap-4 items-center">
 		<h1>Parition function</h1>
-		<a href="{base}/uploads/sp/{qpart_filename}" download target="_blank"><Download /></a>
+		<a href="{base}/uploads/sp/{qpart_filename}" download target="_blank" rel="noopener noreferrer"
+			><Download /></a
+		>
 	</div>
 	<Table.Root>
 		<Table.Caption>Table 2. Partition function</Table.Caption>

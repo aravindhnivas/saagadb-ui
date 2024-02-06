@@ -79,6 +79,8 @@
 	<Loader {fetching} />
 	{#if !fetching && status && link}
 		<p>{status}</p>
-		<a href={link} target="_blank" class="underline">{database_type} source</a>
+		<a href={link} target="_blank" rel="noopener noreferrer" class="underline"
+			>{database_type} source</a
+		>
 	{/if}
 </div>

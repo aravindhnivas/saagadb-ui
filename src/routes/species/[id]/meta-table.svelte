@@ -121,7 +121,11 @@
 								{val ? '✅' : '❌'}
 							{:else if key.value === 'molecule_tag' && typeof val !== 'object'}
 								{@const info = fetch_from_database(val, linelist_name)}
-								<a class="underline hover:text-blue" href={info?.fileinfo} target="_blank"
+								<a
+									class="underline hover:text-blue"
+									href={info?.fileinfo}
+									target="_blank"
+									rel="noopener noreferrer"
 									>{info?.tag_val ?? val}
 								</a>
 							{:else}
