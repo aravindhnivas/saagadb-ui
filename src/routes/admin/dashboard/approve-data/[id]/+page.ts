@@ -8,7 +8,9 @@ export const load: PageLoad = async ({ fetch, params }) => {
 	const fetch_ref_and_species = async () => {
 		if (!user?.id) throw new Error('User ID not provided');
 
-		const res = await fetch(`${base}/api/data/meta-ref-and-species?uploaded_by=${user.id}`);
+		const res = await fetch(
+			`${base}/api/data/meta-ref-and-species?uploaded_by=${user.id}&approved=false`
+		);
 		if (!res.ok) return { MetaReference: [], SpeciesMetadata: [] };
 
 		const ref_and_species = (await res.json()) as {
