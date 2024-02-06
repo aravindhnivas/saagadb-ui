@@ -1,1 +1,9 @@
-export const groupBy = <T>(obj: T, key: keyof T) => Object.groupBy(obj, (f: T) => f[key]);
+export const url_from_jpl_tag = (tag: string) => {
+	const tag_num = tag.padStart(6, '0');
+	return `https://spec.jpl.nasa.gov/ftp/pub/catalog/doc/d${tag_num}.cat`;
+};
+
+export const url_from_cdms_tag = (tag: string) => {
+	const tag_num = tag.padStart(6, '0');
+	return `https://cdms.astro.uni-koeln.de/cgi-bin/cdmsinfo?file=e${tag_num}.cat`;
+};

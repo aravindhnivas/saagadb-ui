@@ -2,12 +2,14 @@
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { Button } from '$lib/components/ui/button';
 	import * as Table from '$lib/components/ui/table';
-
+	import { url_from_cdms_tag, url_from_jpl_tag } from '$lib/core';
 	export let obj: SpeciesMetadata[] | MetaReference[];
 	export let include_keys: {
 		key: string;
 		label: string;
+		is_link?: Boolean;
 		formatter?: <T>(val: T) => string;
+		href?: string;
 	}[];
 
 	const grouped: {
@@ -38,10 +40,10 @@
 						<Table.Body>
 							{#each grouped[key] as obj}
 								<Table.Row>
-									{#each include_keys.map(({ label, ...f }) => f) as { key: k, formatter: fn }}
-										{@const val = fn ? fn(obj[k]) : obj[k]}
+									{#each include_keys.map(({ label, ...f }) => f) as k}
+										{@const val = k.formatter?.(obj[k.key]) ?? obj[k.key]}
 										<Table.Cell class="p-0.5 text-center">
-											{#if val && typeof val === 'string' && val.includes('http')}
+											{#if k.is_link}
 												<a
 													href={val}
 													target="_blank"

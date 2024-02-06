@@ -14,8 +14,14 @@
 			formatter: (val: string) => (val === 'true' ? '✅' : '❌')
 		},
 		{
+			key: 'spectrum',
+			label: 'Spectrum',
+			formatter: (val: string) => (val === 'true' ? '✅' : '❌')
+		},
+		{
 			key: 'ref_url',
-			label: 'Reference URL'
+			label: 'Reference',
+			is_link: true
 		},
 		{
 			key: 'approved',
@@ -26,6 +32,8 @@
 		key: keyof SpeciesMetadata;
 		label: string;
 		formatter?: <T>(val: T) => string;
+		is_link?: boolean;
+		href?: string;
 	}[];
 </script>
 

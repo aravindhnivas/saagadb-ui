@@ -1,15 +1,6 @@
 import { json, text } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-
-const url_from_jpl_tag = (tag: string) => {
-	const tag_num = tag.padStart(6, '0');
-	return `https://spec.jpl.nasa.gov/ftp/pub/catalog/doc/d${tag_num}.cat`;
-};
-
-const url_from_cdms_tag = (tag: string) => {
-	const tag_num = tag.padStart(6, '0');
-	return `https://cdms.astro.uni-koeln.de/cgi-bin/cdmsinfo?file=e${tag_num}.cat`;
-};
+import { url_from_cdms_tag, url_from_jpl_tag } from '$lib/core';
 
 const URLs_by_tag = {
 	cdms: url_from_cdms_tag,

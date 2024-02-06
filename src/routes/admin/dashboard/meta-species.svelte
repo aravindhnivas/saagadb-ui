@@ -4,6 +4,10 @@
 	export let meta_species: SpeciesMetadata[];
 	const include_keys = [
 		{
+			key: 'molecule_tag',
+			label: 'Molecule tag'
+		},
+		{
 			key: 'linelist_name',
 			label: 'Linelist name',
 			formatter: (val: string) => val?.toLocaleUpperCase()
@@ -30,6 +34,8 @@
 		key: keyof SpeciesMetadata;
 		label: string;
 		formatter?: <T>(val: T) => string;
+		is_link?: boolean;
+		href?: string;
 	}[];
 </script>
 
