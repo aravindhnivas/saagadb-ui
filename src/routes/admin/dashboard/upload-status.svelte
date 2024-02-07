@@ -6,17 +6,19 @@
 	import StatComponent from './stat-component.svelte';
 
 	export let user: User;
-	export let fetch_ref_and_species: () => Promise<{
+	export let fetch_ref_and_species: Promise<{
 		MetaReference: MetaReference[];
 		SpeciesMetadata: SpeciesMetadata[];
 	}>;
 
 	export let show_header = true;
+
+	// console.log({ fetch_ref_and_species });
 </script>
 
 {#if user}
 	<div class="grid gap-4">
-		{#await fetch_ref_and_species()}
+		{#await fetch_ref_and_species}
 			<Loader fetching={true} />
 		{:then value}
 			{#if value}

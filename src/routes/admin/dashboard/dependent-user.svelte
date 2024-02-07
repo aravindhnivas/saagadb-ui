@@ -3,17 +3,17 @@
 	import Loader from '$lib/components/utils/loader.svelte';
 	import * as Table from '$lib/components/ui/table';
 	import { base } from '$app/paths';
-	export let fetch_approving_users: () => Promise<User[]>;
+	export let fetch_approving_users: Promise<User[]>;
 </script>
 
-{#await fetch_approving_users()}
+{#await fetch_approving_users}
 	<Loader fetching={true} />
 {:then approving_users}
 	<!-- <div class="flex flex-col">
 		<h1 class="text-2xl font-bold">Dependent users</h1>
 		<h2 class="text-gray-500">Approve the data uploaded by the following users</h2>
 	</div> -->
-	{#if approving_users.length > 0}
+	{#if approving_users?.length > 0}
 		<Table.Root class="text-md">
 			<Table.Body>
 				{#each approving_users as approving_user, ind}

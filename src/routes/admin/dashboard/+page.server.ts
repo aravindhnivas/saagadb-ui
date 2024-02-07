@@ -1,10 +1,9 @@
 import { base } from '$app/paths';
 import { error } from '@sveltejs/kit';
-import type { PageLoad } from './$types';
+import type { PageServerLoad } from './$types';
 
-export const load: PageLoad = async ({ fetch, parent }) => {
+export const load: PageServerLoad = async ({ fetch, parent }) => {
 	const { user } = await parent();
-	// console.log('parentData', user);
 
 	const fetch_approver = async () => {
 		if (!user?.approver) return;
@@ -23,12 +22,12 @@ export const load: PageLoad = async ({ fetch, parent }) => {
 		if (!res.ok) error(500, 'Failed to fetch approving users');
 
 		approving_users = (await res.json()) as User[];
-		console.log('approving_users', approving_users);
+		// console.log('approving_users', approving_users);
 		return approving_users;
 	};
 
 	const fetch_ref_and_species = async () => {
-		if (!user?.id) throw new Error('User ID not provided');
+		if (!user?.id) error(400, 'User ID not provided');
 
 		const res = await fetch(`${base}/api/data/meta-ref-and-species?uploaded_by=${user.id}`);
 		if (!res.ok) return { MetaReference: [], SpeciesMetadata: [] };
@@ -42,8 +41,8 @@ export const load: PageLoad = async ({ fetch, parent }) => {
 	};
 
 	return {
-		fetch_approving_users,
-		fetch_ref_and_species,
-		fetch_approver
+		fetch_approving_users: fetch_approving_users(),
+		fetch_ref_and_species: fetch_ref_and_species(),
+		fetch_approver: fetch_approver()
 	};
 };

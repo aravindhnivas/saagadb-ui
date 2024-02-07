@@ -2,7 +2,9 @@
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { Button } from '$lib/components/ui/button';
 	import * as Table from '$lib/components/ui/table';
-	import { url_from_cdms_tag, url_from_jpl_tag } from '$lib/core';
+	import { base } from '$app/paths';
+
+	export let api_key: 'meta-reference' | 'species-metadata' = 'species-metadata';
 	export let obj: SpeciesMetadata[] | MetaReference[];
 	export let include_keys: {
 		key: string;
@@ -58,9 +60,9 @@
 										</Table.Cell>
 									{/each}
 									<Table.Cell class="p-0.5 text-center">
-										<!-- <form action="?PUT"> -->
-										<Button type="submit">Approve</Button>
-										<!-- </form> -->
+										<form action="{base}/api/data/{api_key}" method="PATCH">
+											<Button type="submit">Approve</Button>
+										</form>
 									</Table.Cell>
 								</Table.Row>
 							{/each}
