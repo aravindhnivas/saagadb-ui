@@ -1,6 +1,7 @@
 import { base } from '$app/paths';
-import { error } from '@sveltejs/kit';
+import { error, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
+import { DB_URL } from '$lib/server';
 
 export const load: PageServerLoad = async ({ fetch, params }) => {
 	const user_res = await fetch(`${base}/api/user/fetch/${params.id}`);
@@ -20,4 +21,29 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 		return ref_and_species;
 	};
 	return { user, fetch_ref_and_species: fetch_ref_and_species() };
+};
+
+export const actions: Actions = {
+	async approve({ fetch, url }) {
+		const id = url.searchParams.get('id') as string;
+		const api_key = url.searchParams.get('api_key') as string;
+		const post_url = `${DB_URL}/data/${api_key}/${id}/`;
+		console.log({ id, api_key, post_url });
+		const res = await fetch(post_url, {
+			method: 'PATCH',
+			body: JSON.stringify({ approved: true }),
+			headers: { 'Content-Type': 'application/json' }
+		});
+		console.log(res.ok);
+
+		if (!res.ok) {
+			const text = await res.json();
+			return { success: false, message: text };
+		}
+
+		return {
+			success: res.ok,
+			message: 'Data approved successfully'
+		};
+	}
 };

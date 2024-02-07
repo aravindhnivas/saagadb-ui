@@ -37,4 +37,4 @@
 	}[];
 </script>
 
-<MetaTemplate obj={meta_ref} {include_keys} />
+<MetaTemplate obj={meta_ref} {include_keys} api_key="meta-reference" />

@@ -40,4 +40,4 @@
 	}[];
 </script>
 
-<MetaTemplate obj={meta_species} {include_keys} />
+<MetaTemplate obj={meta_species} {include_keys} api_key="species-metadata" />

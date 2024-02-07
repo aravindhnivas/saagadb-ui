@@ -1,9 +1,12 @@
 <script lang="ts">
+	import { applyAction, enhance } from '$app/forms';
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { Button } from '$lib/components/ui/button';
 	import * as Table from '$lib/components/ui/table';
 	import { base } from '$app/paths';
 	import { getContext } from 'svelte';
+	import { invalidateAll } from '$app/navigation';
+	import { toast } from 'svelte-sonner';
 
 	export let api_key: 'meta-reference' | 'species-metadata' = 'species-metadata';
 	export let obj: SpeciesMetadata[] | MetaReference[];
@@ -20,6 +23,26 @@
 	} = Object.groupBy(obj, (f) => f.species_formula);
 
 	const approve_btn = getContext('approve_btn');
+
+	let message: string;
+	const onSubmit = () => {
+		return async ({ result }) => {
+			console.log(result);
+			if (result.type === 'success') {
+				// rerun all `load` functions, following the successful update
+				await invalidateAll();
+				// console.log(result);
+				const { data } = result;
+				if (data.success) {
+					toast.success(data.message);
+				} else {
+					message = data.message?.detail || data.message;
+					toast.error(message);
+				}
+			}
+			await applyAction(result);
+		};
+	};
 </script>
 
 <div class="rounded-box max-w-lg">
@@ -66,7 +89,11 @@
 									{/each}
 									{#if approve_btn}
 										<Table.Cell class="p-0.5 text-center">
-											<form action="{base}/api/data/{api_key}" method="PATCH">
+											<form
+												use:enhance={onSubmit}
+												action="?/approve&id={obj.id}&api_key={api_key}"
+												method="POST"
+											>
 												<Button type="submit">Approve</Button>
 											</form>
 										</Table.Cell>
@@ -75,9 +102,6 @@
 							{/each}
 						</Table.Body>
 					</Table.Root>
-					<!-- <Dialog.Footer>
-						<Button type="submit">Save changes</Button>
-					</Dialog.Footer> -->
 				</Dialog.Content>
 			</Dialog.Root>
 		</li>
