@@ -95,19 +95,17 @@
 					</span>
 				</Table.Head>
 				{#each species_metadata as { id, linelist_name, approved } (id)}
-					{#if approved}
-						<Table.Head class="text-center font-bold">
-							<a
-								href="{base}/species/{species_id}/{id}"
-								on:click={(e) => {
-									if (linelist_name) meta_name = linelist_name;
-									nav_to_ref(e);
-								}}
-							>
-								<span class="underline hover:text-blue">{linelist_name.toUpperCase()}</span>
-							</a>
-						</Table.Head>
-					{/if}
+					<Table.Head class="text-center font-bold">
+						<a
+							href="{base}/species/{species_id}/{id}"
+							on:click={(e) => {
+								if (linelist_name) meta_name = linelist_name;
+								nav_to_ref(e);
+							}}
+						>
+							<span class="underline hover:text-blue">{linelist_name.toUpperCase()}</span>
+						</a>
+					</Table.Head>
 				{/each}
 			</Table.Row>
 		</Table.Header>
@@ -116,26 +114,24 @@
 				<Table.Row>
 					<Table.Cell class={cell_padding}>{@html key.name}</Table.Cell>
 					{#each species_metadata as metadata (metadata.id)}
-						{#if metadata.approved}
-							{@const val = metadata[key.value]}
-							{@const linelist_name = metadata.linelist_name.toLocaleUpperCase()}
-							<Table.Cell class="text-center {cell_padding}">
-								{#if typeof val === 'boolean'}
-									{val ? '✅' : '❌'}
-								{:else if key.value === 'molecule_tag' && typeof val !== 'object'}
-									{@const info = fetch_from_database(val, linelist_name)}
-									<a
-										class="underline hover:text-blue"
-										href={info?.fileinfo}
-										target="_blank"
-										rel="noopener noreferrer"
-										>{info?.tag_val ?? val}
-									</a>
-								{:else}
-									{val ?? '-'}
-								{/if}
-							</Table.Cell>
-						{/if}
+						{@const val = metadata[key.value]}
+						{@const linelist_name = metadata.linelist_name.toLocaleUpperCase()}
+						<Table.Cell class="text-center {cell_padding}">
+							{#if typeof val === 'boolean'}
+								{val ? '✅' : '❌'}
+							{:else if key.value === 'molecule_tag' && typeof val !== 'object'}
+								{@const info = fetch_from_database(val, linelist_name)}
+								<a
+									class="underline hover:text-blue"
+									href={info?.fileinfo}
+									target="_blank"
+									rel="noopener noreferrer"
+									>{info?.tag_val ?? val}
+								</a>
+							{:else}
+								{val ?? '-'}
+							{/if}
+						</Table.Cell>
 					{/each}
 				</Table.Row>
 			{/each}
