@@ -1,10 +1,4 @@
 <script lang="ts">
-	import * as Accordion from '$lib/components/ui/accordion';
-	import * as Dialog from '$lib/components/ui/dialog';
-	import { Input } from '$lib/components/ui/input';
-	import { Label } from '$lib/components/ui/label';
-	import { Button, buttonVariants } from '$lib/components/ui/button';
-	import * as Table from '$lib/components/ui/table';
 	import MetaRef from './meta-ref.svelte';
 	import MetaSpecies from './meta-species.svelte';
 
@@ -40,21 +34,3 @@
 {:else if active_tab === 'ref'}
 	<MetaRef {meta_ref} />
 {/if}
-
-<!-- <Accordion.Root class="w-full sm:max-w-[70%]">
-	<Accordion.Item value="item-2">
-		<Accordion.Trigger>Show species-metadata</Accordion.Trigger>
-		<Accordion.Content>{JSON.stringify(meta_species)}</Accordion.Content>
-	</Accordion.Item>
-	<Accordion.Item value="item-1">
-		<Accordion.Trigger>Show reference-metadata</Accordion.Trigger>
-		<Accordion.Content>
-			<ul class="menu w-56 rounded-box">
-				<li class="menu-title">Title</li>
-				<li><a>Item 1</a></li>
-				<li><a>Item 2</a></li>
-				<li><a>Item 3</a></li>
-			</ul>
-		</Accordion.Content>
-	</Accordion.Item>
-</Accordion.Root> -->

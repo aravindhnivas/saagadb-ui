@@ -3,6 +3,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import * as Table from '$lib/components/ui/table';
 	import { base } from '$app/paths';
+	import { getContext } from 'svelte';
 
 	export let api_key: 'meta-reference' | 'species-metadata' = 'species-metadata';
 	export let obj: SpeciesMetadata[] | MetaReference[];
@@ -17,6 +18,8 @@
 	const grouped: {
 		[key: string]: typeof obj;
 	} = Object.groupBy(obj, (f) => f.species_formula);
+
+	const approve_btn = getContext('approve_btn');
 </script>
 
 <div class="rounded-box max-w-lg">
@@ -36,7 +39,9 @@
 								{#each include_keys.map((f) => f.label) as label}
 									<Table.Head class="p-0.5 text-center">{label}</Table.Head>
 								{/each}
-								<Table.Head />
+								{#if approve_btn}
+									<Table.Head />
+								{/if}
 							</Table.Row>
 						</Table.Header>
 						<Table.Body>
@@ -59,11 +64,13 @@
 											{/if}
 										</Table.Cell>
 									{/each}
-									<Table.Cell class="p-0.5 text-center">
-										<form action="{base}/api/data/{api_key}" method="PATCH">
-											<Button type="submit">Approve</Button>
-										</form>
-									</Table.Cell>
+									{#if approve_btn}
+										<Table.Cell class="p-0.5 text-center">
+											<form action="{base}/api/data/{api_key}" method="PATCH">
+												<Button type="submit">Approve</Button>
+											</form>
+										</Table.Cell>
+									{/if}
 								</Table.Row>
 							{/each}
 						</Table.Body>

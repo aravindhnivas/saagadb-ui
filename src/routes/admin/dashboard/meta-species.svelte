@@ -2,6 +2,7 @@
 	import MetaTemplate from './meta-template.svelte';
 
 	export let meta_species: SpeciesMetadata[];
+
 	const include_keys = [
 		{
 			key: 'molecule_tag',

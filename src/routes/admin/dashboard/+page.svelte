@@ -6,7 +6,10 @@
 	import DependentUser from './dependent-user.svelte';
 	import * as Tabs from '$lib/components/ui/tabs';
 	import * as Card from '$lib/components/ui/card';
+	import { setContext } from 'svelte';
+
 	export let data: PageData;
+	setContext('approve_btn', false);
 
 	const { user, fetch_approver, fetch_approving_users, fetch_ref_and_species } = data;
 	$: if (user?.name) logged_in.set(user.name);

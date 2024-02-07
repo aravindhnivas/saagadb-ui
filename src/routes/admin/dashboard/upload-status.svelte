@@ -10,9 +10,7 @@
 		MetaReference: MetaReference[];
 		SpeciesMetadata: SpeciesMetadata[];
 	}>;
-
 	export let show_header = true;
-
 	// console.log({ fetch_ref_and_species });
 </script>
 

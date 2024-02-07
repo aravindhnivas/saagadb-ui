@@ -3,9 +3,12 @@
 	import type { PageData } from './$types';
 	import UploadStatus from '../../upload-status.svelte';
 	import { base } from '$app/paths';
+	import { setContext } from 'svelte';
 
 	export let data: PageData;
 	const { user, fetch_ref_and_species } = data;
+
+	setContext('approve_btn', true);
 </script>
 
 <div class="grid gap-4 px-2">
