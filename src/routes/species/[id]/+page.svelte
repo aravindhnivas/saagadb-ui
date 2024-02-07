@@ -6,6 +6,7 @@
 	import MetaTable from './meta-table.svelte';
 
 	export let data: LayoutData;
+	// console.log({ data });
 </script>
 
 <div class="overflow-auto grid">
