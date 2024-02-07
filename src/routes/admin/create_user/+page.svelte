@@ -12,7 +12,14 @@
 </script>
 
 {#if data.user?.is_superuser || data.user?.is_staff}
-	<FormComponent class="w-max" footer={false} schema={userSchema} form={data.form} let:config debug>
+	<FormComponent
+		class="w-max"
+		footer={false}
+		schema={userSchema}
+		form={data.form}
+		let:config
+		debug={import.meta.env.DEV}
+	>
 		<Card.Root>
 			<Card.Header>
 				<Card.Title>Create new user</Card.Title>
