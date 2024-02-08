@@ -28,7 +28,7 @@
 	<Form.Field {config} name="meta">
 		<Form.Item>
 			<Form.Label>meta</Form.Label>
-			<Form.Input />
+			<Form.Input required />
 			<Form.Validation />
 		</Form.Item>
 	</Form.Field>
@@ -36,7 +36,7 @@
 	<Form.Field {config} name="ref">
 		<Form.Item>
 			<Form.Label>ref</Form.Label>
-			<Form.Input />
+			<Form.Input required />
 			<Form.Validation />
 		</Form.Item>
 	</Form.Field>

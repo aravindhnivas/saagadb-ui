@@ -29,7 +29,7 @@
 	<Form.Field {config} name="meta">
 		<Form.Item>
 			<Form.Label>meta</Form.Label>
-			<Form.Input />
+			<Form.Input required />
 			<Form.Validation />
 		</Form.Item>
 	</Form.Field>
@@ -48,7 +48,7 @@
 					</span>
 				</div>
 			</Form.Label>
-			<Form.Input />
+			<Form.Input required />
 			<Form.Validation />
 		</Form.Item>
 	</Form.Field>
@@ -83,20 +83,30 @@
 		</Form.Item>
 	</Form.Field>
 
-	<Form.Field {config} name="notes">
+	<Form.Field {config} name="cat_file">
 		<Form.Item>
-			<Form.Label>notes</Form.Label>
-			<Form.Textarea />
+			<div class="grid w-full max-w-sm items-center gap-1.5">
+				<Form.Label>
+					<div class="flex gap-4 items-center">
+						<span>cat_file</span>
+						<span
+							aria-label="The actual .cat file to extract line information from. Parsing of line information is done in backend largely based on molsim code"
+							data-cooltipz-dir="down"
+						>
+							<HelpCircle />
+						</span>
+					</div>
+				</Form.Label>
+				<Form.Input type="file" required />
+			</div>
 			<Form.Validation />
 		</Form.Item>
 	</Form.Field>
 
-	<Form.Field {config} name="cat_file">
+	<Form.Field {config} name="notes">
 		<Form.Item>
-			<div class="grid w-full max-w-sm items-center gap-1.5">
-				<Form.Label>cat_file</Form.Label>
-				<Form.Input type="file" required />
-			</div>
+			<Form.Label>notes</Form.Label>
+			<Form.Textarea />
 			<Form.Validation />
 		</Form.Item>
 	</Form.Field>
