@@ -57,6 +57,7 @@ interface SpeciesMetadata {
 	var_file: string;
 	fit_file: string;
 	lin_file: string;
+	cat_file: string;
 	notes: string;
 	approved: boolean;
 	uploaded_by: number;

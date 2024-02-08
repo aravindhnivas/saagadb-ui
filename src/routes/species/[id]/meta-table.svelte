@@ -12,20 +12,21 @@
 	export let species_metadata: SpeciesMetadata[] = [];
 
 	const { species: species_id, species_name } = species_metadata[0] ?? {};
-	// $: console.log({ species, species_metadata });
+	$: console.log({ species_metadata });
 
 	type MetadataKey = { name: string; value: keyof SpeciesMetadata }[];
 	let metadata_keys: MetadataKey = [
 		{ name: 'Category', value: 'category' },
 		{ name: 'Molecule tag', value: 'molecule_tag' },
-		{ name: 'A <em>/ MHz</em>', value: 'a_const' },
-		{ name: 'B <em>/ MHz</em>', value: 'b_const' },
-		{ name: 'C <em>/ MHz</em>', value: 'c_const' },
-		{ name: 'μ<sub>a</sub> <em>/ D</em>', value: 'mu_a' },
-		{ name: 'μ<sub>b</sub> <em>/ D</em>', value: 'mu_b' },
-		{ name: 'μ<sub>c</sub> <em>/ D</em>', value: 'mu_c' },
+		{ name: 'A / MHz', value: 'a_const' },
+		{ name: 'B / MHz', value: 'b_const' },
+		{ name: 'C / MHz', value: 'c_const' },
+		{ name: 'μ<sub>a</sub> / D', value: 'mu_a' },
+		{ name: 'μ<sub>b</sub> / D', value: 'mu_b' },
+		{ name: 'μ<sub>c</sub> / D', value: 'mu_c' },
 		{ name: 'Hyperfine', value: 'hyperfine' },
 		{ name: 'Degree of freedom', value: 'degree_of_freedom' },
+		{ name: 'cat file', value: 'cat_file' },
 		{ name: 'Date added', value: 'data_date' },
 		{ name: 'Contributors', value: 'data_contributor' },
 		{ name: 'Notes', value: 'notes' }
@@ -127,6 +128,16 @@
 									target="_blank"
 									rel="noopener noreferrer"
 									>{info?.tag_val ?? val}
+								</a>
+							{:else if key.value === 'cat_file' && metadata?.[key.value]}
+								{@const cat_filename = metadata[key.value].split('/').at(-1)}
+								<a
+									class="underline hover:text-blue"
+									href="{base}/uploads/sp/{cat_filename}"
+									download={cat_filename}
+									target="_blank"
+									rel="noopener noreferrer"
+									>file.cat
 								</a>
 							{:else}
 								{val ?? '-'}
