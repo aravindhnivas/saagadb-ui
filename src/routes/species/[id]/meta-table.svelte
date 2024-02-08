@@ -95,7 +95,7 @@
 						<HelpCircle />
 					</span>
 				</Table.Head>
-				{#each species_metadata as { id, linelist_name, approved } (id)}
+				{#each species_metadata as { id, linelist_name } (id)}
 					<Table.Head class="text-center font-bold">
 						<a
 							href="{base}/species/{species_id}/{id}"
@@ -131,13 +131,14 @@
 								</a>
 							{:else if key.value === 'cat_file' && metadata?.[key.value]}
 								{@const cat_filename = metadata[key.value].split('/').at(-1)}
+								{@const filename = `${linelist_name}_${metadata.species_formula}_${metadata.molecule_tag}.cat`}
 								<a
 									class="underline hover:text-blue"
 									href="{base}/uploads/sp/{cat_filename}"
-									download={cat_filename}
+									download={filename}
 									target="_blank"
 									rel="noopener noreferrer"
-									>file.cat
+									>{filename}
 								</a>
 							{:else}
 								{val ?? '-'}
