@@ -6,11 +6,12 @@
 	import type { AnyZodObject } from 'zod';
 	import MessageAlert from './message-alert.svelte';
 	import Dropfile from '$lib/components/file-drop.svelte';
-	import { AlertCircle } from 'lucide-svelte';
-	import * as Alert from '$lib/components/ui/alert';
+	// import { AlertCircle } from 'lucide-svelte';
+	// import * as Alert from '$lib/components/ui/alert';
 	import { createEventDispatcher } from 'svelte';
 	import Loader from '../utils/loader.svelte';
-	import AlertBox from '../utils/alert-box.svelte';
+	// import AlertBox from '../utils/alert-box.svelte';
+	// import { get } from 'svelte/store';
 
 	export let value: string;
 	export let footer = true;
@@ -39,6 +40,7 @@
 		onResult: ({ result }) => {
 			submitting = false;
 			dispatch('result', result);
+			console.log(result);
 			if (result.type === 'failure') {
 				error_message = 'Please check the form above for errors';
 			} else {
@@ -82,16 +84,22 @@
 
 				<slot {config} {formStore} />
 
-				{#if error_message}
+				<!-- {#if error_message}
 					<AlertBox message={error_message} variant="destructive" />
-				{/if}
+				{/if} -->
 			</Card.Content>
 
 			{#if footer}
 				<Card.Footer class="justify-center">
 					<slot name="footer">
 						<div class="flex gap-4 items-center">
-							<Form.Button class="w-[150px]" disabled={submitting}>Upload</Form.Button>
+							<Form.Button
+								class="w-[150px]"
+								disabled={submitting}
+								variant={error_message ? 'destructive' : 'default'}
+							>
+								{error_message ? 'Retry upload' : 'Upload'}
+							</Form.Button>
 							<Loader fetching={submitting} description="uploading the data please wait..." />
 						</div>
 					</slot>
