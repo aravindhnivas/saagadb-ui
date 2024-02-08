@@ -99,6 +99,7 @@ export const actions: Actions = {
 			try {
 				const msg_json = await res.json();
 				console.log('msg_json', msg_json);
+				message(form, { type: 'error', text: `${msg_json.message}: ${msg_json.error.message}` });
 				for (const [key, value] of Object.entries(msg_json) as [string, string][]) {
 					setError(form, key, value);
 				}

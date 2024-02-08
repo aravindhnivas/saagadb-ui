@@ -9,6 +9,8 @@
 	import { AlertCircle } from 'lucide-svelte';
 	import * as Alert from '$lib/components/ui/alert';
 	import { createEventDispatcher } from 'svelte';
+	import Loader from '../utils/loader.svelte';
+	import AlertBox from '../utils/alert-box.svelte';
 
 	export let value: string;
 	export let footer = true;
@@ -22,6 +24,7 @@
 	let className = '';
 	export { className as class };
 
+	let submitting = false;
 	let error_message = '';
 	const dispatch = createEventDispatcher();
 	const options: FormOptions<typeof schema> = {
@@ -29,7 +32,12 @@
 		// applyAction: false,
 		invalidateAll: false,
 		taintedMessage: null,
+		onSubmit: () => {
+			error_message = '';
+			submitting = true;
+		},
 		onResult: ({ result }) => {
+			submitting = false;
 			dispatch('result', result);
 			if (result.type === 'failure') {
 				error_message = 'Please check the form above for errors';
@@ -75,18 +83,17 @@
 				<slot {config} {formStore} />
 
 				{#if error_message}
-					<Alert.Root variant="destructive">
-						<AlertCircle class="h-4 w-4" />
-						<Alert.Title>Error</Alert.Title>
-						<Alert.Description>{error_message}</Alert.Description>
-					</Alert.Root>
+					<AlertBox message={error_message} variant="destructive" />
 				{/if}
 			</Card.Content>
 
 			{#if footer}
 				<Card.Footer class="justify-center">
 					<slot name="footer">
-						<Form.Button class="w-[150px]">Upload</Form.Button>
+						<div class="flex gap-4 items-center">
+							<Form.Button class="w-[150px]" disabled={submitting}>Upload</Form.Button>
+							<Loader fetching={submitting} description="uploading the data please wait..." />
+						</div>
 					</slot>
 				</Card.Footer>
 			{/if}
