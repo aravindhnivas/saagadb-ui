@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as Table from '$lib/components/ui/table';
-	import { HelpCircle } from 'lucide-svelte';
+	import { Download, HelpCircle } from 'lucide-svelte';
 	import { base } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { edit_mode } from '$lib/utils/stores';
@@ -27,6 +27,10 @@
 		{ name: 'Hyperfine', value: 'hyperfine' },
 		{ name: 'Degree of freedom', value: 'degree_of_freedom' },
 		{ name: 'cat file', value: 'cat_file' },
+		{ name: 'int file', value: 'int_file' },
+		{ name: 'var file', value: 'var_file' },
+		{ name: 'lin file', value: 'lin_file' },
+		{ name: 'fit file', value: 'fit_file' },
 		{ name: 'Date added', value: 'data_date' },
 		{ name: 'Contributors', value: 'data_contributor' },
 		{ name: 'Notes', value: 'notes' }
@@ -129,16 +133,20 @@
 									rel="noopener noreferrer"
 									>{info?.tag_val ?? val}
 								</a>
-							{:else if key.value === 'cat_file' && metadata?.[key.value]}
-								{@const cat_filename = metadata[key.value].split('/').at(-1)}
-								{@const filename = `${linelist_name}_${metadata.species_formula}_${metadata.molecule_tag}.cat`}
+							{:else if key.value.endsWith('_file') && metadata?.[key.value]}
+								{@const file = metadata[key.value].split('/').at(-1)}
+								{@const ext = file.split('.').at(-1)}
+								{@const filename = `${linelist_name}_${metadata.species_formula}_${metadata.molecule_tag}.${ext}`}
 								<a
-									class="underline hover:text-blue"
-									href="{base}/uploads/sp/{cat_filename}"
+									href="{base}/uploads/sp/{file}"
 									download={filename}
 									target="_blank"
 									rel="noopener noreferrer"
-									>{filename}
+								>
+									<div class="flex gap-4 items-center justify-center">
+										<span>{filename}</span>
+										<Download />
+									</div>
 								</a>
 							{:else}
 								{val ?? '-'}

@@ -6,12 +6,8 @@
 	import type { AnyZodObject } from 'zod';
 	import MessageAlert from './message-alert.svelte';
 	import Dropfile from '$lib/components/file-drop.svelte';
-	// import { AlertCircle } from 'lucide-svelte';
-	// import * as Alert from '$lib/components/ui/alert';
 	import { createEventDispatcher } from 'svelte';
 	import Loader from '../utils/loader.svelte';
-	// import AlertBox from '../utils/alert-box.svelte';
-	// import { get } from 'svelte/store';
 
 	export let value: string;
 	export let footer = true;

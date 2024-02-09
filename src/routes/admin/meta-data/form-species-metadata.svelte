@@ -149,7 +149,24 @@
 		</Form.Field>
 		<div class="grid w-full max-w-sm items-center gap-1.5">
 			<Label>OR choose qpart file</Label>
-			<Input type="file" required={false} />
+			<Input
+				type="file"
+				required={false}
+				on:change={(e) => {
+					const target = e.target;
+					const file = target?.files?.[0];
+					if (!file) return;
+					const reader = new FileReader();
+					reader.onload = async (e) => {
+						const text = e.target?.result;
+						formStore.update((f) => {
+							f.qpart_file = text;
+							return f;
+						});
+					};
+					reader.readAsText(file);
+				}}
+			/>
 		</div>
 	</div>
 

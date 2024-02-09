@@ -6,6 +6,8 @@
 	import { oO } from '@zmotivat0r/o0';
 	import { getContext } from 'svelte';
 	import { base } from '$app/paths';
+	import Checkbox from '$lib/components/ui/checkbox/checkbox.svelte';
+	import { Label } from '$lib/components/ui/label';
 
 	let species_id = 0;
 	let linelist_id = 0;
@@ -21,7 +23,7 @@
 				return;
 			}
 			fetching_meta_id = true;
-			const url = `${base}/api/data/species-metadata?species=${species_id}&linelist=${linelist_id}`;
+			const url = `${base}/api/data/species-metadata?species=${species_id}&linelist=${linelist_id}&hyperfine=${hyperfine}`;
 			const res = await fetch(url);
 			const data = (await res.json()) as Species[];
 			console.log({ url, species_id, linelist_id, data });
@@ -37,9 +39,10 @@
 		}
 	}
 	let fetching_meta_id = false;
+	let hyperfine = false;
 </script>
 
-<div class="grid-fit-content items-end">
+<div class="grid-fit-content items-center">
 	<Combobox
 		label="species"
 		items={species.map((f) => ({
@@ -60,6 +63,16 @@
 			linelist_id = e.detail.value;
 		}}
 	/>
+	<div class="flex items-center space-x-2">
+		<Checkbox id="hyperfine" bind:checked={hyperfine} aria-labelledby="hyperfine-label" />
+		<Label
+			id="hyperfine-label"
+			for="hyperfine"
+			class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+		>
+			hyperfine
+		</Label>
+	</div>
 	<Button
 		variant="outline"
 		on:click={async () => {

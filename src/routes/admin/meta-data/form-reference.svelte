@@ -9,11 +9,13 @@
 	import { toast } from 'svelte-sonner';
 	import { Label } from '$lib/components/ui/label';
 	import { Input } from '$lib/components/ui/input';
+	import AlertBox from '$lib/components/utils/alert-box.svelte';
 	export let form: SuperValidated<(typeof Schemas)['reference']>;
 
 	const value = 'reference';
 	const schema = Schemas[value];
 	let fetching = false;
+	let parsed_bibtex = '';
 </script>
 
 <FormTabContents
@@ -43,7 +45,8 @@
 				fetching = true;
 				const doi = get(formStore)['doi'];
 				if (!doi) throw new Error('DOI is required');
-				const { href, bibtex_text } = await fetch_bibfile({ doi });
+				const { href, bibtex_text, parsed } = await fetch_bibfile({ doi });
+				parsed_bibtex = parsed;
 				formStore.update((f) => {
 					f.ref_url = href;
 					f.bibtex = bibtex_text;
@@ -80,6 +83,10 @@
 		</Form.Item>
 	</Form.Field>
 
+	{#if parsed_bibtex}
+		<AlertBox message={parsed_bibtex} variant="default" title="Fetched citation" />
+	{/if}
+
 	<div class="flex gap-4 w-full items-baseline">
 		<Form.Field {config} name="bibtex">
 			<Form.Item class="basis-3/4">
@@ -90,7 +97,24 @@
 		</Form.Field>
 		<div class="grid w-full max-w-sm items-center gap-1.5">
 			<Label>OR choose bibtex file</Label>
-			<Input type="file" required={false} />
+			<Input
+				type="file"
+				required={false}
+				on:change={(e) => {
+					const target = e.target;
+					const file = target?.files?.[0];
+					if (!file) return;
+					const reader = new FileReader();
+					reader.onload = async (e) => {
+						const text = e.target?.result;
+						formStore.update((f) => {
+							f.bibtex = text;
+							return f;
+						});
+					};
+					reader.readAsText(file);
+				}}
+			/>
 		</div>
 	</div>
 </FormTabContents>
