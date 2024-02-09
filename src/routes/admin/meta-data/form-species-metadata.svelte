@@ -28,16 +28,16 @@
 	];
 
 	const keys = [
-		'degree_of_freedom',
-		'molecule_tag',
-		'mu_a',
-		'mu_b',
-		'mu_c',
-		'a_const',
-		'b_const',
-		'c_const',
-		'data_date',
-		'data_contributor'
+		{ name: 'degree_of_freedom', type: 'number', required: true },
+		{ name: 'molecule_tag', type: 'number', required: true },
+		{ name: 'mu_a', type: 'string', required: false },
+		{ name: 'mu_b', type: 'string', required: false },
+		{ name: 'mu_c', type: 'string', required: false },
+		{ name: 'a_const', type: 'string', required: false },
+		{ name: 'b_const', type: 'string', required: false },
+		{ name: 'c_const', type: 'string', required: false },
+		{ name: 'data_date', type: 'string', required: true },
+		{ name: 'data_contributor', type: 'string', required: true }
 	];
 	const files_keys = [
 		{
@@ -113,11 +113,11 @@
 		</Form.Field>
 	</div>
 	<div class="grid-auto-fill">
-		{#each keys as name}
+		{#each keys as { name, type, required }}
 			<Form.Field {config} {name}>
 				<Form.Item>
 					<Form.Label>{name}</Form.Label>
-					<Form.Input />
+					<Form.Input {required} {type} />
 					<Form.Validation />
 				</Form.Item>
 			</Form.Field>
