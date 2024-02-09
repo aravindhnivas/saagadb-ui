@@ -7,6 +7,7 @@
 	import * as Tabs from '$lib/components/ui/tabs';
 	import * as Card from '$lib/components/ui/card';
 	import { setContext } from 'svelte';
+	import AlertBox from '$lib/components/utils/alert-box.svelte';
 
 	export let data: PageData;
 	setContext('approve_btn', false);
@@ -61,7 +62,7 @@
 					{#if user.is_staff}
 						<DependentUser {fetch_approving_users} />
 					{:else}
-						<p>You are not authorized to approve data</p>
+						<AlertBox message="Requires staff/superuser permission" title="Unauthorized" />
 					{/if}
 				</Card.Footer>
 			</Card.Root>

@@ -26,11 +26,12 @@
 		},
 		{ key: 'degree_of_freedom', label: 'Degree of freedom' },
 		{ key: 'category', label: 'Category' },
-		{
-			key: 'approved',
-			label: 'Approved',
-			formatter: (val: string) => (val === 'true' ? '✅' : '❌')
-		}
+		{ key: 'notes', label: 'notes' }
+		// {
+		// 	key: 'approved',
+		// 	label: 'Approved',
+		// 	formatter: (val: string) => (val === 'true' ? '✅' : '❌')
+		// }
 	] as {
 		key: keyof SpeciesMetadata;
 		label: string;

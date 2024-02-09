@@ -6,6 +6,7 @@
 	import FormComponent from '$lib/components/forms/form-component.svelte';
 	import userSchema from './schema';
 	import FormCombobox from '$lib/components/combobox/form-combobox.svelte';
+	import AlertBox from '$lib/components/utils/alert-box.svelte';
 
 	export let data: PageData;
 	let show_password = false;
@@ -89,5 +90,5 @@
 		</Card.Root>
 	</FormComponent>
 {:else}
-	<p>Requires eleveated staff/superuser permission</p>
+	<AlertBox message="Requires staff/superuser permission" title="Unauthorized" />
 {/if}

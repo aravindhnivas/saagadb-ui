@@ -12,7 +12,7 @@
 	<AlertCircle class="h-4 w-4" />
 
 	<Alert.Title>
-		<span>{variant === 'destructive' || error ? 'Error' : title}</span>
+		<span>{title || (variant === 'destructive' || error ? 'Error' : title)}</span>
 	</Alert.Title>
 
 	<Alert.Description>
