@@ -33,7 +33,6 @@
 <Form.Field {config} {name} let:setValue let:value>
 	<Form.Item class="flex flex-col">
 		<Form.Label>{name}</Form.Label>
-
 		<Popover.Root bind:open let:ids>
 			<Popover.Trigger asChild let:builder>
 				<Form.Control id={ids.trigger} let:attrs>
