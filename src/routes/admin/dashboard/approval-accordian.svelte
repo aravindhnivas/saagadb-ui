@@ -5,11 +5,10 @@
 	export let meta_ref: MetaReference[];
 	export let meta_species: SpeciesMetadata[];
 
-	const meta_species_grouped = Object.groupBy(meta_species, (f) => f.species_formula);
-	const meta_ref_grouped = Object.groupBy(meta_ref, (f) => f.species_formula);
-	console.log(meta_species_grouped, meta_ref_grouped);
-
-	let active_tab: 'species' | 'ref' = 'ref';
+	// const meta_species_grouped = Object.groupBy(meta_species, (f) => f.species_formula);
+	// const meta_ref_grouped = Object.groupBy(meta_ref, (f) => f.species_formula);
+	// console.log(meta_species_grouped, meta_ref_grouped);
+	let active_tab: 'species' | 'ref' = 'species';
 </script>
 
 <div class="tabs">

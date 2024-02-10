@@ -1,12 +1,15 @@
 <script lang="ts">
 	import { ArrowBigLeft } from 'lucide-svelte';
-	import type { PageData } from './$types';
+	import type { ActionData, PageData } from './$types';
 	import UploadStatus from '../../upload-status.svelte';
 	import { base } from '$app/paths';
 	import { setContext } from 'svelte';
 
 	export let data: PageData;
+	export let form: ActionData;
 	const { user, fetch_ref_and_species } = data;
+	$: console.log({ data });
+	$: console.log({ form });
 
 	setContext('approve_btn', true);
 </script>
