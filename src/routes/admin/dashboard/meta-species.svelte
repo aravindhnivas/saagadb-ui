@@ -1,5 +1,6 @@
 <script lang="ts">
-	import MetaTemplate from './meta-template.svelte';
+	import { setContext } from 'svelte';
+	import MetaTemplate from './(meta-template)/meta-template.svelte';
 
 	export let meta_species: SpeciesMetadata[];
 
@@ -39,6 +40,9 @@
 		is_link?: boolean;
 		href?: string;
 	}[];
+
+	setContext('include_keys', include_keys);
+	setContext('api_key', 'species-metadata');
 </script>
 
-<MetaTemplate obj={meta_species} {include_keys} api_key="species-metadata" />
+<MetaTemplate obj={meta_species} />

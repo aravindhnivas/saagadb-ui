@@ -1,5 +1,6 @@
 <script lang="ts">
-	import MetaTemplate from './meta-template.svelte';
+	import { setContext } from 'svelte';
+	import MetaTemplate from './(meta-template)/meta-template.svelte';
 
 	export let meta_ref: MetaReference[];
 	const include_keys = [
@@ -35,6 +36,9 @@
 		is_link?: boolean;
 		href?: string;
 	}[];
+
+	setContext('include_keys', include_keys);
+	setContext('api_key', 'meta-reference');
 </script>
 
-<MetaTemplate obj={meta_ref} {include_keys} api_key="meta-reference" />
+<MetaTemplate obj={meta_ref} />
