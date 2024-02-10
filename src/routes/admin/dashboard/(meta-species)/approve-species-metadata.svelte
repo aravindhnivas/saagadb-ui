@@ -68,6 +68,6 @@
 	{/each}
 </div>
 
-<form class="ml-auto" use:enhance action="?/approve&id={obj.id}&api_key=${api_key}" method="POST">
+<form class="ml-auto" use:enhance action="?/approve&id={obj.id}&api_key={api_key}" method="POST">
 	<Button type="submit" disabled={!all_approved}>Approve</Button>
 </form>
