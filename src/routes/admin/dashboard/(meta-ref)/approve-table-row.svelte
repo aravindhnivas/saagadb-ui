@@ -8,7 +8,7 @@
 	import { invalidateAll } from '$app/navigation';
 	import { toast } from 'svelte-sonner';
 
-	export let obj: SpeciesMetadata | MetaReference;
+	export let obj: MetaReference;
 
 	const approve_btn = getContext('approve_btn') as boolean;
 	const include_keys = getContext('include_keys') as {

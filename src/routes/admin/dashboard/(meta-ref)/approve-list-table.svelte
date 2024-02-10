@@ -5,7 +5,7 @@
 
 	export let species_formula: string;
 	export let grouped_by_species_formula: {
-		[key: string]: SpeciesMetadata[] | MetaReference[];
+		[key: string]: MetaReference[];
 	};
 
 	const include_keys = getContext('include_keys') as {

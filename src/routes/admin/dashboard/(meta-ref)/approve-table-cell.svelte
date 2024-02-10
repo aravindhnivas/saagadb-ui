@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { Checkbox } from '$lib/components/ui/checkbox';
+	// import { Input } from '$lib/components/ui/input';
 	import * as Table from '$lib/components/ui/table';
 
 	export let is_link: boolean;
@@ -13,8 +14,9 @@
 			{value}
 		</a>
 	{:else}
-		<div class="flex flex-col gap-4 items-center p-2">
+		<div class="flex flex-col gap-1 items-center p-2">
 			<span>{value ?? '-'}</span>
+			<!-- <Input {value} /> -->
 			<Checkbox bind:checked />
 		</div>
 	{/if}

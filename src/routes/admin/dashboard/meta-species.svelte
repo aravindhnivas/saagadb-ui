@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { setContext } from 'svelte';
-	import MetaTemplate from './(meta-template)/meta-template.svelte';
-
+	import * as Dialog from '$lib/components/ui/dialog';
+	import * as Accordion from '$lib/components/ui/accordion';
+	import ApproveSpeciesMetadata from './(meta-species)/approve-species-metadata.svelte';
 	export let meta_species: SpeciesMetadata[];
 
 	const include_keys = [
@@ -28,11 +29,6 @@
 		{ key: 'degree_of_freedom', label: 'Degree of freedom' },
 		{ key: 'category', label: 'Category' },
 		{ key: 'notes', label: 'notes' }
-		// {
-		// 	key: 'approved',
-		// 	label: 'Approved',
-		// 	formatter: (val: string) => (val === 'true' ? '✅' : '❌')
-		// }
 	] as {
 		key: keyof SpeciesMetadata;
 		label: string;
@@ -43,6 +39,40 @@
 
 	setContext('include_keys', include_keys);
 	setContext('api_key', 'species-metadata');
+	const grouped_by_species_formula: {
+		[key: string]: SpeciesMetadata[];
+	} = Object.groupBy(meta_species, (f) => f.species_formula);
 </script>
 
-<MetaTemplate obj={meta_species} />
+{#each Object.keys(grouped_by_species_formula) as species_formula}
+	{@const species_name = grouped_by_species_formula[species_formula][0].species_name}
+	{@const title = `${species_name} (${species_formula})`}
+	<Accordion.Root class="w-full sm:max-w-[70%]">
+		<Accordion.Item value={species_formula}>
+			<Accordion.Trigger>{title}</Accordion.Trigger>
+			<Accordion.Content>
+				<div class="rounded-box max-w-lg">
+					{#each grouped_by_species_formula[species_formula] as obj}
+						<li class="hover:bg-gray-200 cursor-pointer rounded-4">
+							<Dialog.Root>
+								<Dialog.Trigger>
+									{obj.linelist_name.toLocaleUpperCase()} ({obj.molecule_tag})
+								</Dialog.Trigger>
+								<Dialog.Content class="max-w-[70%] sm:max-w-[90%] max-h-[70%] overflow-auto">
+									<Dialog.Header>
+										<Dialog.Title>
+											{title} metadata from
+											{obj.linelist_name.toLocaleUpperCase()} ({obj.molecule_tag})
+										</Dialog.Title>
+										<Dialog.Description>Approve species metadata</Dialog.Description>
+									</Dialog.Header>
+									<ApproveSpeciesMetadata {obj} />
+								</Dialog.Content>
+							</Dialog.Root>
+						</li>
+					{/each}
+				</div>
+			</Accordion.Content>
+		</Accordion.Item>
+	</Accordion.Root>
+{/each}
