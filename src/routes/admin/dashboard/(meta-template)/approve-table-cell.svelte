@@ -15,9 +15,7 @@
 	{:else}
 		<div class="flex flex-col gap-4 items-center p-2">
 			<span>{value ?? '-'}</span>
-			<!-- {#if value} -->
 			<Checkbox bind:checked />
-			<!-- {/if} -->
 		</div>
 	{/if}
 </Table.Cell>

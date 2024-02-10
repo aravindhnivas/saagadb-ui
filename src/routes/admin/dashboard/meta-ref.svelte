@@ -23,11 +23,6 @@
 			key: 'ref_url',
 			label: 'Reference',
 			is_link: true
-		},
-		{
-			key: 'approved',
-			label: 'Approved',
-			formatter: (val: string) => (val === 'true' ? '✅' : '❌')
 		}
 	] as {
 		key: keyof SpeciesMetadata;
