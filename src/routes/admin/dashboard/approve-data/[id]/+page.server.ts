@@ -26,9 +26,12 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 export const actions: Actions = {
 	async approve({ fetch, url, request }) {
 		const formData = await request.formData();
-		const species_name = formData.get('species_name');
+		formData.append('approved', 'true');
+		for (const [key, value] of formData.entries()) {
+			console.log(key, value);
+		}
 
-		console.log(formData, { species_name });
+		console.log(Object.fromEntries(formData));
 
 		const id = url.searchParams.get('id') as string;
 		const api_key = url.searchParams.get('api_key') as string;
@@ -38,6 +41,7 @@ export const actions: Actions = {
 		return { success: false, message: 'Data approved successfully' };
 		const res = await fetch(post_url, {
 			method: 'PATCH',
+			// body: JSON.stringify({ approved: true }),
 			body: JSON.stringify({ approved: true }),
 			headers: { 'Content-Type': 'application/json' }
 		});
