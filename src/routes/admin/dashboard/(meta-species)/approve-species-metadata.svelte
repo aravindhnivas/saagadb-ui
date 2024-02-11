@@ -49,7 +49,13 @@
 	</div>
 {/if}
 
-<form class="grid gap-4" use:enhance action="?/approve&id={obj.id}&api_key={api_key}" method="POST">
+<form
+	class="grid gap-4"
+	use:enhance
+	action="?/approve&id={obj.id}&api_key={api_key}"
+	method="POST"
+	enctype="multipart/form-data"
+>
 	<div class="grid-auto-fill">
 		{#each checked_row as { name, checked, disabled }}
 			<div class="flex flex-col" class:col-span-3={name === 'notes'}>

@@ -27,31 +27,22 @@ export const actions: Actions = {
 	async approve({ fetch, url, request }) {
 		const formData = await request.formData();
 		formData.append('approved', 'true');
-		for (const [key, value] of formData.entries()) {
-			console.log(key, value);
-		}
-
-		console.log(Object.fromEntries(formData));
 
 		const id = url.searchParams.get('id') as string;
 		const api_key = url.searchParams.get('api_key') as string;
 		const post_url = `${DB_URL}/data/${api_key}/${id}/`;
-		console.log({ id, api_key, post_url });
+		// console.log({ id, api_key, post_url });
 
-		return { success: false, message: 'Data approved successfully' };
 		const res = await fetch(post_url, {
 			method: 'PATCH',
-			// body: JSON.stringify({ approved: true }),
-			body: JSON.stringify({ approved: true }),
-			headers: { 'Content-Type': 'application/json' }
+			body: formData
 		});
-		console.log(res.ok);
 
+		console.log(res.ok, res.status, res.statusText, res.url, res.headers, res.body);
 		if (!res.ok) {
 			const text = await res.json();
 			return { success: false, message: text };
 		}
-
 		return {
 			success: res.ok,
 			message: 'Data approved successfully'
