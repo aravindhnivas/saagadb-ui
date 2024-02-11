@@ -6,6 +6,7 @@
 	import { enhance } from '$app/forms';
 	import { Checkbox } from '$lib/components/ui/checkbox';
 	import { LockKeyhole, UnlockKeyhole } from 'lucide-svelte';
+	import { getContext } from 'svelte';
 
 	export let obj: SpeciesMetadata;
 
@@ -32,33 +33,40 @@
 	// $: console.log(checked_row);
 	$: all_approved = checked_row.every((f) => f.checked);
 	let approve_all = false;
+	const approve_btn = getContext('approve_btn') as boolean;
 </script>
 
-<div class="flex gap-4 items-center p-2">
-	<Checkbox
-		bind:checked={approve_all}
-		onCheckedChange={(state) => {
-			if (state === 'indeterminate') return;
-			checked_row = checked_row.map((f) => ({ ...f, checked: state }));
-		}}
-	/>
-	<Label>Select all to approve</Label>
-</div>
+{#if approve_btn}
+	<div class="flex gap-4 items-center p-2">
+		<Checkbox
+			bind:checked={approve_all}
+			onCheckedChange={(state) => {
+				if (state === 'indeterminate') return;
+				checked_row = checked_row.map((f) => ({ ...f, checked: state }));
+			}}
+		/>
+		<Label>Select all to approve</Label>
+	</div>
+{/if}
 
 <form class="grid gap-4" use:enhance action="?/approve&id={obj.id}&api_key={api_key}" method="POST">
 	<div class="grid-auto-fill">
 		{#each checked_row as { name, checked, disabled }}
 			<div class="flex flex-col" class:col-span-3={name === 'notes'}>
 				<div class="flex gap-4 items-center p-2">
-					<button on:click={() => (disabled = !disabled)}>
-						{#if disabled}
-							<LockKeyhole />
-						{:else}
-							<UnlockKeyhole />
-						{/if}
-					</button>
+					{#if approve_btn}
+						<button on:click|preventDefault={() => (disabled = !disabled)}>
+							{#if disabled}
+								<LockKeyhole />
+							{:else}
+								<UnlockKeyhole />
+							{/if}
+						</button>
+					{/if}
 					<Label for={name}>{name}</Label>
-					<Checkbox bind:checked />
+					{#if approve_btn}
+						<Checkbox bind:checked />
+					{/if}
 				</div>
 				{#if name === 'notes'}
 					<Textarea {disabled} value={obj[name]} {name} />
@@ -68,5 +76,7 @@
 			</div>
 		{/each}
 	</div>
-	<Button class="ml-auto" type="submit" disabled={!all_approved}>Approve</Button>
+	{#if approve_btn}
+		<Button class="ml-auto" type="submit" disabled={!all_approved}>Approve</Button>
+	{/if}
 </form>
