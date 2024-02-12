@@ -39,7 +39,7 @@ export const load: PageServerLoad = async ({ fetch, parent }) => {
 
 		return ref_and_species;
 	};
-
+	console.log('Running server load function for approve-data ', user);
 	return {
 		fetch_approving_users: fetch_approving_users(),
 		fetch_ref_and_species: fetch_ref_and_species(),

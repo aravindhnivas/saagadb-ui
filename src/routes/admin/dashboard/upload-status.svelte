@@ -13,7 +13,7 @@
 </script>
 
 {#if user}
-	<div class="grid gap-4">
+	<div class="grid gap-4 animate__animated animate__fadeIn">
 		{#await fetch_ref_and_species}
 			<Loader fetching={true} />
 		{:then value}

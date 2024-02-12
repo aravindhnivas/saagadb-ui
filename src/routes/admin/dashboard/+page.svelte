@@ -8,18 +8,16 @@
 	import * as Card from '$lib/components/ui/card';
 	import { setContext } from 'svelte';
 	import AlertBox from '$lib/components/utils/alert-box.svelte';
+	import { invalidateAll } from '$app/navigation';
+	import { Button } from '$lib/components/ui/button';
+	import { toast } from 'svelte-sonner';
 
 	export let data: PageData;
 	setContext('approve_btn', false);
-
-	const { user, fetch_approver, fetch_approving_users, fetch_ref_and_species } = data;
-	$: if (user?.name) logged_in.set(user.name);
-
-	// console.log({ data });
+	$: if (data.user?.name) logged_in.set(data.user.name);
 </script>
 
-<div class="grid gap-4 p-4"></div>
-{#if user}
+{#if data.user}
 	<Tabs.Root value="upload-statistics">
 		<Tabs.List class="grid w-full grid-cols-2 max-w-md">
 			<Tabs.Trigger value="upload-statistics">Upload statistics</Tabs.Trigger>
@@ -29,14 +27,23 @@
 		<Tabs.Content value="upload-statistics">
 			<Card.Root>
 				<Card.Header>
-					<Card.Title>Upload statistics</Card.Title>
+					<div class="flex gap-4 items-center">
+						<Card.Title>Upload statistics</Card.Title>
+						<Button
+							class="ml-auto"
+							on:click={async () => {
+								await invalidateAll();
+								toast.success('Data re-fetched');
+							}}>Re-fetch data</Button
+						>
+					</div>
 					<Card.Description>
 						You can see the statistics of the data uploaded by you and the approval status
 					</Card.Description>
 				</Card.Header>
 				<Card.Content class="space-y-2">
 					<div class="alert">
-						{#await fetch_approver then approver}
+						{#await data.fetch_approver then approver}
 							{#if approver}
 								<ShieldCheck />
 								<span>Approver: {approver.name} ({approver.email})</span>
@@ -47,20 +54,34 @@
 						{/await}
 					</div>
 
-					<UploadStatus {user} {fetch_ref_and_species} show_header={false} />
+					<UploadStatus
+						user={data.user}
+						fetch_ref_and_species={data.fetch_ref_and_species}
+						show_header={false}
+					/>
 				</Card.Content>
 			</Card.Root>
 		</Tabs.Content>
 		<Tabs.Content value="approve-data">
 			<Card.Root>
 				<Card.Header>
-					<Card.Title>Dependent users</Card.Title>
+					<!-- <Card.Title>Dependent users</Card.Title> -->
+					<div class="flex gap-4 items-center">
+						<Card.Title>Dependent users</Card.Title>
+						<Button
+							class="ml-auto"
+							on:click={async () => {
+								await invalidateAll();
+								toast.success('Data re-fetched');
+							}}>Re-fetch data</Button
+						>
+					</div>
 					<Card.Description>Approve the data uploaded by the following users</Card.Description>
 				</Card.Header>
 				<Card.Content class="space-y-2"></Card.Content>
 				<Card.Footer>
-					{#if user.is_staff}
-						<DependentUser {fetch_approving_users} />
+					{#if data.user.is_staff}
+						<DependentUser fetch_approving_users={data.fetch_approving_users} />
 					{:else}
 						<AlertBox message="Requires staff/superuser permission" title="Unauthorized" />
 					{/if}

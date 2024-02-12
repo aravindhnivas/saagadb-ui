@@ -12,22 +12,21 @@
 	let active_tab = db_menu.find((f) => $page.url.pathname.startsWith(f.href))?.name;
 </script>
 
-<div class="tabs mb-2">
-	{#each db_menu as { id, name, href } (id)}
-		<a
-			{href}
-			class="tab tab-bordered"
-			class:tab-active={active_tab === name}
-			on:click={() => {
-				active_tab = name;
-			}}
-		>
-			{name}
-		</a>
-	{/each}
-</div>
-
 {#if data.user?.is_staff || data.user?.is_superuser}
+	<div class="tabs mb-2">
+		{#each db_menu as { id, name, href } (id)}
+			<a
+				{href}
+				class="tab tab-bordered"
+				class:tab-active={active_tab === name}
+				on:click={() => {
+					active_tab = name;
+				}}
+			>
+				{name}
+			</a>
+		{/each}
+	</div>
 	<slot />
 {:else}
 	<AlertBox message="Requires staff/superuser permission" title="Unauthorized" />
