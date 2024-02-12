@@ -56,7 +56,7 @@
 
 					<UploadStatus
 						user={data.user}
-						fetch_ref_and_species={data.fetch_ref_and_species}
+						fetch_upload_count={data.fetch_upload_count}
 						show_header={false}
 					/>
 				</Card.Content>

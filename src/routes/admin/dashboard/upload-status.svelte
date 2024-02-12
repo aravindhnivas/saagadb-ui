@@ -5,34 +5,41 @@
 	import StatComponent from './stat-component.svelte';
 
 	export let user: User;
-	export let fetch_ref_and_species: Promise<{
-		MetaReference: MetaReference[];
-		SpeciesMetadata: SpeciesMetadata[];
-	}>;
+	export let fetch_upload_count: Promise<UploadCountResponse>;
 	export let show_header = true;
 </script>
 
 <div class="grid gap-4 animate__animated animate__fadeIn">
-	{#await fetch_ref_and_species}
+	{#await fetch_upload_count}
 		<Loader fetching={true} />
 	{:then value}
 		{#if value}
-			{@const meta_ref = value.MetaReference}
-			{@const meta_species = value.SpeciesMetadata}
 			{#if show_header}
 				<h1 class="text-2xl font-bold">Upload status for {user.name}</h1>
 			{/if}
-			<div class="stats stats-horizontal shadow">
+			<div class="stats stats-vertical shadow">
+				<StatComponent total={value.full.species} approved={value.approved.species}>
+					<svelte:fragment slot="header">
+						<Atom />
+						<span>Species</span>
+					</svelte:fragment>
+				</StatComponent>
 				<StatComponent
-					total={meta_species.length}
-					approved={meta_species.filter((f) => f.approved).length}
+					total={value.full.species_metadata}
+					approved={value.approved.species_metadata}
 				>
 					<svelte:fragment slot="header">
 						<Atom />
 						<span>Species-metadata</span>
 					</svelte:fragment>
 				</StatComponent>
-				<StatComponent total={meta_ref.length} approved={meta_ref.filter((f) => f.approved).length}>
+				<StatComponent total={value.full.reference} approved={value.approved.reference}>
+					<svelte:fragment slot="header">
+						<BookMarked />
+						<span>Reference</span>
+					</svelte:fragment>
+				</StatComponent>
+				<StatComponent total={value.full.meta_reference} approved={value.approved.meta_reference}>
 					<svelte:fragment slot="header">
 						<BookMarked />
 						<span>Reference-metadata</span>

@@ -26,23 +26,20 @@ export const load: PageServerLoad = async ({ fetch, parent }) => {
 		return approving_users;
 	};
 
-	const fetch_ref_and_species = async () => {
+	const fetch_upload_count = async () => {
 		if (!user?.id) error(400, 'User ID not provided');
 
-		const res = await fetch(`${base}/api/data/meta-ref-and-species?uploaded_by=${user.id}`);
-		if (!res.ok) return { MetaReference: [], SpeciesMetadata: [] };
+		// const res = await fetch(`${base}/api/data/meta-ref-and-species?uploaded_by=${user.id}`);
+		const res = await fetch(`${base}/api/data/data_length/${user.id}`);
+		if (!res.ok) error(500, 'Failed to fetch ref and species');
+		const upload_count = (await res.json()) as UploadCountResponse;
 
-		const ref_and_species = (await res.json()) as {
-			MetaReference: MetaReference[];
-			SpeciesMetadata: SpeciesMetadata[];
-		};
-
-		return ref_and_species;
+		return upload_count;
 	};
 	console.log('Running server load function for approve-data ', user);
 	return {
 		fetch_approving_users: user?.is_staff ? fetch_approving_users() : undefined,
-		fetch_ref_and_species: fetch_ref_and_species(),
+		fetch_upload_count: fetch_upload_count(),
 		fetch_approver: fetch_approver()
 	};
 };
