@@ -26,7 +26,7 @@
 			const url = `${base}/api/data/species-metadata?species=${species_id}&linelist=${linelist_id}&hyperfine=${hyperfine}`;
 			const res = await fetch(url);
 			const data = (await res.json()) as Species[];
-			console.log({ url, species_id, linelist_id, data });
+			// console.log({ url, species_id, linelist_id, data });
 			if (data.length === 0) {
 				toast.error('No metadata found for this species and linelist');
 				return;
