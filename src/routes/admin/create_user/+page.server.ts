@@ -1,11 +1,14 @@
 import type { Actions, PageServerLoad } from './$types';
 import { message, setError, superValidate } from 'sveltekit-superforms/server';
-import { fail } from '@sveltejs/kit';
+import { fail, error } from '@sveltejs/kit';
 import { DB_URL } from '$lib/server';
 import userSchema from './schema';
 import { base } from '$app/paths';
 
-export const load: PageServerLoad = async ({ fetch }) => {
+export const load: PageServerLoad = async ({ fetch, parent }) => {
+	const { user } = await parent();
+	if (!user?.is_staff)
+		error(403, { message: 'Requires staff/superuser permission to create new user' });
 	const fetch_url = `${base}/api/user/fetch?is_staff=true`;
 	const fetch_all_staff = await fetch(fetch_url);
 	const all_staff = (await fetch_all_staff.json()) as User[];

@@ -80,7 +80,7 @@
 				</Card.Header>
 				<Card.Content class="space-y-2"></Card.Content>
 				<Card.Footer>
-					{#if data.user.is_staff}
+					{#if data.fetch_approving_users && data.user.is_staff}
 						<DependentUser fetch_approving_users={data.fetch_approving_users} />
 					{:else}
 						<AlertBox message="Requires staff/superuser permission" title="Unauthorized" />

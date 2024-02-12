@@ -34,9 +34,9 @@
 				{approved} / {total} approved
 			</span>
 		</div>
-		<div class="stat-desc">
+		<!-- <div class="stat-desc">
 			Total uploaded : {total} items
-		</div>
+		</div> -->
 	{:else}
 		<div class="stat-value">Nothing uploaded yet!</div>
 	{/if}
