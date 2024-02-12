@@ -9,7 +9,7 @@
 </script>
 
 <Alert.Root class="select-text" variant={error ? 'destructive' : variant || 'default'}>
-	<AlertCircle class="h-4 w-4" />
+	<slot><AlertCircle class="h-4 w-4" /></slot>
 
 	<Alert.Title>
 		<span>{title || (variant === 'destructive' || error ? 'Error' : title)}</span>

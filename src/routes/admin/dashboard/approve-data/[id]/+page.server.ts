@@ -6,7 +6,7 @@ import { DB_URL } from '$lib/server';
 export const load: PageServerLoad = async ({ fetch, params }) => {
 	const user_res = await fetch(`${base}/api/user/fetch/${params.id}`);
 	const user = (await user_res.json()) as User;
-	console.log('Running server load function for approve-data ', user, params.id);
+	// console.log('Running server load function for approve-data ', user, params.id);
 	const fetch_ref_and_species = async () => {
 		if (!user?.id) error(400, 'User ID not provided');
 		const res = await fetch(
