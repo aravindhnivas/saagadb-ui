@@ -12,7 +12,7 @@
 	export let species_metadata: SpeciesMetadata[] = [];
 
 	const { species: species_id, species_name } = species_metadata[0] ?? {};
-	$: console.log({ species_metadata });
+	// $: console.log({ species_metadata });
 
 	type MetadataKey = { name: string; value: keyof SpeciesMetadata }[];
 	let metadata_keys: MetadataKey = [
