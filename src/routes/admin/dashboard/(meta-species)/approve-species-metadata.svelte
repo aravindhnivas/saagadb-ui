@@ -6,7 +6,7 @@
 	import { enhance } from '$app/forms';
 	import { Checkbox } from '$lib/components/ui/checkbox';
 	import { LockKeyhole, UnlockKeyhole } from 'lucide-svelte';
-	import { getContext } from 'svelte';
+	import { createEventDispatcher, getContext } from 'svelte';
 
 	export let obj: SpeciesMetadata;
 
@@ -34,6 +34,7 @@
 	$: all_approved = checked_row.every((f) => f.checked);
 	let approve_all = false;
 	const approve_btn = getContext('approve_btn') as boolean;
+	const dispatch = createEventDispatcher();
 </script>
 
 {#if approve_btn}
@@ -83,6 +84,13 @@
 		{/each}
 	</div>
 	{#if approve_btn}
-		<Button class="ml-auto" type="submit" disabled={!all_approved}>Approve</Button>
+		<Button
+			class="ml-auto"
+			type="submit"
+			disabled={!all_approved}
+			on:click={() => {
+				dispatch('approve', { id: obj.id });
+			}}>Approve</Button
+		>
 	{/if}
 </form>

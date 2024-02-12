@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { setContext } from 'svelte';
-	import * as Dialog from '$lib/components/ui/dialog';
 	import * as Accordion from '$lib/components/ui/accordion';
-	import ApproveSpeciesMetadata from './(meta-species)/approve-species-metadata.svelte';
+	import MetaSpeciesItemsDialog from './(meta-species)/meta-species-items-dialog.svelte';
+
 	export let meta_species: SpeciesMetadata[];
 
 	const include_keys = [
@@ -54,21 +54,7 @@
 				<div class="rounded-box max-w-lg">
 					{#each grouped_by_species_formula[species_formula] as obj}
 						<li class="hover:bg-gray-200 cursor-pointer rounded-4">
-							<Dialog.Root>
-								<Dialog.Trigger>
-									{obj.linelist_name.toLocaleUpperCase()} ({obj.molecule_tag})
-								</Dialog.Trigger>
-								<Dialog.Content class="max-w-[70%] sm:max-w-[90%] max-h-[70%] overflow-auto">
-									<Dialog.Header>
-										<Dialog.Title>
-											{title} metadata from
-											{obj.linelist_name.toLocaleUpperCase()} ({obj.molecule_tag})
-										</Dialog.Title>
-										<Dialog.Description>Approve species metadata</Dialog.Description>
-									</Dialog.Header>
-									<ApproveSpeciesMetadata {obj} />
-								</Dialog.Content>
-							</Dialog.Root>
+							<MetaSpeciesItemsDialog {obj} {title} />
 						</li>
 					{/each}
 				</div>

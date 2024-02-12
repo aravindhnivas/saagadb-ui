@@ -13,6 +13,7 @@
 	},
 	"devDependencies": {
 		"@iconify/json": "^2.2.175",
+		"@macfja/svelte-persistent-store": "^2.4.1",
 		"@rdkit/rdkit": "2023.9.2-1.0.0",
 		"@svelte-parts/drop-file": "^0.0.23",
 		"@sveltejs/adapter-node": "^4.0.1",

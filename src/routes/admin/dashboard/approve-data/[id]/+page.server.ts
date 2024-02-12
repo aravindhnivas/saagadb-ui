@@ -6,6 +6,7 @@ import { DB_URL } from '$lib/server';
 export const load: PageServerLoad = async ({ fetch, params }) => {
 	const user_res = await fetch(`${base}/api/user/fetch/${params.id}`);
 	const user = (await user_res.json()) as User;
+	console.log('Running server load function for approve-data ', user, params.id);
 	const fetch_ref_and_species = async () => {
 		if (!user?.id) error(400, 'User ID not provided');
 		const res = await fetch(
@@ -31,7 +32,8 @@ export const actions: Actions = {
 		const id = url.searchParams.get('id') as string;
 		const api_key = url.searchParams.get('api_key') as string;
 		const post_url = `${DB_URL}/data/${api_key}/${id}/`;
-		// console.log({ id, api_key, post_url });
+		console.log({ id, api_key, post_url });
+		// return { success: true, message: 'Testing data approved successfully' };
 
 		const res = await fetch(post_url, {
 			method: 'PATCH',
@@ -39,10 +41,18 @@ export const actions: Actions = {
 		});
 
 		console.log(res.ok, res.status, res.statusText, res.url, res.headers, res.body);
+
 		if (!res.ok) {
-			const text = await res.json();
-			return { success: false, message: text };
+			const content_type = res.headers.get('content-type');
+			if (content_type && content_type.includes('application/json')) {
+				const text = await res.json();
+				return { success: false, message: text };
+			} else {
+				const text = await res.text();
+				return { success: false, message: text };
+			}
 		}
+
 		return {
 			success: res.ok,
 			message: 'Data approved successfully'
