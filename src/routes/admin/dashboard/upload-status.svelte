@@ -2,7 +2,6 @@
 	import AlertBox from '$lib/components/utils/alert-box.svelte';
 	import Loader from '$lib/components/utils/loader.svelte';
 	import { BookMarked, Atom } from 'lucide-svelte';
-	import ApprovalAccordian from './approval-accordian.svelte';
 	import StatComponent from './stat-component.svelte';
 
 	export let user: User;
@@ -11,7 +10,6 @@
 		SpeciesMetadata: SpeciesMetadata[];
 	}>;
 	export let show_header = true;
-	// console.log({ fetch_ref_and_species });
 </script>
 
 {#if user}
@@ -45,7 +43,7 @@
 						</svelte:fragment>
 					</StatComponent>
 				</div>
-				<ApprovalAccordian {meta_ref} {meta_species} />
+				<!-- <ApprovalAccordian {meta_ref} {meta_species} /> -->
 			{:else}
 				<p>Nothing uploaded by {user.name}</p>
 			{/if}

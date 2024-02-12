@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { setContext } from 'svelte';
-	// import MetaTemplate from './(meta-template)/meta-template.svelte';
+	import { groupBy } from 'lodash-es';
 	import * as Dialog from '$lib/components/ui/dialog';
 	import ApproveListTable from './(meta-ref)/approve-list-table.svelte';
 
@@ -34,10 +34,7 @@
 		href?: string;
 	}[];
 
-	const grouped_by_species_formula: {
-		[key: string]: MetaReference[];
-	} = Object.groupBy(meta_ref, (f) => f.species_formula);
-
+	const grouped_by_species_formula = groupBy(meta_ref, (f) => f.species_formula);
 	setContext('include_keys', include_keys);
 	setContext('api_key', 'meta-reference');
 </script>

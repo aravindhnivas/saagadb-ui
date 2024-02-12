@@ -2,7 +2,7 @@
 	import { setContext } from 'svelte';
 	import * as Accordion from '$lib/components/ui/accordion';
 	import MetaSpeciesItemsDialog from './(meta-species)/meta-species-items-dialog.svelte';
-
+	import { groupBy } from 'lodash-es';
 	export let meta_species: SpeciesMetadata[];
 
 	const include_keys = [
@@ -39,9 +39,8 @@
 
 	setContext('include_keys', include_keys);
 	setContext('api_key', 'species-metadata');
-	const grouped_by_species_formula: {
-		[key: string]: SpeciesMetadata[];
-	} = Object.groupBy(meta_species, (f) => f.species_formula);
+
+	const grouped_by_species_formula = groupBy(meta_species, (f) => f.species_formula);
 </script>
 
 {#each Object.keys(grouped_by_species_formula) as species_formula}
