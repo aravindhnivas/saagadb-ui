@@ -14,11 +14,6 @@
 			title: 'Frequency (MHz)',
 			field: 'frequency',
 			width: 200
-			// sorter: 'number',
-			// headerFilter: minMaxFilterEditor,
-			// headerFilterFunc: minMaxFilterFunction,
-			// headerFilterLiveFilter: false
-			// editor: 'input' // for inline editing
 		},
 		{
 			title: 'Uncertainty (MHz)',
