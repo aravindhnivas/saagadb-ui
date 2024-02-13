@@ -29,7 +29,7 @@
 			headerFilterLiveFilter: false
 		},
 		{
-			title: 'Intensity (nm^2 MHz)',
+			title: 'Intensity (nm<sup>2</sup> MHz)',
 			field: 'intensity',
 			width: 200,
 			sorter: 'number',
@@ -92,8 +92,8 @@
 			]
 		},
 		// { title: 'S_ij', field: 's_ij' },
-		{ title: 'S_ij_mu2 (nm^2)', field: 's_ij_mu2' },
-		{ title: 'A_ij (s^-1)', field: 'a_ij' }
+		{ title: 'S_ij_mu2 (nm<sup>2</sup> )', field: 's_ij_mu2' },
+		{ title: 'A_ij (s<sup>-1</sup> )', field: 'a_ij' }
 	];
 
 	let table: Tabulator;
