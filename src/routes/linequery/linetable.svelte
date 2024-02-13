@@ -1,25 +1,50 @@
 <script lang="ts">
+	import { Button } from '$lib/components/ui/button';
+	import Checkbox from '$lib/components/ui/checkbox/checkbox.svelte';
+	import { Label } from '$lib/components/ui/label';
+	import { toast } from 'svelte-sonner';
 	import { TabulatorFull as Tabulator } from 'tabulator-tables';
 	import type { OptionsColumns, OptionsData } from 'tabulator-tables';
+	import { minMaxFilterEditor, minMaxFilterFunction } from './minmax-filter';
 
 	export let lines: OptionsData['data'] = [];
 
 	const columns: OptionsColumns['columns'] = [
 		{
-			title: 'Frequency',
-			field: 'frequency'
+			title: 'Frequency (MHz)',
+			field: 'frequency',
+			width: 150,
+			sorter: 'number',
+			headerFilter: minMaxFilterEditor,
+			headerFilterFunc: minMaxFilterFunction,
+			headerFilterLiveFilter: false
 		},
-		{ title: 'Uncertainty', field: 'uncertainty' },
-		{ title: 'Intensity', field: 'intensity' },
+		{
+			title: 'Uncertainty (MHz)',
+			field: 'uncertainty',
+			sorter: 'number',
+			headerFilter: minMaxFilterEditor,
+			headerFilterFunc: minMaxFilterFunction,
+			headerFilterLiveFilter: false
+		},
+		{
+			title: 'Intensity (nm^2 MHz)',
+			field: 'intensity',
+			width: 200,
+			sorter: 'number',
+			headerFilter: minMaxFilterEditor,
+			headerFilterFunc: minMaxFilterFunction,
+			headerFilterLiveFilter: false
+		},
 		{
 			title: 'Formula',
-			field: 'name_formula'
-			// headerFilter: 'input'
+			field: 'name_formula',
+			headerFilter: 'input'
 		},
 		{
 			title: 'IUPAC',
-			field: 'iupac_name'
-			// headerFilter: 'input'
+			field: 'iupac_name',
+			headerFilter: 'input'
 		},
 		{
 			title: 'Database',
@@ -27,7 +52,7 @@
 			formatter: (cell) => cell.getValue().toUpperCase(),
 			headerFilter: 'input'
 		},
-		{ title: 'Measured', field: 'measured', formatter: 'tickCross' },
+		// { title: 'Measured', field: 'measured', formatter: 'tickCross' },
 		{
 			title: 'Rovibrational',
 			field: 'rovibrational',
@@ -39,32 +64,41 @@
 			formatter: 'tickCross'
 		},
 		{
-			title: 'Lower State QN',
-			field: 'lower_state_qn',
-			formatter: (cell) => JSON.stringify(cell.getValue())
+			title: 'Quantum Number ',
+			columns: [
+				{
+					title: 'Lower State',
+					field: 'lower_state_qn',
+					formatter: (cell) => JSON.stringify(cell.getValue())
+				},
+				{
+					title: 'Upper State',
+					field: 'upper_state_qn',
+					formatter: (cell) => JSON.stringify(cell.getValue())
+				}
+			]
 		},
+
 		{
-			title: 'Upper State QN',
-			field: 'upper_state_qn',
-			formatter: (cell) => JSON.stringify(cell.getValue())
+			title: 'Energy levels (K)',
+			columns: [
+				{
+					title: 'Lower State',
+					field: 'lower_state_energy'
+				},
+				{ title: 'Upper State', field: 'upper_state_energy' }
+			]
 		},
-		{
-			title: 'Lower State Energy',
-			field: 'lower_state_energy'
-		},
-		{ title: 'Upper State Energy', field: 'upper_state_energy' },
-		{ title: 'S_ij', field: 's_ij' },
-		{ title: 'S_ij_mu2', field: 's_ij_mu2' },
-		{ title: 'A_ij', field: 'a_ij' }
-		// {title: 'Name', field: 'name'},
-		// { title: 'Molecule Tag', field: 'molecule_tag' }
-		// { title: 'Meta ID', field: 'meta_id' }
-		// {title: 'SMILES', field: 'smiles'},
-		// { title: 'SELFIES', field: 'selfies' }
+
+		// { title: 'S_ij', field: 's_ij' },
+		{ title: 'S_ij_mu2 (nm^2)', field: 's_ij_mu2' },
+		{ title: 'A_ij (s^-1)', field: 'a_ij' }
 	];
 
+	let table: Tabulator;
+
 	const mount = (node: HTMLDivElement) => {
-		new Tabulator(node, {
+		table = new Tabulator(node, {
 			index: 'frequency',
 			pagination: true,
 			paginationMode: 'local',
@@ -72,12 +106,41 @@
 			paginationSizeSelector: [10, 15, 25, 50, 100],
 			paginationCounter: 'rows',
 			movableColumns: true,
-			groupBy: 'name_formula',
+			// groupBy: 'name_formula',
 			data: lines,
 			columns: columns
 			// layout: 'fitDataTable', //fit columns to width of table (optional)
 		});
 	};
+
+	let download_filename = 'line_data';
+	const download_formats = ['xlsx', 'csv', 'json'] as const;
 </script>
+
+<div class="flex gap-2 items-center">
+	<Checkbox
+		checked={false}
+		onCheckedChange={(state) => {
+			state ? table.setGroupBy(['name_formula']) : table.setGroupBy([]);
+		}}
+	/>
+	<Label>Group by formula</Label>
+	<div class="flex gap-4 ml-auto">
+		{#each download_formats as format}
+			<button
+				class="btn btn-sm border-1 border-black"
+				on:click={() => {
+					try {
+						table?.download(format, `${download_filename}.${format}`);
+					} catch (error) {
+						if (error instanceof Error) {
+							toast.error(`Error: ${error.message}`);
+						}
+					}
+				}}>Download as (.{format})</button
+			>
+		{/each}
+	</div>
+</div>
 
 <div use:mount />

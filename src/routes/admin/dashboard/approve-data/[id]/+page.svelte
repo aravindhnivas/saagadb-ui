@@ -13,8 +13,6 @@
 	export let data: PageData;
 	export let form: ActionData;
 
-	// $: console.log({ data });
-	// $: console.log({ form });
 	setContext('approve_btn', true);
 	$: if (form && form.success) toast.success(form.message);
 	$: if (form && !form.success) toast.error(form.message);

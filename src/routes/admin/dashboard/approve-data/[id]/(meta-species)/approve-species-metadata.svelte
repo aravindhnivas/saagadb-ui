@@ -51,8 +51,8 @@
 {/if}
 
 <form
-	class="grid gap-4"
 	use:enhance
+	class="grid gap-4"
 	action="?/approve&id={obj.id}&api_key={api_key}"
 	method="POST"
 	enctype="multipart/form-data"

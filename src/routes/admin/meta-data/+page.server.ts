@@ -22,9 +22,10 @@ export const load: PageServerLoad = async () => {
 
 export const actions: Actions = {
 	default: async ({ request, fetch }) => {
+		console.log('default action called');
 		const formData = await request.formData();
 		const metaid = formData.get('__superform_id') as FormKeys;
-		// console.log('formData', { formData, metaid });
+		console.log('formData', { formData, metaid });
 
 		const form = await superValidate(formData, Schemas[metaid]);
 		console.log('posting', form.data);

@@ -5,6 +5,10 @@
 	export let data: PageData;
 </script>
 
+<svelte:head>
+	<script type="text/javascript" src="https://oss.sheetjs.com/sheetjs/xlsx.full.min.js"></script>
+</svelte:head>
+
 <div class="grid gap-5 content-start">
 	<form class="flex gap-2 items-end" method="GET">
 		<label class="form-control w-full max-w-xs">
