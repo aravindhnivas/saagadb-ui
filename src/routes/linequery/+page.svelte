@@ -1,4 +1,5 @@
 <script lang="ts">
+	import AlertBox from '$lib/components/utils/alert-box.svelte';
 	import type { PageData } from './$types';
 	import Linetable from './linetable.svelte';
 
@@ -47,6 +48,15 @@
 		</div>
 	{:then lines}
 		{#if lines?.length > 0}
+			<AlertBox>
+				<svelte:fragment slot="message">
+					The following line informations are derived from the uploaded .cat file using
+					<a href="https://github.com/bmcguir2/molsim" target="_blank" rel="noopener noreferrer">
+						<em class="underline">molsim</em>
+					</a>
+					script
+				</svelte:fragment>
+			</AlertBox>
 			<Linetable {lines} />
 		{:else}
 			<p>No lines found</p>

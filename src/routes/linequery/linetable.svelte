@@ -6,6 +6,7 @@
 	import { TabulatorFull as Tabulator } from 'tabulator-tables';
 	import type { OptionsColumns, OptionsData } from 'tabulator-tables';
 	import { minMaxFilterEditor, minMaxFilterFunction } from './minmax-filter';
+	import { writable } from '@macfja/svelte-persistent-store';
 
 	export let lines: OptionsData['data'] = [];
 
@@ -13,7 +14,7 @@
 		{
 			title: 'Frequency (MHz)',
 			field: 'frequency',
-			width: 150,
+			width: 200,
 			sorter: 'number',
 			headerFilter: minMaxFilterEditor,
 			headerFilterFunc: minMaxFilterFunction,
@@ -56,12 +57,14 @@
 		{
 			title: 'Rovibrational',
 			field: 'rovibrational',
-			formatter: 'tickCross'
+			formatter: 'tickCross',
+			headerFilter: 'tickCross'
 		},
 		{
 			title: 'Hyperfine',
 			field: 'hyperfine',
-			formatter: 'tickCross'
+			formatter: 'tickCross',
+			headerFilter: 'tickCross'
 		},
 		{
 			title: 'Quantum Number ',
@@ -78,7 +81,6 @@
 				}
 			]
 		},
-
 		{
 			title: 'Energy levels (K)',
 			columns: [
@@ -89,7 +91,6 @@
 				{ title: 'Upper State', field: 'upper_state_energy' }
 			]
 		},
-
 		// { title: 'S_ij', field: 's_ij' },
 		{ title: 'S_ij_mu2 (nm^2)', field: 's_ij_mu2' },
 		{ title: 'A_ij (s^-1)', field: 'a_ij' }
@@ -106,20 +107,20 @@
 			paginationSizeSelector: [10, 15, 25, 50, 100],
 			paginationCounter: 'rows',
 			movableColumns: true,
-			// groupBy: 'name_formula',
+			groupBy: $group_by_formula ? 'name_formula' : undefined,
 			data: lines,
 			columns: columns
 			// layout: 'fitDataTable', //fit columns to width of table (optional)
 		});
 	};
-
+	const group_by_formula = writable('linequery__group_by_formula', false);
 	let download_filename = 'line_data';
 	const download_formats = ['xlsx', 'csv', 'json'] as const;
 </script>
 
 <div class="flex gap-2 items-center">
 	<Checkbox
-		checked={false}
+		bind:checked={$group_by_formula}
 		onCheckedChange={(state) => {
 			state ? table.setGroupBy(['name_formula']) : table.setGroupBy([]);
 		}}

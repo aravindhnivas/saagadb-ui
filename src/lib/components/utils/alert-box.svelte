@@ -5,7 +5,7 @@
 	export let variant: 'default' | 'destructive' = 'default';
 	export let message: string = '';
 	export let error: Error | null = null;
-	export let title: string = 'Alert/Info';
+	export let title: string = 'Info';
 </script>
 
 <Alert.Root class="select-text" variant={error ? 'destructive' : variant || 'default'}>
@@ -16,6 +16,11 @@
 	</Alert.Title>
 
 	<Alert.Description>
-		{error ? (import.meta.env.DEV ? error.stack : error.message) : message}
+		<!-- {error ?  : message} -->
+		{#if error}
+			{import.meta.env.DEV ? error.stack : error.message}
+		{:else}
+			<slot name="message">{message ?? ''}</slot>
+		{/if}
 	</Alert.Description>
 </Alert.Root>
