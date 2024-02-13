@@ -126,7 +126,7 @@
 			state ? table.setGroupBy(['name_formula']) : table.setGroupBy([]);
 		}}
 	/>
-	<Label>Group by formula</Label>
+	<Label>Group by Species</Label>
 	<div class="flex gap-4 ml-auto">
 		{#each download_formats as format}
 			<button
