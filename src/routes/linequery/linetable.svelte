@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { Button } from '$lib/components/ui/button';
 	import Checkbox from '$lib/components/ui/checkbox/checkbox.svelte';
 	import { Label } from '$lib/components/ui/label';
 	import { toast } from 'svelte-sonner';
@@ -19,6 +18,7 @@
 			headerFilter: minMaxFilterEditor,
 			headerFilterFunc: minMaxFilterFunction,
 			headerFilterLiveFilter: false
+			// editor: 'input' // for inline editing
 		},
 		{
 			title: 'Uncertainty (MHz)',
@@ -110,6 +110,7 @@
 			groupBy: $group_by_formula ? 'name_formula' : undefined,
 			data: lines,
 			columns: columns
+			// history:true, //enable table state history
 			// layout: 'fitDataTable', //fit columns to width of table (optional)
 		});
 	};
