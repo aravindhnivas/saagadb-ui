@@ -36,8 +36,8 @@ dependencies:
     specifier: ^0.0.13
     version: 0.0.13(svelte@4.2.10)
   dotenv:
-    specifier: ^16.4.2
-    version: 16.4.2
+    specifier: ^16.4.4
+    version: 16.4.4
   embla-carousel-svelte:
     specifier: 8.0.0-rc22
     version: 8.0.0-rc22(svelte@4.2.10)
@@ -45,8 +45,8 @@ dependencies:
     specifier: ^4.18.2
     version: 4.18.2
   formsnap:
-    specifier: ^0.4.3
-    version: 0.4.3(svelte@4.2.10)(sveltekit-superforms@1.13.4)(zod@3.22.4)
+    specifier: ^0.4.4
+    version: 0.4.4(svelte@4.2.10)(sveltekit-superforms@1.13.4)(zod@3.22.4)
   lodash-es:
     specifier: ^4.17.21
     version: 4.17.21
@@ -54,8 +54,8 @@ dependencies:
     specifier: ^0.312.0
     version: 0.312.0(svelte@4.2.10)
   tabulator-tables:
-    specifier: ^5.5.4
-    version: 5.5.4
+    specifier: ^5.6.0
+    version: 5.6.0
   tailwind-merge:
     specifier: ^2.2.1
     version: 2.2.1
@@ -146,8 +146,8 @@ devDependencies:
     specifier: ^3.2.5
     version: 3.2.5
   prettier-plugin-svelte:
-    specifier: ^3.1.2
-    version: 3.1.2(prettier@3.2.5)(svelte@4.2.10)
+    specifier: ^3.2.0
+    version: 3.2.0(prettier@3.2.5)(svelte@4.2.10)
   sass:
     specifier: ^1.70.0
     version: 1.70.0
@@ -156,7 +156,7 @@ devDependencies:
     version: 4.2.10
   svelte-check:
     specifier: ^3.6.4
-    version: 3.6.4(@babel/core@7.23.9)(postcss@8.4.33)(sass@1.70.0)(svelte@4.2.10)
+    version: 3.6.4(@babel/core@7.23.9)(postcss@8.4.35)(sass@1.70.0)(svelte@4.2.10)
   svelte-copy:
     specifier: ^1.4.1
     version: 1.4.1(svelte@4.2.10)
@@ -177,10 +177,10 @@ devDependencies:
     version: 5.3.3
   unocss:
     specifier: ^0.58.5
-    version: 0.58.5(postcss@8.4.33)(vite@5.1.1)
+    version: 0.58.5(postcss@8.4.35)(vite@5.1.1)
   unocss-preset-animations:
     specifier: ^1.0.1
-    version: 1.0.1(@unocss/preset-wind@0.58.4)(unocss@0.58.5)
+    version: 1.0.1(@unocss/preset-wind@0.58.5)(unocss@0.58.5)
   unocss-preset-daisy:
     specifier: ^7.0.0
     version: 7.0.0(daisyui@3.9.4)(unocss@0.58.5)
@@ -1568,18 +1568,8 @@ packages:
       unconfig: 0.3.11
     dev: true
 
-  /@unocss/core@0.58.4:
-    resolution: {integrity: sha512-wh4pxXUCkhC+C/0ct74PMYeZgX+oWuHj2mnvr09nM0WmvOm1HeeISrDCCBGcxmKbErUk+D1v3JgzXF7b6j2l4g==}
-    dev: true
-
   /@unocss/core@0.58.5:
     resolution: {integrity: sha512-qbPqL+46hf1/UelQOwUwpAuvm6buoss43DPYHOPdfNJ+NTWkSpATQMF0JKT04QE0QRQbHNSHdMe9ariG+IIlCw==}
-    dev: true
-
-  /@unocss/extractor-arbitrary-variants@0.58.4:
-    resolution: {integrity: sha512-TQlVtSQk8YdBU9KuTA5k6JBJ8d/aPrIsCWjDPfBvAqDvrll/dzwBCLoLTQMdCHFjCXCOYWKPum1ET+Wn9R+XbA==}
-    dependencies:
-      '@unocss/core': 0.58.4
     dev: true
 
   /@unocss/extractor-arbitrary-variants@0.58.5:
@@ -1601,7 +1591,7 @@ packages:
       sirv: 2.0.4
     dev: true
 
-  /@unocss/postcss@0.58.5(postcss@8.4.33):
+  /@unocss/postcss@0.58.5(postcss@8.4.35):
     resolution: {integrity: sha512-m4L2YRdYfT6CV306Kl2VwEwbqa/92EpW4GE2Kqak1RuJyFJXBnWEEMJV4Uy6B1jWKLlCEWkuVUW33JUg7X6BxQ==}
     engines: {node: '>=14'}
     peerDependencies:
@@ -1613,7 +1603,7 @@ packages:
       css-tree: 2.3.1
       fast-glob: 3.3.2
       magic-string: 0.30.7
-      postcss: 8.4.33
+      postcss: 8.4.35
     dev: true
 
   /@unocss/preset-attributify@0.58.5:
@@ -1630,14 +1620,6 @@ packages:
       ofetch: 1.3.3
     transitivePeerDependencies:
       - supports-color
-    dev: true
-
-  /@unocss/preset-mini@0.58.4:
-    resolution: {integrity: sha512-cpIWUYxLi4VCkkjxpNJOVqH9D32NX1ebRFaoAVnvCRsoj5TRsZJSdxs0WMN7reHT/CUHh0Wh6d3TfMCFxzbZ4g==}
-    dependencies:
-      '@unocss/core': 0.58.4
-      '@unocss/extractor-arbitrary-variants': 0.58.4
-      '@unocss/rule-utils': 0.58.4
     dev: true
 
   /@unocss/preset-mini@0.58.5:
@@ -1677,14 +1659,6 @@ packages:
       ofetch: 1.3.3
     dev: true
 
-  /@unocss/preset-wind@0.58.4:
-    resolution: {integrity: sha512-e2F0HsqPXw+nD85MKIZ63mx5yUx5g8iPOtMw9/eEUeK67HrD+jFxeLq0hAM3ou3a4589QIzeg23LXAkM7gCzvg==}
-    dependencies:
-      '@unocss/core': 0.58.4
-      '@unocss/preset-mini': 0.58.4
-      '@unocss/rule-utils': 0.58.4
-    dev: true
-
   /@unocss/preset-wind@0.58.5:
     resolution: {integrity: sha512-54RkjLmlqMUlC8o8nDCVzB25D1zzK4eth+/3uQzt739qU0U92NxuZKY21ADj9Rp/mVhKBV5FKuXPjmYc6yTQRQ==}
     dependencies:
@@ -1695,14 +1669,6 @@ packages:
 
   /@unocss/reset@0.58.5:
     resolution: {integrity: sha512-2wMrkCj3SSb5hrx9TKs5jZa34QIRkHv9FotbJutAPo7o8hx+XXn56ogzdoUrcFPJZJUx2R2nyOVbSlGMIjtFtw==}
-    dev: true
-
-  /@unocss/rule-utils@0.58.4:
-    resolution: {integrity: sha512-52Jp4I+joGTaDm7ehB/7uZ2kJL+9BZcYRDUVk4IDacDH5W9yxf1F75LzYT8jJVWXD/HIhiS0r9V6qhcBq2OWZw==}
-    engines: {node: '>=14'}
-    dependencies:
-      '@unocss/core': 0.58.4
-      magic-string: 0.30.5
     dev: true
 
   /@unocss/rule-utils@0.58.5:
@@ -2288,8 +2254,8 @@ packages:
     dependencies:
       colord: 2.9.3
       css-selector-tokenizer: 0.8.0
-      postcss: 8.4.33
-      postcss-js: 4.0.1(postcss@8.4.33)
+      postcss: 8.4.35
+      postcss-js: 4.0.1(postcss@8.4.35)
       tailwindcss: 3.4.1
     transitivePeerDependencies:
       - ts-node
@@ -2411,8 +2377,8 @@ packages:
       domhandler: 5.0.3
     dev: false
 
-  /dotenv@16.4.2:
-    resolution: {integrity: sha512-rZSSFxke7d9nYQ5NeMIwp5PP+f8wXgKNljpOb7KtH6SKW1cEqcXAz9VSJYVLKe7Jhup/gUYOkaeSVyK8GJ+nBg==}
+  /dotenv@16.4.4:
+    resolution: {integrity: sha512-XvPXc8XAQThSjAbY6cQ/9PcBXmFoWuw1sQ3b8HqUCR6ziGXjkTi//kB9SWa2UwqlgdAIuRqAa/9hVljzPehbYg==}
     engines: {node: '>=12'}
     dev: false
 
@@ -2840,8 +2806,8 @@ packages:
       strind: 0.3.1
     dev: true
 
-  /formsnap@0.4.3(svelte@4.2.10)(sveltekit-superforms@1.13.4)(zod@3.22.4):
-    resolution: {integrity: sha512-PWVq78XVUHhAU1tcVGKeGamk6B4Opkk1uVNRW2YofiQpnA5Bry1c3TQjB9cVDw5u4oAwmDvIoAzVHlrAIgc+tw==}
+  /formsnap@0.4.4(svelte@4.2.10)(sveltekit-superforms@1.13.4)(zod@3.22.4):
+    resolution: {integrity: sha512-O+Cf4GneR4CLP48J0c5AJY6eowc+1N3DYZz9uIJ3Mk57AjdL5l8DQEA+HmRfse4UEPepizEPl+M4vFg8cON2BQ==}
     peerDependencies:
       svelte: ^4.0.0
       sveltekit-superforms: ^1.7.1
@@ -3743,13 +3709,13 @@ packages:
       pathe: 1.1.2
     dev: true
 
-  /postcss-import@15.1.0(postcss@8.4.33):
+  /postcss-import@15.1.0(postcss@8.4.35):
     resolution: {integrity: sha512-hpr+J05B2FVYUAXHeK1YyI267J/dDDhMU6B6civm8hSY1jYJnBXxzKDKDswzJmtLHryrjhnDjqqp/49t8FALew==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
       postcss: ^8.0.0
     dependencies:
-      postcss: 8.4.33
+      postcss: 8.4.35
       postcss-value-parser: 4.2.0
       read-cache: 1.0.0
       resolve: 1.22.8
@@ -3762,6 +3728,16 @@ packages:
     dependencies:
       camelcase-css: 2.0.1
       postcss: 8.4.33
+    dev: true
+
+  /postcss-js@4.0.1(postcss@8.4.35):
+    resolution: {integrity: sha512-dDLF8pEO191hJMtlHFPRa8xsizHaM82MLfNkUHdUtVEV3tgTp5oj+8qbEqYM57SLfc74KSbw//4SeJma2LRVIw==}
+    engines: {node: ^12 || ^14 || >= 16}
+    peerDependencies:
+      postcss: ^8.4.21
+    dependencies:
+      camelcase-css: 2.0.1
+      postcss: 8.4.35
 
   /postcss-load-config@3.1.4(postcss@8.4.33):
     resolution: {integrity: sha512-6DiM4E7v4coTE4uzA8U//WhtPwyhiim3eyjEMFCnUpzbrkK9wJHgKDT2mR+HbtSrd/NubVaYTOpSpjUl8NQeRg==}
@@ -3780,7 +3756,7 @@ packages:
       yaml: 1.10.2
     dev: true
 
-  /postcss-load-config@4.0.2(postcss@8.4.33):
+  /postcss-load-config@4.0.2(postcss@8.4.35):
     resolution: {integrity: sha512-bSVhyJGL00wMVoPUzAVAnbEoWyqRxkjv64tUl427SKnPrENtq6hJwUojroMz2VB+Q1edmi4IfrAPpami5VVgMQ==}
     engines: {node: '>= 14'}
     peerDependencies:
@@ -3793,16 +3769,16 @@ packages:
         optional: true
     dependencies:
       lilconfig: 3.0.0
-      postcss: 8.4.33
+      postcss: 8.4.35
       yaml: 2.3.4
 
-  /postcss-nested@6.0.1(postcss@8.4.33):
+  /postcss-nested@6.0.1(postcss@8.4.35):
     resolution: {integrity: sha512-mEp4xPMi5bSWiMbsgoPfcP74lsWLHkQbZc3sY+jWYd65CUwXrUaTp0fmNpa01ZcETKlIgUdFN/MpS2xZtqL9dQ==}
     engines: {node: '>=12.0'}
     peerDependencies:
       postcss: ^8.2.14
     dependencies:
-      postcss: 8.4.33
+      postcss: 8.4.35
       postcss-selector-parser: 6.0.15
 
   /postcss-safe-parser@6.0.0(postcss@8.4.33):
@@ -3840,6 +3816,7 @@ packages:
       nanoid: 3.3.7
       picocolors: 1.0.0
       source-map-js: 1.0.2
+    dev: true
 
   /postcss@8.4.35:
     resolution: {integrity: sha512-u5U8qYpBCpN13BsiEB0CbR1Hhh4Gc0zLFuedrHJKMctHCHAGrMdG0PRM/KErzAL3CU6/eckEtmHNB3x6e3c0vA==}
@@ -3854,8 +3831,8 @@ packages:
     engines: {node: '>= 0.8.0'}
     dev: true
 
-  /prettier-plugin-svelte@3.1.2(prettier@3.2.5)(svelte@4.2.10):
-    resolution: {integrity: sha512-7xfMZtwgAWHMT0iZc8jN4o65zgbAQ3+O32V6W7pXrqNvKnHnkoyQCGCbKeUyXKZLbYE0YhFRnamfxfkEGxm8qA==}
+  /prettier-plugin-svelte@3.2.0(prettier@3.2.5)(svelte@4.2.10):
+    resolution: {integrity: sha512-3474Zxxw8z4k64aqZmwTfcGdh/ULM2zNQslORdXEkNjKqqsSxBmiASazoxdCrmaqsbKD2Y0rxKhBEn1u0Y+j9g==}
     peerDependencies:
       prettier: ^3.0.0
       svelte: ^3.2.0 || ^4.0.0-next.0 || ^5.0.0-next.0
@@ -4238,7 +4215,7 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
 
-  /svelte-check@3.6.4(@babel/core@7.23.9)(postcss@8.4.33)(sass@1.70.0)(svelte@4.2.10):
+  /svelte-check@3.6.4(@babel/core@7.23.9)(postcss@8.4.35)(sass@1.70.0)(svelte@4.2.10):
     resolution: {integrity: sha512-mY/dqucqm46p72M8yZmn81WPZx9mN6uuw8UVfR3ZKQeLxQg5HDGO3HHm5AZuWZPYNMLJ+TRMn+TeN53HfQ/vsw==}
     hasBin: true
     peerDependencies:
@@ -4251,7 +4228,7 @@ packages:
       picocolors: 1.0.0
       sade: 1.8.1
       svelte: 4.2.10
-      svelte-preprocess: 5.1.3(@babel/core@7.23.9)(postcss@8.4.33)(sass@1.70.0)(svelte@4.2.10)(typescript@5.3.3)
+      svelte-preprocess: 5.1.3(@babel/core@7.23.9)(postcss@8.4.35)(sass@1.70.0)(svelte@4.2.10)(typescript@5.3.3)
       typescript: 5.3.3
     transitivePeerDependencies:
       - '@babel/core'
@@ -4305,7 +4282,7 @@ packages:
     dependencies:
       svelte: 4.2.10
 
-  /svelte-preprocess@5.1.3(@babel/core@7.23.9)(postcss@8.4.33)(sass@1.70.0)(svelte@4.2.10)(typescript@5.3.3):
+  /svelte-preprocess@5.1.3(@babel/core@7.23.9)(postcss@8.4.35)(sass@1.70.0)(svelte@4.2.10)(typescript@5.3.3):
     resolution: {integrity: sha512-xxAkmxGHT+J/GourS5mVJeOXZzne1FR5ljeOUAMXUkfEhkLEllRreXpbl3dIYJlcJRfL1LO1uIAPpBpBfiqGPw==}
     engines: {node: '>= 16.0.0', pnpm: ^8.0.0}
     requiresBuild: true
@@ -4347,7 +4324,7 @@ packages:
       '@types/pug': 2.0.10
       detect-indent: 6.1.0
       magic-string: 0.30.5
-      postcss: 8.4.33
+      postcss: 8.4.35
       sass: 1.70.0
       sorcery: 0.11.0
       strip-indent: 3.0.0
@@ -4408,8 +4385,8 @@ packages:
   /tabbable@6.2.0:
     resolution: {integrity: sha512-Cat63mxsVJlzYvN51JmVXIgNoUokrIaT2zLclCXjRd8boZ0004U4KCs/sToJ75C6sdlByWxpYnb5Boif1VSFew==}
 
-  /tabulator-tables@5.5.4:
-    resolution: {integrity: sha512-hVcITAfO2G3gm2ILW9GN2ORgcmNsbVmC+Q+2E3xfthIE9xtFxGKSbhbsNk39h11Uzm9GNUvjGfos1IVKrfeeOA==}
+  /tabulator-tables@5.6.0:
+    resolution: {integrity: sha512-aj6yG531jMcRSi23sqRwSZ7eqXG/ae+P2IXggEvhmsn5QYeFmNgnRxJc5MqNeJMyEqvD595DMR4wiwpomFcgoQ==}
     dev: false
 
   /tailwind-merge@1.14.0:
@@ -4451,11 +4428,11 @@ packages:
       normalize-path: 3.0.0
       object-hash: 3.0.0
       picocolors: 1.0.0
-      postcss: 8.4.33
-      postcss-import: 15.1.0(postcss@8.4.33)
-      postcss-js: 4.0.1(postcss@8.4.33)
-      postcss-load-config: 4.0.2(postcss@8.4.33)
-      postcss-nested: 6.0.1(postcss@8.4.33)
+      postcss: 8.4.35
+      postcss-import: 15.1.0(postcss@8.4.35)
+      postcss-js: 4.0.1(postcss@8.4.35)
+      postcss-load-config: 4.0.2(postcss@8.4.35)
+      postcss-nested: 6.0.1(postcss@8.4.35)
       postcss-selector-parser: 6.0.15
       resolve: 1.22.8
       sucrase: 3.35.0
@@ -4564,14 +4541,14 @@ packages:
   /undici-types@5.26.5:
     resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
 
-  /unocss-preset-animations@1.0.1(@unocss/preset-wind@0.58.4)(unocss@0.58.5):
+  /unocss-preset-animations@1.0.1(@unocss/preset-wind@0.58.5)(unocss@0.58.5):
     resolution: {integrity: sha512-9ev3+1+0lAMgkqRa2z1z1GBtvJRHrzL1so/tLpiBcFqfDWRUg/S4jqS0xFXQkfMEWIzvRJDGgxbep4bvm/Db/Q==}
     peerDependencies:
       '@unocss/preset-wind': '>= 0.56.0 < 1'
       unocss: '>= 0.56.0 < 1'
     dependencies:
-      '@unocss/preset-wind': 0.58.4
-      unocss: 0.58.5(postcss@8.4.33)(vite@5.1.1)
+      '@unocss/preset-wind': 0.58.5
+      unocss: 0.58.5(postcss@8.4.35)(vite@5.1.1)
     dev: true
 
   /unocss-preset-daisy@7.0.0(daisyui@3.9.4)(unocss@0.58.5):
@@ -4586,7 +4563,7 @@ packages:
       parsel-js: 1.1.2
       postcss: 8.4.33
       postcss-js: 4.0.1(postcss@8.4.33)
-      unocss: 0.58.5(postcss@8.4.33)(vite@5.1.1)
+      unocss: 0.58.5(postcss@8.4.35)(vite@5.1.1)
     dev: true
 
   /unocss-preset-shadcn@0.2.3(unocss-preset-animations@1.0.1)(unocss@0.58.5):
@@ -4595,11 +4572,11 @@ packages:
       unocss: '>= 0.56.0 < 1'
       unocss-preset-animations: ^1.0.1
     dependencies:
-      unocss: 0.58.5(postcss@8.4.33)(vite@5.1.1)
-      unocss-preset-animations: 1.0.1(@unocss/preset-wind@0.58.4)(unocss@0.58.5)
+      unocss: 0.58.5(postcss@8.4.35)(vite@5.1.1)
+      unocss-preset-animations: 1.0.1(@unocss/preset-wind@0.58.5)(unocss@0.58.5)
     dev: true
 
-  /unocss@0.58.5(postcss@8.4.33)(vite@5.1.1):
+  /unocss@0.58.5(postcss@8.4.35)(vite@5.1.1):
     resolution: {integrity: sha512-0g4P6jLgRRNnhscxw7nQ9RHGrKJ1UPPiHPet+YT3TXUcmy4mTiYgo9+kGQf5bjyrzsELJ10cT6Qz2y6g9Tls4g==}
     engines: {node: '>=14'}
     peerDependencies:
@@ -4615,7 +4592,7 @@ packages:
       '@unocss/cli': 0.58.5
       '@unocss/core': 0.58.5
       '@unocss/extractor-arbitrary-variants': 0.58.5
-      '@unocss/postcss': 0.58.5(postcss@8.4.33)
+      '@unocss/postcss': 0.58.5(postcss@8.4.35)
       '@unocss/preset-attributify': 0.58.5
       '@unocss/preset-icons': 0.58.5
       '@unocss/preset-mini': 0.58.5
