@@ -4,6 +4,7 @@
 	import type { LayoutData } from '../$types';
 	export let data: LayoutData;
 	const { user } = data;
+	const userKeys = ['name', 'email', 'organization', 'is_active', 'is_staff', 'approver'] as const;
 </script>
 
 {#if user}
@@ -17,7 +18,7 @@
 	<div class="max-w-lg">
 		<Table.Root>
 			<Table.Body>
-				{#each ['name', 'email', 'organization', 'is_active', 'is_staff', 'approver'] as key}
+				{#each userKeys as key}
 					<Table.Row>
 						<Table.Cell class="font-medium p-0.5">{key.toLocaleUpperCase()}</Table.Cell>
 						<Table.Cell class="p-0.5">{user[key] ?? '-'}</Table.Cell>

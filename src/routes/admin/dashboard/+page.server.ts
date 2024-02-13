@@ -29,14 +29,14 @@ export const load: PageServerLoad = async ({ fetch, parent }) => {
 	const fetch_upload_count = async () => {
 		if (!user?.id) error(400, 'User ID not provided');
 
-		// const res = await fetch(`${base}/api/data/meta-ref-and-species?uploaded_by=${user.id}`);
 		const res = await fetch(`${base}/api/data/data_length/${user.id}`);
 		if (!res.ok) error(500, 'Failed to fetch ref and species');
 		const upload_count = (await res.json()) as UploadCountResponse;
 
 		return upload_count;
 	};
-	console.log('Running server load function for approve-data ', user);
+	// console.log('Running server load function for approve-data ', user);
+
 	return {
 		fetch_approving_users: user?.is_staff ? fetch_approving_users() : undefined,
 		fetch_upload_count: fetch_upload_count(),
