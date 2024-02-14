@@ -71,16 +71,28 @@
 					<Form.Validation />
 				</Form.Item>
 			</Form.Field>
-
-			<FormCombobox
-				val_type="number"
-				{config}
-				name={'approver'}
-				items={data.all_staff.map((f) => ({
-					value: `${f.id}`,
-					label: f.name
-				}))}
-			/>
+			<div class="flex gap-4 items-center">
+				<FormCombobox
+					val_type="number"
+					{config}
+					name={'approver'}
+					items={data.all_staff.map((f) => ({
+						value: `${f.id}`,
+						label: f.name
+					}))}
+				/>
+				{#if data.user?.is_superuser}
+					<Form.Field {config} name="is_staff">
+						<Form.Item class="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+							<Form.Checkbox />
+							<div class="space-y-1 leading-none">
+								<Form.Label>Admin privilege</Form.Label>
+							</div>
+							<Form.Validation />
+						</Form.Item>
+					</Form.Field>
+				{/if}
+			</div>
 		</Card.Content>
 		<Card.Footer class="flex justify-center">
 			<Form.Button class="w-[150px]">Submit</Form.Button>
