@@ -3,8 +3,6 @@ import type { Actions, PageServerLoad } from './$types';
 import schema from './schema';
 import { message, setError, superValidate } from 'sveltekit-superforms/server';
 import { DB_URL } from '$lib/server';
-import { toast } from 'svelte-sonner';
-import { base } from '$app/paths';
 import { delete_token } from '$lib/server/cookies';
 
 export const load: PageServerLoad = async () => {
@@ -27,16 +25,13 @@ export const actions: Actions = {
 		const res_mg = (await res.json()) as {
 			detail: string;
 		};
-
-		console.log('res', res.ok, res.status, res.statusText, { res_mg });
-
+		// console.log('res', res.ok, res.status, res.statusText, { res_mg });
 		if (!res.ok) {
 			message(form, { type: res.ok ? 'success' : 'error', text: res_mg.detail });
 			setError(form, 'current_password', res_mg.detail);
 			return fail(400, { form });
 		}
 
-		// message(form, { type: 'success', text: msg });
 		delete_token({ cookies });
 		return { form };
 	}
