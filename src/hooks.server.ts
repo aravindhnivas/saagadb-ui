@@ -7,8 +7,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	if (event.url.pathname.startsWith('/admin')) {
 		if (!event.locals.token) {
 			const fromUrl = event.url.pathname + event.url.search;
-			const message = 'You must be logged in to access the privileged admin page.';
-			redirect(303, `/login?redirectTo=${fromUrl}&message=${message}`);
+			redirect(303, `/login?redirectTo=${fromUrl}`);
 		}
 	}
 
@@ -38,6 +37,6 @@ export const handleFetch: HandleFetch = async ({ event, request, fetch }) => {
 	if (event.locals.token) {
 		request.headers.set('Authorization', `Token ${event.locals.token}`);
 	}
-
+	// console.log('request', request.url, request.headers);
 	return fetch(request);
 };

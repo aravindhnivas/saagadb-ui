@@ -16,7 +16,7 @@
 	footer={false}
 	{schema}
 	{form}
-	action="?/change_password&user_id={user_id}"
+	action="?/change_password"
 	opts={{ resetForm: true }}
 	let:config
 	debug={import.meta.env.DEV}

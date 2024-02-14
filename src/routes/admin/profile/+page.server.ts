@@ -13,29 +13,26 @@ export const load: PageServerLoad = async () => {
 };
 
 export const actions: Actions = {
-	change_password: async ({ request, url, cookies }) => {
+	change_password: async ({ request, cookies, fetch }) => {
 		const form = await superValidate(request, schema);
-		const user_id = url.searchParams.get('user_id');
-		if (!user_id) return fail(400, { form });
-
-		console.log('POST', form.data, { user_id });
 
 		if (!form.valid) return fail(400, { form });
 
-		const res = await fetch(`${DB_URL}/user/change_password/${user_id}/`, {
+		const res = await fetch(`${DB_URL}/user/change-password/`, {
 			method: 'PUT',
 			body: JSON.stringify(form.data),
 			headers: { 'Content-Type': 'application/json' }
 		});
 
-		const { msg } = (await res.json()) as {
-			msg: string;
+		const res_mg = (await res.json()) as {
+			detail: string;
 		};
 
-		console.log('res', res.ok, res.status, res.statusText, { msg });
+		console.log('res', res.ok, res.status, res.statusText, { res_mg });
 
 		if (!res.ok) {
-			setError(form, 'current_password', msg);
+			message(form, { type: res.ok ? 'success' : 'error', text: res_mg.detail });
+			setError(form, 'current_password', res_mg.detail);
 			return fail(400, { form });
 		}
 
