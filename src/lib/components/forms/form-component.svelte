@@ -16,7 +16,6 @@
 	export let method = 'POST';
 	export let footer = true;
 	export let dropfile = false;
-
 	let className = '';
 	export { className as class };
 
@@ -30,7 +29,7 @@
 				dispatch('success', { result });
 				error_message = '';
 			} else if (result.type === 'failure') {
-				error_message = result.data?.form?.errors?.detail[0];
+				error_message = result.data?.form?.errors?.detail?.[0];
 				console.error({ error_message });
 			}
 		},
