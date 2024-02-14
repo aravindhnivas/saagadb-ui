@@ -30,7 +30,7 @@
 		</Table.Root>
 	</div>
 
-	<ChangePassword {form} user_id={user.id} />
+	<ChangePassword {form} />
 {:else}
 	<p>Invalid user</p>
 {/if}
