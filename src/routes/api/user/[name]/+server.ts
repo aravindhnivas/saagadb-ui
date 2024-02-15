@@ -18,7 +18,7 @@ export const GET: RequestHandler = async ({ url, locals, cookies, params, fetch 
 
 	// console.log(res.headers.get('content-type'));
 	if (!res.ok) {
-		if (!params.name.includes('verify-')) delete_token({ cookies });
+		if (params.name === 'me') delete_token({ cookies });
 		const { detail } = (await res.json()) as { detail: string };
 		return json({ error: `${res.statusText}: ${detail}` }, { status: 500 });
 	}
