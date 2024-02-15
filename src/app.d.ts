@@ -5,7 +5,7 @@ declare global {
 	namespace App {
 		interface Error {
 			message: string;
-			title: string;
+			title?: string;
 		}
 		interface Locals {
 			token: string | null;
