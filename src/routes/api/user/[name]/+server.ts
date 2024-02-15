@@ -16,11 +16,10 @@ export const GET: RequestHandler = async ({ url, locals, cookies, params, fetch 
 
 	const res = await fetch(fetch_url);
 
-	console.log(res.headers.get('content-type'));
+	// console.log(res.headers.get('content-type'));
 	if (!res.ok) {
 		delete_token({ cookies });
 		const { detail } = (await res.json()) as { detail: string };
-		// error(500, { message: `${res.statusText}: ${detail}` });
 		return json({ error: `${res.statusText}: ${detail}` }, { status: 500 });
 	}
 	const data = await res.json();
