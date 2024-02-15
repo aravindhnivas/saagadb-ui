@@ -2,7 +2,7 @@ import { error, json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { DB_ORIGIN } from '$lib/server';
 
-export const GET: RequestHandler = async ({ url }) => {
+export const GET: RequestHandler = async ({ url, fetch }) => {
 	const fetch_url = new URL(url.pathname, DB_ORIGIN);
 
 	url.searchParams.forEach((value, key) => {

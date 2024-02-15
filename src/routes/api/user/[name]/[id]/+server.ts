@@ -3,7 +3,7 @@ import type { RequestHandler } from './$types';
 import { DB_ORIGIN } from '$lib/server';
 import { delete_token } from '$lib/server/cookies';
 
-export const GET: RequestHandler = async ({ url, locals, cookies }) => {
+export const GET: RequestHandler = async ({ url, locals, cookies, fetch }) => {
 	if (!locals.token) {
 		return json({ error: 'Not logged in' }, { status: 401 });
 	}
@@ -14,9 +14,7 @@ export const GET: RequestHandler = async ({ url, locals, cookies }) => {
 		fetch_url.searchParams.append(key, value);
 	});
 
-	const res = await fetch(fetch_url, {
-		headers: { Authorization: `Token ${locals.token}` }
-	});
+	const res = await fetch(fetch_url);
 
 	if (!res.ok) {
 		delete_token({ cookies });

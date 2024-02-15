@@ -3,9 +3,9 @@ import type { RequestHandler } from './$types';
 import { DB_ORIGIN } from '$lib/server';
 import { delete_token } from '$lib/server/cookies';
 
-export const GET: RequestHandler = async ({ url, locals, cookies }) => {
+export const GET: RequestHandler = async ({ url, locals, cookies, params, fetch }) => {
 	if (!locals.token) {
-		return json({ error: 'Not logged in' }, { status: 401 });
+		if (params.name !== 'verify-email') return json({ error: 'Not logged in' }, { status: 401 });
 	}
 
 	const fetch_url = new URL(url.pathname, DB_ORIGIN);
@@ -14,10 +14,9 @@ export const GET: RequestHandler = async ({ url, locals, cookies }) => {
 		fetch_url.searchParams.append(key, value);
 	});
 
-	const res = await fetch(fetch_url, {
-		headers: { Authorization: `Token ${locals.token}` }
-	});
+	const res = await fetch(fetch_url);
 
+	console.log(res.headers.get('content-type'));
 	if (!res.ok) {
 		delete_token({ cookies });
 		const { detail } = (await res.json()) as { detail: string };
