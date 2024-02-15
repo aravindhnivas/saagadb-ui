@@ -35,7 +35,7 @@ export const actions: Actions = {
 			headers: { 'Content-Type': 'application/json' }
 		});
 
-		if (res.status !== 200) {
+		if (!res.ok) {
 			return setError(form, 'password', 'Invalid email or password.');
 		}
 		const { token } = (await res.json()) as { token: string };

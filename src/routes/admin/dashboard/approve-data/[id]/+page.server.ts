@@ -5,10 +5,16 @@ import { DB_URL } from '$lib/server';
 
 export const load: PageServerLoad = async ({ fetch, params }) => {
 	const user_res = await fetch(`${base}/api/user/fetch/${params.id}`);
+	if (!user_res.ok) {
+		error(400, {
+			title: 'User not found',
+			message: 'User not found'
+		});
+	}
+
 	const user = (await user_res.json()) as User;
-	// console.log('Running server load function for approve-data ', user, params.id);
+
 	const fetch_ref_and_species = async () => {
-		if (!user?.id) error(400, 'User ID not provided');
 		const res = await fetch(
 			`${base}/api/data/meta-ref-and-species?uploaded_by=${user.id}&approved=false`
 		);

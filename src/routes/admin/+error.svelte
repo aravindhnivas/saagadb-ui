@@ -3,4 +3,10 @@
 	import AlertBox from '$lib/components/utils/alert-box.svelte';
 </script>
 
-<AlertBox message={$page.error?.message} title="Unauthorized" />
+<div class="h-5">
+	<AlertBox
+		variant="destructive"
+		message={$page.error?.message}
+		title={$page.error?.title || 'Unauthorized'}
+	/>
+</div>

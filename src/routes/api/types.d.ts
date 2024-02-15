@@ -24,7 +24,9 @@ interface User {
 	is_staff: boolean;
 	is_active: boolean;
 	is_superuser: boolean;
+	is_verified: boolean;
 	approver: boolean;
+	approver_name: string;
 }
 
 interface Linelist {
@@ -92,15 +94,4 @@ interface MetaReference {
 	doi: string;
 	ref_url: string;
 	uploaded_by_name: string;
-}
-
-interface User {
-	id: number;
-	name: string;
-	email: string;
-	organization: string;
-	is_active: boolean;
-	is_staff: boolean;
-	is_superuser: boolean;
-	approver: string;
 }

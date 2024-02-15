@@ -1,4 +1,4 @@
-import { fail, redirect } from '@sveltejs/kit';
+import { fail } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 import schema from './schema';
 import { message, setError, superValidate } from 'sveltekit-superforms/server';
@@ -6,8 +6,8 @@ import { DB_URL } from '$lib/server';
 import { delete_token } from '$lib/server/cookies';
 
 export const load: PageServerLoad = async () => {
-	const form = await superValidate(schema);
-	return { form };
+	const form_change_password = await superValidate(schema, { id: 'change-password' });
+	return { form_change_password };
 };
 
 export const actions: Actions = {

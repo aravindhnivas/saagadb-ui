@@ -7,9 +7,7 @@ export const GET: RequestHandler = async ({ url, locals, cookies, params, fetch 
 	if (!locals.token) {
 		if (params.name !== 'verify-email') return json({ error: 'Not logged in' }, { status: 401 });
 	}
-
 	const fetch_url = new URL(url.pathname, DB_ORIGIN);
-
 	url.searchParams.forEach((value, key) => {
 		fetch_url.searchParams.append(key, value);
 	});

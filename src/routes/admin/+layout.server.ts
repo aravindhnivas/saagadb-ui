@@ -1,6 +1,7 @@
 import { base } from '$app/paths';
 import { oO } from '@zmotivat0r/o0';
 import type { LayoutServerLoad } from './$types';
+import { error } from '@sveltejs/kit';
 
 export const load: LayoutServerLoad = async ({ fetch }) => {
 	const fetch_user = async () => {
@@ -21,6 +22,9 @@ export const load: LayoutServerLoad = async ({ fetch }) => {
 	};
 
 	const user = await fetch_user();
+	if (!user) {
+		error(403, { title: 'Invalid user', message: 'Invalid User' });
+	}
 
 	const [species, linelist] = (await Promise.all([
 		fetchFunc(`${base}/api/data/species`),

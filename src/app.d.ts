@@ -3,7 +3,10 @@
 import type { RDKitModule } from '@rdkit/rdkit';
 declare global {
 	namespace App {
-		// interface Error {}
+		interface Error {
+			message: string;
+			title: string;
+		}
 		interface Locals {
 			token: string | null;
 			domain: string;
