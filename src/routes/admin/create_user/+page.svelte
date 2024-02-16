@@ -6,9 +6,18 @@
 	import FormComponent from '$lib/components/forms/form-component.svelte';
 	import userSchema from './schema';
 	import FormCombobox from '$lib/components/combobox/form-combobox.svelte';
+	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
+	import { Button } from '$lib/components/ui/button';
+	import { tick } from 'svelte';
 
 	export let data: PageData;
+
 	let show_password = false;
+	let approvers = data.all_staff.map((f) => ({
+		value: `${f.id}`,
+		label: f.name,
+		checked: false
+	}));
 </script>
 
 <FormComponent
@@ -38,7 +47,7 @@
 			<Form.Field {config} name="email">
 				<Form.Item>
 					<Form.Label>email</Form.Label>
-					<Form.Input type="email" required />
+					<Form.Input type="email" />
 					<Form.Validation />
 				</Form.Item>
 			</Form.Field>
@@ -72,15 +81,31 @@
 				</Form.Item>
 			</Form.Field>
 			<div class="flex gap-4 items-center">
-				<FormCombobox
-					val_type="number"
-					{config}
-					name={'approver'}
-					items={data.all_staff.map((f) => ({
-						value: `${f.id}`,
-						label: f.name
-					}))}
-				/>
+				<Form.Field {config} name="approver" let:setValue>
+					<DropdownMenu.Root>
+						<DropdownMenu.Trigger asChild let:builder>
+							<Button variant="outline" builders={[builder]}>Select approvers</Button>
+						</DropdownMenu.Trigger>
+						<DropdownMenu.Content class="w-56">
+							<DropdownMenu.Label>Approvers</DropdownMenu.Label>
+							<DropdownMenu.Separator />
+							{#each approvers as item}
+								<DropdownMenu.CheckboxItem
+									bind:checked={item.checked}
+									onCheckedChange={async (e) => {
+										await tick();
+										const selected_approvers = approvers
+											.filter((f) => f.checked)
+											.map((f) => f.value);
+										setValue(selected_approvers);
+									}}
+								>
+									{item.label}
+								</DropdownMenu.CheckboxItem>
+							{/each}
+						</DropdownMenu.Content>
+					</DropdownMenu.Root>
+				</Form.Field>
 				{#if data.user?.is_superuser}
 					<Form.Field {config} name="is_staff">
 						<Form.Item class="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
