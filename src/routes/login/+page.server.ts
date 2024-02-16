@@ -10,10 +10,8 @@ export const load: PageServerLoad = async ({ locals }) => {
 	if (locals.token) {
 		redirect(303, base + '/admin/dashboard');
 	}
-	// Server API:
-	const form = await superValidate(loginSchema);
 
-	// Unless you throw, always return { form } in load and form actions.
+	const form = await superValidate(loginSchema);
 	return { form };
 };
 
