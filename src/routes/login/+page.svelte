@@ -5,6 +5,7 @@
 	import loginSchema from '$lib/schemas/login';
 	import { Checkbox } from '$lib/components/ui/checkbox';
 	import { Loader2 } from 'lucide-svelte';
+	import { toast } from 'svelte-sonner';
 
 	export let data: PageData;
 
@@ -40,7 +41,13 @@
 					<div class="flex gap-1 items-center p-2 mb-5">
 						<Checkbox bind:checked={show_password} />
 						<span>Show password</span>
-						<!-- <a class="ml-auto hover:underline text-sm" href="">Forgot password ?</a> -->
+						<a
+							class="ml-auto hover:underline text-sm"
+							href=""
+							on:click={() => {
+								toast.warning('This feature is not yet implemented');
+							}}>Forgot password ?</a
+						>
 					</div>
 					<Form.Button class="w-full flex gap-4" disabled={submitting}>
 						<span>{submitting ? 'Logging in...' : 'Login'}</span>
