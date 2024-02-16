@@ -40,7 +40,7 @@
 					<div class="flex gap-1 items-center p-2 mb-5">
 						<Checkbox bind:checked={show_password} />
 						<span>Show password</span>
-						<a class="ml-auto hover:underline text-sm" href="">Forgot password ?</a>
+						<!-- <a class="ml-auto hover:underline text-sm" href="">Forgot password ?</a> -->
 					</div>
 					<Form.Button class="w-full flex gap-4" disabled={submitting}>
 						<span>{submitting ? 'Logging in...' : 'Login'}</span>
