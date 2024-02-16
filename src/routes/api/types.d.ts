@@ -26,7 +26,7 @@ interface User {
 	is_superuser: boolean;
 	is_verified: boolean;
 	approver: boolean;
-	approver_name: string;
+	approver_name: string[];
 }
 
 interface Linelist {

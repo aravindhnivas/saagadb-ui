@@ -43,15 +43,20 @@
 				</Card.Header>
 				<Card.Content class="space-y-2">
 					<div class="alert">
-						{#await data.fetch_approver then approver}
-							{#if approver}
-								<ShieldCheck />
-								<span>Approver: {approver.name} ({approver.email})</span>
-							{:else}
-								<AlertCircle />
-								<span>No approver assigned</span>
-							{/if}
-						{/await}
+						<!-- {#await data.fetch_approver then approver} -->
+						{#if data.user.approver_name}
+							{@const approver_name = data.user.approver_name}
+							{@const approver_name_str =
+								approver_name.length > 1
+									? `${approver_name.slice(0, -1).join(', ')} and ${approver_name[approver_name.length - 1]}`
+									: approver_name[0] || ''}
+							<ShieldCheck />
+							<span>Approver: {approver_name_str}</span>
+						{:else}
+							<AlertCircle />
+							<span>No approver assigned</span>
+						{/if}
+						<!-- {/await} -->
 					</div>
 
 					<UploadStatus
