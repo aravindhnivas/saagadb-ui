@@ -1,16 +1,11 @@
 import type { Actions, PageServerLoad } from './$types';
-// import { z } from 'zod';
 import { message, setError, superValidate } from 'sveltekit-superforms/server';
 import { fail } from '@sveltejs/kit';
 import { DB_URL } from '$lib/server';
 import linelistSchema from './schema';
-// const schema = z.object({
-// 	linelist_name: z.string().min(1)
-// });
 
 export const load: PageServerLoad = async () => {
 	const form = await superValidate(linelistSchema);
-
 	return { form };
 };
 
