@@ -4,13 +4,11 @@
 	import * as Card from '$lib/components/ui/card';
 	import loginSchema from '$lib/schemas/login';
 	import { Checkbox } from '$lib/components/ui/checkbox';
-	import { Loader2 } from 'lucide-svelte';
 	import { toast } from 'svelte-sonner';
 
 	export let data: PageData;
-
 	let show_password = false;
-	console.log(data);
+	// console.log(data);
 </script>
 
 <div class="w-full flex items-center justify-center">
