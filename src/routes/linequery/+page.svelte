@@ -4,7 +4,7 @@
 	import Linetable from './linetable.svelte';
 
 	export let data: PageData;
-	console.log(data);
+	// console.log(data);
 </script>
 
 <svelte:head>
