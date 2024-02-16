@@ -3,6 +3,8 @@
 	import { Label } from '$lib/components/ui/label';
 	import { toast } from 'svelte-sonner';
 	import { TabulatorFull as Tabulator } from 'tabulator-tables';
+	// import pkg from 'tabulator-tables';
+	// const { TabulatorFull: Tabulator } = pkg;
 	import type { OptionsColumns, OptionsData } from 'tabulator-tables';
 	import { minMaxFilterEditor, minMaxFilterFunction } from './minmax-filter';
 	import { writable } from '@macfja/svelte-persistent-store';

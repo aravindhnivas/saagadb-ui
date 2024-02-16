@@ -5,21 +5,20 @@
 	import * as Card from '$lib/components/ui/card';
 	import FormComponent from '$lib/components/forms/form-component.svelte';
 	import userSchema from './schema';
-	import FormCombobox from '$lib/components/combobox/form-combobox.svelte';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import { Button } from '$lib/components/ui/button';
 	import { tick } from 'svelte';
-	import { Input } from '$lib/components/ui/input';
-	import { update } from 'lodash-es';
 
 	export let data: PageData;
 
 	let show_password = false;
-	let approvers = data.all_staff.map((f) => ({
-		value: `${f.id}`,
-		label: f.name,
-		checked: false
-	}));
+	let approvers = data.all_staff
+		.filter((f) => f.id !== data.user.id)
+		.map((f) => ({
+			value: `${f.id}`,
+			label: f.name,
+			checked: false
+		}));
 </script>
 
 <FormComponent
