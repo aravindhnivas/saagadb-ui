@@ -5,9 +5,6 @@ export default z.object({
 	email: z.string().email(),
 	password: z.string().min(8),
 	organization: z.string().min(2).default('saagadb'),
-	approver: z
-		.union([z.string().min(1), z.number().int().min(1)])
-		.array()
-		.default([]),
+	approver: z.string().min(1),
 	is_staff: z.boolean().default(false)
 });

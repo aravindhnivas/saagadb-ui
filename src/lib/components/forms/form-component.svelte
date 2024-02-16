@@ -51,6 +51,7 @@
 	{schema}
 	let:config
 	let:formStore
+	let:formValues
 	enctype="multipart/form-data"
 	{options}
 >
@@ -60,7 +61,7 @@
 		<Dropfile />
 	{/if}
 
-	<slot {config} {formStore} />
+	<slot {config} {formStore} {formValues} />
 	<slot name="footer">
 		{#if footer}
 			<Form.Button>Submit</Form.Button>

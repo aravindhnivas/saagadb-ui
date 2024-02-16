@@ -6,22 +6,24 @@ import userSchema from './schema';
 import { base } from '$app/paths';
 
 export const load: PageServerLoad = async ({ fetch }) => {
-	const fetch_url = `${base}/api/user/fetch?is_staff=true`;
-	const fetch_all_staff = await fetch(fetch_url);
+	const fetch_all_staff = await fetch(`${base}/api/user/fetch?is_staff=true`);
 	const all_staff = (await fetch_all_staff.json()) as User[];
-
-	// Server API:
 	const form = await superValidate(userSchema);
-
-	// Unless you throw, always return { form } in load and form actions.
 	return { form, all_staff };
 };
 
 export const actions: Actions = {
 	default: async ({ request, fetch }) => {
 		const form = await superValidate(request, userSchema);
-		console.log('POST', form.data);
-
+		const { approver, ...rest } = form.data;
+		const body = { ...rest, approver: approver.split(',').map((f) => parseInt(f)) };
+		console.log('posting', body, JSON.stringify(body));
+		// const formData = new FormData();
+		// for (const key in body) {
+		// 	formData.append(key, JSON.stringify(body[key]));
+		// }
+		// console.log(formData);
+		// return { form };
 		// Convenient validation check:
 		if (!form.valid) {
 			// Again, return { form } and things will just work.
@@ -31,7 +33,7 @@ export const actions: Actions = {
 		// TODO: Do something with the validated form.data
 		const res = await fetch(`${DB_URL}/user/create/`, {
 			method: 'POST',
-			body: JSON.stringify(form.data),
+			body: JSON.stringify(body),
 			headers: { 'Content-Type': 'application/json' }
 		});
 

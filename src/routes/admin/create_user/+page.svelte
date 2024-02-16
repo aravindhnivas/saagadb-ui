@@ -9,6 +9,8 @@
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import { Button } from '$lib/components/ui/button';
 	import { tick } from 'svelte';
+	import { Input } from '$lib/components/ui/input';
+	import { update } from 'lodash-es';
 
 	export let data: PageData;
 
@@ -26,6 +28,8 @@
 	schema={userSchema}
 	form={data.form}
 	let:config
+	let:formStore
+	let:formValues
 	debug={import.meta.env.DEV}
 >
 	<Card.Root>
@@ -80,44 +84,56 @@
 					<Form.Validation />
 				</Form.Item>
 			</Form.Field>
-			<div class="flex gap-4 items-center">
-				<Form.Field {config} name="approver" let:setValue>
-					<DropdownMenu.Root>
-						<DropdownMenu.Trigger asChild let:builder>
-							<Button variant="outline" builders={[builder]}>Select approvers</Button>
-						</DropdownMenu.Trigger>
-						<DropdownMenu.Content class="w-56">
-							<DropdownMenu.Label>Approvers</DropdownMenu.Label>
-							<DropdownMenu.Separator />
-							{#each approvers as item}
-								<DropdownMenu.CheckboxItem
-									bind:checked={item.checked}
-									onCheckedChange={async (e) => {
-										await tick();
-										const selected_approvers = approvers
-											.filter((f) => f.checked)
-											.map((f) => f.value);
-										setValue(selected_approvers);
-									}}
-								>
-									{item.label}
-								</DropdownMenu.CheckboxItem>
-							{/each}
-						</DropdownMenu.Content>
-					</DropdownMenu.Root>
+
+			<div class="flex gap-4 items-start">
+				<Form.Field {config} name="approver">
+					<Form.Item class="w-full">
+						<!-- <Form.Label>organization</Form.Label> -->
+						<Form.Input required />
+						<Form.Validation />
+					</Form.Item>
 				</Form.Field>
-				{#if data.user?.is_superuser}
-					<Form.Field {config} name="is_staff">
-						<Form.Item class="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
-							<Form.Checkbox />
-							<div class="space-y-1 leading-none">
-								<Form.Label>Admin privilege</Form.Label>
-							</div>
-							<Form.Validation />
-						</Form.Item>
-					</Form.Field>
-				{/if}
+
+				<!-- <Form.Field {config} name="approver" let:setValue> -->
+				<DropdownMenu.Root>
+					<DropdownMenu.Trigger asChild let:builder>
+						<Button variant="outline" builders={[builder]}>Select approvers</Button>
+					</DropdownMenu.Trigger>
+					<DropdownMenu.Content class="w-56">
+						<DropdownMenu.Label>Approvers</DropdownMenu.Label>
+						<DropdownMenu.Separator />
+						{#each approvers as item}
+							<DropdownMenu.CheckboxItem
+								bind:checked={item.checked}
+								onCheckedChange={async (e) => {
+									await tick();
+									const selected_approvers = approvers.filter((f) => f.checked).map((f) => f.value);
+									formStore.update((f) => {
+										f.approver = selected_approvers.join(',');
+										return f;
+									});
+									// setValue(selected_approvers);
+								}}
+							>
+								{item.label}
+							</DropdownMenu.CheckboxItem>
+						{/each}
+					</DropdownMenu.Content>
+				</DropdownMenu.Root>
+				<!-- </Form.Field> -->
 			</div>
+
+			{#if data.user?.is_superuser}
+				<Form.Field {config} name="is_staff">
+					<Form.Item class="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+						<Form.Checkbox />
+						<div class="space-y-1 leading-none">
+							<Form.Label>Admin privilege</Form.Label>
+						</div>
+						<Form.Validation />
+					</Form.Item>
+				</Form.Field>
+			{/if}
 		</Card.Content>
 		<Card.Footer class="flex justify-center">
 			<Form.Button class="w-[150px]">Submit</Form.Button>
