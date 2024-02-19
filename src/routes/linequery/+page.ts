@@ -3,8 +3,6 @@ import type { PageLoad } from './$types';
 import { error } from '@sveltejs/kit';
 export const load: PageLoad = async ({ url, fetch }) => {
 	const getLinequery = async () => {
-		// console.log(url);
-		// console.log(url.searchParams.get('min_freq'), url.searchParams.get('max_freq'));
 		const min_freq = url.searchParams.get('min_freq');
 		const max_freq = url.searchParams.get('max_freq');
 		if (min_freq === null || max_freq === null) return [];
