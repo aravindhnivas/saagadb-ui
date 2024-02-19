@@ -97,11 +97,6 @@
 				<svelte:fragment slot="message">
 					<div class="flex flex-col">
 						<span>Please verify your email to activate your account. </span>
-						<span> If you have not received the email, please check your spam folder. </span>
-						<span>
-							If you still can't find the email or the activation link is expired - resend the
-							verification link via Profile.
-						</span>
 					</div>
 				</svelte:fragment>
 			</AlertBox>

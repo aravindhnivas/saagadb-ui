@@ -22,9 +22,7 @@
 			: ''} {className}"
 	>
 		{#if textarea}
-			{#if label ?? name}
-				<Form.Label>{label ?? name}</Form.Label>
-			{/if}
+			<Form.Label>{label || name}</Form.Label>
 			<Form.Textarea {...constraints} {...$$restProps} />
 		{:else if checkbox}
 			<Form.Checkbox />
@@ -32,9 +30,7 @@
 				<Form.Label>{label || name}</Form.Label>
 			</div>
 		{:else}
-			{#if label ?? name}
-				<Form.Label>{label ?? name}</Form.Label>
-			{/if}
+			<Form.Label>{label || name}</Form.Label>
 			<Form.Input {...constraints} {...$$restProps} />
 		{/if}
 

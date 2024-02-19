@@ -66,11 +66,11 @@
 			</Form.Field>
 
 			<FormInput {config} name="organization" />
-			<div class="flex gap-4 items-start">
-				<FormInput {config} name="approver" class="w-full" />
+			<div class="flex gap-4 items-end">
+				<FormInput {config} name="approver" label="approvers" class="w-full" />
 				<DropdownMenu.Root>
 					<DropdownMenu.Trigger asChild let:builder>
-						<Button variant="outline" builders={[builder]}>Select approvers</Button>
+						<Button variant="outline" builders={[builder]} class="mb-2">Select approvers</Button>
 					</DropdownMenu.Trigger>
 					<DropdownMenu.Content class="w-56">
 						<DropdownMenu.Label>Approvers</DropdownMenu.Label>
