@@ -5,13 +5,6 @@ import type { PageServerLoad } from './$types';
 export const load: PageServerLoad = async ({ fetch, parent }) => {
 	const { user } = await parent();
 
-	// const fetch_approver = async () => {
-	// 	const res = await fetch(`${base}/api/user/fetch/${user.approver}`);
-	// 	if (!res.ok) return;
-	// 	const approver: User = await res.json();
-	// 	return approver;
-	// };
-
 	const fetch_approving_users = async () => {
 		let approving_users: User[] = [];
 		if (!user.is_staff)
