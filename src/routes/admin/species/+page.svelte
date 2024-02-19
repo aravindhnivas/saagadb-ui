@@ -17,6 +17,7 @@
 	form={data.form}
 	let:config
 	let:formStore
+	let:submitting
 	debug={import.meta.env.DEV}
 >
 	<Card.Root>
@@ -115,7 +116,13 @@
 			</Form.Field>
 		</Card.Content>
 		<Card.Footer class="flex gap-4 justify-center">
-			<Form.Button class="w-[150px]">Submit</Form.Button>
+			<!-- <Form.Button class="w-[150px]">Submit</Form.Button> -->
+			<Form.Button class="w-[150px] flex gap-4" disabled={submitting}>
+				<span>Submit</span>
+				{#if submitting}
+					<span class="loading loading-spinner"></span>
+				{/if}
+			</Form.Button>
 		</Card.Footer>
 	</Card.Root>
 </FormComponent>

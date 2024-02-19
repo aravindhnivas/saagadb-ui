@@ -8,10 +8,10 @@
 </script>
 
 <FormComponent class="px-2" schema={linelistSchema} form={data.form} let:config>
-	<Form.Field {config} name="linelist_name">
+	<Form.Field {config} name="linelist_name" let:constraints>
 		<Form.Item class="max-w-md">
 			<Form.Label>Name</Form.Label>
-			<Form.Input required />
+			<Form.Input {...constraints} />
 			<Form.Description>Enter the name of the database</Form.Description>
 			<Form.Validation />
 		</Form.Item>

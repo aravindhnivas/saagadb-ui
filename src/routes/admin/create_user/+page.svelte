@@ -8,6 +8,7 @@
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import { Button } from '$lib/components/ui/button';
 	import { tick } from 'svelte';
+	import FormInput from '$lib/components/forms/form-input.svelte';
 
 	export let data: PageData;
 
@@ -28,33 +29,21 @@
 	form={data.form}
 	let:config
 	let:formStore
-	let:formValues
+	let:submitting
 	debug={import.meta.env.DEV}
 >
 	<Card.Root>
 		<Card.Header>
 			<Card.Title>Create new user</Card.Title>
 			<Card.Description
-				>The email is just a unique identifier so it can be random (atleast for now)
+				>Please verify email address before submitting the form.
+				<br />
+				An email will be sent to the user with a link to verify their email address.
 			</Card.Description>
 		</Card.Header>
 		<Card.Content>
-			<Form.Field {config} name="name">
-				<Form.Item>
-					<Form.Label>name</Form.Label>
-					<Form.Input required />
-					<Form.Validation />
-				</Form.Item>
-			</Form.Field>
-
-			<Form.Field {config} name="email">
-				<Form.Item>
-					<Form.Label>email</Form.Label>
-					<Form.Input type="email" />
-					<Form.Validation />
-				</Form.Item>
-			</Form.Field>
-
+			<FormInput {config} name="name" />
+			<FormInput {config} name="email" type="email" />
 			<Form.Field {config} name="password">
 				<Form.Item>
 					<Form.Label>password</Form.Label>
@@ -76,24 +65,9 @@
 				</Form.Item>
 			</Form.Field>
 
-			<Form.Field {config} name="organization">
-				<Form.Item>
-					<Form.Label>organization</Form.Label>
-					<Form.Input required />
-					<Form.Validation />
-				</Form.Item>
-			</Form.Field>
-
+			<FormInput {config} name="organization" />
 			<div class="flex gap-4 items-start">
-				<Form.Field {config} name="approver">
-					<Form.Item class="w-full">
-						<!-- <Form.Label>organization</Form.Label> -->
-						<Form.Input required />
-						<Form.Validation />
-					</Form.Item>
-				</Form.Field>
-
-				<!-- <Form.Field {config} name="approver" let:setValue> -->
+				<FormInput {config} name="approver" class="w-full" />
 				<DropdownMenu.Root>
 					<DropdownMenu.Trigger asChild let:builder>
 						<Button variant="outline" builders={[builder]}>Select approvers</Button>
@@ -119,23 +93,19 @@
 						{/each}
 					</DropdownMenu.Content>
 				</DropdownMenu.Root>
-				<!-- </Form.Field> -->
 			</div>
 
 			{#if data.user?.is_superuser}
-				<Form.Field {config} name="is_staff">
-					<Form.Item class="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
-						<Form.Checkbox />
-						<div class="space-y-1 leading-none">
-							<Form.Label>Admin privilege</Form.Label>
-						</div>
-						<Form.Validation />
-					</Form.Item>
-				</Form.Field>
+				<FormInput {config} name="is_staff" checkbox={true} label="Admin privilege" />
 			{/if}
 		</Card.Content>
 		<Card.Footer class="flex justify-center">
-			<Form.Button class="w-[150px]">Submit</Form.Button>
+			<Form.Button class="w-[150px] flex gap-4" disabled={submitting}>
+				<span>Submit</span>
+				{#if submitting}
+					<span class="loading loading-spinner"></span>
+				{/if}
+			</Form.Button>
 		</Card.Footer>
 	</Card.Root>
 </FormComponent>

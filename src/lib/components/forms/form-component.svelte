@@ -51,7 +51,8 @@
 	{schema}
 	let:config
 	let:formStore
-	let:formValues
+	let:submitting
+	let:posted
 	enctype="multipart/form-data"
 	{options}
 >
@@ -61,10 +62,15 @@
 		<Dropfile />
 	{/if}
 
-	<slot {config} {formStore} {formValues} />
+	<slot {config} {formStore} {submitting} {posted} />
 	<slot name="footer">
 		{#if footer}
-			<Form.Button>Submit</Form.Button>
+			<Form.Button class="w-[150px] flex gap-4" disabled={submitting}>
+				<span>Submit</span>
+				{#if submitting}
+					<span class="loading loading-spinner"></span>
+				{/if}
+			</Form.Button>
 		{/if}
 	</slot>
 
