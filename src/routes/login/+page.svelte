@@ -5,6 +5,7 @@
 	import loginSchema from '$lib/schemas/login';
 	import { Checkbox } from '$lib/components/ui/checkbox';
 	import { toast } from 'svelte-sonner';
+	import { base } from '$app/paths';
 
 	export let data: PageData;
 	let show_password = false;
@@ -39,12 +40,8 @@
 					<div class="flex gap-1 items-center p-2 mb-5">
 						<Checkbox bind:checked={show_password} />
 						<span>Show password</span>
-						<a
-							class="ml-auto hover:underline text-sm"
-							href=""
-							on:click={() => {
-								toast.warning('This feature is not yet implemented');
-							}}>Forgot password ?</a
+						<a class="ml-auto hover:underline text-sm" href="{base}/login/forgot-password"
+							>Forgot password ?</a
 						>
 					</div>
 					<Form.Button class="w-full flex gap-4" disabled={submitting}>
