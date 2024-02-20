@@ -4,8 +4,9 @@
 	import { v4 as uuidv4 } from 'uuid';
 	import type { LayoutData } from './$types';
 	import AlertBox from '$lib/components/utils/alert-box.svelte';
-	import Alert from '$lib/components/ui/alert/alert.svelte';
 	import { onMount } from 'svelte';
+
+	export let data: LayoutData;
 
 	interface AdminMenu {
 		id: string;
@@ -60,11 +61,9 @@
 		}
 	];
 
-	// let current_page: AdminMenu = admin_menu[0];
 	$: current_page = admin_menu.find((f) => $page.url.pathname.startsWith(f.href)) ?? admin_menu[0];
 	let active_tab: string;
-
-	export let data: LayoutData;
+	// $: console.log('current_page', current_page);
 
 	onMount(() => {
 		active_tab = current_page.name;

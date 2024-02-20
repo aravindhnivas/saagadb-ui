@@ -8,6 +8,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import * as Table from '$lib/components/ui/table';
 	import { Delete, Edit } from 'lucide-svelte';
+	import AlertBox from '$lib/components/utils/alert-box.svelte';
 
 	export let data: PageData;
 	let id: string;
@@ -50,10 +51,7 @@
 </script>
 
 {#if message}
-	<div role="alert" class="alert alert-warning w-100 m-auto">
-		<i class="i-mdi-alert"></i>
-		<span>{JSON.stringify(message)}</span>
-	</div>
+	<AlertBox message={JSON.stringify(message)} />
 {/if}
 
 {#if data?.linelist.length > 0}

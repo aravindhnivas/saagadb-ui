@@ -23,6 +23,7 @@
 		window
 			.initRDKitModule()
 			.then(function (RDKit) {
+				console.log('RDKit module initialized');
 				console.log('RDKit version: ' + RDKit.version());
 				window.RDKit = RDKit;
 			})
