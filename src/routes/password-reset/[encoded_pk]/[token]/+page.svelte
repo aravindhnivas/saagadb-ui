@@ -2,34 +2,34 @@
 	import type { PageData } from './$types';
 	import * as Form from '$lib/components/ui/form';
 	import * as Card from '$lib/components/ui/card';
-	import loginSchema from '$lib/schemas/login';
+	import { PasswordSchema } from './schema';
 	import { Checkbox } from '$lib/components/ui/checkbox';
 	import { toast } from 'svelte-sonner';
 	import { base } from '$app/paths';
 
 	export let data: PageData;
 	let show_password = false;
-	// console.log(data);
 </script>
 
 <div class="w-full flex items-center justify-center">
-	<Form.Root form={data.form} schema={loginSchema} let:config let:submitting>
+	<Form.Root form={data.form} schema={PasswordSchema} let:config let:submitting let:posted>
 		<Card.Root class="lg:w-sm sm:w-full">
 			<Card.Header class="space-y-1">
-				<Card.Title class="text-2xl">Login with your account</Card.Title>
-				<Card.Description>Enter your email and password below</Card.Description>
+				<Card.Title class="text-2xl">Password reset</Card.Title>
+				<Card.Description>Enter new password below</Card.Description>
 			</Card.Header>
 			<Card.Content class="grid gap-4">
-				<Form.Field {config} name="email">
-					<Form.Item>
-						<Form.Label>Email</Form.Label>
-						<Form.Input type="email" required />
-						<Form.Validation />
-					</Form.Item>
-				</Form.Field>
 				<Form.Field {config} name="password">
 					<Form.Item>
 						<Form.Label>Password</Form.Label>
+						<Form.Input type={show_password ? 'string' : 'password'} required />
+						<Form.Validation />
+					</Form.Item>
+				</Form.Field>
+
+				<Form.Field {config} name="confirm_password">
+					<Form.Item>
+						<Form.Label>Confirm Password</Form.Label>
 						<Form.Input type={show_password ? 'string' : 'password'} required />
 						<Form.Validation />
 					</Form.Item>
@@ -40,12 +40,9 @@
 					<div class="flex gap-1 items-center p-2 mb-5">
 						<Checkbox bind:checked={show_password} />
 						<span>Show password</span>
-						<a class="ml-auto hover:underline text-sm" href="{base}/forgot-password"
-							>Forgot password ?</a
-						>
 					</div>
 					<Form.Button class="w-full flex gap-4" disabled={submitting}>
-						<span>{submitting ? 'Logging in...' : 'Login'}</span>
+						<span>Save password</span>
 						{#if submitting}
 							<span class="loading loading-spinner"></span>
 						{/if}
