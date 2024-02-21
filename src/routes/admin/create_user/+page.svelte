@@ -13,13 +13,11 @@
 	export let data: PageData;
 
 	let show_password = false;
-	let approvers = data.all_staff
-		.filter((f) => f.id !== data.user.id)
-		.map((f) => ({
-			value: `${f.id}`,
-			label: f.name,
-			checked: false
-		}));
+	let approvers = data.all_staff.map((f) => ({
+		value: `${f.id}`,
+		label: f.name,
+		checked: false
+	}));
 </script>
 
 <FormComponent
