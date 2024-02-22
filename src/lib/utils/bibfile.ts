@@ -9,7 +9,8 @@ export default async function ({ doi = '', bibtex = '' }) {
 	// console.log(parsed_data);
 	const { author, issued, URL: href } = data;
 
-	const first_author = author.find((a) => a.sequence === 'first');
+	const first_author = author.find((a: {sequence: string}) => a.sequence === 'first');
+	
 	const author_clean = first_author.family + (author.length > 1 ? ' et al.' : '');
 	const year = issued['date-parts'][0][0];
 	const citeas = `${author_clean} (${year})`;

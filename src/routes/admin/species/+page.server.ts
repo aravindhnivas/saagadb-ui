@@ -3,6 +3,7 @@ import { message, setError, superValidate } from 'sveltekit-superforms/server';
 import { fail } from '@sveltejs/kit';
 import { DB_URL } from '$lib/server';
 import speciesSchema from '$lib/schemas/species';
+import type { z } from 'zod';
 
 export const load: PageServerLoad = async () => {
 	// Server API:
@@ -35,10 +36,17 @@ export const actions: Actions = {
 
 		if (!res.ok) {
 			try {
-				const msg_json = await res.json();
-				for (const [key, value] of Object.entries(msg_json) as [string, string][]) {
+				type SchemaType = z.infer<typeof speciesSchema>;
+				type SchemaKeys = keyof SchemaType;
+				const msg_json = await res.json() as Record<SchemaKeys, string>;
+				
+				for (const [key, value] of Object.entries(msg_json) as [SchemaKeys, string][]) {
 					setError(form, key, value);
 				}
+				// const msg_json = await res.json();
+				// for (const [key, value] of Object.entries(msg_json) as [string, string][]) {
+				// 	setError(form, key, value);
+				// }
 				return fail(400, { form });
 			} catch (error) {
 				console.log('error', error);
