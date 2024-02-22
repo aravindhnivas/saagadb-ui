@@ -15,7 +15,7 @@
 	const form = superForm(data.form, {
 		validators: zodClient(loginSchema)
 	});
-	const { form: formData, enhance, submitting } = form;
+	const { form: formStore, enhance, submitting } = form;
 </script>
 
 <form class="w-full flex items-center justify-center" method="POST" use:enhance>
@@ -28,7 +28,7 @@
 			<Form.Field {form} name="email" let:constraints>
 				<Form.Control let:attrs>
 					<Form.Label>Email</Form.Label>
-					<Input {...attrs} {...constraints} bind:value={$formData.email} />
+					<Input {...attrs} {...constraints} bind:value={$formStore.email} />
 				</Form.Control>
 				<Form.FieldErrors />
 			</Form.Field>
@@ -39,7 +39,7 @@
 					<Input
 						{...constraints}
 						{...attrs}
-						bind:value={$formData.password}
+						bind:value={$formStore.password}
 						type={show_password ? 'text' : 'password'}
 					/>
 				</Form.Control>

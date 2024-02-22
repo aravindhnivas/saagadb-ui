@@ -26,9 +26,10 @@ export const actions: Actions = {
 			body: JSON.stringify({ email }),
 			headers: { 'Content-Type': 'application/json' }
 		});
-		console.log(await res.text());
+		const response = await res.json();
+		// console.log(await res.text());
 		if (!res.ok) {
-			setError(form, 'email', 'Invalid email');
+			setError(form, 'email', response.message);
 			return fail(400, { form });
 		}
 

@@ -14,7 +14,7 @@
 	const form = superForm(data.form, {
 		validators: zodClient(EmailSchema)
 	});
-	const { form: formData, enhance, submitting, posted } = form;
+	const { form: formStore, enhance, submitting, posted, errors } = form;
 </script>
 
 <div class="w-full flex items-center justify-center">
@@ -35,18 +35,18 @@
 				<Form.Field {form} name="email" let:constraints>
 					<Form.Control let:attrs>
 						<Form.Label>Email</Form.Label>
-						<Input {...attrs} {...constraints} bind:value={$formData.email} />
+						<Input {...attrs} {...constraints} bind:value={$formStore.email} />
 					</Form.Control>
 					<Form.Description>Enter your registered email</Form.Description>
 					<Form.FieldErrors />
 				</Form.Field>
 			</Card.Content>
 			<Card.Footer class="gap-4">
-				{#if $posted}
+				{#if $posted && !$errors.email}
 					<span class="text-sm">Check your email sent for reset link</span>
 				{/if}
 				<Form.Button class="w-full flex gap-4" disabled={$submitting}>
-					<span>{$posted ? 'Resend' : 'Request link'}</span>
+					<span>{$posted && !$errors.email ? 'Resend' : 'Request link'}</span>
 					{#if $submitting}
 						<span class="loading loading-spinner"></span>
 					{/if}
