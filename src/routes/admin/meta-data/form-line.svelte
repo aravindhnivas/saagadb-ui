@@ -18,7 +18,6 @@
 	{schema}
 	{form}
 	let:config
-	include_dropfile={false}
 	title="Line frequency"
 	description="Enter the line details"
 >

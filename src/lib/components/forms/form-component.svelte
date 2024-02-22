@@ -3,7 +3,6 @@
 	import { type FormOptions, type SuperValidated } from 'formsnap';
 	import MessageAlert from './message-alert.svelte';
 	import { type AnyZodObject } from 'zod';
-	import Dropfile from '$lib/components/file-drop.svelte';
 	import { AlertCircle } from 'lucide-svelte';
 	import * as Alert from '$lib/components/ui/alert';
 	import { createEventDispatcher } from 'svelte';
@@ -15,7 +14,6 @@
 	export let action = '';
 	export let method = 'POST';
 	export let footer = true;
-	export let dropfile = false;
 	let className = '';
 	export { className as class };
 
@@ -57,10 +55,6 @@
 	{options}
 >
 	<MessageAlert />
-
-	{#if dropfile}
-		<Dropfile />
-	{/if}
 
 	<slot {config} {formStore} {submitting} {posted} />
 	<slot name="footer">

@@ -60,7 +60,6 @@
 	{form}
 	let:config
 	let:formStore
-	include_dropfile={false}
 	title="Species Metadata"
 	description="Add new species metadata"
 >

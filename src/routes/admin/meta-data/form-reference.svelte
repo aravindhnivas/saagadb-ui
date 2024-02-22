@@ -25,7 +25,6 @@
 	{form}
 	let:config
 	let:formStore
-	include_dropfile={false}
 	title="Reference"
 	description="Enter the reference details"
 >

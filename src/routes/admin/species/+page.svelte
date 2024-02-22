@@ -1,7 +1,6 @@
 <script lang="ts">
 	import type { PageData } from './$types';
 	import FormComponent from '$lib/components/forms/form-component.svelte';
-	import Dropfile from '$lib/components/file-drop.svelte';
 	import * as Form from '$lib/components/ui/form';
 	import * as Card from '$lib/components/ui/card';
 	import speciesSchema from '$lib/schemas/species';
@@ -23,7 +22,7 @@
 	<Card.Root>
 		<Card.Header>
 			<Card.Title>Upload new species</Card.Title>
-			<Card.Description><Dropfile /></Card.Description>
+			<Card.Description></Card.Description>
 		</Card.Header>
 		<Card.Content>
 			<AutoFillName

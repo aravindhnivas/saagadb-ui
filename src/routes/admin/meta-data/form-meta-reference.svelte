@@ -16,7 +16,6 @@
 	{schema}
 	{form}
 	let:config
-	include_dropfile={false}
 	title="Meta-reference"
 	description="Enter the meta-reference details"
 >

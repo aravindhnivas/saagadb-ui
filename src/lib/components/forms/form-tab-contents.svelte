@@ -5,7 +5,6 @@
 	import type { FormOptions, SuperValidated } from 'formsnap';
 	import type { AnyZodObject } from 'zod';
 	import MessageAlert from './message-alert.svelte';
-	import Dropfile from '$lib/components/file-drop.svelte';
 	import { createEventDispatcher } from 'svelte';
 	import Loader from '../utils/loader.svelte';
 
@@ -16,7 +15,6 @@
 	export let form: SuperValidated<AnyZodObject>;
 	export let schema: AnyZodObject;
 	export let opts: FormOptions<AnyZodObject> = {};
-	export let include_dropfile = true;
 
 	let className = '';
 	export { className as class };
@@ -70,19 +68,12 @@
 					<slot name="description">
 						{description}
 					</slot>
-					{#if include_dropfile}
-						<Dropfile />
-					{/if}
 				</Card.Description>
 			</Card.Header>
 			<Card.Content class="space-y-2 {className}">
 				<MessageAlert />
 
 				<slot {config} {formStore} />
-
-				<!-- {#if error_message}
-					<AlertBox message={error_message} variant="destructive" />
-				{/if} -->
 			</Card.Content>
 
 			{#if footer}
