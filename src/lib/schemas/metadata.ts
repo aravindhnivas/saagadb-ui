@@ -10,10 +10,10 @@ import { v4 as uuidv4 } from 'uuid';
 
 export const Schemas = {
 	'species-metadata': z.object({
-		species: z.union([z.string(), z.number().int()]),
-		linelist: z.union([z.string(), z.number().int()]),
-		degree_of_freedom: z.union([z.string(), z.number().int()]),
-		molecule_tag: z.union([z.string(), z.number().int()]).optional(),
+		species: z.union([z.string(), z.number().int()]).default(0),
+		linelist: z.union([z.string(), z.number().int()]).default(0),
+		degree_of_freedom: z.union([z.string(), z.number().int()]).default(0),
+		molecule_tag: z.string().min(1),
 		hyperfine: z.boolean(),
 		category: z.string().min(1),
 		mu_a: z.string().default(''),
@@ -43,14 +43,14 @@ export const Schemas = {
 		bibtex: z.string().optional()
 	}),
 	'meta-reference': z.object({
-		meta: z.union([z.string(), z.number().int()]),
-		ref: z.union([z.string(), z.number().int()]),
+		meta: z.union([z.string(), z.number().int()]).default(0),
+		ref: z.union([z.string(), z.number().int()]).default(0),
 		dipole_moment: z.boolean(),
 		spectrum: z.boolean(),
 		notes: z.string().default('').optional()
 	}),
 	line: z.object({
-		meta: z.union([z.string(), z.number().int()]),
+		meta: z.union([z.string(), z.number().int()]).default(0),
 		cat_file: z.string().default('').optional(),
 		qn_label_str: z.string().min(1),
 		contains_rovibrational: z.boolean(),
