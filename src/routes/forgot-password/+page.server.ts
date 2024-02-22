@@ -1,17 +1,18 @@
 import type { Actions, PageServerLoad } from './$types';
-import { superValidate, setError } from 'sveltekit-superforms/server';
+import { setError, superValidate } from 'sveltekit-superforms';
+import { zod } from 'sveltekit-superforms/adapters';
 import { fail } from '@sveltejs/kit';
 import { DB_URL } from '$lib/server';
 import { EmailSchema } from './schema';
 
 export const load: PageServerLoad = async () => {
-	const form = await superValidate(EmailSchema);
+	const form =  await superValidate(zod(EmailSchema));;
 	return { form };
 };
 
 export const actions: Actions = {
 	default: async ({ fetch, request }) => {
-		const form = await superValidate(request, EmailSchema);
+		const form = await superValidate(request, zod(EmailSchema));
 
 		if (!form.valid) {
 			return fail(400, { form });
