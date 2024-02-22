@@ -16,6 +16,11 @@ declare global {
 		}
 		// interface PageData {}
 		// interface Platform {}
+		namespace Superforms {
+			type Message = {
+				type: 'error' | 'success', text: string
+			}
+		}
 	}
 
 	interface Window {
