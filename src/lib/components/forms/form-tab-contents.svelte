@@ -2,38 +2,37 @@
 	import * as Tabs from '$lib/components/ui/tabs';
 	import * as Card from '$lib/components/ui/card';
 	import * as Form from '$lib/components/ui/form';
-	import SuperDebug, { superForm, type SuperValidated } from 'sveltekit-superforms';
-	import { zodClient } from 'sveltekit-superforms/adapters';
+	import type { FormOptions, SuperValidated } from 'formsnap';
 	import type { AnyZodObject } from 'zod';
-	// import MessageAlert from './message-alert.svelte';
-	import { createEventDispatcher, setContext } from 'svelte';
+	import MessageAlert from './message-alert.svelte';
+	import { createEventDispatcher } from 'svelte';
 	import Loader from '../utils/loader.svelte';
 
 	export let value: string;
 	export let footer = true;
 	export let title: string = '';
 	export let description: string = '';
-	export let form: SuperValidated<AnyZodObject & Record<string, unknown>>;
+	export let form: SuperValidated<AnyZodObject>;
 	export let schema: AnyZodObject;
-	export let debug = import.meta.env.DEV;
-	export let enctype = 'multipart/form-data';
+	export let opts: FormOptions<AnyZodObject> = {};
+
 	let className = '';
 	export { className as class };
 
+	let submitting = false;
 	let error_message = '';
-
 	const dispatch = createEventDispatcher();
-
-	const superform = superForm(form, {
-		validators: zodClient(schema),
+	const options: FormOptions<typeof schema> = {
 		resetForm: false,
 		// applyAction: false,
 		invalidateAll: false,
 		taintedMessage: null,
 		onSubmit: () => {
 			error_message = '';
+			submitting = true;
 		},
 		onResult: ({ result }) => {
+			submitting = false;
 			dispatch('result', result);
 			console.log(result);
 			if (result.type === 'failure') {
@@ -44,16 +43,25 @@
 		},
 		onError: (e) => {
 			dispatch('error', e);
+			// do something else
 			console.error(e);
-		}
-	});
-
-	const { form: formStore, enhance, submitting, posted, errors } = superform;
+		},
+		...opts
+	};
 </script>
 
 <Tabs.Content {value}>
 	<Card.Root>
-		<form use:enhance method="POST" {enctype}>
+		<Form.Root
+			style="max-height: calc(100vh - 15rem); overflow: auto;"
+			{form}
+			{schema}
+			{options}
+			{...$$restProps}
+			let:config
+			let:formStore
+			debug={import.meta.env.DEV}
+		>
 			<Card.Header>
 				<Card.Title>{title || 'Upload config (.yaml) file'}</Card.Title>
 				<Card.Description>
@@ -63,8 +71,9 @@
 				</Card.Description>
 			</Card.Header>
 			<Card.Content class="space-y-2 {className}">
-				<!-- <MessageAlert /> -->
-				<slot form={superform} {formStore} />
+				<MessageAlert />
+
+				<slot {config} {formStore} />
 			</Card.Content>
 
 			{#if footer}
@@ -73,20 +82,16 @@
 						<div class="flex gap-4 items-center">
 							<Form.Button
 								class="w-[150px]"
-								disabled={$submitting}
+								disabled={submitting}
 								variant={error_message ? 'destructive' : 'default'}
 							>
 								{error_message ? 'Retry upload' : 'Upload'}
 							</Form.Button>
-							<Loader fetching={$submitting} description="uploading the data please wait..." />
+							<Loader fetching={submitting} description="uploading the data please wait..." />
 						</div>
 					</slot>
 				</Card.Footer>
 			{/if}
-		</form>
+		</Form.Root>
 	</Card.Root>
 </Tabs.Content>
-
-{#if debug}
-	<SuperDebug data={$formStore} />
-{/if}

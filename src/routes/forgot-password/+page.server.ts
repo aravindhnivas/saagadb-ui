@@ -1,18 +1,17 @@
 import type { Actions, PageServerLoad } from './$types';
-import { setError, superValidate } from 'sveltekit-superforms';
-import { zod } from 'sveltekit-superforms/adapters';
+import { superValidate, setError } from 'sveltekit-superforms/server';
 import { fail } from '@sveltejs/kit';
 import { DB_URL } from '$lib/server';
 import { EmailSchema } from './schema';
 
 export const load: PageServerLoad = async () => {
-	const form =  await superValidate(zod(EmailSchema));;
+	const form = await superValidate(EmailSchema);
 	return { form };
 };
 
 export const actions: Actions = {
 	default: async ({ fetch, request }) => {
-		const form = await superValidate(request, zod(EmailSchema));
+		const form = await superValidate(request, EmailSchema);
 
 		if (!form.valid) {
 			return fail(400, { form });
@@ -26,10 +25,9 @@ export const actions: Actions = {
 			body: JSON.stringify({ email }),
 			headers: { 'Content-Type': 'application/json' }
 		});
-		const response = await res.json();
-		// console.log(await res.text());
+		console.log(await res.text());
 		if (!res.ok) {
-			setError(form, 'email', response.message);
+			setError(form, 'email', 'Invalid email');
 			return fail(400, { form });
 		}
 

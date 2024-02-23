@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Label as LabelPrimitive } from "bits-ui";
-	import { getFormControl } from "formsnap";
+	import { getFormField } from "formsnap";
 	import { cn } from "$lib/utils";
 	import { Label } from "$lib/components/ui/label";
 
@@ -9,9 +9,13 @@
 	let className: $$Props["class"] = undefined;
 	export { className as class };
 
-	const { labelAttrs } = getFormControl();
+	const { errors, ids } = getFormField();
 </script>
 
-<Label {...$labelAttrs} class={cn("data-[fs-error]:text-destructive", className)} {...$$restProps}>
-	<slot {labelAttrs} />
+<Label
+	for={$ids.input}
+	class={cn($errors && "text-destructive", className)}
+	{...$$restProps}
+>
+	<slot />
 </Label>

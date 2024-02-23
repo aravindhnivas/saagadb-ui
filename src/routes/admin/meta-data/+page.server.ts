@@ -1,6 +1,5 @@
 import type { Actions, PageServerLoad } from './$types';
-import { setError, superValidate, message, withFiles } from 'sveltekit-superforms';
-import { zod } from 'sveltekit-superforms/adapters';
+import { message, setError, superValidate } from 'sveltekit-superforms/server';
 import { Schemas, fileInputs } from '$lib/schemas/metadata';
 import type { SuperValidated } from 'sveltekit-superforms';
 import { fail } from '@sveltejs/kit';
@@ -10,12 +9,12 @@ type FormKeys = keyof typeof Schemas;
 
 export const load: PageServerLoad = async () => {
 	const forms: Record<FormKeys, SuperValidated<(typeof Schemas)[FormKeys]>> = {
-		'species-metadata': await superValidate(zod(Schemas['species-metadata']), {
+		'species-metadata': await superValidate(Schemas['species-metadata'], {
 			id: 'species-metadata'
 		}),
-		reference: await superValidate(zod(Schemas['reference']), { id: 'reference' }),
-		'meta-reference': await superValidate(zod(Schemas['meta-reference']), { id: 'meta-reference' }),
-		line: await superValidate(zod(Schemas['line']), { id: 'line' })
+		reference: await superValidate(Schemas['reference'], { id: 'reference' }),
+		'meta-reference': await superValidate(Schemas['meta-reference'], { id: 'meta-reference' }),
+		line: await superValidate(Schemas['line'], { id: 'line' })
 	};
 
 	return { forms };
@@ -28,12 +27,13 @@ export const actions: Actions = {
 		const metaid = formData.get('__superform_id') as FormKeys;
 		console.log('formData', { formData, metaid });
 
-		const form = await superValidate(formData, zod(Schemas[metaid]));
+		const form = await superValidate(formData, Schemas[metaid]);
 		console.log('posting', form.data);
 
 		// Convenient validation check:
 		if (!form.valid) {
-			return fail(400, withFiles({ form }));
+			// Again, return { form } and things will just work.
+			return fail(400, { form });
 		}
 
 		const formBody = new FormData();
@@ -43,11 +43,11 @@ export const actions: Actions = {
 			const file = formData.get(key.name);
 			if (file instanceof File) {
 				if (file.name && !file.name.endsWith(key.extension)) {
-					// @ts-expect-error filename is not type checked
+					// @ts-ignore
 					return setError(form, key.name, `File must have extension ${key.extension}`);
 				}
 				if (!file.name || !file.size) {
-					// @ts-expect-error filename is not type checked
+					// @ts-ignore
 					if (key.required) return setError(form, key.name, 'File is required');
 					console.log('file not required', key.name, file, 'skipping...');
 					formBody.append(key.name, '');
@@ -57,7 +57,7 @@ export const actions: Actions = {
 				formBody.append(key.name, file);
 			} else if (typeof file === 'string') {
 				if (!file) {
-					// @ts-expect-error filename is not type checked
+					// @ts-ignore
 					if (key.required) return setError(form, key.name, 'File is required');
 					console.log('file not required', key.name, file, 'skipping...');
 					formBody.append(key.name, '');
@@ -76,7 +76,7 @@ export const actions: Actions = {
 		// Append the other form data
 		for (const key in form.data) {
 			if (formBody.has(key)) continue;
-			// @ts-expect-error key is not type checked
+			// @ts-ignore
 			formBody.append(key, form.data[key]);
 		}
 
@@ -110,26 +110,26 @@ export const actions: Actions = {
 					message(form, { type: 'error', text: `${msg_json.message}: ${msg_json.error.message}` });
 				}
 				for (const [key, value] of Object.entries(msg_json) as [string, string][]) {
-					// @ts-expect-error filename is not type checked
+					// @ts-ignore
 					setError(form, key, value);
 				}
-				return fail(400, withFiles({ form }));
+				return fail(400, { form });
 			} catch (error) {
 				console.log('could not parse json', error);
 			}
 		}
 
-		// let res_data;
+		let res_data;
 		if (res.ok) {
-			// res_data = await res.json();
+			res_data = await res.json();
 			message(form, { type: 'success', text: 'Form submitted succesfully' });
-			return withFiles({ form });
+			return { form, response: res_data };
 		} else {
-			console.log('trying text parsing after error');
+			console.log('trying text parsing after 500 Internal error');
 			const msg = await res.text();
 			console.log({ msg });
 			message(form, { type: 'error', text: msg });
-			return fail(500, withFiles({ form }));
+			return fail(500, { form });
 		}
 	}
 };

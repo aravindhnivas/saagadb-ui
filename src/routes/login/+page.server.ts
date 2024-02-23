@@ -1,10 +1,9 @@
 import type { Actions, PageServerLoad } from './$types';
+import { superValidate, setError } from 'sveltekit-superforms/server';
 import { fail, redirect } from '@sveltejs/kit';
 import { DB_URL } from '$lib/server';
 import { set_token } from '$lib/server/cookies';
 import { base } from '$app/paths';
-import { setError, superValidate } from 'sveltekit-superforms';
-import { zod } from 'sveltekit-superforms/adapters';
 import loginSchema from '$lib/schemas/login';
 
 export const load: PageServerLoad = async ({ locals }) => {
@@ -12,13 +11,13 @@ export const load: PageServerLoad = async ({ locals }) => {
 		redirect(303, base + '/admin/dashboard');
 	}
 
-	const form = await superValidate(zod(loginSchema));
+	const form = await superValidate(loginSchema);
 	return { form };
 };
 
 export const actions: Actions = {
 	default: async ({ fetch, request, url, cookies }) => {
-		const form = await superValidate(request, zod(loginSchema));
+		const form = await superValidate(request, loginSchema);
 
 		if (!form.valid) {
 			return fail(400, { form });

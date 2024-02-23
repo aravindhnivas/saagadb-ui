@@ -1,62 +1,27 @@
 import { z } from 'zod';
 import { v4 as uuidv4 } from 'uuid';
 
-const str_num = z
-	.string()
-	.default('')
-	.refine((str) => !isNaN(Number(str)), {
-		message: 'Invalid number'
-	});
+// const zint = () => {
+// 	return z
+// 		.number()
+// 		.int()
+// 		.default(undefined as unknown as number);
+// };
 
 export const Schemas = {
 	'species-metadata': z.object({
-		species: z.union([z.string(), z.number().int()]).default(0),
-		linelist: z.union([z.string(), z.number().int()]).default(0),
-		degree_of_freedom: z.union([z.string(), z.number().int()]).default(0),
-		molecule_tag: z
-			.string()
-			.min(1)
-			.refine((str) => !isNaN(Number(str)), {
-				message: 'Invalid number'
-			}),
+		species: z.union([z.string(), z.number().int()]),
+		linelist: z.union([z.string(), z.number().int()]),
+		degree_of_freedom: z.union([z.string(), z.number().int()]),
+		molecule_tag: z.union([z.string(), z.number().int()]).optional(),
 		hyperfine: z.boolean(),
 		category: z.string().min(1),
-		mu_a: z
-			.string()
-			.default('')
-			.refine((str) => !isNaN(Number(str)), {
-				message: 'Invalid number'
-			}),
-		mu_b: z
-			.string()
-			.default('')
-			.refine((str) => !isNaN(Number(str)), {
-				message: 'Invalid number'
-			}),
-		mu_c: z
-			.string()
-			.default('')
-			.refine((str) => !isNaN(Number(str)), {
-				message: 'Invalid number'
-			}),
-		a_const: z
-			.string()
-			.default('')
-			.refine((str) => !isNaN(Number(str)), {
-				message: 'Invalid number'
-			}),
-		b_const: z
-			.string()
-			.default('')
-			.refine((str) => !isNaN(Number(str)), {
-				message: 'Invalid number'
-			}),
-		c_const: z
-			.string()
-			.default('')
-			.refine((str) => !isNaN(Number(str)), {
-				message: 'Invalid number'
-			}),
+		mu_a: z.string().default(''),
+		mu_b: z.string().default(''),
+		mu_c: z.string().default(''),
+		a_const: z.string().default(''),
+		b_const: z.string().default(''),
+		c_const: z.string().default(''),
 		data_date: z
 			.string()
 			.min(1)
@@ -64,28 +29,12 @@ export const Schemas = {
 				message: 'Invalid date format'
 			}),
 		data_contributor: z.string().min(1),
-		notes: z.string().default('').optional(),
-		qpart_file: z.string().default(''),
-		int_file: z
-			.custom<File>((f) => f instanceof File, 'Please upload a file.')
-			.refine((f) => f.name.endsWith('.int'), 'Please upload a .int file.')
-			.nullable()
-			.optional(),
-		var_file: z
-			.custom<File>((f) => f instanceof File, 'Please upload a file.')
-			.refine((f) => f.name.endsWith('.var'), 'Please upload a .var file.')
-			.nullable()
-			.optional(),
-		fit_file: z
-			.custom<File>((f) => f instanceof File, 'Please upload a file.')
-			.refine((f) => f.name.endsWith('.fit'), 'Please upload a .fit file.')
-			.nullable()
-			.optional(),
-		lin_file: z
-			.custom<File>((f) => f instanceof File, 'Please upload a file.')
-			.refine((f) => f.name.endsWith('.lin'), 'Please upload a .lin file.')
-			.nullable()
-			.optional()
+		qpart_file: z.string().optional(),
+		int_file: z.string().default('').optional(),
+		var_file: z.string().default('').optional(),
+		fit_file: z.string().default('').optional(),
+		lin_file: z.string().default('').optional(),
+		notes: z.string().default('').optional()
 	}),
 	reference: z.object({
 		doi: z.string().min(5),
@@ -94,14 +43,14 @@ export const Schemas = {
 		bibtex: z.string().optional()
 	}),
 	'meta-reference': z.object({
-		meta: z.union([z.string(), z.number().int()]).default(0),
-		ref: z.union([z.string(), z.number().int()]).default(0),
+		meta: z.union([z.string(), z.number().int()]),
+		ref: z.union([z.string(), z.number().int()]),
 		dipole_moment: z.boolean(),
 		spectrum: z.boolean(),
 		notes: z.string().default('').optional()
 	}),
 	line: z.object({
-		meta: z.union([z.string(), z.number().int()]).default(0),
+		meta: z.union([z.string(), z.number().int()]),
 		cat_file: z.string().default('').optional(),
 		qn_label_str: z.string().min(1),
 		contains_rovibrational: z.boolean(),
