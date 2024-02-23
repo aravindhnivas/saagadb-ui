@@ -45,6 +45,7 @@
 			dispatch('error', e);
 			// do something else
 			console.error(e);
+			error_message = e.result?.error?.message;
 		},
 		...opts
 	};
@@ -79,16 +80,12 @@
 			{#if footer}
 				<Card.Footer class="justify-center">
 					<slot name="footer">
-						<div class="flex gap-4 items-center">
-							<Form.Button
-								class="w-[150px]"
-								disabled={submitting}
-								variant={error_message ? 'destructive' : 'default'}
-							>
-								{error_message ? 'Retry upload' : 'Upload'}
-							</Form.Button>
-							<Loader fetching={submitting} description="uploading the data please wait..." />
-						</div>
+						<Form.Button class="w-[150px] flex gap-4" disabled={submitting}>
+							<span>{submitting ? 'Uploading...' : 'Upload'}</span>
+							{#if submitting}
+								<span class="loading loading-spinner"></span>
+							{/if}
+						</Form.Button>
 					</slot>
 				</Card.Footer>
 			{/if}
