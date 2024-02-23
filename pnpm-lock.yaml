@@ -44,9 +44,6 @@ dependencies:
   lodash-es:
     specifier: ^4.17.21
     version: 4.17.21
-  lucide-svelte:
-    specifier: ^0.312.0
-    version: 0.312.0(svelte@4.2.12)
   tabulator-tables:
     specifier: ^5.6.1
     version: 5.6.1
@@ -127,6 +124,9 @@ devDependencies:
   eslint-plugin-svelte:
     specifier: ^2.35.1
     version: 2.35.1(eslint@8.56.0)(svelte@4.2.12)
+  lucide-svelte:
+    specifier: ^0.338.0
+    version: 0.338.0(svelte@4.2.12)
   prettier:
     specifier: ^3.2.5
     version: 3.2.5
@@ -2971,13 +2971,13 @@ packages:
       yallist: 4.0.0
     dev: true
 
-  /lucide-svelte@0.312.0(svelte@4.2.12):
-    resolution: {integrity: sha512-FB5e+oU4Hue8/OiRCx4zur7sdve27pQ5F9JnfYGRlVK8fFkaZQManwn8QvW9a5yr2Z/DJNdyeDmBp5afN7Pdkg==}
+  /lucide-svelte@0.338.0(svelte@4.2.12):
+    resolution: {integrity: sha512-A6NxbwRxbsbgzYBPNkQccu/dD5HP630hEmop4Xz/ya0JDL3h1dVJp+LCtkMEEqEkN4VcdvE2CeQzCvWFIV4iRA==}
     peerDependencies:
-      svelte: '>=3 <5'
+      svelte: ^3 || ^4 || ^5.0.0-next.42
     dependencies:
       svelte: 4.2.12
-    dev: false
+    dev: true
 
   /magic-string@0.30.5:
     resolution: {integrity: sha512-7xlpfBaQaP/T6Vh8MO/EqXSW5En6INHEvEXQiuff7Gku0PWjU3uf6w/j9o7O+SpB5fOAkrI5HeoNgwjEO0pFsA==}
