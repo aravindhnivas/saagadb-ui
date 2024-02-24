@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import * as Table from '$lib/components/ui/table';
-	import { Download } from 'lucide-svelte';
+	import { Download } from 'lucide-svelte/icons';
 
 	export let meta = [];
 	export let id = '';

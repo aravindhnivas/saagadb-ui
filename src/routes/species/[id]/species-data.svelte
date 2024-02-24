@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Download } from 'lucide-svelte';
+	import { Download } from 'lucide-svelte/icons';
 	import * as Table from '$lib/components/ui/table';
 	import { onMount } from 'svelte';
 

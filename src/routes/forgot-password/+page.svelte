@@ -5,7 +5,7 @@
 	import { toast } from 'svelte-sonner';
 	import { base } from '$app/paths';
 	import { EmailSchema } from './schema';
-	import { ArrowBigLeft } from 'lucide-svelte';
+	import { ArrowBigLeft } from 'lucide-svelte/icons';
 
 	export let data: PageData;
 </script>

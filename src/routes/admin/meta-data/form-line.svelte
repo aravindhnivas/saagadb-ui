@@ -4,7 +4,7 @@
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import * as Form from '$lib/components/ui/form';
 	import FetchMetaId from './fetch-meta-id.svelte';
-	import { HelpCircle } from 'lucide-svelte';
+	import { HelpCircle } from 'lucide-svelte/icons';
 
 	export let form: SuperValidated<(typeof Schemas)['line']>;
 

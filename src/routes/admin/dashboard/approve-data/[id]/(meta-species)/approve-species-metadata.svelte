@@ -5,7 +5,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import { enhance } from '$app/forms';
 	import { Checkbox } from '$lib/components/ui/checkbox';
-	import { LockKeyhole, UnlockKeyhole } from 'lucide-svelte';
+	import { LockKeyhole, UnlockKeyhole } from 'lucide-svelte/icons';
 	import { createEventDispatcher, getContext } from 'svelte';
 
 	export let obj: SpeciesMetadata;

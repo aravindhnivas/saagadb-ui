@@ -8,7 +8,7 @@
 	import AutoFillMetadata from './auto-fill-metadata.svelte';
 	import { Label } from '$lib/components/ui/label';
 	import { Input } from '$lib/components/ui/input';
-	import { HelpCircle } from 'lucide-svelte';
+	import { HelpCircle } from 'lucide-svelte/icons';
 
 	export let form: SuperValidated<(typeof Schemas)['species-metadata']>;
 

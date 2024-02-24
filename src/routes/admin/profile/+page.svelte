@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as Table from '$lib/components/ui/table';
-	import { Check, Cross } from 'lucide-svelte';
+	import { Check, Cross } from 'lucide-svelte/icons';
 	import type { PageData } from './$types';
 	import ChangePassword from './change-password.svelte';
 	import { base } from '$app/paths';

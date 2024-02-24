@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { LayoutData } from './$types';
-	import { AlertCircle } from 'lucide-svelte';
+	import { AlertCircle } from 'lucide-svelte/icons';
 	import * as Alert from '$lib/components/ui/alert';
 	import SpeciesLists from './species-lists.svelte';
 	export let data: LayoutData;
