@@ -7,6 +7,7 @@
 	import MessageAlert from './message-alert.svelte';
 	import { createEventDispatcher } from 'svelte';
 	import Loader from '../utils/loader.svelte';
+	import AlertBox from '../utils/alert-box.svelte';
 
 	export let value: string;
 	export let footer = true;
@@ -88,6 +89,10 @@
 						</Form.Button>
 					</slot>
 				</Card.Footer>
+			{/if}
+
+			{#if error_message}
+				<AlertBox variant="destructive" message={error_message} />
 			{/if}
 		</Form.Root>
 	</Card.Root>
