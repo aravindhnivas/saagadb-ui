@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { base } from '$app/paths';
-	// import VirtualList from '@sveltejs/svelte-virtual-list';
 	import * as Command from '$lib/components/ui/command';
 	export let species: Species[] = [];
 	import { page } from '$app/stores';

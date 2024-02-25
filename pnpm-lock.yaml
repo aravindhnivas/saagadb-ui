@@ -73,9 +73,6 @@ devDependencies:
   '@sveltejs/kit':
     specifier: ^2.5.1
     version: 2.5.1(@sveltejs/vite-plugin-svelte@3.0.2)(svelte@4.2.12)(vite@5.1.4)
-  '@sveltejs/svelte-virtual-list':
-    specifier: ^3.0.1
-    version: 3.0.1
   '@sveltejs/vite-plugin-svelte':
     specifier: ^3.0.2
     version: 3.0.2(svelte@4.2.12)(vite@5.1.4)
@@ -136,6 +133,9 @@ devDependencies:
   sass:
     specifier: ^1.71.1
     version: 1.71.1
+  svelecte:
+    specifier: ^4.0.0
+    version: 4.0.0(svelte@4.2.12)
   svelte:
     specifier: ^4.2.12
     version: 4.2.12
@@ -1244,10 +1244,6 @@ packages:
       svelte: 4.2.12
       tiny-glob: 0.2.9
       vite: 5.1.4(@types/node@20.11.20)(sass@1.71.1)
-
-  /@sveltejs/svelte-virtual-list@3.0.1:
-    resolution: {integrity: sha512-aF9TptS7NKKS7/TqpsxQBSDJ9Q0XBYzBehCeIC5DzdMEgrJZpIYao9LRLnyyo6SVodpapm2B7FE/Lj+FSA5/SQ==}
-    dev: true
 
   /@sveltejs/vite-plugin-svelte-inspector@2.0.0(@sveltejs/vite-plugin-svelte@3.0.2)(svelte@4.2.12)(vite@5.1.4):
     resolution: {integrity: sha512-gjr9ZFg1BSlIpfZ4PRewigrvYmHWbDrq2uvvPB1AmTWKuM+dI1JXQSUu2pIrYLb/QncyiIGkFDFKTwJ0XqQZZg==}
@@ -3700,6 +3696,15 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
 
+  /svelecte@4.0.0(svelte@4.2.12):
+    resolution: {integrity: sha512-iogFPlFAr49sNMpqyUFRKXdP4jJ7ZUIhlzDb9IpX4uWTTufal2CXNfZiAxdqfMvCeHOi4yeDspndkcxeMBERMQ==}
+    peerDependencies:
+      svelte: ^3.43.0 || ^4.0.0
+    dependencies:
+      svelte: 4.2.12
+      svelte-tiny-virtual-list: 2.0.5
+    dev: true
+
   /svelte-check@3.6.4(@babel/core@7.23.9)(postcss@8.4.35)(sass@1.71.1)(svelte@4.2.12):
     resolution: {integrity: sha512-mY/dqucqm46p72M8yZmn81WPZx9mN6uuw8UVfR3ZKQeLxQg5HDGO3HHm5AZuWZPYNMLJ+TRMn+TeN53HfQ/vsw==}
     hasBin: true
@@ -3816,6 +3821,10 @@ packages:
       svelte: '>=3 <5'
     dependencies:
       svelte: 4.2.12
+    dev: true
+
+  /svelte-tiny-virtual-list@2.0.5:
+    resolution: {integrity: sha512-xg9ckb8UeeIme4/5qlwCrl2QNmUZ8SCQYZn3Ji83cUsoASqRNy3KWjpmNmzYvPDqCHSZjruBBsoB7t5hwuzw5g==}
     dev: true
 
   /svelte@4.2.12:
