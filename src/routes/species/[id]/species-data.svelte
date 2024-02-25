@@ -14,6 +14,7 @@
 		mol_descriptor = mol ? JSON.parse(mol.get_descriptors()) : null;
 
 		species_metadata_table = {
+			'IUPAC name': species.iupac_name,
 			'Chemical formula': species.name_html,
 			'Molar mass': (mol_descriptor ? mol_descriptor.amw : species.molecular_mass) + ' g/mol',
 			'Canonical SMILES': mol?.get_smiles(),
@@ -28,11 +29,15 @@
 		if (window.RDKit) load_all_data();
 		if (!(species && species.smiles)) return;
 	});
+	let name = ['ABC', 'DEF', 'GHI'];
 </script>
 
 {#if species}
-	<div class="max-w-4xl text-2xl font-400 flex justify-center mb-[2rem]">
-		{species.iupac_name?.toLocaleUpperCase()}
+	<div class="flex flex-col items-center max-w-4xl">
+		<span class="text-2xl">{species.name[0]}</span>
+		{#if species.name.length > 1}
+			<span class="text-md font-300">({species.name.slice(1).join(', ')})</span>
+		{/if}
 	</div>
 
 	<div class="grid grid-cols-2 gap-4 my-2 max-w-4xl">

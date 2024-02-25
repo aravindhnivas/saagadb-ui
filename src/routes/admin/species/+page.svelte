@@ -7,6 +7,7 @@
 	import AutoFillInchi from './auto-fill-inchi.svelte';
 	import AutoFillName from '../auto-fill-name.svelte';
 	import NameHtml from './name-html.svelte';
+	import { Description } from '$lib/components/ui/alert';
 	export let data: PageData;
 </script>
 
@@ -52,6 +53,10 @@
 					<Form.Label>name</Form.Label>
 					<Form.Input required />
 					<Form.Validation />
+					<Form.Description
+						>Enter comma separated name(s). Tips: enter electronic state symbol if need to be
+						displayed under title
+					</Form.Description>
 				</Form.Item>
 			</Form.Field>
 
@@ -60,6 +65,9 @@
 					<Form.Label>iupac_name</Form.Label>
 					<Form.Input required />
 					<Form.Validation />
+					<Form.Description
+						>Unique IUPAC name. Tips: enter conformer type, vibrational states within parenthesis</Form.Description
+					>
 				</Form.Item>
 			</Form.Field>
 
@@ -79,6 +87,11 @@
 						<NameHtml />
 					</div>
 					<Form.Validation />
+					<Form.Description
+						>Enter symbols in sup or sub tags i.e., {'<sup> + </sup>'} for superscript H<sup>+</sup
+						>and {'<sub> 2 </sub>'}
+						for subscripts H<sub>2</sub>O</Form.Description
+					>
 				</Form.Item>
 			</Form.Field>
 
@@ -87,6 +100,7 @@
 					<Form.Label>smiles</Form.Label>
 					<AutoFillInchi />
 					<Form.Validation />
+					<Form.Description>Tips: Try to fetch from PubChem or enter manually</Form.Description>
 				</Form.Item>
 			</Form.Field>
 

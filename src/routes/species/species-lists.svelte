@@ -1,11 +1,12 @@
 <script lang="ts">
-	import Input from './../../lib/components/ui/input/input.svelte';
+	import Input from '$lib/components/ui/input/input.svelte';
 	import { base } from '$app/paths';
 	import { page } from '$app/stores';
 	import { createVirtualizer } from '@tanstack/svelte-virtual';
 	import Svelecte from 'svelecte';
 	import Label from '$lib/components/ui/label/label.svelte';
-
+	import { Search } from 'lucide-svelte';
+	import SearchInput from '$lib/components/custom-input/search-input.svelte';
 	export let species: Species[] = [];
 
 	let virtualListEl: HTMLDivElement;
@@ -17,7 +18,7 @@
 		overscan: 5 // The number of items to render above and below the visible area.
 		// debug: true
 	});
-	console.log('species', species);
+	// console.log('species', species);
 	let searchKey = '';
 	$: filteredSpecies = species.filter((sp) => {
 		if (searchKey === '') return true;
@@ -40,13 +41,12 @@
 		options={['name', 'name_formula', 'iupac_name']}
 		bind:value={filter_keys}
 	/>
-	<Input placeholder="Search here..." bind:value={searchKey} />
+	<SearchInput bind:searchKey />
 </div>
 
 <div class="scroll-container" bind:this={virtualListEl}>
 	<div style="position: relative; height: {$virtualizer.getTotalSize()}px; width: 100%;">
 		{#each $virtualizer.getVirtualItems() as row (row.index)}
-			<!-- {@const sp = species[row.index]} -->
 			{@const sp = filteredSpecies[row.index]}
 			{#if sp}
 				{@const active = Number($page.params.id) === sp.id}
@@ -60,7 +60,6 @@
 							{sp.iupac_name ?? sp.name_formula}
 						{/if}</a
 					>
-					<!-- Row {row.index} -->
 				</div>
 			{/if}
 		{/each}

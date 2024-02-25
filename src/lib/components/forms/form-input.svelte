@@ -15,7 +15,7 @@
 	export let textarea = false;
 </script>
 
-<Form.Field {config} {name} let:constraints>
+<Form.Field {config} {name} let:constraints let:attrs>
 	<Form.Item
 		class="{checkbox
 			? 'flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4'
@@ -23,7 +23,7 @@
 	>
 		{#if textarea}
 			<Form.Label>{label || name}</Form.Label>
-			<Form.Textarea {...constraints} {...$$restProps} />
+			<Form.Textarea {...constraints} {...attrs} {...$$restProps} />
 		{:else if checkbox}
 			<Form.Checkbox />
 			<div class="space-y-1 leading-none">
@@ -31,9 +31,8 @@
 			</div>
 		{:else}
 			<Form.Label>{label || name}</Form.Label>
-			<Form.Input {...constraints} {...$$restProps} />
+			<Form.Input {...constraints} {...attrs} {...$$restProps} />
 		{/if}
-
 		<Form.Validation />
 	</Form.Item>
 </Form.Field>

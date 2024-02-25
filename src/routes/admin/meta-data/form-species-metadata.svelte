@@ -9,6 +9,7 @@
 	import { Label } from '$lib/components/ui/label';
 	import { Input } from '$lib/components/ui/input';
 	import { HelpCircle } from 'lucide-svelte/icons';
+	import Svelecte from 'svelecte';
 
 	export let form: SuperValidated<(typeof Schemas)['species-metadata']>;
 
@@ -18,6 +19,7 @@
 	const linelist = getContext('linelist') as Linelist[];
 
 	const category = [
+		'atom',
 		'diatomic',
 		'linear',
 		'asymmetric top',
@@ -28,29 +30,36 @@
 	];
 
 	const keys = [
-		{ name: 'degree_of_freedom', type: 'number', required: true },
-		{ name: 'molecule_tag', type: 'number', required: true },
-		{ name: 'mu_a', type: 'string', required: false },
-		{ name: 'mu_b', type: 'string', required: false },
-		{ name: 'mu_c', type: 'string', required: false },
-		{ name: 'a_const', type: 'string', required: false },
-		{ name: 'b_const', type: 'string', required: false },
-		{ name: 'c_const', type: 'string', required: false },
-		{ name: 'data_date', type: 'string', required: true },
-		{ name: 'data_contributor', type: 'string', required: true }
+		{
+			name: 'degree_of_freedom',
+			label: 'Degree of freedom',
+			description:
+				'Degree of freedom in rotational partition function (0 for atoms, 2 for linear & 3 for nonlinear molecules)'
+		},
+		{ name: 'molecule_tag', label: 'Molecule tag', description: 'Molecule tag id from database' },
+		{ name: 'mu_a', label: 'μ<sub>a</sub> / D', description: 'Dipole moment along a-axis' },
+		{ name: 'mu_b', label: 'μ<sub>b</sub> / D', description: 'Dipole moment along b-axis' },
+		{ name: 'mu_c', label: 'μ<sub>c</sub> / D', description: 'Dipole moment along c-axis' },
+		{ name: 'a_const', label: 'A / MHz', description: 'Rotational constant along a-axis' },
+		{ name: 'b_const', label: 'B / MHz', description: 'Rotational constant along b-axis' },
+		{ name: 'c_const', label: 'C / MHz', description: 'Rotational constant along c-axis' },
+		{ name: 'data_date', label: 'Date of entry', description: 'YYYY-MM-DD' },
+		{ name: 'data_contributor', label: 'Data contributor' }
 	];
+
 	const files_keys = [
 		{
 			name: 'int_file',
-			description: 'mu_a, mu_b, and mu_c dipoles will be extracted from this file'
+			description: '(Optional) If provided - dipoles moments will be extracted and overwritten'
 		},
 		{
 			name: 'var_file',
-			description: 'A, B, and C rotational constants will be extracted from this file'
+			description: '(Optional) If provided - rotational constants will be extracted and overwritten'
 		},
-		{ name: 'fit_file', description: '.fit file of the species' },
-		{ name: 'lin_file', description: 'Line list file' }
+		{ name: 'fit_file', description: '(Optional) .fit file of the species' },
+		{ name: 'lin_file', description: '(Optional) .lin file of the species' }
 	];
+	// $: console.log({ species });
 </script>
 
 <FormTabContents
@@ -60,73 +69,98 @@
 	{form}
 	let:config
 	let:formStore
+	let:formValues
 	title="Species Metadata"
-	description="Add new species metadata"
+	description="Add new species metadata. Species, linelist, hyperfine makes a unique set. Use these to fetch the meta_id in meta-reference and line forms"
 >
 	<AutoFillMetadata />
 
 	<div class="grid-auto-fill">
-		<FormCombobox
-			val_type="number"
-			{config}
-			name={'species'}
-			items={species.map((f) => ({
-				value: `${f.id}`,
-				label: f.name_formula
-			}))}
-		/>
+		<Form.Field {config} name="species" let:setValue>
+			<Form.Item class="flex flex-col">
+				<Form.Label>species</Form.Label>
+				<Svelecte
+					virtualList={true}
+					placeholder="Search species..."
+					options={species.map((f) => ({
+						id: f.id,
+						label: f.name_formula
+					}))}
+					on:change={(e) => setValue(e.detail?.id)}
+				/>
+				<Form.Validation />
+			</Form.Item>
+		</Form.Field>
 
-		<FormCombobox
-			val_type="number"
-			{config}
-			name={'linelist'}
-			items={linelist.map((f) => ({
-				value: `${f.id}`,
-				label: f.linelist_name
-			}))}
-		/>
+		<Form.Field {config} name="linelist" let:setValue>
+			<Form.Item class="flex flex-col">
+				<Form.Label>linelist</Form.Label>
+				<Svelecte
+					searchable={false}
+					virtualList={false}
+					options={linelist.map((f) => ({
+						id: f.id,
+						label: f.linelist_name
+					}))}
+					on:change={(e) => setValue(e.detail?.id)}
+				/>
+				<Form.Validation />
+			</Form.Item>
+		</Form.Field>
 
-		<FormCombobox
-			{config}
-			name={'category'}
-			items={category.map((f) => ({
-				value: f,
-				label: f
-			}))}
-			on:change={(e) => {
-				const degree_of_freedom = e.detail === 'diatomic' || e.detail === 'linear' ? 2 : 3;
-				formStore.update((f) => {
-					f.degree_of_freedom = degree_of_freedom;
-					return f;
-				});
-			}}
-		/>
-		<Form.Field {config} name="hyperfine">
-			<Form.Item class="flex flex-row items-end space-x-3 space-y-0 rounded-md border p-4">
-				<div class="space-y-1 leading-none">
-					<Form.Label>hyperfine</Form.Label>
+		<Form.Field {config} name="category" let:setValue>
+			<Form.Item class="flex flex-col">
+				<Form.Label>category</Form.Label>
+				<Svelecte
+					searchable={false}
+					virtualList={false}
+					options={category}
+					on:change={(e) => {
+						const value = e.detail?.value;
+						setValue(value);
+						let degree_of_freedom = 3;
+						if (value === 'atom') degree_of_freedom = 0;
+						if (value === 'diatomic' || value === 'linear') degree_of_freedom = 2;
+						formStore.update((f) => {
+							f.degree_of_freedom = degree_of_freedom;
+							return f;
+						});
+					}}
+				/>
+				<Form.Validation />
+			</Form.Item>
+		</Form.Field>
+
+		<Form.Field {config} name="hyperfine" let:constraints let:attrs let:value>
+			<Form.Item>
+				<Form.Label>hyperfine</Form.Label>
+				<div class="w-full">
+					<Form.Checkbox checked="indeterminate" {...constraints} {...attrs} />
+					<span>{value}</span>
 				</div>
-				<Form.Checkbox checked="indeterminate" />
 				<Form.Validation />
 			</Form.Item>
 		</Form.Field>
 	</div>
 	<div class="grid-auto-fill">
-		{#each keys as { name, type, required }}
-			<Form.Field {config} {name}>
+		{#each keys as { name, label, description }}
+			<Form.Field {config} {name} let:constraints let:attrs>
 				<Form.Item>
-					<Form.Label>{name}</Form.Label>
-					<Form.Input {required} {type} />
+					<Form.Label>{@html label}</Form.Label>
+					<Form.Input {...constraints} {...attrs} />
 					<Form.Validation />
+					{#if description}
+						<Form.Description>{description}</Form.Description>
+					{/if}
 				</Form.Item>
 			</Form.Field>
 		{/each}
 	</div>
 
-	<Form.Field {config} name="notes">
+	<Form.Field {config} name="notes" let:constraints let:attrs>
 		<Form.Item>
 			<Form.Label>notes</Form.Label>
-			<Form.Textarea />
+			<Form.Textarea {...constraints} {...attrs} />
 			<Form.Validation />
 		</Form.Item>
 	</Form.Field>
@@ -174,17 +208,13 @@
 			<Form.Field {config} {name}>
 				<Form.Item>
 					<div class="grid w-full max-w-sm items-center gap-1.5">
-						<Form.Label>
-							<div class="flex gap-4 items-center">
-								<span>{name}</span>
-								<span aria-label={description} data-cooltipz-dir="down">
-									<HelpCircle />
-								</span>
-							</div>
-						</Form.Label>
+						<Form.Label>{name}</Form.Label>
 						<Form.Input type="file" required={false} />
 					</div>
 					<Form.Validation />
+					{#if description}
+						<Form.Description>{description}</Form.Description>
+					{/if}
 				</Form.Item>
 			</Form.Field>
 		{/each}

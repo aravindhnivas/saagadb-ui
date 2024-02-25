@@ -62,6 +62,7 @@
 			{...$$restProps}
 			let:config
 			let:formStore
+			let:formValues
 			debug={import.meta.env.DEV}
 		>
 			<Card.Header>
@@ -75,7 +76,7 @@
 			<Card.Content class="space-y-2 {className}">
 				<MessageAlert />
 
-				<slot {config} {formStore} />
+				<slot {config} {formStore} {formValues} />
 			</Card.Content>
 
 			{#if footer}

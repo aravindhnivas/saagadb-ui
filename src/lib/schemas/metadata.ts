@@ -1,32 +1,74 @@
 import { z } from 'zod';
 import { v4 as uuidv4 } from 'uuid';
 
-// const zint = () => {
-// 	return z
-// 		.number()
-// 		.int()
-// 		.default(undefined as unknown as number);
-// };
-
 export const Schemas = {
 	'species-metadata': z.object({
 		species: z.union([z.string(), z.number().int()]),
 		linelist: z.union([z.string(), z.number().int()]),
-		degree_of_freedom: z.union([z.string(), z.number().int()]),
-		molecule_tag: z.union([z.string(), z.number().int()]).optional(),
+		degree_of_freedom: z
+			.union([z.string(), z.number().int()])
+			.refine((str) => !isNaN(parseFloat(str)), {
+				message: 'Invalid number'
+			})
+			.optional(),
+		molecule_tag: z
+			.union([z.string(), z.number().int()])
+			.refine((str) => !isNaN(parseFloat(str)), {
+				message: 'Invalid number'
+			})
+			.optional(),
 		hyperfine: z.boolean(),
 		category: z.string().min(1),
-		mu_a: z.string().default(''),
-		mu_b: z.string().default(''),
-		mu_c: z.string().default(''),
-		a_const: z.string().default(''),
-		b_const: z.string().default(''),
-		c_const: z.string().default(''),
+		mu_a: z
+			.string()
+			.default('')
+			.refine((str) => !isNaN(parseFloat(str)), {
+				message: 'Invalid number'
+			})
+			.optional(),
+		mu_b: z
+			.string()
+			.default('')
+			.refine((str) => !isNaN(parseFloat(str)), {
+				message: 'Invalid number'
+			})
+			.optional(),
+		mu_c: z
+			.string()
+			.default('')
+			.refine((str) => !isNaN(parseFloat(str)), {
+				message: 'Invalid number'
+			})
+			.optional(),
+		a_const: z
+			.string()
+			.default('')
+			.refine((str) => !isNaN(parseFloat(str)), {
+				message: 'Invalid number'
+			})
+			.optional(),
+		b_const: z
+			.string()
+			.default('')
+			.refine((str) => !isNaN(parseFloat(str)), {
+				message: 'Invalid number'
+			})
+			.optional(),
+		c_const: z
+			.string()
+			.default('')
+			.refine((str) => !isNaN(parseFloat(str)), {
+				message: 'Invalid number'
+			})
+			.optional(),
 		data_date: z
 			.string()
 			.min(1)
 			.refine((str) => !isNaN(Date.parse(str)), {
 				message: 'Invalid date format'
+			})
+			.refine((str) => /^(\d{4})-(\d{2})-(\d{2})$/.test(str), {
+				message: 'Invalid date format. Expected format is YYYY-MM-DD'
 			}),
 		data_contributor: z.string().min(1),
 		qpart_file: z.string().optional(),
@@ -43,15 +85,21 @@ export const Schemas = {
 		bibtex: z.string().optional()
 	}),
 	'meta-reference': z.object({
-		meta: z.union([z.string(), z.number().int()]),
-		ref: z.union([z.string(), z.number().int()]),
+		meta: z.union([z.string(), z.number().int()]).refine((str) => !isNaN(parseFloat(str)), {
+			message: 'Invalid id number'
+		}),
+		ref: z.union([z.string(), z.number().int()]).refine((str) => !isNaN(parseFloat(str)), {
+			message: 'Invalid id number'
+		}),
 		dipole_moment: z.boolean(),
 		spectrum: z.boolean(),
 		notes: z.string().default('').optional()
 	}),
 	line: z.object({
-		meta: z.union([z.string(), z.number().int()]),
-		cat_file: z.string().default('').optional(),
+		meta: z.union([z.string(), z.number().int()]).refine((str) => !isNaN(parseFloat(str)), {
+			message: 'Invalid id number'
+		}),
+		cat_file: z.string().default(''),
 		qn_label_str: z.string().min(1),
 		contains_rovibrational: z.boolean(),
 		vib_qn: z.string().default('').optional(),
