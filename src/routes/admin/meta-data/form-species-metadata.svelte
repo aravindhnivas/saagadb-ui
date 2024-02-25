@@ -131,6 +131,7 @@
 					}}
 				/>
 				<Form.Validation />
+				<Form.Description>Rigid rotor category</Form.Description>
 			</Form.Item>
 		</Form.Field>
 
