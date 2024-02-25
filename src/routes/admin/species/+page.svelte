@@ -7,7 +7,7 @@
 	import AutoFillInchi from './auto-fill-inchi.svelte';
 	import AutoFillName from '../auto-fill-name.svelte';
 	import NameHtml from './name-html.svelte';
-	import { Description } from '$lib/components/ui/alert';
+
 	export let data: PageData;
 </script>
 
@@ -28,7 +28,7 @@
 		<Card.Content>
 			<AutoFillName
 				callback={(db, data) => {
-					console.log({ db, data });
+					// console.log({ db, data });
 					if (db === 'cdms') {
 						const { name } = data;
 						formStore.update((f) => {
@@ -53,10 +53,7 @@
 					<Form.Label>name</Form.Label>
 					<Form.Input required />
 					<Form.Validation />
-					<Form.Description
-						>Enter comma separated name(s). Tips: enter electronic state symbol if need to be
-						displayed under title
-					</Form.Description>
+					<Form.Description>Enter comma separated name(s)</Form.Description>
 				</Form.Item>
 			</Form.Field>
 
@@ -125,11 +122,11 @@
 					<Form.Label>notes</Form.Label>
 					<Form.Textarea />
 					<Form.Validation />
+					<Form.Description>Enter any notes. Tips: enter electronic state.</Form.Description>
 				</Form.Item>
 			</Form.Field>
 		</Card.Content>
 		<Card.Footer class="flex gap-4 justify-center">
-			<!-- <Form.Button class="w-[150px]">Submit</Form.Button> -->
 			<Form.Button class="w-[150px] flex gap-4" disabled={submitting}>
 				<span>Submit</span>
 				{#if submitting}
