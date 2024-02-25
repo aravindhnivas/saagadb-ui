@@ -73,7 +73,7 @@
 	<AutoFillMetadata />
 
 	<div class="grid-auto-fill">
-		<Form.Field {config} name="species" let:setValue>
+		<Form.Field {config} name="species" let:setValue let:value>
 			<Form.Item class="flex flex-col">
 				<Form.Label>species</Form.Label>
 				<Svelecte
@@ -86,10 +86,13 @@
 					on:change={(e) => setValue(e.detail?.id)}
 				/>
 				<Form.Validation />
+				{#if value}
+					<Form.Description>species_id: {value}</Form.Description>
+				{/if}
 			</Form.Item>
 		</Form.Field>
 
-		<Form.Field {config} name="linelist" let:setValue>
+		<Form.Field {config} name="linelist" let:setValue let:value>
 			<Form.Item class="flex flex-col">
 				<Form.Label>linelist</Form.Label>
 				<Svelecte
@@ -102,6 +105,9 @@
 					on:change={(e) => setValue(e.detail?.id)}
 				/>
 				<Form.Validation />
+				{#if value}
+					<Form.Description>linelist_id: {value}</Form.Description>
+				{/if}
 			</Form.Item>
 		</Form.Field>
 
