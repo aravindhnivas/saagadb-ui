@@ -3,6 +3,7 @@
 	import { AlertCircle } from 'lucide-svelte/icons';
 	import * as Alert from '$lib/components/ui/alert';
 	import SpeciesLists from './species-lists.svelte';
+	import RowVirtualizer from '$lib/components/virtualization/row-virtualizer.svelte';
 	export let data: LayoutData;
 </script>
 

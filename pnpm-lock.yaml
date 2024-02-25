@@ -11,6 +11,9 @@ dependencies:
   '@orcid/bibtex-parse-js':
     specifier: ^0.0.25
     version: 0.0.25
+  '@tanstack/svelte-virtual':
+    specifier: ^3.0.4
+    version: 3.0.4(svelte@4.2.12)
   '@zmotivat0r/o0':
     specifier: ^1.0.2
     version: 1.0.2
@@ -1283,6 +1286,19 @@ packages:
     resolution: {integrity: sha512-FaruWX6KdudYloq1AHD/4nU+UsMTdNE8CKyrseXWEcgjDAbvkwJg2QGPAnfIJLIWsjZOSPLOAykK6fuYp4vp4A==}
     dependencies:
       tslib: 2.6.2
+    dev: false
+
+  /@tanstack/svelte-virtual@3.0.4(svelte@4.2.12):
+    resolution: {integrity: sha512-aQS5VMI+q7DQEHSPC5KDpG+xPOO1zroHDTpVOFiBPTuVXyZrzXQbwrUwlOi8cyeKomBL4pVWnsosoPIzkbQYvQ==}
+    peerDependencies:
+      svelte: ^3.48.0 || ^4.0.0
+    dependencies:
+      '@tanstack/virtual-core': 3.0.0
+      svelte: 4.2.12
+    dev: false
+
+  /@tanstack/virtual-core@3.0.0:
+    resolution: {integrity: sha512-SYXOBTjJb05rXa2vl55TTwO40A6wKu0R5i1qQwhJYNDIqaIGF7D0HsLw+pJAyi2OvntlEIVusx3xtbbgSUi6zg==}
     dev: false
 
   /@types/cookie@0.6.0:
