@@ -4,13 +4,11 @@
 	import { getContext } from 'svelte';
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import * as Form from '$lib/components/ui/form';
-	import FormCombobox from '$lib/components/combobox/form-combobox.svelte';
 	import AutoFillMetadata from './auto-fill-metadata.svelte';
 	import { Label } from '$lib/components/ui/label';
 	import { Input } from '$lib/components/ui/input';
 	import { HelpCircle } from 'lucide-svelte/icons';
 	import Svelecte from 'svelecte';
-
 	export let form: SuperValidated<(typeof Schemas)['species-metadata']>;
 
 	const value = 'species-metadata';
@@ -59,7 +57,6 @@
 		{ name: 'fit_file', description: '(Optional) .fit file of the species' },
 		{ name: 'lin_file', description: '(Optional) .lin file of the species' }
 	];
-	// $: console.log({ species });
 </script>
 
 <FormTabContents
@@ -142,6 +139,7 @@
 			</Form.Item>
 		</Form.Field>
 	</div>
+
 	<div class="grid-auto-fill">
 		{#each keys as { name, label, description }}
 			<Form.Field {config} {name} let:constraints let:attrs>
