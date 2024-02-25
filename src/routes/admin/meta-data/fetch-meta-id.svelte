@@ -42,7 +42,7 @@
 	let hyperfine = false;
 
 	let test_value = '';
-	$: import.meta.env.DEV && console.log({ test_value, species_id, linelist_id });
+	// $: import.meta.env.DEV && console.log({ test_value, species_id, linelist_id });
 </script>
 
 <div class="grid-fit-content items-center">
