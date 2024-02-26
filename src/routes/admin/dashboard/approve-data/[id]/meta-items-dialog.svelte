@@ -2,6 +2,7 @@
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { LockKeyhole, UnlockKeyhole } from 'lucide-svelte';
 	import ApproveMetadata from './approve-metadata.svelte';
+	import { getContext } from 'svelte';
 
 	export let obj: SpeciesMetadata | MetaReference;
 	export let title: string;
@@ -21,7 +22,7 @@
 			</Dialog.Title>
 			<Dialog.Description>
 				<div class="flex gap-2 items-center">
-					<span>Approve metadata.</span>
+					<span>Approve {getContext('api_key')}.</span>
 					Click on <LockKeyhole /> to unlock <UnlockKeyhole /> the field for editing.
 				</div>
 			</Dialog.Description>
