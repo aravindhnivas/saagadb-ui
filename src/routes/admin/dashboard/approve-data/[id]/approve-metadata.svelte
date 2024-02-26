@@ -12,7 +12,7 @@
 	export let obj: SpeciesMetadata | MetaReference;
 
 	const api_key = getContext('api_key') as string;
-	const include_keys = getContext('include_keys') as string[];
+	const include_keys = getContext('include_keys') as (keyof (SpeciesMetadata | MetaReference))[];
 
 	let checked_row = include_keys.map((key) => ({ name: key, checked: false, disabled: true }));
 	$: all_approved = checked_row.every((f) => f.checked);

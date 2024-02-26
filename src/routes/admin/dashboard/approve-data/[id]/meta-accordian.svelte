@@ -4,7 +4,7 @@
 	import * as Accordion from '$lib/components/ui/accordion';
 	import MetaItemsDialog from './meta-items-dialog.svelte';
 
-	export let metadata = [];
+	export let metadata: SpeciesMetadata[];
 	export let include_keys: string[];
 	export let api_key: string;
 
