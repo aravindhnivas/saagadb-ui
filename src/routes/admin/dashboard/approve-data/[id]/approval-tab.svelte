@@ -1,14 +1,34 @@
 <script lang="ts">
 	import AlertBox from '$lib/components/utils/alert-box.svelte';
 	import { AlertCircle, CheckCheck } from 'lucide-svelte/icons';
-	import MetaRef from './meta-ref.svelte';
-	import MetaSpecies from './meta-species.svelte';
+	import MetaAccordian from './meta-accordian.svelte';
 	import { writable } from '@macfja/svelte-persistent-store';
 
 	export let meta_ref: MetaReference[];
 	export let meta_species: SpeciesMetadata[];
 
 	const active_tab = writable('active_tab_approval_page', 'species');
+
+	const species_keys = [
+		'species_name',
+		'species_formula',
+		'category',
+		'hyperfine',
+		'linelist_name',
+		'degree_of_freedom',
+		'molecule_tag',
+		'mu_a',
+		'mu_b',
+		'mu_c',
+		'a_const',
+		'b_const',
+		'c_const',
+		'data_date',
+		'data_contributor',
+		'notes'
+	];
+
+	const metaref_keys = ['dipole_moment', 'spectrum', 'ref_url', 'notes'];
 </script>
 
 <div class="tabs">
@@ -47,7 +67,11 @@
 <div class="animate__animated animate__fadeIn">
 	{#if $active_tab === 'species'}
 		{#if meta_species.length > 0}
-			<MetaSpecies {meta_species} />
+			<MetaAccordian
+				metadata={meta_species}
+				include_keys={species_keys}
+				api_key="species-metadata"
+			/>
 		{:else}
 			<AlertBox message="All species metadata has been approved" title="Approved">
 				<CheckCheck class="h-4 w-4" />
@@ -55,7 +79,7 @@
 		{/if}
 	{:else if $active_tab === 'ref'}
 		{#if meta_ref.length > 0}
-			<MetaRef {meta_ref} />
+			<MetaAccordian metadata={meta_ref} include_keys={metaref_keys} api_key="meta-reference" />
 		{:else}
 			<AlertBox message="All reference metadata has been approved" title="Approved">
 				<CheckCheck class="h-4 w-4" />

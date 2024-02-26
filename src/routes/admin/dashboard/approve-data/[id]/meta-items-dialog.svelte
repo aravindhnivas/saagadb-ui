@@ -1,9 +1,9 @@
 <script lang="ts">
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { LockKeyhole, UnlockKeyhole } from 'lucide-svelte';
-	import ApproveSpeciesMetadata from './approve-species-metadata.svelte';
+	import ApproveMetadata from './approve-metadata.svelte';
 
-	export let obj: SpeciesMetadata;
+	export let obj: SpeciesMetadata | MetaReference;
 	export let title: string;
 
 	let dialogOpen = false;
@@ -20,13 +20,13 @@
 				{obj.linelist_name.toLocaleUpperCase()} ({obj.molecule_tag})
 			</Dialog.Title>
 			<Dialog.Description>
-				<div class="flex gap-4 items-center">
-					<span>Approve species metadata.</span>
+				<div class="flex gap-2 items-center">
+					<span>Approve metadata.</span>
 					Click on <LockKeyhole /> to unlock <UnlockKeyhole /> the field for editing.
 				</div>
 			</Dialog.Description>
 		</Dialog.Header>
-		<ApproveSpeciesMetadata
+		<ApproveMetadata
 			{obj}
 			on:approve={() => {
 				dialogOpen = false;

@@ -88,6 +88,7 @@ interface MetaReference {
 	notes: string;
 	uploaded_by: string;
 	approved: boolean;
+	molecule_tag: number;
 	species_formula: string;
 	species_name: string;
 	linelist_name: string;
