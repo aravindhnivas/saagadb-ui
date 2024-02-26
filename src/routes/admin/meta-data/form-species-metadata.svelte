@@ -85,6 +85,7 @@
 					on:change={(e) => setValue(e.detail?.id)}
 					{value}
 				/>
+				<Form.Input hidden />
 				<Form.Validation />
 				{#if value}
 					<Form.Description>species_id: {value}</Form.Description>
@@ -105,6 +106,7 @@
 					on:change={(e) => setValue(e.detail?.id)}
 					{value}
 				/>
+				<Form.Input hidden />
 				<Form.Validation />
 				{#if value}
 					<Form.Description>linelist_id: {value}</Form.Description>
@@ -131,6 +133,7 @@
 						});
 					}}
 				/>
+				<Form.Input hidden />
 				<Form.Validation />
 				<Form.Description>Rigid rotor category</Form.Description>
 			</Form.Item>

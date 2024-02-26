@@ -1,6 +1,14 @@
 import { z } from 'zod';
 import { v4 as uuidv4 } from 'uuid';
 
+const optional_number = z
+	.string()
+	.default('')
+	.refine((str) => str === '' || !isNaN(parseFloat(str)), {
+		message: 'Invalid number'
+	})
+	.optional();
+
 export const Schemas = {
 	'species-metadata': z.object({
 		species: z.union([z.string(), z.number().int()]),
@@ -9,58 +17,18 @@ export const Schemas = {
 			.union([z.string(), z.number().int()])
 			.refine((str) => !isNaN(parseFloat(str)), {
 				message: 'Invalid number'
-			})
-			.optional(),
-		molecule_tag: z
-			.union([z.string(), z.number().int()])
-			.refine((str) => !isNaN(parseFloat(str)), {
-				message: 'Invalid number'
-			})
-			.optional(),
+			}),
+		molecule_tag: z.union([z.string(), z.number().int()]).refine((str) => !isNaN(parseFloat(str)), {
+			message: 'Invalid number'
+		}),
 		hyperfine: z.boolean(),
 		category: z.string().min(1),
-		mu_a: z
-			.string()
-			.default('')
-			.refine((str) => !isNaN(parseFloat(str)), {
-				message: 'Invalid number'
-			})
-			.optional(),
-		mu_b: z
-			.string()
-			.default('')
-			.refine((str) => !isNaN(parseFloat(str)), {
-				message: 'Invalid number'
-			})
-			.optional(),
-		mu_c: z
-			.string()
-			.default('')
-			.refine((str) => !isNaN(parseFloat(str)), {
-				message: 'Invalid number'
-			})
-			.optional(),
-		a_const: z
-			.string()
-			.default('')
-			.refine((str) => !isNaN(parseFloat(str)), {
-				message: 'Invalid number'
-			})
-			.optional(),
-		b_const: z
-			.string()
-			.default('')
-			.refine((str) => !isNaN(parseFloat(str)), {
-				message: 'Invalid number'
-			})
-			.optional(),
-		c_const: z
-			.string()
-			.default('')
-			.refine((str) => !isNaN(parseFloat(str)), {
-				message: 'Invalid number'
-			})
-			.optional(),
+		mu_a: optional_number,
+		mu_b: optional_number,
+		mu_c: optional_number,
+		a_const: optional_number,
+		b_const: optional_number,
+		c_const: optional_number,
 		data_date: z
 			.string()
 			.min(1)
