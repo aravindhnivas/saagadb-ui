@@ -7,7 +7,7 @@
 	import { Checkbox } from '$lib/components/ui/checkbox';
 	import { LockKeyhole, UnlockKeyhole } from 'lucide-svelte/icons';
 	import { createEventDispatcher, getContext } from 'svelte';
-
+	import { url_from_cdms_tag, url_from_jpl_tag } from '$lib/core';
 	export let obj: SpeciesMetadata;
 
 	const api_key = 'species-metadata';
@@ -30,11 +30,17 @@
 		{ name: 'data_contributor', checked: false, disabled: true },
 		{ name: 'notes', checked: false, disabled: true }
 	] as { name: keyof SpeciesMetadata; checked: boolean; disabled: boolean }[];
-	// $: console.log(checked_row);
+
 	$: all_approved = checked_row.every((f) => f.checked);
 	let approve_all = false;
 	const approve_btn = getContext('approve_btn') as boolean;
+
 	const dispatch = createEventDispatcher();
+
+	const source_link =
+		obj.linelist_name.toLocaleLowerCase() === 'jpl'
+			? url_from_jpl_tag(obj.molecule_tag, true)
+			: url_from_cdms_tag(obj.molecule_tag);
 </script>
 
 {#if approve_btn}
@@ -47,6 +53,9 @@
 			}}
 		/>
 		<Label>Select all to approve</Label>
+		<a href={source_link} target="_blank" rel="noopener noreferrer" class="underline">
+			Check {obj.linelist_name.toLocaleUpperCase()} source
+		</a>
 	</div>
 {/if}
 
