@@ -57,6 +57,9 @@
 		{ name: 'fit_file', description: '(Optional) .fit file of the species' },
 		{ name: 'lin_file', description: '(Optional) .lin file of the species' }
 	];
+	let species_id: number;
+	let linelist_id: number;
+	$: console.log({ species_id, linelist_id });
 </script>
 
 <FormTabContents
@@ -66,11 +69,16 @@
 	{form}
 	let:config
 	let:formStore
-	let:formValues
 	title="Species Metadata"
 	description="Add new species metadata. Species, linelist, hyperfine makes a unique set. Use these to fetch the meta_id in meta-reference and line forms"
 >
-	<AutoFillMetadata />
+	<AutoFillMetadata
+		on:filled={(e) => {
+			// console.log(e.detail, e.detail.species, e.detail.linelist);
+			if (e.detail?.species) species_id = e.detail.species;
+			if (e.detail?.linelist) linelist_id = e.detail.linelist;
+		}}
+	/>
 
 	<div class="grid-auto-fill">
 		<Form.Field {config} name="species" let:setValue let:value>
@@ -84,6 +92,7 @@
 						label: f.name_formula
 					}))}
 					on:change={(e) => setValue(e.detail?.id)}
+					bind:value={species_id}
 				/>
 				<Form.Validation />
 				{#if value}
@@ -103,6 +112,7 @@
 						label: f.linelist_name
 					}))}
 					on:change={(e) => setValue(e.detail?.id)}
+					bind:value={linelist_id}
 				/>
 				<Form.Validation />
 				{#if value}

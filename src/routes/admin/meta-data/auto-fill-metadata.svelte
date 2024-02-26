@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getForm } from 'formsnap';
 	import AutoFillName from '../auto-fill-name.svelte';
-	import { getContext } from 'svelte';
+	import { createEventDispatcher, getContext } from 'svelte';
 
 	const species = getContext('species') as Species[];
 	const linelist = getContext('linelist') as Linelist[];
@@ -18,14 +18,17 @@
 
 		const formattedDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
 
-		console.log(formattedDate);
+		// console.log(formattedDate);
 		return formattedDate;
 	};
+
+	const dispatch = createEventDispatcher();
+
 	const callback = (db: string, data: Object) => {
 		const tag_key = Object.keys(data).filter((k) => k.match(/species tag/i))[0];
 		if (tag_key) $form['molecule_tag'] = data[tag_key];
 
-		console.log({ db, data, $form });
+		// console.log({ db, data, $form });
 
 		const qpart_keys = Object.keys(data).filter((k) => k.match(/Q\(\d+.(\d+)?\)/g));
 		const qpart = [];
@@ -39,22 +42,22 @@
 		$form.data_contributor = data['Contributor']?.join(', ');
 
 		const dipole_keys = Object.keys(data).filter((k) => k.match(/(µ|mu_)[a-c]( \/ D)?/g));
-		console.log({ dipole_keys });
+		// console.log({ dipole_keys });
 		for (const dipole_key of dipole_keys) {
 			const fkey = dipole_key
 				.replace(/(µ|mu_)/g, '')
 				.replace(/ \/ D/g, '')
 				.toLowerCase();
-			console.log(`mu_${fkey}`, data[dipole_key]);
+			// console.log(`mu_${fkey}`, data[dipole_key]);
 			$form[`mu_${fkey}`] = data[dipole_key];
 		}
 
 		const rot_const_keys = Object.keys(data).filter((k) => k.match(/\b(A|B|C)( \/ MHz)?\b/g));
 		// Word boundaries (\b) ensure that the match is a whole word and not part of a larger word.
-		console.log({ rot_const_keys });
+		// console.log({ rot_const_keys });
 		for (const rot_key of rot_const_keys) {
 			const fkey = rot_key.replace(/ \/ MHz/g, '').toLowerCase();
-			console.log(`${fkey}_const`, data[rot_key]);
+			// console.log(`${fkey}_const`, data[rot_key]);
 			$form[`${fkey}_const`] = data[rot_key];
 		}
 
@@ -79,6 +82,8 @@
 			$form.species = found_species?.id;
 			$form.linelist = found_linelist?.id;
 		}
+
+		dispatch('filled', $form);
 		console.log('parsed', { $form });
 	};
 </script>

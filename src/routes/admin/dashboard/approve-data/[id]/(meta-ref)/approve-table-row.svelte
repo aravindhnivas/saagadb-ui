@@ -2,11 +2,9 @@
 	import * as Table from '$lib/components/ui/table';
 	import { Checkbox } from '$lib/components/ui/checkbox';
 	import ApproveTableCell from './approve-table-cell.svelte';
-	import { applyAction, enhance } from '$app/forms';
+	import { enhance } from '$app/forms';
 	import { Button } from '$lib/components/ui/button';
 	import { getContext } from 'svelte';
-	import { invalidateAll } from '$app/navigation';
-	import { toast } from 'svelte-sonner';
 
 	export let obj: MetaReference;
 
