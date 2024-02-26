@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { AlertCircle, Download } from 'lucide-svelte';
+	import { AlertCircle, Download } from 'lucide-svelte/icons';
 	import { Button } from '$lib/components/ui/button';
 	import CopyButton from '$lib/components/copy-button.svelte';
 	import fetch_bibfile from '$lib/utils/bibfile';

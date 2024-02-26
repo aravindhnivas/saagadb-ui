@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { toast } from 'svelte-sonner';
-	import { ArrowBigLeft } from 'lucide-svelte';
+	import { ArrowBigLeft } from 'lucide-svelte/icons';
 	import type { ActionData, PageData } from './$types';
 	import { base } from '$app/paths';
 	import { setContext } from 'svelte';

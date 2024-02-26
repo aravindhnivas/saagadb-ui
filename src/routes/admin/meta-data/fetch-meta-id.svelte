@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { getForm } from 'formsnap';
-	import Combobox from '$lib/components/combobox/combobox.svelte';
 	import { Button } from '$lib/components/ui/button';
 	import { toast } from 'svelte-sonner';
 	import { oO } from '@zmotivat0r/o0';
-	import { getContext } from 'svelte';
+	import { getContext, tick } from 'svelte';
 	import { base } from '$app/paths';
 	import Checkbox from '$lib/components/ui/checkbox/checkbox.svelte';
 	import { Label } from '$lib/components/ui/label';
+	import Svelecte from 'svelecte';
 
 	let species_id = 0;
 	let linelist_id = 0;
@@ -40,29 +40,58 @@
 	}
 	let fetching_meta_id = false;
 	let hyperfine = false;
+
+	let test_value = '';
+	// $: import.meta.env.DEV && console.log({ test_value, species_id, linelist_id });
 </script>
 
 <div class="grid-fit-content items-center">
-	<Combobox
-		label="species"
-		items={species.map((f) => ({
-			value: `${f.id}`,
-			label: f.name_formula
-		}))}
-		on:change={(e) => {
-			species_id = e.detail.value;
-		}}
-	/>
-	<Combobox
-		label="linelist"
-		items={linelist.map((f) => ({
-			value: `${f.id}`,
-			label: f.linelist_name
-		}))}
-		on:change={(e) => {
-			linelist_id = e.detail.value;
-		}}
-	/>
+	{#if import.meta.env.DEV}
+		<div class="flex flex-col gap-1">
+			<Label>test</Label>
+			<Svelecte
+				class="w-[150px]"
+				virtualList={true}
+				placeholder="test"
+				options={Array(5000)
+					.fill('abc')
+					.map((f, i) => {
+						return {
+							id: `${i}-${Math.random()}`,
+							label: `${f}-${i}`
+						};
+					})}
+				bind:value={test_value}
+			/>
+		</div>
+	{/if}
+
+	<div class="flex flex-col gap-1">
+		<Label>species</Label>
+		<Svelecte
+			class="w-[150px]"
+			virtualList={true}
+			options={species.map((f) => ({
+				id: f.id,
+				label: f.name_formula
+			}))}
+			bind:value={species_id}
+		/>
+	</div>
+
+	<div class="flex flex-col gap-1">
+		<Label>linelist</Label>
+		<Svelecte
+			class="w-[150px]"
+			virtualList={true}
+			options={linelist.map((f) => ({
+				id: f.id,
+				label: f.linelist_name
+			}))}
+			bind:value={linelist_id}
+		/>
+	</div>
+
 	<div class="flex items-center space-x-2">
 		<Checkbox id="hyperfine" bind:checked={hyperfine} aria-labelledby="hyperfine-label" />
 		<Label
