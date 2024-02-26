@@ -14,12 +14,12 @@
 		{
 			key: 'dipole_moment',
 			label: 'Dipole moment',
-			formatter: (val: string) => (val === 'true' ? '✅' : '❌')
+			formatter: (val: string) => (val ? '✅' : '❌')
 		},
 		{
 			key: 'spectrum',
 			label: 'Spectrum',
-			formatter: (val: string) => (val === 'true' ? '✅' : '❌')
+			formatter: (val: string) => (val ? '✅' : '❌')
 		},
 		{
 			key: 'ref_url',

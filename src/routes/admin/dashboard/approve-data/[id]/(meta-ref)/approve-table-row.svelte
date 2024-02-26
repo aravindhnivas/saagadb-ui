@@ -21,25 +21,6 @@
 
 	const api_key = getContext('api_key') as string;
 
-	// const onSubmit = () => {
-	// 	return async ({ result }) => {
-	// 		console.log(result);
-	// 		if (result.type === 'success') {
-	// 			// rerun all `load` functions, following the successful update
-	// 			await invalidateAll();
-	// 			// console.log(result);
-	// 			const { data } = result;
-	// 			if (data.success) {
-	// 				toast.success(data.message);
-	// 			} else {
-	// 				message = data.message?.detail || data.message;
-	// 				toast.error(message);
-	// 			}
-	// 		}
-	// 		await applyAction(result);
-	// 	};
-	// };
-
 	let checked_row = include_keys.map((k) => ({
 		key: k.key,
 		is_link: k.is_link,
