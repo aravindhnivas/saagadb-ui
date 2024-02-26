@@ -8,6 +8,7 @@
 	import { LockKeyhole, UnlockKeyhole } from 'lucide-svelte/icons';
 	import { createEventDispatcher, getContext } from 'svelte';
 	import { url_from_cdms_tag, url_from_jpl_tag } from '$lib/core';
+	import { Description } from '$lib/components/ui/card';
 
 	export let obj: SpeciesMetadata | MetaReference;
 
@@ -49,7 +50,7 @@
 >
 	<div class="grid-auto-fill">
 		{#each checked_row as { name, checked, disabled }}
-			<div class="flex flex-col" class:col-span-3={name === 'notes'}>
+			<div class="flex flex-col gap-1" class:col-span-3={name === 'notes' || name === 'ref_url'}>
 				<div class="flex gap-4 items-center p-2">
 					<button on:click|preventDefault={() => (disabled = !disabled)}>
 						{#if disabled}
@@ -65,6 +66,25 @@
 					<Textarea {disabled} bind:value={obj[name]} {name} />
 				{:else}
 					<Input {disabled} bind:value={obj[name]} {name} />
+				{/if}
+
+				{#if name === 'ref_url'}
+					<Description>
+						{#if obj[name]}
+							<a href={obj[name]} target="_blank" rel="noopener noreferrer" class="underline">
+								Check reference link
+							</a>
+						{/if}
+					</Description>
+				{/if}
+
+				{#if typeof obj[name] === 'boolean'}
+					{#if !disabled}
+						<div class="flex gap-2 items-center">
+							<input type="checkbox" bind:checked={obj[name]} class="checkbox" />
+							<Description>use this checkbox to change value</Description>
+						</div>
+					{/if}
 				{/if}
 			</div>
 		{/each}
