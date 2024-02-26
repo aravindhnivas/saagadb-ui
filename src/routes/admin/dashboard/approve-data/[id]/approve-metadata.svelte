@@ -6,9 +6,11 @@
 	import { enhance } from '$app/forms';
 	import { Checkbox } from '$lib/components/ui/checkbox';
 	import { LockKeyhole, UnlockKeyhole } from 'lucide-svelte/icons';
-	import { createEventDispatcher, getContext } from 'svelte';
+	import { createEventDispatcher, getContext, onMount } from 'svelte';
 	import { url_from_cdms_tag, url_from_jpl_tag } from '$lib/core';
 	import { Description } from '$lib/components/ui/card';
+	import { base } from '$app/paths';
+	import { toast } from 'svelte-sonner';
 
 	export let obj: SpeciesMetadata | MetaReference;
 
@@ -25,6 +27,8 @@
 		obj.linelist_name.toLocaleLowerCase() === 'jpl'
 			? url_from_jpl_tag(obj.molecule_tag, true)
 			: url_from_cdms_tag(obj.molecule_tag);
+
+	let modified = false;
 </script>
 
 <div class="flex gap-4 items-center p-2">
@@ -39,6 +43,24 @@
 	<a href={source_link} target="_blank" rel="noopener noreferrer" class="underline">
 		Check {obj.linelist_name.toLocaleUpperCase()} source
 	</a>
+	{#if modified}
+		<Button
+			class="ml-auto"
+			variant="outline"
+			on:click={async (e) => {
+				e.preventDefault();
+				const res = await fetch(`${base}/api/data/${api_key}/${obj.id}`);
+				if (!res.ok) return toast.error(res.statusText);
+				const data = await res.json();
+				// console.log(data);
+				for (const key of include_keys) {
+					obj[key] = data[key];
+				}
+				modified = false;
+				toast.success('Fetched original data');
+			}}>Fetch original</Button
+		>
+	{/if}
 </div>
 
 <form
@@ -52,7 +74,12 @@
 		{#each checked_row as { name, checked, disabled }}
 			<div class="flex flex-col gap-1" class:col-span-3={name === 'notes' || name === 'ref_url'}>
 				<div class="flex gap-4 items-center p-2">
-					<button on:click|preventDefault={() => (disabled = !disabled)}>
+					<button
+						on:click|preventDefault={() => {
+							disabled = !disabled;
+							modified = true;
+						}}
+					>
 						{#if disabled}
 							<LockKeyhole />
 						{:else}
