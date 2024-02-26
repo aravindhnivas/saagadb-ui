@@ -57,6 +57,7 @@
 					obj[key] = data[key];
 				}
 				modified = false;
+				checked_row = checked_row.map((f) => ({ ...f, checked: false, disabled: true }));
 				toast.success('Fetched original data');
 			}}>Fetch original</Button
 		>
