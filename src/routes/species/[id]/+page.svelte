@@ -20,7 +20,7 @@
 			{#if meta.length > 0}
 				<MetaTable species_metadata={meta} />
 			{:else}
-				<AlertBox message="No metadata available for this species" />
+				<AlertBox message="No data available for this species" />
 			{/if}
 		{/if}
 	{:catch error}
