@@ -37,10 +37,10 @@ export const actions: Actions = {
 
 		console.log(formData);
 
-		return {
-			success: false,
-			message: 'Test message'
-		};
+		// return {
+		// 	success: false,
+		// 	message: 'Test message'
+		// };
 
 		const id = url.searchParams.get('id') as string;
 		const api_key = url.searchParams.get('api_key') as string;
