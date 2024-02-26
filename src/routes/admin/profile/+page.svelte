@@ -8,7 +8,14 @@
 
 	export let data: PageData;
 
-	const userKeys = ['name', 'email', 'organization', 'approver_name'] as const;
+	const userKeys = [
+		'name',
+		'email',
+		'organization',
+		'approver_name',
+		'is_staff',
+		'is_superuser'
+	] as const;
 	let verificationSent = false;
 
 	async function resend_verification() {
