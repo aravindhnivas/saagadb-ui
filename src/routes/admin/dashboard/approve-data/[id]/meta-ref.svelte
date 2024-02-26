@@ -25,6 +25,10 @@
 			key: 'ref_url',
 			label: 'Reference',
 			is_link: true
+		},
+		{
+			key: 'notes',
+			label: 'Notes'
 		}
 	] as {
 		key: keyof SpeciesMetadata;
