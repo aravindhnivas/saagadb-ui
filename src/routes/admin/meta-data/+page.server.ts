@@ -18,7 +18,7 @@ export const load: PageServerLoad = async () => {
 		'meta-reference': await superValidate(zod(Schemas['meta-reference']), { id: 'meta-reference' }),
 		line: await superValidate(zod(Schemas['line']), { id: 'line' })
 	};
-
+	// console.log('forms', forms);
 	return { forms };
 };
 

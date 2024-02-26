@@ -1,6 +1,6 @@
 interface Species {
 	id: number;
-	name: string;
+	name: string[];
 	iupac_name: string;
 	name_formula: string;
 	name_html: string;

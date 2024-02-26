@@ -4,10 +4,9 @@
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import * as Form from '$lib/components/ui/form';
 	import FetchMetaId from './fetch-meta-id.svelte';
-	import { HelpCircle } from 'lucide-svelte';
+	import { HelpCircle } from 'lucide-svelte/icons';
 
 	export let form: SuperValidated<(typeof Schemas)['line']>;
-
 	const value = 'line';
 	const schema = Schemas[value];
 </script>
@@ -30,45 +29,31 @@
 			<Form.Label>meta</Form.Label>
 			<Form.Input required />
 			<Form.Validation />
+			<Form.Description>Please auto-fill this field using Fetch meta_id button</Form.Description>
 		</Form.Item>
 	</Form.Field>
 
 	<Form.Field {config} name="qn_label_str">
 		<Form.Item>
-			<Form.Label>
-				<div class="flex gap-4 items-center">
-					<span>qn_label_str</span>
-					<span
-						aria-label="comma-separated string of quantum number labels. It must follow the order in which the quantum
-						numbers are stated in the .cat file"
-						data-cooltipz-dir="down"
-					>
-						<HelpCircle />
-					</span>
-				</div>
-			</Form.Label>
+			<Form.Label>qn_label_str</Form.Label>
 			<Form.Input required />
 			<Form.Validation />
+			<Form.Description
+				>comma-separated string of quantum number labels. It must follow the order in which the
+				quantum numbers are stated in the .cat file</Form.Description
+			>
 		</Form.Item>
 	</Form.Field>
 
 	<Form.Field {config} name="vib_qn">
 		<Form.Item>
-			<Form.Label>
-				<div class="flex gap-4 items-center">
-					<span>vib_qn</span>
-					<span
-						aria-label="Indicates the quantum number label that corresponds to the vibrational
-						quantum number. The quantum number label must be one
-						of the values in qn_label_str"
-						data-cooltipz-dir="down"
-					>
-						<HelpCircle />
-					</span>
-				</div>
-			</Form.Label>
+			<Form.Label>vib_qn</Form.Label>
 			<Form.Input />
 			<Form.Validation />
+			<Form.Description
+				>Indicates the quantum number label that corresponds to the vibrational quantum number. The
+				quantum number label must be one of the values in qn_label_str
+			</Form.Description>
 		</Form.Item>
 	</Form.Field>
 
@@ -79,6 +64,7 @@
 			</div>
 			<Form.Checkbox checked="indeterminate" />
 			<Form.Validation />
+			<Form.Description>Set true if vib_qn is filled</Form.Description>
 		</Form.Item>
 	</Form.Field>
 

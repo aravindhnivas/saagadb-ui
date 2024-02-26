@@ -17,8 +17,10 @@
 			<AlertBox message={species.message} variant="destructive" />
 		{:else if species}
 			<SpeciesData {species} />
-			{#if meta.length > 0 && data.linelist}
+			{#if meta.length > 0}
 				<MetaTable species_metadata={meta} />
+			{:else}
+				<AlertBox message="No metadata available for this species" />
 			{/if}
 		{/if}
 	{:catch error}

@@ -1,10 +1,11 @@
 <script lang="ts">
-	import { Check, ChevronsUpDown } from 'lucide-svelte';
+	import { Check, ChevronsUpDown } from 'lucide-svelte/icons';
 	import * as Command from '$lib/components/ui/command';
 	import * as Popover from '$lib/components/ui/popover';
 	import { Button } from '$lib/components/ui/button';
 	import { cn } from '$lib/utils';
 	import { createEventDispatcher, tick } from 'svelte';
+
 	export let items: {
 		label: string;
 		value: string;

@@ -17,3 +17,8 @@ button {background: transparent;}
 	gap: 2em;
 	width: fit-content;
 }
+
+div[data-cmdk-group] {
+	max-height: 250px;
+    overflow: auto;
+}

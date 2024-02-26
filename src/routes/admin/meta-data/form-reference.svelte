@@ -26,7 +26,7 @@
 	let:config
 	let:formStore
 	title="Reference"
-	description="Enter the reference details"
+	description="Please enter the details of the reference. DOI is required to auto-fill the form. If you have the bibtex file, you can upload it."
 >
 	<Form.Field {config} name="doi">
 		<Form.Item>

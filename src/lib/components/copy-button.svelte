@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Check, Copy } from 'lucide-svelte';
+	import { Check, Copy } from 'lucide-svelte/icons';
 	import { onDestroy } from 'svelte';
 	import { copy } from 'svelte-copy';
 	import { toast } from 'svelte-sonner';
