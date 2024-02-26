@@ -62,9 +62,9 @@
 					<Checkbox bind:checked />
 				</div>
 				{#if name === 'notes'}
-					<Textarea {disabled} value={obj[name]} {name} />
+					<Textarea {disabled} bind:value={obj[name]} {name} />
 				{:else}
-					<Input {disabled} value={obj[name]} {name} />
+					<Input {disabled} bind:value={obj[name]} {name} />
 				{/if}
 			</div>
 		{/each}
