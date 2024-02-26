@@ -2,9 +2,6 @@
 	import { base } from '$app/paths';
 	import { logged_in } from '$lib/utils/stores';
 	import Navitems from './nav/navitems.svelte';
-	import { Button } from '$lib/components/ui/button';
-	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-	import { LayoutDashboard, LogOut } from 'lucide-svelte/icons';
 </script>
 
 <div class="navbar">
@@ -42,25 +39,21 @@
 	<div class="navbar-end">
 		<div class="dropdown dropdown-end">
 			{#if $logged_in}
-				<DropdownMenu.Root>
-					<DropdownMenu.Trigger asChild let:builder>
-						<Button builders={[builder]} variant="outline">Hi, {$logged_in}</Button>
-					</DropdownMenu.Trigger>
-					<DropdownMenu.Content class="w-56">
-						<DropdownMenu.Label>My Account</DropdownMenu.Label>
-						<DropdownMenu.Separator />
-
-						<DropdownMenu.Item>
-							<LayoutDashboard class="mr-2 h-4 w-4" />
-							<a href="{base}/admin/dashboard">Dashboard</a>
-						</DropdownMenu.Item>
-
-						<DropdownMenu.Item>
-							<LogOut class="mr-2 h-4 w-4" />
-							<a href="{base}/logout">logout</a>
-						</DropdownMenu.Item>
-					</DropdownMenu.Content>
-				</DropdownMenu.Root>
+				<div tabindex="0" role="button">
+					Hi, {$logged_in}
+				</div>
+				<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+				<ul
+					tabindex="0"
+					class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content rounded-box w-52"
+				>
+					<li><a href="{base}/admin/dashboard">Dashboard</a></li>
+					<li>
+						<form action="{base}/logout" method="POST">
+							<button>logout</button>
+						</form>
+					</li>
+				</ul>
 			{:else}
 				<a href="{base}/login">Login</a>
 			{/if}

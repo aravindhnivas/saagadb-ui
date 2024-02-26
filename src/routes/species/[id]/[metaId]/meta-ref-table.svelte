@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as Table from '$lib/components/ui/table';
-	import { Download } from 'lucide-svelte/icons';
+	import { Download } from 'lucide-svelte';
 	import Bibfile from './bibfile.svelte';
 	import { base } from '$app/paths';
 	// import { onMount } from 'svelte';

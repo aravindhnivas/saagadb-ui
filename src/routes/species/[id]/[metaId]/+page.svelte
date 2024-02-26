@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import { ArrowBigLeft } from 'lucide-svelte/icons';
+	import { ArrowBigLeft } from 'lucide-svelte';
 	import MetaRefTable from './meta-ref-table.svelte';
 	import MetaPartitionTable from './meta-partition-table.svelte';
 	import { Button } from '$lib/components/ui/button';

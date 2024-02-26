@@ -14,21 +14,17 @@
 		{
 			key: 'dipole_moment',
 			label: 'Dipole moment',
-			formatter: (val: string) => (val ? '✅' : '❌')
+			formatter: (val: string) => (val === 'true' ? '✅' : '❌')
 		},
 		{
 			key: 'spectrum',
 			label: 'Spectrum',
-			formatter: (val: string) => (val ? '✅' : '❌')
+			formatter: (val: string) => (val === 'true' ? '✅' : '❌')
 		},
 		{
 			key: 'ref_url',
 			label: 'Reference',
 			is_link: true
-		},
-		{
-			key: 'notes',
-			label: 'Notes'
 		}
 	] as {
 		key: keyof SpeciesMetadata;

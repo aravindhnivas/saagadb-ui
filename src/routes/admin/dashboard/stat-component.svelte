@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { AlertCircle, CheckCheck } from 'lucide-svelte/icons';
+	import { AlertCircle, CheckCheck } from 'lucide-svelte';
 	export let total: number;
 	export let approved: number;
 	$: percent_approved = approved !== undefined && total > 0 ? approved / total : 0;

@@ -7,7 +7,7 @@
 	import { Label } from '$lib/components/ui/label';
 	import { Button } from '$lib/components/ui/button';
 	import * as Table from '$lib/components/ui/table';
-	import { Delete, Edit } from 'lucide-svelte/icons';
+	import { Delete, Edit } from 'lucide-svelte';
 	import AlertBox from '$lib/components/utils/alert-box.svelte';
 
 	export let data: PageData;

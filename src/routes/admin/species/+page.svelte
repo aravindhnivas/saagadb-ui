@@ -7,7 +7,6 @@
 	import AutoFillInchi from './auto-fill-inchi.svelte';
 	import AutoFillName from '../auto-fill-name.svelte';
 	import NameHtml from './name-html.svelte';
-
 	export let data: PageData;
 </script>
 
@@ -28,7 +27,7 @@
 		<Card.Content>
 			<AutoFillName
 				callback={(db, data) => {
-					// console.log({ db, data });
+					console.log({ db, data });
 					if (db === 'cdms') {
 						const { name } = data;
 						formStore.update((f) => {
@@ -53,7 +52,6 @@
 					<Form.Label>name</Form.Label>
 					<Form.Input required />
 					<Form.Validation />
-					<Form.Description>Enter comma separated name(s)</Form.Description>
 				</Form.Item>
 			</Form.Field>
 
@@ -62,9 +60,6 @@
 					<Form.Label>iupac_name</Form.Label>
 					<Form.Input required />
 					<Form.Validation />
-					<Form.Description
-						>Unique IUPAC name. Tips: enter conformer type, vibrational states within parenthesis</Form.Description
-					>
 				</Form.Item>
 			</Form.Field>
 
@@ -84,11 +79,6 @@
 						<NameHtml />
 					</div>
 					<Form.Validation />
-					<Form.Description
-						>Enter symbols in sup or sub tags i.e., {'<sup> + </sup>'} for superscript H<sup>+</sup
-						>and {'<sub> 2 </sub>'}
-						for subscripts H<sub>2</sub>O</Form.Description
-					>
 				</Form.Item>
 			</Form.Field>
 
@@ -97,7 +87,6 @@
 					<Form.Label>smiles</Form.Label>
 					<AutoFillInchi />
 					<Form.Validation />
-					<Form.Description>Tips: Try to fetch from PubChem or enter manually</Form.Description>
 				</Form.Item>
 			</Form.Field>
 
@@ -122,11 +111,11 @@
 					<Form.Label>notes</Form.Label>
 					<Form.Textarea />
 					<Form.Validation />
-					<Form.Description>Enter any notes. Tips: enter electronic state.</Form.Description>
 				</Form.Item>
 			</Form.Field>
 		</Card.Content>
 		<Card.Footer class="flex gap-4 justify-center">
+			<!-- <Form.Button class="w-[150px]">Submit</Form.Button> -->
 			<Form.Button class="w-[150px] flex gap-4" disabled={submitting}>
 				<span>Submit</span>
 				{#if submitting}

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as Table from '$lib/components/ui/table';
-	import { Check, Cross } from 'lucide-svelte/icons';
+	import { Check, Cross } from 'lucide-svelte';
 	import type { PageData } from './$types';
 	import ChangePassword from './change-password.svelte';
 	import { base } from '$app/paths';
@@ -8,14 +8,7 @@
 
 	export let data: PageData;
 
-	const userKeys = [
-		'name',
-		'email',
-		'organization',
-		'approver_name',
-		'is_staff',
-		'is_superuser'
-	] as const;
+	const userKeys = ['name', 'email', 'organization', 'approver_name'] as const;
 	let verificationSent = false;
 
 	async function resend_verification() {

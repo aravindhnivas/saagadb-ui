@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Eye, EyeOff } from 'lucide-svelte/icons';
+	import { Eye, EyeOff } from 'lucide-svelte';
 	import type { PageData } from './$types';
 	import * as Form from '$lib/components/ui/form';
 	import * as Card from '$lib/components/ui/card';

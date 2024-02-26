@@ -1,7 +1,7 @@
 <script lang="ts">
 	import AlertBox from '$lib/components/utils/alert-box.svelte';
 	import Loader from '$lib/components/utils/loader.svelte';
-	import { BookMarked, Atom } from 'lucide-svelte/icons';
+	import { BookMarked, Atom } from 'lucide-svelte';
 	import StatComponent from './stat-component.svelte';
 
 	export let user: User;

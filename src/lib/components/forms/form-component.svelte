@@ -3,7 +3,7 @@
 	import { type FormOptions, type SuperValidated } from 'formsnap';
 	import MessageAlert from './message-alert.svelte';
 	import { type AnyZodObject } from 'zod';
-	import { AlertCircle } from 'lucide-svelte/icons';
+	import { AlertCircle } from 'lucide-svelte';
 	import * as Alert from '$lib/components/ui/alert';
 	import { createEventDispatcher } from 'svelte';
 	import { get } from 'svelte/store';

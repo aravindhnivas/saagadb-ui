@@ -2,15 +2,17 @@
 	import * as Table from '$lib/components/ui/table';
 	import { Checkbox } from '$lib/components/ui/checkbox';
 	import ApproveTableCell from './approve-table-cell.svelte';
-	import { enhance } from '$app/forms';
+	import { applyAction, enhance } from '$app/forms';
 	import { Button } from '$lib/components/ui/button';
 	import { getContext } from 'svelte';
+	import { invalidateAll } from '$app/navigation';
+	import { toast } from 'svelte-sonner';
 
 	export let obj: MetaReference;
 
 	const approve_btn = getContext('approve_btn') as boolean;
 	const include_keys = getContext('include_keys') as {
-		key: keyof MetaReference;
+		key: keyof SpeciesMetadata;
 		label: string;
 		formatter?: <T>(val: T) => string;
 		is_link?: boolean;
@@ -19,11 +21,29 @@
 
 	const api_key = getContext('api_key') as string;
 
+	// const onSubmit = () => {
+	// 	return async ({ result }) => {
+	// 		console.log(result);
+	// 		if (result.type === 'success') {
+	// 			// rerun all `load` functions, following the successful update
+	// 			await invalidateAll();
+	// 			// console.log(result);
+	// 			const { data } = result;
+	// 			if (data.success) {
+	// 				toast.success(data.message);
+	// 			} else {
+	// 				message = data.message?.detail || data.message;
+	// 				toast.error(message);
+	// 			}
+	// 		}
+	// 		await applyAction(result);
+	// 	};
+	// };
+
 	let checked_row = include_keys.map((k) => ({
 		key: k.key,
 		is_link: k.is_link,
-		value: obj[k.key],
-		formatted_value: k.formatter?.(obj[k.key]),
+		value: k.formatter?.(obj[k.key]) ?? obj[k.key],
 		checked: false
 	}));
 

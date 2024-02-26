@@ -13,8 +13,7 @@ module.exports = {
 				PORT: process.env.PORT,
 				ORIGIN: 'http://herzberg.mit.edu',
 				PROTOCOL_HEADER: 'x-forwarded-proto',
-				HOST_HEADER: 'x-forwarded-host',
-				BODY_SIZE_LIMIT: 'Infinity',
+				HOST_HEADER: 'x-forwarded-host'
 			}
 		}
 	]

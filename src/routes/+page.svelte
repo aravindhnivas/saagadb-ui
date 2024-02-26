@@ -1,7 +1,7 @@
 <script>
 	import { base } from '$app/paths';
 	import { Button } from '$lib/components/ui/button';
-	import { ArrowRightCircle } from 'lucide-svelte/icons';
+	import { ArrowRightCircle } from 'lucide-svelte';
 </script>
 
 <div class="hero card shadow-xl h-full">

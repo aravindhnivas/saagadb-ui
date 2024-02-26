@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as Alert from '$lib/components/ui/alert';
-	import { AlertCircle } from 'lucide-svelte/icons';
+	import { AlertCircle } from 'lucide-svelte';
 
 	export let variant: 'default' | 'destructive' = 'default';
 	export let message: string = '';

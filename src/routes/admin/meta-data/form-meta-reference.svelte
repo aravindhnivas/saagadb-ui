@@ -17,7 +17,7 @@
 	{form}
 	let:config
 	title="Meta-reference"
-	description="Link the uploaded reference (previous step) to the related species and add notes if any. "
+	description="Enter the meta-reference details"
 >
 	<div class="grid gap-2 border-gray border-2 p-2 rounded-4">
 		<FetchMetaId />
@@ -29,7 +29,6 @@
 			<Form.Label>meta</Form.Label>
 			<Form.Input required />
 			<Form.Validation />
-			<Form.Description>Please auto-fill this field using Fetch meta_id button</Form.Description>
 		</Form.Item>
 	</Form.Field>
 
@@ -38,7 +37,6 @@
 			<Form.Label>ref</Form.Label>
 			<Form.Input required />
 			<Form.Validation />
-			<Form.Description>Please auto-fill this field using Fetch ref_id button</Form.Description>
 		</Form.Item>
 	</Form.Field>
 

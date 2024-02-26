@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as Table from '$lib/components/ui/table';
-	import { Download, HelpCircle } from 'lucide-svelte/icons';
+	import { Download, HelpCircle } from 'lucide-svelte';
 	import { base } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { edit_mode } from '$lib/utils/stores';

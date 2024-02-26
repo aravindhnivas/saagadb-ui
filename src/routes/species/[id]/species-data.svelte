@@ -1,25 +1,25 @@
 <script lang="ts">
-	import { Download } from 'lucide-svelte/icons';
+	import { Download } from 'lucide-svelte';
 	import * as Table from '$lib/components/ui/table';
 	import { onMount } from 'svelte';
+
 	export let species: Species;
 
 	let mol: ReturnType<typeof window.RDKit.get_mol>;
 	let mol_descriptor: MolecularDescriptor;
-	let species_metadata_table: { [name: string]: string } = {};
+	let species_metadata_table = {};
 
 	const load_all_data = () => {
 		mol = window.RDKit.get_mol(species.smiles);
 		mol_descriptor = mol ? JSON.parse(mol.get_descriptors()) : null;
 
 		species_metadata_table = {
-			'IUPAC name': species.iupac_name,
 			'Chemical formula': species.name_html,
-			'Molar mass': Number(species.molecular_mass).toFixed(2) + ' g/mol',
-			'Canonical SMILES': species.smiles,
-			SMARTS: mol?.get_smarts() ?? '-',
-			InChI: species.standard_inchi,
-			InChIkey: species.standard_inchi_key,
+			'Molar mass': (mol_descriptor ? mol_descriptor.amw : species.molecular_mass) + ' g/mol',
+			'Canonical SMILES': mol?.get_smiles(),
+			SMARTS: mol?.get_smarts(),
+			InChI: mol?.get_inchi(),
+			InChIkey: window.RDKit.get_inchikey_for_inchi(mol?.get_inchi()),
 			SELFIES: species.selfies,
 			Notes: species.notes
 		};
@@ -31,11 +31,8 @@
 </script>
 
 {#if species}
-	<div class="flex flex-col items-center max-w-4xl">
-		<span class="text-2xl">{species.name[0]}</span>
-		{#if species.name.length > 1}
-			<span class="text-md font-300">({species.name.slice(1).join(', ')})</span>
-		{/if}
+	<div class="max-w-4xl text-2xl font-400 flex justify-center mb-[2rem]">
+		{species.iupac_name?.toLocaleUpperCase()}
 	</div>
 
 	<div class="grid grid-cols-2 gap-4 my-2 max-w-4xl">
@@ -51,7 +48,7 @@
 				</div>
 			</div>
 		{:else}
-			<p>No structure found or RDKit is not yet initialized</p>
+			<p>No structure found</p>
 		{/if}
 		<Table.Root>
 			<Table.Body>

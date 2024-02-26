@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { logged_in } from '$lib/utils/stores';
 	import type { PageData } from './$types';
-	import { AlertCircle, ShieldCheck } from 'lucide-svelte/icons';
+	import { AlertCircle, ShieldCheck } from 'lucide-svelte';
 	import UploadStatus from './upload-status.svelte';
 	import DependentUser from './dependent-user.svelte';
 	import * as Tabs from '$lib/components/ui/tabs';

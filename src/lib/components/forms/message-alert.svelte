@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { AlertCircle, CheckCheck, AlertTriangle } from 'lucide-svelte/icons';
+	import { AlertCircle, CheckCheck, AlertTriangle } from 'lucide-svelte';
 	import * as Alert from '$lib/components/ui/alert';
 	import { getForm } from 'formsnap';
 	import { confetti } from '@neoconfetti/svelte';
