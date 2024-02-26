@@ -5,53 +5,53 @@
 	import { enhance } from '$app/forms';
 	import { Button } from '$lib/components/ui/button';
 	import { getContext } from 'svelte';
-
+	import { edit_ref_field } from '../stores';
 	export let obj: MetaReference;
 
 	const approve_btn = getContext('approve_btn') as boolean;
-	const include_keys = getContext('include_keys') as {
-		key: keyof MetaReference;
-		label: string;
-		formatter?: <T>(val: T) => string;
-		is_link?: boolean;
-		href?: string;
-	}[];
-
+	const include_keys = getContext('include_keys') as MetaRefApprovalItem[];
 	const api_key = getContext('api_key') as string;
 
-	let checked_row = include_keys.map((k) => ({
-		key: k.key,
-		is_link: k.is_link,
-		value: obj[k.key],
-		formatted_value: k.formatter?.(obj[k.key]),
-		checked: false
-	}));
-
+	let checked_row = include_keys.map(() => ({ checked: false }));
 	$: all_approved = checked_row.every((f) => f.checked);
 	let approve_all = false;
+	$: console.log({ obj, include_keys, checked_row });
 </script>
 
 <Table.Row>
-	<Table.Cell class="p-0.5 text-center">
-		<div class="flex flex-col gap-4 items-center">
-			<span>All</span>
-			<Checkbox
-				bind:checked={approve_all}
-				onCheckedChange={(state) => {
-					if (state === 'indeterminate') return;
-					checked_row = checked_row.map((f) => ({ ...f, checked: state }));
-				}}
-			/>
-		</div>
-	</Table.Cell>
-	{#each checked_row as { value, is_link, checked }}
-		<ApproveTableCell is_link={is_link ?? false} {value} bind:checked />
+	{#if !$edit_ref_field}
+		<Table.Cell class="p-0.5 text-center">
+			<div class="flex flex-col gap-4 items-center">
+				<span>All</span>
+				<Checkbox
+					bind:checked={approve_all}
+					onCheckedChange={(state) => {
+						if (state === 'indeterminate') return;
+						checked_row = checked_row.map((f) => ({ ...f, checked: state }));
+					}}
+				/>
+			</div>
+		</Table.Cell>
+	{/if}
+
+	{#each include_keys as { key, is_link, formatter, editable }, ind (key)}
+		{@const formatted_value = formatter?.(obj[key]) ?? obj[key]}
+		<ApproveTableCell
+			{key}
+			is_link={is_link ?? false}
+			{formatted_value}
+			{editable}
+			bind:value={obj[key]}
+			bind:checked={checked_row[ind].checked}
+		/>
 	{/each}
 	{#if approve_btn}
 		<Table.Cell class="p-0.5 text-center">
-			<form use:enhance action="?/approve&id={obj.id}&api_key={api_key}" method="POST">
-				<Button type="submit" disabled={!all_approved}>Approve</Button>
-			</form>
+			<Button
+				formaction="?/approve&id={obj.id}&api_key={api_key}"
+				type="submit"
+				disabled={!all_approved && !$edit_ref_field}>Approve</Button
+			>
 		</Table.Cell>
 	{/if}
 </Table.Row>

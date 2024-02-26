@@ -35,6 +35,13 @@ export const actions: Actions = {
 		const formData = await request.formData();
 		formData.append('approved', 'true');
 
+		console.log(formData);
+
+		return {
+			success: false,
+			message: 'Test message'
+		};
+
 		const id = url.searchParams.get('id') as string;
 		const api_key = url.searchParams.get('api_key') as string;
 		const post_url = `${DB_URL}/data/${api_key}/${id}/`;

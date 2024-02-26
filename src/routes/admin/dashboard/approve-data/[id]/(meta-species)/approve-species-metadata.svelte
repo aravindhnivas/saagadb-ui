@@ -8,6 +8,7 @@
 	import { LockKeyhole, UnlockKeyhole } from 'lucide-svelte/icons';
 	import { createEventDispatcher, getContext } from 'svelte';
 	import { url_from_cdms_tag, url_from_jpl_tag } from '$lib/core';
+
 	export let obj: SpeciesMetadata;
 
 	const api_key = 'species-metadata';
