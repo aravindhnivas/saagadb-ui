@@ -10,7 +10,7 @@
 
 	const approve_btn = getContext('approve_btn') as boolean;
 	const include_keys = getContext('include_keys') as {
-		key: keyof SpeciesMetadata;
+		key: keyof MetaReference;
 		label: string;
 		formatter?: <T>(val: T) => string;
 		is_link?: boolean;
@@ -22,7 +22,8 @@
 	let checked_row = include_keys.map((k) => ({
 		key: k.key,
 		is_link: k.is_link,
-		value: k.formatter?.(obj[k.key]) ?? obj[k.key],
+		value: obj[k.key],
+		formatted_value: k.formatter?.(obj[k.key]),
 		checked: false
 	}));
 
