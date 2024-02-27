@@ -15,6 +15,13 @@ export const GET: RequestHandler = async ({ url, fetch }) => {
 		const { detail } = (await res.json()) as { detail: string };
 		error(500, { message: `${res.statusText}: ${detail}` });
 	}
+
 	const data = await res.json();
-	return json(data, { status: 200 });
+
+	return json(data, {
+		status: 200
+		// headers: {
+		// 	'Cache-Control': 'max-age=3600'
+		// }
+	});
 };
