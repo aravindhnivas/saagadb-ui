@@ -14,15 +14,5 @@ export const load: LayoutServerLoad = async ({ fetch, locals }) => {
 			return null;
 		}
 	};
-
-	const fetch_linelist = async () => {
-		const [, res] = await oO(fetch(`${base}/api/data/linelist`));
-		if (!(res && res?.ok)) return null;
-		const data = (await res.json()) as Linelist[];
-		return data;
-	};
-
-	const [user, linelist] = await Promise.all([fetch_user(), fetch_linelist()]);
-
-	return { user, linelist };
+	return { user: await fetch_user() };
 };

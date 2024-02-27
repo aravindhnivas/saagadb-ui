@@ -1,5 +1,13 @@
-import type { Actions } from './$types';
+import type { Actions, PageServerLoad } from './$types';
 import { DB_URL } from '$lib/server';
+import { base } from '$app/paths';
+
+export const load: PageServerLoad = async ({ fetch }) => {
+	let linelist: Linelist[] = [];
+	const res = await fetch(`${base}/api/data/linelist`);
+	if (res.ok) linelist = (await res.json()) as Linelist[];
+	return { linelist };
+};
 
 export const actions: Actions = {
 	update_table: async ({ request, fetch, url }) => {

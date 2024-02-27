@@ -8,7 +8,6 @@
 	import * as Table from '$lib/components/ui/table';
 	import { Delete, Edit } from 'lucide-svelte/icons';
 	import AlertBox from '$lib/components/utils/alert-box.svelte';
-	import { tick } from 'svelte';
 
 	export let data: PageData;
 	export let form: ActionData;

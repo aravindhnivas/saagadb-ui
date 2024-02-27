@@ -4,10 +4,11 @@ import { Schemas, fileInputs } from '$lib/schemas/metadata';
 import type { SuperValidated } from 'sveltekit-superforms';
 import { fail } from '@sveltejs/kit';
 import { DB_URL } from '$lib/server';
+import { base } from '$app/paths';
 
 type FormKeys = keyof typeof Schemas;
 
-export const load: PageServerLoad = async () => {
+export const load: PageServerLoad = async ({ fetch }) => {
 	const forms: Record<FormKeys, SuperValidated<(typeof Schemas)[FormKeys]>> = {
 		'species-metadata': await superValidate(Schemas['species-metadata'], {
 			id: 'species-metadata'
@@ -16,8 +17,20 @@ export const load: PageServerLoad = async () => {
 		'meta-reference': await superValidate(Schemas['meta-reference'], { id: 'meta-reference' }),
 		line: await superValidate(Schemas['line'], { id: 'line' })
 	};
-	// console.log('forms', forms);
-	return { forms };
+
+	const fetch_fn = async <T>(url: string) => {
+		let response: T[] = [];
+		const res = await fetch(url);
+		if (res.ok) response = (await res.json()) as T[];
+		return response;
+	};
+
+	const [species, linelist] = await Promise.all([
+		fetch_fn<Species>(`${base}/api/data/species`),
+		fetch_fn<Linelist>(`${base}/api/data/linelist`)
+	]);
+
+	return { forms, species, linelist };
 };
 
 export const actions: Actions = {
