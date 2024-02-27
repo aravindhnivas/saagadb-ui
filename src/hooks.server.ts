@@ -26,12 +26,9 @@ export const handleFetch: HandleFetch = async ({ event, request, fetch }) => {
 	}
 
 	const cookie = event.request.headers.get('cookie') || ''; // Provide a default value if cookie is null
-	// console.log({ cookie });
 	request.headers.set('cookie', cookie);
-
 	request.headers.set('Access-Control-Allow-Origin', `http://${env.DOMAIN}/`);
 	request.headers.set('accept', 'application/json');
-	// request.headers.set('content-type', 'application/json');
 	request.headers.set('Access-Control-Allow-Credentials', 'true');
 
 	if (event.locals.token) {
