@@ -1,11 +1,12 @@
 import { base } from '$app/paths';
 import { error } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
+import type { PageLoad } from './$types';
 
-export const load: PageServerLoad = async ({ fetch, parent }) => {
-	const { user } = await parent();
+export const load: PageLoad = async ({ fetch, depends }) => {
+	// const { user } = await parent();
 
-	const fetch_approving_users = async () => {
+	const fetch_approving_users = async (user: User) => {
+		depends('fetch:approving_users');
 		let approving_users: User[] = [];
 		if (!user.is_staff)
 			error(403, {
@@ -24,7 +25,8 @@ export const load: PageServerLoad = async ({ fetch, parent }) => {
 		return approving_users;
 	};
 
-	const fetch_upload_count = async () => {
+	const fetch_upload_count = async (user: User) => {
+		depends('fetch:upload_count');
 		const res = await fetch(`${base}/api/data/data_length/${user.id}`);
 		if (!res.ok)
 			error(500, {
@@ -37,8 +39,11 @@ export const load: PageServerLoad = async ({ fetch, parent }) => {
 	};
 
 	return {
-		fetch_approving_users: user?.is_staff ? fetch_approving_users() : undefined,
-		fetch_upload_count: fetch_upload_count()
-		// fetch_approver: fetch_approver()
+		fetch_approving_users,
+		fetch_upload_count
 	};
+	// return {
+	// 	fetch_approving_users: fetch_approving_users(),
+	// 	fetch_upload_count: fetch_upload_count()
+	// };
 };

@@ -3,7 +3,7 @@ import { error, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { DB_URL } from '$lib/server';
 
-export const load: PageServerLoad = async ({ fetch, params }) => {
+export const load: PageServerLoad = async ({ fetch, params, depends }) => {
 	const user_res = await fetch(`${base}/api/user/fetch/${params.id}`);
 	if (!user_res.ok) {
 		error(400, {
@@ -15,6 +15,8 @@ export const load: PageServerLoad = async ({ fetch, params }) => {
 	const user = (await user_res.json()) as User;
 
 	const fetch_ref_and_species = async () => {
+		depends('fetch:pending_approval');
+
 		const res = await fetch(
 			`${base}/api/data/meta-ref-and-species?uploaded_by=${user.id}&approved=false`
 		);

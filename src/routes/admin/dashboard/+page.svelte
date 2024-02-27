@@ -8,12 +8,13 @@
 	import * as Card from '$lib/components/ui/card';
 	import { setContext } from 'svelte';
 	import AlertBox from '$lib/components/utils/alert-box.svelte';
-	import { invalidateAll } from '$app/navigation';
+	import { invalidate } from '$app/navigation';
 	import { Button } from '$lib/components/ui/button';
 	import { toast } from 'svelte-sonner';
 
 	export let data: PageData;
 	setContext('approve_btn', false);
+	$: console.log(data.user);
 	$: if (data.user?.name) logged_in.set(data.user.name);
 </script>
 
@@ -32,7 +33,7 @@
 						<Button
 							class="ml-auto"
 							on:click={async () => {
-								await invalidateAll();
+								await invalidate('fetch:upload_count');
 								toast.success('Data re-fetched');
 							}}>Re-fetch data</Button
 						>
@@ -61,7 +62,7 @@
 
 					<UploadStatus
 						user={data.user}
-						fetch_upload_count={data.fetch_upload_count}
+						fetch_upload_count={data.fetch_upload_count(data.user)}
 						show_header={false}
 					/>
 				</Card.Content>
@@ -76,7 +77,7 @@
 						<Button
 							class="ml-auto"
 							on:click={async () => {
-								await invalidateAll();
+								await invalidate('fetch:approving_users');
 								toast.success('Data re-fetched');
 							}}>Re-fetch data</Button
 						>
@@ -86,7 +87,7 @@
 				<Card.Content class="space-y-2"></Card.Content>
 				<Card.Footer>
 					{#if data.fetch_approving_users && data.user.is_staff}
-						<DependentUser fetch_approving_users={data.fetch_approving_users} />
+						<DependentUser fetch_approving_users={data.fetch_approving_users(data.user)} />
 					{:else}
 						<AlertBox message="Requires staff/superuser permission" title="Unauthorized" />
 					{/if}

@@ -8,7 +8,7 @@
 	import AlertBox from '$lib/components/utils/alert-box.svelte';
 	import Loader from '$lib/components/utils/loader.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
-	import { invalidateAll } from '$app/navigation';
+	import { invalidate } from '$app/navigation';
 
 	export let data: PageData;
 	export let form: ActionData;
@@ -26,7 +26,7 @@
 		<Button
 			class="w-[200px] ml-auto"
 			on:click={async () => {
-				await invalidateAll();
+				await invalidate('fetch:pending_approval');
 				toast.success('Data re-fetched');
 			}}>Re-fetch data</Button
 		>
