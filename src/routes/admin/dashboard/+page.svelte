@@ -14,7 +14,7 @@
 
 	export let data: PageData;
 	setContext('approve_btn', false);
-	$: console.log(data.user);
+	// $: console.log(data.user);
 	$: if (data.user?.name) logged_in.set(data.user.name);
 </script>
 
