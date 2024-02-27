@@ -1,22 +1,28 @@
 <script lang="ts">
-	import { applyAction, enhance } from '$app/forms';
+	import { enhance } from '$app/forms';
 	import { toast } from 'svelte-sonner';
-	import type { PageData } from './$types';
-	import { goto, invalidateAll } from '$app/navigation';
+	import type { ActionData, PageData } from './$types';
 	import { Input } from '$lib/components/ui/input';
 	import { Label } from '$lib/components/ui/label';
 	import { Button } from '$lib/components/ui/button';
 	import * as Table from '$lib/components/ui/table';
 	import { Delete, Edit } from 'lucide-svelte/icons';
 	import AlertBox from '$lib/components/utils/alert-box.svelte';
+	import { tick } from 'svelte';
 
 	export let data: PageData;
-	let id: string;
+	export let form: ActionData;
+
+	$: if (modal && form) modal.close();
+	$: if (form && form.success) toast.success(form.message);
+	$: if (form && !form.success) toast.error(form.message);
+
+	let id: number;
 	let method: 'PATCH' | 'DELETE' = 'PATCH';
 	let changed_name: string = '';
 	let modal: HTMLDialogElement;
 
-	const openModal = (line_id: string, update_type: 'PATCH' | 'DELETE', name: string = '') => {
+	const openModal = (line_id: number, update_type: 'PATCH' | 'DELETE', name: string = '') => {
 		if (!(line_id && update_type)) return toast.error('Missing required parameters');
 		id = line_id;
 		method = update_type;
@@ -25,29 +31,6 @@
 	};
 
 	let message: string;
-	const onSubmit = () => {
-		return async ({ result }) => {
-			if (result.type === 'success') {
-				// rerun all `load` functions, following the successful update
-				await invalidateAll();
-				console.log(result);
-				const { data } = result;
-				if (data.success) {
-					toast.success(data.message);
-				} else {
-					message = data.message?.detail || data.message;
-				}
-			}
-
-			if (result.type === 'redirect') {
-				goto(result.location);
-			} else {
-				await applyAction(result);
-			}
-
-			modal?.close();
-		};
-	};
 </script>
 
 {#if message}
@@ -85,7 +68,7 @@
 	<p>No linelist found</p>
 {/if}
 
-<form method="POST" action="?/update_table&id={id}&method={method}" use:enhance={onSubmit}>
+<form method="POST" action="?/update_table&id={id}&method={method}" use:enhance>
 	<dialog bind:this={modal} class="modal">
 		<div class="modal-box gap-2">
 			<h3 class="font-bold text-lg">
