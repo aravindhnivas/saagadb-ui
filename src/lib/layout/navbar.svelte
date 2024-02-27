@@ -57,7 +57,9 @@
 
 						<DropdownMenu.Item>
 							<LogOut class="mr-2 h-4 w-4" />
-							<a href="{base}/logout">logout</a>
+							<form action="{base}/logout" method="POST">
+								<button type="submit">Logout</button>
+							</form>
 						</DropdownMenu.Item>
 					</DropdownMenu.Content>
 				</DropdownMenu.Root>
