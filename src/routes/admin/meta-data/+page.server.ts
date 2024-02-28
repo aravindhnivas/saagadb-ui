@@ -135,7 +135,7 @@ export const actions: Actions = {
 				type: 'success',
 				text:
 					`Form (${metaid}: ${response?.id && 'with id = ' + response.id}) submitted succesfully` +
-					(response?.doi && ` for DOI: ${response?.doi}`)
+					(metaid === 'reference' ? ` for DOI: ${response?.doi}` : '')
 			});
 			return { form, response };
 		} else {

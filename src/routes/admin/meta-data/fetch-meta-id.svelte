@@ -11,6 +11,7 @@
 
 	let species_id = 0;
 	let linelist_id = 0;
+
 	const species = getContext('species') as Species[];
 	const linelist = getContext('linelist') as Linelist[];
 
@@ -40,32 +41,9 @@
 	}
 	let fetching_meta_id = false;
 	let hyperfine = false;
-
-	let test_value = '';
-	// $: import.meta.env.DEV && console.log({ test_value, species_id, linelist_id });
 </script>
 
 <div class="grid-fit-content items-center">
-	{#if import.meta.env.DEV}
-		<div class="flex flex-col gap-1">
-			<Label>test</Label>
-			<Svelecte
-				class="w-[150px]"
-				virtualList={true}
-				placeholder="test"
-				options={Array(5000)
-					.fill('abc')
-					.map((f, i) => {
-						return {
-							id: `${i}-${Math.random()}`,
-							label: `${f}-${i}`
-						};
-					})}
-				bind:value={test_value}
-			/>
-		</div>
-	{/if}
-
 	<div class="flex flex-col gap-1">
 		<Label>species</Label>
 		<Svelecte
