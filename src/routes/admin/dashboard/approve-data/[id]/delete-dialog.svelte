@@ -5,6 +5,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import { getContext } from 'svelte';
 	import { enhance } from '$app/forms';
+	import { AlertTriangle } from 'lucide-svelte';
 
 	export let id: string | number;
 	console.log('id', id);
@@ -21,7 +22,18 @@
 			<Dialog.Title>
 				<span class="text-red">DELETE</span>
 			</Dialog.Title>
-			<Dialog.Description>This will delete the metadata from the database.</Dialog.Description>
+			<Dialog.Description>
+				<span>This will delete the metadata from the database.</span>
+				<br />
+				<span class="flex gap-2 items-center text-red">
+					<AlertTriangle />
+					<span
+						>This will also delete all the related meta-reference and the parsed line information
+						from cat file. So be aware of this.</span
+					>
+					<AlertTriangle />
+				</span>
+			</Dialog.Description>
 		</Dialog.Header>
 		<form use:enhance class="grid gap-4" action="?/reject&id={id}&api_key={api_key}" method="POST">
 			<div class="grid grid-cols-4 items-center gap-4">
