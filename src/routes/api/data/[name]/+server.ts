@@ -17,11 +17,7 @@ export const GET: RequestHandler = async ({ url, fetch }) => {
 	}
 
 	const data = await res.json();
-
 	return json(data, {
 		status: 200
-		// headers: {
-		// 	'Cache-Control': 'max-age=3600' // 1 hour
-		// }
 	});
 };

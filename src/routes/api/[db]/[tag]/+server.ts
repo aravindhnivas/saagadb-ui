@@ -24,5 +24,13 @@ export const GET: RequestHandler = async ({ fetch, params }) => {
 		return text('Something went through the roof!', { status: 404 });
 	}
 	const source_url = params.db === 'cdms' ? fetch_url : fetch_url.replace('.cat', '.pdf');
-	return json({ html_data, source_url }, { status: 200 });
+	return json(
+		{ html_data, source_url },
+		{
+			status: 200,
+			headers: {
+				'Cache-Control': `max-age=${15 * 60}`
+			}
+		}
+	);
 };
