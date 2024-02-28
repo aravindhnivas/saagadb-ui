@@ -18,8 +18,8 @@ export const actions: Actions = {
 		const form = await superValidate(request, userSchema);
 		const { approver, ...rest } = form.data;
 		const body = { ...rest, approver: approver.split(',').map((f) => parseInt(f)) };
-		console.log('posting', body, JSON.stringify(body));
-		
+		// console.log('posting', body, JSON.stringify(body));
+
 		if (!form.valid) {
 			return fail(400, { form });
 		}
@@ -34,7 +34,7 @@ export const actions: Actions = {
 			try {
 				type UserSchemaType = z.infer<typeof userSchema>;
 				type UserSchemaKeys = keyof UserSchemaType;
-				const msg_json = await res.json() as Record<UserSchemaKeys, string>;
+				const msg_json = (await res.json()) as Record<UserSchemaKeys, string>;
 
 				for (const [key, value] of Object.entries(msg_json)) {
 					setError(form, key as UserSchemaKeys, value);
