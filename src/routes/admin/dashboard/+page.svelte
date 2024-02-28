@@ -69,30 +69,30 @@
 			</Card.Root>
 		</Tabs.Content>
 		<Tabs.Content value="approve-data">
-			<Card.Root>
-				<Card.Header>
-					<!-- <Card.Title>Dependent users</Card.Title> -->
-					<div class="flex gap-4 items-center">
-						<Card.Title>Dependent users</Card.Title>
-						<Button
-							class="ml-auto"
-							on:click={async () => {
-								await invalidate('fetch:approving_users');
-								toast.success('Data re-fetched');
-							}}>Re-fetch data</Button
-						>
-					</div>
-					<Card.Description>Approve the data uploaded by the following users</Card.Description>
-				</Card.Header>
-				<Card.Content class="space-y-2"></Card.Content>
-				<Card.Footer>
-					{#if data.fetch_approving_users && data.user.is_staff}
+			{#if data.fetch_approving_users && (data.user.is_staff || data.user.is_superuser)}
+				<Card.Root>
+					<Card.Header>
+						<!-- <Card.Title>Dependent users</Card.Title> -->
+						<div class="flex">
+							<Card.Title>Dependent users</Card.Title>
+							<Button
+								class="ml-auto"
+								on:click={async () => {
+									await invalidate('fetch:approving_users');
+									toast.success('Data re-fetched');
+								}}>Re-fetch data</Button
+							>
+						</div>
+						<Card.Description>Approve the data uploaded by the following users</Card.Description>
+					</Card.Header>
+					<Card.Content class="space-y-2"></Card.Content>
+					<Card.Footer>
 						<DependentUser fetch_approving_users={data.fetch_approving_users(data.user)} />
-					{:else}
-						<AlertBox message="Requires staff/superuser permission" title="Unauthorized" />
-					{/if}
-				</Card.Footer>
-			</Card.Root>
+					</Card.Footer>
+				</Card.Root>
+			{:else}
+				<AlertBox message="Requires staff/superuser permission" title="Unauthorized" />
+			{/if}
 		</Tabs.Content>
 	</Tabs.Root>
 {:else}
