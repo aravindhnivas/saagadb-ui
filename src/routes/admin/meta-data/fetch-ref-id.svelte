@@ -10,6 +10,7 @@
 
 	async function fetch_ref_id(): Promise<string | number | undefined> {
 		try {
+			ref_doi = ref_doi.trim();
 			if (!ref_doi) {
 				toast.error('Please enter a reference doi');
 				return;

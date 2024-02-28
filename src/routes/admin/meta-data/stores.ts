@@ -1,3 +1,3 @@
-import { writable } from 'svelte/store';
+import { sessionWritable } from '@macfja/svelte-persistent-store';
 
-export const parsed_file_data = writable({});
+export const ref_doi = sessionWritable('ref_doi', '');

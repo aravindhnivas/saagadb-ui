@@ -24,7 +24,7 @@
 	let error_message = '';
 	const dispatch = createEventDispatcher();
 	const options: FormOptions<typeof schema> = {
-		resetForm: false,
+		resetForm: true,
 		// applyAction: false,
 		invalidateAll: false,
 		taintedMessage: null,

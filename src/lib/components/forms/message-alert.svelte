@@ -27,7 +27,10 @@
 </dialog>
 
 {#if $message && $message.text && $message.type}
-	<Alert.Root class="my" variant={$message.type === 'error' ? 'destructive' : 'default'}>
+	<Alert.Root
+		class="bg-{$message.type === 'success' ? 'green-100' : 'red'}"
+		variant={$message.type === 'error' ? 'destructive' : 'default'}
+	>
 		{#if $message.type === 'success'}
 			<CheckCheck class="h-4 w-4" />
 		{:else if $message.type === 'warning'}
@@ -36,6 +39,6 @@
 			<AlertCircle class="h-4 w-4" />
 		{/if}
 		<Alert.Title>{$message.type}</Alert.Title>
-		<Alert.Description>{@html $message.text}</Alert.Description>
+		<Alert.Description class="select-text">{@html $message.text}</Alert.Description>
 	</Alert.Root>
 {/if}

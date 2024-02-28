@@ -56,11 +56,9 @@ export const actions: Actions = {
 			const file = formData.get(key.name);
 			if (file instanceof File) {
 				if (file.name && !file.name.endsWith(key.extension)) {
-					// @ts-ignore
 					return setError(form, key.name, `File must have extension ${key.extension}`);
 				}
 				if (!file.name || !file.size) {
-					// @ts-ignore
 					if (key.required) return setError(form, key.name, 'File is required');
 					console.log('file not required', key.name, file, 'skipping...');
 					formBody.append(key.name, '');
@@ -70,7 +68,6 @@ export const actions: Actions = {
 				formBody.append(key.name, file);
 			} else if (typeof file === 'string') {
 				if (!file) {
-					// @ts-ignore
 					if (key.required) return setError(form, key.name, 'File is required');
 					console.log('file not required', key.name, file, 'skipping...');
 					formBody.append(key.name, '');
@@ -89,7 +86,6 @@ export const actions: Actions = {
 		// Append the other form data
 		for (const key in form.data) {
 			if (formBody.has(key)) continue;
-			// @ts-ignore
 			formBody.append(key, form.data[key]);
 		}
 
@@ -123,7 +119,6 @@ export const actions: Actions = {
 					message(form, { type: 'error', text: `${msg_json.message}: ${msg_json.error.message}` });
 				}
 				for (const [key, value] of Object.entries(msg_json) as [string, string][]) {
-					// @ts-ignore
 					setError(form, key, value);
 				}
 				return fail(400, { form });
@@ -132,11 +127,17 @@ export const actions: Actions = {
 			}
 		}
 
-		let res_data;
 		if (res.ok) {
-			res_data = await res.json();
-			message(form, { type: 'success', text: 'Form submitted succesfully' });
-			return { form, response: res_data };
+			// let res_data;
+			const response = await res.json();
+			console.log('response', response);
+			message(form, {
+				type: 'success',
+				text:
+					`Form (${metaid}: ${response?.id && 'with id = ' + response.id}) submitted succesfully` +
+					(response?.doi && ` for DOI: ${response?.doi}`)
+			});
+			return { form, response };
 		} else {
 			console.log('trying text parsing after 500 Internal error');
 			const msg = await res.text();

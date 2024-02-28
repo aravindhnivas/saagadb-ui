@@ -25,6 +25,7 @@
 	{form}
 	let:config
 	let:formStore
+	let:formValues
 	title="Reference"
 	description="Please enter the details of the reference. DOI is required to auto-fill the form. If you have the bibtex file, you can upload it."
 >
@@ -42,7 +43,11 @@
 		on:click={async () => {
 			try {
 				fetching = true;
-				const doi = get(formStore)['doi'];
+				formStore.update((f) => {
+					f.doi = f.doi.trim();
+					return f;
+				});
+				const doi = formValues.doi;
 				if (!doi) throw new Error('DOI is required');
 				const { href, bibtex_text, parsed } = await fetch_bibfile({ doi });
 				parsed_bibtex = parsed;
@@ -82,7 +87,7 @@
 		</Form.Item>
 	</Form.Field>
 
-	{#if parsed_bibtex}
+	{#if parsed_bibtex && formValues.bibtex}
 		<AlertBox message={parsed_bibtex} variant="default" title="Fetched citation" />
 	{/if}
 

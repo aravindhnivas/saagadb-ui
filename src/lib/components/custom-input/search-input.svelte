@@ -4,7 +4,7 @@
 	export let searchKey = '';
 </script>
 
-<div class="relative h-10 w-full">
+<div class="relative h-10 w-full" style="z-index: 0;">
 	<Search class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 z-10" />
 	<Input
 		type="text"
