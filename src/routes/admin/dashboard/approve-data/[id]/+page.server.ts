@@ -3,6 +3,28 @@ import { error, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { DB_URL } from '$lib/server';
 
+const parse_failed_response = async (res: Response) => {
+	const content_type = res.headers.get('content-type');
+	if (content_type && content_type.includes('application/json')) {
+		const text = (await res.json()) as {
+			code: string;
+			message: string;
+			error: {
+				type: string;
+				message: string;
+			};
+		};
+		console.log({ text });
+		return { success: false, message: text.error?.message || text.message };
+	}
+	let text = await res.text();
+	console.log({ text: text.slice(0, 100) + '...' });
+	const txtlines = text.split('\n');
+	text = txtlines[0] + '\n' + txtlines[1];
+	console.log({ text });
+	return { success: false, message: text };
+};
+
 export const load: PageServerLoad = async ({ fetch, params, depends, parent }) => {
 	// console.log('Approve data page server load');
 	const { user: parent_user } = await parent();
@@ -54,12 +76,6 @@ export const actions: Actions = {
 		const formData = await request.formData();
 		formData.append('approved', 'true');
 
-		// console.log(formData);
-		// return {
-		// 	success: false,
-		// 	message: 'Test message'
-		// };
-
 		const id = url.searchParams.get('id') as string;
 		const api_key = url.searchParams.get('api_key') as string;
 		const post_url = `${DB_URL}/data/${api_key}/${id}/`;
@@ -70,18 +86,7 @@ export const actions: Actions = {
 		});
 
 		console.log(res.ok, res.status, res.statusText);
-
-		if (!res.ok) {
-			const content_type = res.headers.get('content-type');
-			if (content_type && content_type.includes('application/json')) {
-				const text = await res.json();
-				return { success: false, message: text };
-			} else {
-				const text = await res.text();
-				return { success: false, message: text };
-			}
-		}
-
+		if (!res.ok) return parse_failed_response(res);
 		return {
 			success: res.ok,
 			message: 'Data approved successfully'
@@ -91,34 +96,19 @@ export const actions: Actions = {
 	async reject({ fetch, url, request }) {
 		const formData = await request.formData();
 
-		// console.log(url.pathname);
 		const delete_reason = formData.get('delete_reason') as string;
 		const id = url.searchParams.get('id') as string;
 		const api_key = url.searchParams.get('api_key') as string;
 		const post_url = `${DB_URL}/data/${api_key}/${id}`;
+
 		console.log({ post_url, delete_reason });
-		// return {
-		// 	success: false,
-		// 	message: 'Test message'
-		// };
+
 		const res = await fetch(`${post_url}/?delete_reason=${encodeURIComponent(delete_reason)}`, {
 			method: 'DELETE'
 		});
-		console.log(res.ok, res.status, res.statusText);
 
-		if (!res.ok) {
-			const content_type = res.headers.get('content-type');
-			let text = '';
-			if (content_type && content_type.includes('application/json')) {
-				text = await res.json();
-			} else {
-				text = await res.text();
-				console.log({ text: text.slice(0, 100) + '...' });
-				const txtlines = text.split('\n');
-				text = txtlines[0] + '\n' + txtlines[1];
-			}
-			return { success: false, message: text };
-		}
+		console.log(res.ok, res.status, res.statusText);
+		if (!res.ok) return parse_failed_response(res);
 
 		return {
 			success: res.ok,
