@@ -37,8 +37,7 @@ export const actions: Actions = {
 		const formData = await request.formData();
 		formData.append('approved', 'true');
 
-		console.log(formData);
-
+		// console.log(formData);
 		// return {
 		// 	success: false,
 		// 	message: 'Test message'
@@ -69,6 +68,44 @@ export const actions: Actions = {
 		return {
 			success: res.ok,
 			message: 'Data approved successfully'
+		};
+	},
+
+	async reject({ fetch, url, request }) {
+		const formData = await request.formData();
+
+		// console.log(url.pathname);
+		const delete_reason = formData.get('delete_reason') as string;
+		const id = url.searchParams.get('id') as string;
+		const api_key = url.searchParams.get('api_key') as string;
+		const post_url = `${DB_URL}/data/${api_key}/${id}`;
+		console.log({ post_url, delete_reason });
+		// return {
+		// 	success: false,
+		// 	message: 'Test message'
+		// };
+		const res = await fetch(`${post_url}/?delete_reason=${encodeURIComponent(delete_reason)}`, {
+			method: 'DELETE'
+		});
+		console.log(res.ok, res.status, res.statusText);
+
+		if (!res.ok) {
+			const content_type = res.headers.get('content-type');
+			let text = '';
+			if (content_type && content_type.includes('application/json')) {
+				text = await res.json();
+			} else {
+				text = await res.text();
+				console.log({ text: text.slice(0, 100) + '...' });
+				const txtlines = text.split('\n');
+				text = txtlines[0] + '\n' + txtlines[1];
+			}
+			return { success: false, message: text };
+		}
+
+		return {
+			success: res.ok,
+			message: 'Data DELETED successfully'
 		};
 	}
 };

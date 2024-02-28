@@ -1,4 +1,5 @@
 <script lang="ts">
+	import DeleteDialog from './delete-dialog.svelte';
 	import { Textarea } from '$lib/components/ui/textarea';
 	import { Label } from '$lib/components/ui/label';
 	import { Input } from '$lib/components/ui/input';
@@ -29,6 +30,8 @@
 			: url_from_cdms_tag(obj.molecule_tag);
 
 	let modified = false;
+	let delete_reason = '';
+	let dialogOpen = false;
 </script>
 
 <div class="flex gap-4 items-center p-2">
@@ -117,12 +120,9 @@
 			</div>
 		{/each}
 	</div>
-	<Button
-		class="ml-auto"
-		type="submit"
-		disabled={!all_approved}
-		on:click={() => {
-			dispatch('approve', { id: obj.id });
-		}}>Approve</Button
-	>
+
+	<div class="flex gap-4 ml-auto">
+		<DeleteDialog id={obj.id} />
+		<Button type="submit" disabled={!all_approved} on:click={() => {}}>Approve</Button>
+	</div>
 </form>

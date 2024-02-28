@@ -27,11 +27,6 @@
 				</div>
 			</Dialog.Description>
 		</Dialog.Header>
-		<ApproveMetadata
-			{obj}
-			on:approve={() => {
-				dialogOpen = false;
-			}}
-		/>
+		<ApproveMetadata {obj} />
 	</Dialog.Content>
 </Dialog.Root>
