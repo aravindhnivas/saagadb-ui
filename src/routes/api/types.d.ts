@@ -25,7 +25,7 @@ interface User {
 	is_active: boolean;
 	is_superuser: boolean;
 	is_verified: boolean;
-	approver: boolean;
+	approver: number[];
 	approver_name: string[];
 }
 

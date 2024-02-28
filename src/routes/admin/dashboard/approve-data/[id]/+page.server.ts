@@ -3,7 +3,15 @@ import { error, type Actions } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { DB_URL } from '$lib/server';
 
-export const load: PageServerLoad = async ({ fetch, params, depends }) => {
+export const load: PageServerLoad = async ({ fetch, params, depends, parent }) => {
+	// console.log('Approve data page server load');
+	const { user: parent_user } = await parent();
+	if (!parent_user.is_staff || !parent_user.is_superuser) {
+		error(403, {
+			title: 'Forbidden',
+			message: 'You do not have permission to access this page'
+		});
+	}
 	const user_res = await fetch(`${base}/api/user/fetch/${params.id}`);
 	if (!user_res.ok) {
 		error(400, {
@@ -13,6 +21,15 @@ export const load: PageServerLoad = async ({ fetch, params, depends }) => {
 	}
 
 	const user = (await user_res.json()) as User;
+
+	if (!user.approver.includes(parent_user.id)) {
+		error(403, {
+			title: 'You are not the approver for this user',
+			message: 'You do not have permission to approve data for this user.'
+		});
+	}
+
+	// console.log(user.approver, { parent_user, user });
 
 	const fetch_ref_and_species = async () => {
 		depends('fetch:pending_approval');
