@@ -66,6 +66,16 @@ export const load: PageServerLoad = async ({ fetch, params, depends, parent }) =
 			MetaReference: MetaReference[];
 			SpeciesMetadata: SpeciesMetadata[];
 		};
+
+		// for (const key of ['a_const', 'b_const', 'c_const', 'mu_a', 'mu_b', 'mu_c']) {
+		// 	for (let i = 0; i < ref_and_species.SpeciesMetadata.length; i++) {
+		// 		if (!ref_and_species.SpeciesMetadata[i][key]) continue;
+		// 		ref_and_species.SpeciesMetadata[i][key] = Number(
+		// 			ref_and_species.SpeciesMetadata[i][key]
+		// 		).toFixed(4);
+		// 	}
+		// }
+
 		return ref_and_species;
 	};
 	return { user, fetch_ref_and_species: fetch_ref_and_species() };

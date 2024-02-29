@@ -6,12 +6,14 @@
 	import { Button } from '$lib/components/ui/button';
 	import { enhance } from '$app/forms';
 	import { Checkbox } from '$lib/components/ui/checkbox';
-	import { LockKeyhole, UnlockKeyhole } from 'lucide-svelte/icons';
+	import { Download, LockKeyhole, UnlockKeyhole } from 'lucide-svelte/icons';
 	import { getContext } from 'svelte';
 	import { url_from_cdms_tag, url_from_jpl_tag } from '$lib/core';
 	import { Description } from '$lib/components/ui/card';
 	import { base } from '$app/paths';
 	import { toast } from 'svelte-sonner';
+	import { fileInputs } from '$lib/schemas/metadata';
+	import * as Table from '$lib/components/ui/table';
 
 	export let obj: SpeciesMetadata | MetaReference;
 
@@ -19,7 +21,13 @@
 	const include_keys = getContext('include_keys') as (keyof (SpeciesMetadata | MetaReference))[];
 
 	let checked_row = include_keys.map((key) => ({ name: key, checked: false, disabled: true }));
-	$: all_approved = checked_row.every((f) => f.checked);
+	let files_checked_row = fileInputs['species-metadata'].map(({ name }) => ({
+		name,
+		checked: true,
+		disabled: true
+	}));
+	// $: all_approved = checked_row.every((f) => f.checked);
+	$: all_approved = [...checked_row, ...files_checked_row].every((f) => f.checked);
 	let approve_all = false;
 
 	const source_link =
@@ -116,6 +124,52 @@
 			</div>
 		{/each}
 	</div>
+
+	{#if api_key === 'species-metadata'}
+		<div class="grid">
+			<span>Attached files (Download and check)</span>
+			<span class="text-sm text-gray">
+				If int_file and var_file are attached, then the dipole moments and rotaional constants are
+				extracted and overwritten from the former and latter files, respectively.
+			</span>
+		</div>
+		<Table.Root class="max-w-2xl">
+			<Table.Body>
+				{#each files_checked_row as { name, checked, disabled }}
+					<Table.Row>
+						<Table.Cell class="font-medium p-0.5">
+							<div class="flex gap-4 items-center">
+								<button
+									on:click|preventDefault={() => {
+										disabled = !disabled;
+										modified = true;
+									}}
+								>
+									{#if disabled}
+										<LockKeyhole />
+									{:else}
+										<UnlockKeyhole />
+									{/if}
+								</button>
+								<Label for={name}>{name}</Label>
+								<Checkbox bind:checked />
+							</div>
+						</Table.Cell>
+						<Table.Cell class="p-0.5">
+							<a href={obj[name]} target="_blank" rel="noopener noreferrer" class="underline">
+								<div class="flex gap-4 items-center justify-end">
+									<Download />
+								</div>
+							</a>
+						</Table.Cell>
+						<Table.Cell class="p-0.5">
+							<Input type="file" required={false} />
+						</Table.Cell>
+					</Table.Row>
+				{/each}
+			</Table.Body>
+		</Table.Root>
+	{/if}
 
 	<div class="flex gap-4 ml-auto">
 		<DeleteDialog id={obj.id} />
