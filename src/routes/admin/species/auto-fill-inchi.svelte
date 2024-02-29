@@ -7,9 +7,10 @@
 	const { form } = getForm();
 
 	const fetch_smiles = async () => {
-		if (!$form.name) return toast.error('Please enter a name first');
+		console.log('Fetching SMILES');
+		if (!$form.iupac_name) return toast.error('Please enter a name first');
 		// console.log(`Fetching SMILES for ${$form.name}`);
-		const res = await fetch(`${base}/api/pubchem/${$form.name}/CanonicalSMILES`);
+		const res = await fetch(`${base}/api/pubchem/${$form.iupac_name}/CanonicalSMILES`);
 		// console.log(`Received response ${res.status} ${res.statusText}`);
 		if (!res.ok) return toast.error(res.statusText + ': could not fetch SMILES');
 
