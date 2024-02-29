@@ -2,15 +2,22 @@ import Cite from 'citation-js';
 
 export default async function ({ doi = '', bibtex = '' }) {
 	if (!(doi || bibtex)) throw new Error('doi and bibtex are both empty');
+	const doi_mode = !!doi;
+	// console.log({ doi_mode });
 
-	const parsed_data = await Cite.async(doi ?? bibtex);
+	const parsed_data = await Cite.async(doi_mode ? doi : bibtex);
+	if (parsed_data.data.length === 0) throw new Error('No data found');
 	const data = parsed_data.data[0];
 
-	// console.log(parsed_data);
-	const { author, issued, URL: href } = data;
+	// console.log(data);
 
-	const first_author = author.find((a: {sequence: string}) => a.sequence === 'first');
-	
+	const { author, issued, URL: href } = data;
+	const first_author = doi_mode
+		? author.find((a: { sequence: string }) => a.sequence === 'first')
+		: author[0];
+
+	// console.log({ author, issued, href, first_author });
+
 	const author_clean = first_author.family + (author.length > 1 ? ' et al.' : '');
 	const year = issued['date-parts'][0][0];
 	const citeas = `${author_clean} (${year})`;

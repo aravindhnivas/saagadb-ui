@@ -10,6 +10,8 @@
 	import { Label } from '$lib/components/ui/label';
 	import { Input } from '$lib/components/ui/input';
 	import AlertBox from '$lib/components/utils/alert-box.svelte';
+	import { tick } from 'svelte';
+	import { oO } from '@zmotivat0r/o0';
 	export let form: SuperValidated<(typeof Schemas)['reference']>;
 
 	const value = 'reference';
@@ -87,10 +89,6 @@
 		</Form.Item>
 	</Form.Field>
 
-	{#if parsed_bibtex && formValues.bibtex}
-		<AlertBox message={parsed_bibtex} variant="default" title="Fetched citation" />
-	{/if}
-
 	<div class="flex gap-4 w-full items-baseline">
 		<Form.Field {config} name="bibtex">
 			<Form.Item class="basis-3/4">
@@ -121,4 +119,33 @@
 			/>
 		</div>
 	</div>
+
+	{#if parsed_bibtex && formValues.bibtex}
+		<AlertBox message={parsed_bibtex} variant="default" title="Fetched citation" />
+		<button
+			class="btn btn-sm"
+			on:click={async (e) => {
+				e.preventDefault();
+				if (!formValues.doi) return;
+				if (!formValues.bibtex) return;
+				const [err, data] = await oO(fetch_bibfile({ bibtex: formValues.bibtex }));
+				if (err instanceof Error) {
+					console.error(err.stack);
+					toast.error(err.message);
+					return;
+				}
+				if (!data?.parsed) {
+					toast.error('Failed to parse bibtex');
+					return;
+				}
+				parsed_bibtex = data.parsed;
+				toast.success('Bibtex parsed successfully');
+			}}
+			>Parse bibtex
+		</button>
+		<div class="alert text-sm p-1">
+			Check the fetched citation and if needded make changes to the bibtex and then click on the
+			"Parse bibtex" button.
+		</div>
+	{/if}
 </FormTabContents>

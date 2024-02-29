@@ -3,21 +3,9 @@
 	import { Download } from 'lucide-svelte/icons';
 	import Bibfile from './bibfile.svelte';
 	import { base } from '$app/paths';
-	// import { onMount } from 'svelte';
 
 	export let meta_references: MetaReference[] = [];
 	export let references: Reference[] = [];
-	// console.log(references.map((r) => r.id));
-
-	// let full_bibtex_text = '';
-
-	// onMount(async () => {
-	// 	const ref_ids = references.map((r) => r.id);
-	// 	const res = await fetch(`${base}/api/data/reference/bibtex/?bibtex_ids=${ref_ids.join(',')}`);
-	// 	const blob = new Blob([bibtex_text], { type: 'text/plain' });
-	// 	const bibtex_download_href = URL.createObjectURL(blob);
-	// });
-
 	const cell_padding = 'p-2';
 </script>
 
@@ -50,7 +38,7 @@
 			</Table.Cell>
 			{#each references as ref}
 				<Table.Cell class="text-center {cell_padding}">
-					<Bibfile {ref} />
+					<Bibfile bibtex={ref.bibtex} />
 				</Table.Cell>
 			{/each}
 		</Table.Row>

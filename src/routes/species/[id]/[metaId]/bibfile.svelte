@@ -3,10 +3,18 @@
 	import { Button } from '$lib/components/ui/button';
 	import CopyButton from '$lib/components/copy-button.svelte';
 	import fetch_bibfile from '$lib/utils/bibfile';
-	export let ref: Reference;
+	import { onMount } from 'svelte';
+	import { base } from '$app/paths';
+
+	export let bibtex: string;
+
+	onMount(async () => {
+		const res = await fetch(`${base}${bibtex}`);
+		bibtex = await res.text();
+	});
 </script>
 
-{#await fetch_bibfile({ doi: ref.doi, bibtex: ref.bibtex })}
+{#await fetch_bibfile({ bibtex })}
 	<p>fetching...</p>
 {:then { citeas, href, tooltip, parsed, bibtex_download_href, citation_key }}
 	<div class="flex gap-4 items-center justify-center">
