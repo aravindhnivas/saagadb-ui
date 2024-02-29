@@ -23,18 +23,22 @@
 	<Table.Body>
 		<Table.Row>
 			<Table.Cell class={cell_padding}>
-				<a
-					href="{base}/api/data/reference/bibtex/?bibtex_ids={references
-						.map((r) => r.id)
-						.join(',')}"
-					class="flex gap-1 items-center"
-					target="_blank"
-					rel="noopener noreferrer"
-					download
-				>
+				{#if references.length > 0}
+					<a
+						href="{base}/api/data/reference/bibtex/?bibtex_ids={references
+							.map((r) => r.id)
+							.join(',')}"
+						class="flex gap-1 items-center"
+						target="_blank"
+						rel="noopener noreferrer"
+						download
+					>
+						<span>Cite</span>
+						<Download />
+					</a>
+				{:else}
 					<span>Cite</span>
-					<Download />
-				</a>
+				{/if}
 			</Table.Cell>
 			{#each references as ref}
 				<Table.Cell class="text-center {cell_padding}">
