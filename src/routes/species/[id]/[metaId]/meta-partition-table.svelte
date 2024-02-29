@@ -18,12 +18,19 @@
 			.reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
 </script>
 
-{#if sortedObj}
+{#if current_meta && sortedObj}
+	{@const { molecule_tag, linelist_name, species_formula } = current_meta}
+
 	<div class="flex gap-4 items-center">
 		<h1>Parition function</h1>
-		<a href="{base}/uploads/sp/{qpart_filename}" download target="_blank" rel="noopener noreferrer"
-			><Download /></a
+		<a
+			href="{base}/uploads/sp/{qpart_filename}"
+			download={`${species_formula}_${linelist_name}_${molecule_tag}.qpart`}
+			target="_blank"
+			rel="noopener noreferrer"
 		>
+			<Download />
+		</a>
 	</div>
 	<Table.Root>
 		<Table.Caption>Table 2. Partition function</Table.Caption>
