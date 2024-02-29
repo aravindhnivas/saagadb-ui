@@ -7,7 +7,7 @@
 	import { enhance } from '$app/forms';
 	import { Checkbox } from '$lib/components/ui/checkbox';
 	import { LockKeyhole, UnlockKeyhole } from 'lucide-svelte/icons';
-	import { createEventDispatcher, getContext, onMount } from 'svelte';
+	import { getContext } from 'svelte';
 	import { url_from_cdms_tag, url_from_jpl_tag } from '$lib/core';
 	import { Description } from '$lib/components/ui/card';
 	import { base } from '$app/paths';
@@ -22,16 +22,12 @@
 	$: all_approved = checked_row.every((f) => f.checked);
 	let approve_all = false;
 
-	const dispatch = createEventDispatcher();
-
 	const source_link =
 		obj.linelist_name.toLocaleLowerCase() === 'jpl'
 			? url_from_jpl_tag(obj.molecule_tag, true)
 			: url_from_cdms_tag(obj.molecule_tag);
 
 	let modified = false;
-	let delete_reason = '';
-	let dialogOpen = false;
 </script>
 
 <div class="flex gap-4 items-center p-2">
@@ -123,6 +119,6 @@
 
 	<div class="flex gap-4 ml-auto">
 		<DeleteDialog id={obj.id} />
-		<Button type="submit" disabled={!all_approved} on:click={() => {}}>Approve</Button>
+		<Button type="submit" disabled={!all_approved}>Approve</Button>
 	</div>
 </form>
