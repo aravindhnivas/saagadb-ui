@@ -3,18 +3,22 @@
 	import * as Table from '$lib/components/ui/table';
 	import { Download } from 'lucide-svelte/icons';
 
-	export let meta = [];
-	export let id = '';
+	export let meta: SpeciesMetadata[] = [];
+	export let id: number = 0;
 	const current_meta = meta.find((m) => m.id == id);
+	// console.log({ current_meta });
 	const { partition_function, qpart_file } = current_meta ?? {};
 	const qpart_filename = qpart_file?.split('/').pop();
 	const cell_padding = 'p-2';
-	// console.log(partition_function);
 
-	const qpart_arr = Object.entries(partition_function).sort((a, b) => a[1].localeCompare(b[1]));
+	const sortedObj: Record<string, string> | undefined =
+		partition_function &&
+		Object.entries(partition_function)
+			.sort(([aKey], [bKey]) => Number(bKey) - Number(aKey))
+			.reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
 </script>
 
-{#if partition_function}
+{#if sortedObj}
 	<div class="flex gap-4 items-center">
 		<h1>Parition function</h1>
 		<a href="{base}/uploads/sp/{qpart_filename}" download target="_blank" rel="noopener noreferrer"
@@ -31,10 +35,10 @@
 		</Table.Header>
 
 		<Table.Body>
-			{#each qpart_arr as [key, value]}
+			{#each Object.keys(sortedObj) as key}
 				<Table.Row>
 					<Table.Cell class={cell_padding}>{key}</Table.Cell>
-					<Table.Cell class={cell_padding}>{value}</Table.Cell>
+					<Table.Cell class={cell_padding}>{sortedObj[key]}</Table.Cell>
 				</Table.Row>
 			{/each}
 		</Table.Body>

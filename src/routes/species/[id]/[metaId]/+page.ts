@@ -18,5 +18,5 @@ export const load: PageLoad = async ({ fetch, params }) => {
 		return { meta_references, references };
 	};
 
-	return { load_meta_reference: fetch_data(), id: params.metaId };
+	return { load_meta_reference: fetch_data(), id: Number(params.metaId) };
 };

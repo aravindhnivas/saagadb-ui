@@ -54,6 +54,9 @@ interface SpeciesMetadata {
 	linelist: number;
 	data_date: string;
 	data_contributor: string;
+	partition_function: {
+		[name: string]: string;
+	};
 	qpart_file: string;
 	int_file: string;
 	var_file: string;
