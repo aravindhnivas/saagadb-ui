@@ -134,7 +134,7 @@ export const actions: Actions = {
 			message(form, {
 				type: 'success',
 				text:
-					`Form (${metaid}: ${response?.id && 'with id = ' + response.id}) submitted succesfully` +
+					`Form (${metaid} ${response?.id ? ': with id = ' + response.id : ''}) submitted succesfully` +
 					(metaid === 'reference' ? ` for DOI: ${response?.doi}` : '')
 			});
 			return { form, response };

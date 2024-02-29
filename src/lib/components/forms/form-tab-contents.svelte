@@ -5,8 +5,6 @@
 	import type { FormOptions, SuperValidated } from 'formsnap';
 	import type { AnyZodObject } from 'zod';
 	import MessageAlert from './message-alert.svelte';
-	import { createEventDispatcher } from 'svelte';
-	import Loader from '../utils/loader.svelte';
 	import AlertBox from '../utils/alert-box.svelte';
 
 	export let value: string;
@@ -20,34 +18,11 @@
 	let className = '';
 	export { className as class };
 
-	let submitting = false;
-	let error_message = '';
-	const dispatch = createEventDispatcher();
 	const options: FormOptions<typeof schema> = {
 		resetForm: true,
 		// applyAction: false,
 		invalidateAll: false,
 		taintedMessage: null,
-		onSubmit: () => {
-			error_message = '';
-			submitting = true;
-		},
-		onResult: ({ result }) => {
-			submitting = false;
-			dispatch('result', result);
-			console.log(result);
-			if (result.type === 'failure') {
-				error_message = 'Please check the form above for errors';
-			} else {
-				error_message = '';
-			}
-		},
-		onError: (e) => {
-			dispatch('error', e);
-			// do something else
-			console.error(e);
-			error_message = e.result?.error?.message;
-		},
 		...opts
 	};
 </script>
@@ -63,6 +38,9 @@
 			let:config
 			let:formStore
 			let:formValues
+			let:submitting
+			let:posted
+			let:errors
 			debug={import.meta.env.DEV}
 		>
 			<Card.Header>
@@ -76,11 +54,11 @@
 			<Card.Content class="space-y-2 {className}">
 				<MessageAlert />
 
-				<slot {config} {formStore} {formValues} />
+				<slot {config} {formStore} {formValues} {submitting} {posted} {errors} />
 			</Card.Content>
 
 			{#if footer}
-				<Card.Footer class="justify-center">
+				<Card.Footer class="flex flex-col gap-4 justify-center">
 					<slot name="footer">
 						<Form.Button class="w-[150px] flex gap-4" disabled={submitting}>
 							<span>{submitting ? 'Uploading...' : 'Upload'}</span>
@@ -88,12 +66,21 @@
 								<span class="loading loading-spinner"></span>
 							{/if}
 						</Form.Button>
+						{#if submitting}
+							<span class="text-sm"
+								>Uploading will take a few minutes depending on the size of the file
+							</span>
+						{/if}
 					</slot>
 				</Card.Footer>
 			{/if}
 
-			{#if error_message}
-				<AlertBox variant="destructive" message={error_message} />
+			{#if !Object.values(errors).every((value) => value === undefined)}
+				<AlertBox
+					variant="destructive"
+					message="Please check above for error messages"
+					title="Error"
+				/>
 			{/if}
 		</Form.Root>
 	</Card.Root>

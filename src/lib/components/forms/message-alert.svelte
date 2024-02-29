@@ -3,6 +3,7 @@
 	import * as Alert from '$lib/components/ui/alert';
 	import { getForm } from 'formsnap';
 	import { confetti } from '@neoconfetti/svelte';
+	import { Button } from '$lib/components/ui/button';
 
 	const { message } = getForm();
 	let modal: HTMLDialogElement;
@@ -38,7 +39,13 @@
 		{:else if $message.type === 'error'}
 			<AlertCircle class="h-4 w-4" />
 		{/if}
-		<Alert.Title>{$message.type}</Alert.Title>
-		<Alert.Description class="select-text">{@html $message.text}</Alert.Description>
+
+		<Alert.Title>
+			<span>{$message.type.toUpperCase()}</span>
+		</Alert.Title>
+		<Alert.Description class="grid gap-2 select-text">
+			<span>{$message.text}</span>
+			<button class="btn btn-sm w-[150px]" on:click={() => ($message = null)}>Okay</button>
+		</Alert.Description>
 	</Alert.Root>
 {/if}

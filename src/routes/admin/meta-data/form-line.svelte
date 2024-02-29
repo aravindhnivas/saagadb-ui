@@ -4,9 +4,9 @@
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import * as Form from '$lib/components/ui/form';
 	import FetchMetaId from './fetch-meta-id.svelte';
-	import { HelpCircle } from 'lucide-svelte/icons';
 
 	export let form: SuperValidated<(typeof Schemas)['line']>;
+
 	const value = 'line';
 	const schema = Schemas[value];
 </script>
@@ -17,6 +17,8 @@
 	{schema}
 	{form}
 	let:config
+	let:formStore
+	let:formValues
 	title="Line frequency"
 	description="Enter the line details"
 >
@@ -48,10 +50,17 @@
 	<Form.Field {config} name="vib_qn">
 		<Form.Item>
 			<Form.Label>vib_qn</Form.Label>
-			<Form.Input />
+			<Form.Input
+				on:keyup={(e) => {
+					formStore.update((f) => {
+						f.contains_rovibrational = formValues.vib_qn.trim() !== '';
+						return f;
+					});
+				}}
+			/>
 			<Form.Validation />
-			<Form.Description
-				>Indicates the quantum number label that corresponds to the vibrational quantum number. The
+			<Form.Description>
+				Indicates the quantum number label that corresponds to the vibrational quantum number. The
 				quantum number label must be one of the values in qn_label_str
 			</Form.Description>
 		</Form.Item>
@@ -62,29 +71,22 @@
 			<div class="space-y-1 leading-none">
 				<Form.Label>contains_rovibrational</Form.Label>
 			</div>
-			<Form.Checkbox checked="indeterminate" />
+			<Form.Checkbox checked={formValues.contains_rovibrational} />
 			<Form.Validation />
-			<Form.Description>Set true if vib_qn is filled</Form.Description>
 		</Form.Item>
 	</Form.Field>
 
 	<Form.Field {config} name="cat_file">
 		<Form.Item>
 			<div class="grid w-full max-w-sm items-center gap-1.5">
-				<Form.Label>
-					<div class="flex gap-4 items-center">
-						<span>cat_file</span>
-						<span
-							aria-label="The actual .cat file to extract line information from. Parsing of line information is done in backend largely based on molsim code"
-							data-cooltipz-dir="down"
-						>
-							<HelpCircle />
-						</span>
-					</div>
-				</Form.Label>
+				<Form.Label>cat_file</Form.Label>
 				<Form.Input type="file" required />
 			</div>
 			<Form.Validation />
+			<Form.Description
+				>The <em>.cat</em> file to extract line information. Parsing of line information is done in the
+				server which is largely based on molsim code.</Form.Description
+			>
 		</Form.Item>
 	</Form.Field>
 
