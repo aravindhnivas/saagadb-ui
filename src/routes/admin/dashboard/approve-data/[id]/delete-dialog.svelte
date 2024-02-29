@@ -24,15 +24,17 @@
 			</Dialog.Title>
 			<Dialog.Description>
 				<span>This will delete the metadata from the database.</span>
-				<br />
-				<span class="flex gap-2 items-center text-red">
-					<AlertTriangle />
-					<span
-						>This will also delete all the related meta-reference and the parsed line information
-						from cat file. So be aware of this.</span
-					>
-					<AlertTriangle />
-				</span>
+				{#if api_key === 'species-metadata'}
+					<br />
+					<span class="flex gap-2 items-center text-red">
+						<AlertTriangle />
+						<span
+							>This will also delete all the related meta-reference and the parsed line information
+							from cat file. So be aware of this.</span
+						>
+						<AlertTriangle />
+					</span>
+				{/if}
 			</Dialog.Description>
 		</Dialog.Header>
 		<form use:enhance class="grid gap-4" action="?/reject&id={id}&api_key={api_key}" method="POST">
