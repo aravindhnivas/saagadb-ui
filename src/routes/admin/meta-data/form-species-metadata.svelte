@@ -97,7 +97,7 @@
 			<Form.Item class="flex flex-col">
 				<Form.Label>linelist</Form.Label>
 				<Svelecte
-					searchable={false}
+					searchable={true}
 					virtualList={false}
 					options={linelist.map((f) => ({
 						id: f.id,
@@ -118,7 +118,7 @@
 			<Form.Item class="flex flex-col">
 				<Form.Label>category</Form.Label>
 				<Svelecte
-					searchable={false}
+					searchable={true}
 					virtualList={false}
 					options={category}
 					on:change={(e) => {
