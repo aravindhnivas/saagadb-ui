@@ -16,7 +16,7 @@
 		{#if species?.message}
 			<AlertBox message={species.message} variant="destructive" />
 		{:else if species}
-			<SpeciesData {species} />
+			<SpeciesData {species} user={data.user} />
 			{#if meta.length > 0}
 				<MetaTable species_metadata={meta} />
 			{:else}

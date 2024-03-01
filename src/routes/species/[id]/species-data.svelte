@@ -2,11 +2,14 @@
 	import { Download } from 'lucide-svelte/icons';
 	import * as Table from '$lib/components/ui/table';
 	import { onMount } from 'svelte';
+
 	export let species: Species;
+	export let user: User | null = null;
 
 	let mol: ReturnType<typeof window.RDKit.get_mol>;
 	let mol_descriptor: MolecularDescriptor;
-	let species_metadata_table: { [name: string]: string } = {};
+	let species_metadata_table: { [name: string]: string | number } = {};
+	console.log({ species });
 
 	const load_all_data = () => {
 		mol = window.RDKit.get_mol(species.smiles);
@@ -23,6 +26,9 @@
 			SELFIES: species.selfies,
 			Notes: species.notes
 		};
+		if (user && user.is_staff) {
+			species_metadata_table['uploaded_by'] = species.uploaded_by_name;
+		}
 	};
 	onMount(async () => {
 		if (window.RDKit) load_all_data();

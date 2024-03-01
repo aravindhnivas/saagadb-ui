@@ -1,13 +1,14 @@
 <script lang="ts">
-	import Input from '$lib/components/ui/input/input.svelte';
 	import { base } from '$app/paths';
 	import { page } from '$app/stores';
 	import { createVirtualizer } from '@tanstack/svelte-virtual';
 	import Svelecte from 'svelecte';
 	import Label from '$lib/components/ui/label/label.svelte';
-	import { Search } from 'lucide-svelte';
 	import SearchInput from '$lib/components/custom-input/search-input.svelte';
+	import Checkbox from '$lib/components/ui/checkbox/checkbox.svelte';
+
 	export let species: Species[] = [];
+	export let user: User | null = null;
 
 	let virtualListEl: HTMLDivElement;
 	$: virtualizer = createVirtualizer<HTMLDivElement, HTMLDivElement>({
@@ -18,7 +19,6 @@
 		overscan: 5 // The number of items to render above and below the visible area.
 		// debug: true
 	});
-	// console.log('species', species);
 	let searchKey = '';
 	$: filteredSpecies = species.filter((sp) => {
 		if (searchKey === '') return true;
@@ -31,9 +31,18 @@
 	});
 
 	let filter_keys = ['name', 'name_formula', 'iupac_name'] as const;
+	let my_uploads = false;
+	// console.log('species', species[0]);
+	// console.log('user', user);
 </script>
 
 <div class="flex flex-col gap-4 mb-2">
+	{#if user}
+		<div class="flex gap-2 items-center">
+			<Checkbox bind:checked={my_uploads} />
+			<Label>My uploads only</Label>
+		</div>
+	{/if}
 	<Label>Search in</Label>
 	<Svelecte
 		searchable={false}
@@ -48,7 +57,7 @@
 	<div style="position: relative; height: {$virtualizer.getTotalSize()}px; width: 100%;">
 		{#each $virtualizer.getVirtualItems() as row (row.index)}
 			{@const sp = filteredSpecies[row.index]}
-			{#if sp}
+			{#if sp && user ? (my_uploads ? sp.uploaded_by === user.id : true) : true}
 				{@const active = Number($page.params.id) === sp.id}
 				<div
 					style="position: absolute; top: 0; left: 0; width: 100%; height: {row.size}px; transform: translateY({row.start}px);"
@@ -68,7 +77,7 @@
 
 <style>
 	.scroll-container {
-		height: calc(100% - 11em);
+		height: calc(100% - 15em);
 		overflow: auto;
 		border: solid 1px gray;
 		padding: 1em;

@@ -13,6 +13,7 @@ interface Species {
 	message?: string;
 	approved: boolean;
 	uploaded_by: number;
+	uploaded_by_name: string;
 }
 
 interface User {
