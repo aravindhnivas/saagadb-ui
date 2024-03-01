@@ -132,43 +132,54 @@
 				If int_file and var_file are attached, then the dipole moments and rotaional constants are
 				extracted and overwritten from the former and latter files, respectively.
 			</span>
+			<span class="flex gap-4 items-center text-sm text-gray">
+				<UnlockKeyhole />
+				Unlock to upload new files
+			</span>
 		</div>
-		<Table.Root class="max-w-2xl">
-			<Table.Body>
-				{#each files_checked_row as { name, checked, disabled }}
-					<Table.Row>
-						<Table.Cell class="font-medium p-0.5">
-							<div class="flex gap-4 items-center">
-								<button
-									on:click|preventDefault={() => {
-										disabled = !disabled;
-										modified = true;
-									}}
-								>
-									{#if disabled}
-										<LockKeyhole />
-									{:else}
-										<UnlockKeyhole />
-									{/if}
-								</button>
-								<Label for={name}>{name}</Label>
-								<Checkbox bind:checked />
-							</div>
-						</Table.Cell>
-						<Table.Cell class="p-0.5">
-							<a href={obj[name]} target="_blank" rel="noopener noreferrer" class="underline">
-								<div class="flex gap-4 items-center justify-end">
-									<Download />
-								</div>
+
+		<div class="grid-auto-fill">
+			{#each files_checked_row as { name, checked, disabled }}
+				<div class="flex flex-col gap-1">
+					<div class="flex gap-4 items-center p-2">
+						<button
+							on:click|preventDefault={() => {
+								disabled = !disabled;
+								modified = true;
+							}}
+						>
+							{#if disabled}
+								<LockKeyhole />
+							{:else}
+								<UnlockKeyhole />
+							{/if}
+						</button>
+						<Label for={name}>{name}</Label>
+						<Checkbox bind:checked />
+					</div>
+					{#if obj[name]}
+						{@const filename = obj[name].split('/').pop()}
+						{@const href = `${base}/uploads/sp/${filename}`}
+						{#if disabled}
+							<a
+								class="btn btn-sm btn-primary w-45"
+								{href}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								<span>Download</span>
 							</a>
-						</Table.Cell>
-						<Table.Cell class="p-0.5">
-							<Input type="file" required={false} />
-						</Table.Cell>
-					</Table.Row>
-				{/each}
-			</Table.Body>
-		</Table.Root>
+						{:else}
+							<Input type="file" {disabled} {name} />
+							<span class="text-sm">Attach a new <em>.{name.split('_')[0]}</em></span>
+						{/if}
+					{:else}
+						<Input type="file" {disabled} {name} />
+						<span class="text-sm">No <em>.{name.split('_')[0]}</em> attached</span>
+					{/if}
+				</div>
+			{/each}
+		</div>
 	{/if}
 
 	<div class="flex gap-4 ml-auto">
