@@ -14,16 +14,44 @@
 	const { species: species_id, species_name } = species_metadata[0] ?? {};
 	// $: console.log({ species_metadata });
 
-	type MetadataKey = { name: string; value: keyof SpeciesMetadata }[];
+	type MetadataKey = {
+		name: string;
+		value: keyof SpeciesMetadata;
+		formatter?: (val: string) => string;
+	}[];
 	let metadata_keys: MetadataKey = [
 		{ name: 'Category', value: 'category' },
 		{ name: 'Molecule tag', value: 'molecule_tag' },
-		{ name: 'A / MHz', value: 'a_const' },
-		{ name: 'B / MHz', value: 'b_const' },
-		{ name: 'C / MHz', value: 'c_const' },
-		{ name: 'μ<sub>a</sub> / D', value: 'mu_a' },
-		{ name: 'μ<sub>b</sub> / D', value: 'mu_b' },
-		{ name: 'μ<sub>c</sub> / D', value: 'mu_c' },
+		{
+			name: 'A / MHz',
+			value: 'a_const',
+			formatter: (val: string) => (val ? Number(val).toFixed(4) : '-')
+		},
+		{
+			name: 'B / MHz',
+			value: 'b_const',
+			formatter: (val: string) => (val ? Number(val).toFixed(4) : '-')
+		},
+		{
+			name: 'C / MHz',
+			value: 'c_const',
+			formatter: (val: string) => (val ? Number(val).toFixed(4) : '-')
+		},
+		{
+			name: 'μ<sub>a</sub> / D',
+			value: 'mu_a',
+			formatter: (val: string) => (val ? Number(val).toFixed(4) : '-')
+		},
+		{
+			name: 'μ<sub>b</sub> / D',
+			value: 'mu_b',
+			formatter: (val: string) => (val ? Number(val).toFixed(4) : '-')
+		},
+		{
+			name: 'μ<sub>c</sub> / D',
+			value: 'mu_c',
+			formatter: (val: string) => (val ? Number(val).toFixed(4) : '-')
+		},
 		{ name: 'Hyperfine', value: 'hyperfine' },
 		{ name: 'Degree of freedom', value: 'degree_of_freedom' },
 		{ name: 'cat file', value: 'cat_file' },
@@ -31,6 +59,7 @@
 		{ name: 'var file', value: 'var_file' },
 		{ name: 'lin file', value: 'lin_file' },
 		{ name: 'fit file', value: 'fit_file' },
+		{ name: 'qpart file', value: 'qpart_file' },
 		{ name: 'Date added', value: 'data_date' },
 		{ name: 'Contributors', value: 'data_contributor' },
 		{ name: 'Notes', value: 'notes' }
@@ -138,18 +167,19 @@
 								{@const ext = file.split('.').at(-1)}
 								{@const filename = `${linelist_name}_${metadata.species_formula}_${metadata.molecule_tag}.${ext}`}
 								<a
+									class="btn btn-sm w-[150px]"
 									href="{base}/uploads/sp/{file}"
 									download={filename}
 									target="_blank"
 									rel="noopener noreferrer"
 								>
-									<div class="flex gap-4 items-center justify-center">
-										<span>{filename}</span>
+									<div class="flex gap-4 items-center justify-evenly">
+										<span>.{ext}</span>
 										<Download />
 									</div>
 								</a>
 							{:else}
-								{val ?? '-'}
+								{key.formatter ? key.formatter(val) : val ?? '-'}
 							{/if}
 						</Table.Cell>
 					{/each}
