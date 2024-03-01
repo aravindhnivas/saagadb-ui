@@ -48,11 +48,11 @@
 	const files_keys = [
 		{
 			name: 'int_file',
-			description: '(Optional) If provided - dipoles moments will be extracted and overwritten'
+			description: '(Optional) dipoles moments information'
 		},
 		{
 			name: 'var_file',
-			description: '(Optional) If provided - rotational constants will be extracted and overwritten'
+			description: '(Optional) rotational constants information'
 		},
 		{ name: 'fit_file', description: '(Optional) .fit file of the species' },
 		{ name: 'lin_file', description: '(Optional) .lin file of the species' }

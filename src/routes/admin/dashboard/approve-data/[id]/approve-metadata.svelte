@@ -134,10 +134,10 @@
 	{#if api_key === 'species-metadata'}
 		<div class="grid">
 			<span>Attached files (Download and check)</span>
-			<span class="text-sm text-gray">
+			<!-- <span class="text-sm text-gray">
 				If int_file and var_file are attached, then the dipole moments and rotaional constants are
 				extracted and overwritten from the former and latter files, respectively.
-			</span>
+			</span> -->
 			<span class="flex gap-4 items-center text-sm text-gray">
 				<UnlockKeyhole />
 				Unlock to upload new files
