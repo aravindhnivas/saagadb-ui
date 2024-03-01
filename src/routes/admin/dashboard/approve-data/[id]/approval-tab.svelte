@@ -1,8 +1,8 @@
 <script lang="ts">
 	import AlertBox from '$lib/components/utils/alert-box.svelte';
 	import { AlertCircle, CheckCheck } from 'lucide-svelte/icons';
-	import MetaAccordian from './meta-accordian.svelte';
 	import { writable } from '@macfja/svelte-persistent-store';
+	import MetaPane from './meta-pane.svelte';
 
 	export let meta_ref: MetaReference[];
 	export let meta_species: SpeciesMetadata[];
@@ -67,11 +67,7 @@
 <div class="animate__animated animate__fadeIn">
 	{#if $active_tab === 'species'}
 		{#if meta_species.length > 0}
-			<MetaAccordian
-				metadata={meta_species}
-				include_keys={species_keys}
-				api_key="species-metadata"
-			/>
+			<MetaPane metadata={meta_species} include_keys={species_keys} api_key="species-metadata" />
 		{:else}
 			<AlertBox message="All species metadata has been approved" title="Approved">
 				<CheckCheck class="h-4 w-4" />
@@ -79,7 +75,7 @@
 		{/if}
 	{:else if $active_tab === 'ref'}
 		{#if meta_ref.length > 0}
-			<MetaAccordian metadata={meta_ref} include_keys={metaref_keys} api_key="meta-reference" />
+			<MetaPane metadata={meta_ref} include_keys={metaref_keys} api_key="meta-reference" />
 		{:else}
 			<AlertBox message="All reference metadata has been approved" title="Approved">
 				<CheckCheck class="h-4 w-4" />
