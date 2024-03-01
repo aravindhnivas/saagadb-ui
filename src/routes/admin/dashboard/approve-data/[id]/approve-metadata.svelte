@@ -6,14 +6,13 @@
 	import { Button } from '$lib/components/ui/button';
 	import { enhance } from '$app/forms';
 	import { Checkbox } from '$lib/components/ui/checkbox';
-	import { Download, LockKeyhole, UnlockKeyhole } from 'lucide-svelte/icons';
+	import { CheckCheck, Download, LockKeyhole, UnlockKeyhole } from 'lucide-svelte/icons';
 	import { getContext } from 'svelte';
 	import { url_from_cdms_tag, url_from_jpl_tag } from '$lib/core';
 	import { Description } from '$lib/components/ui/card';
 	import { base } from '$app/paths';
 	import { toast } from 'svelte-sonner';
 	import { fileInputs } from '$lib/schemas/metadata';
-	import * as Table from '$lib/components/ui/table';
 
 	export let obj: SpeciesMetadata | MetaReference;
 
@@ -21,12 +20,19 @@
 	const include_keys = getContext('include_keys') as (keyof (SpeciesMetadata | MetaReference))[];
 
 	let checked_row = include_keys.map((key) => ({ name: key, checked: false, disabled: true }));
-	let files_checked_row = fileInputs['species-metadata'].map(({ name }) => ({
+	let files_checked_row: {
+		name: string;
+		checked: boolean;
+		disabled: boolean;
+		file: File | null;
+		value: string;
+	}[] = fileInputs['species-metadata'].map(({ name }) => ({
 		name,
 		checked: true,
-		disabled: true
+		disabled: true,
+		file: null,
+		value: ''
 	}));
-	// $: all_approved = checked_row.every((f) => f.checked);
 	$: all_approved = [...checked_row, ...files_checked_row].every((f) => f.checked);
 	let approve_all = false;
 
@@ -139,7 +145,7 @@
 		</div>
 
 		<div class="grid-auto-fill">
-			{#each files_checked_row as { name, checked, disabled }}
+			{#each files_checked_row as { name, checked, disabled, file, value }}
 				<div class="flex flex-col gap-1">
 					<div class="flex gap-4 items-center p-2">
 						<button
@@ -170,12 +176,52 @@
 								<span>Download</span>
 							</a>
 						{:else}
-							<Input type="file" {disabled} {name} />
-							<span class="text-sm">Attach a new <em>.{name.split('_')[0]}</em></span>
+							<Input
+								type="file"
+								{disabled}
+								{name}
+								on:input={(e) => {
+									const newfile = e.target?.files?.[0];
+									const allowed_ext = '.' + name.split('_')[0];
+									if (newfile && !newfile.name.endsWith(allowed_ext)) {
+										toast.error(`File extension should be ${allowed_ext}`);
+										e.target.value = '';
+										return;
+									}
+									toast.success('File attached');
+									file = newfile;
+								}}
+							/>
+							<span class="text-sm flex items-center gap-4">
+								{#if file?.size}
+									<CheckCheck />
+									<span>New file attached</span>
+								{:else}
+									<span class=" text-red">Leaving it empty will delete the file</span>
+								{/if}
+							</span>
 						{/if}
 					{:else}
-						<Input type="file" {disabled} {name} />
+						<Input
+							type="file"
+							{disabled}
+							{name}
+							on:input={(e) => {
+								const newfile = e.target?.files?.[0];
+								const allowed_ext = '.' + name.split('_')[0];
+								if (newfile && !newfile.name.endsWith(allowed_ext)) {
+									toast.error(`File extension should be ${allowed_ext}`);
+									e.target.value = '';
+									return;
+								}
+								toast.success('File attached');
+								file = newfile;
+							}}
+						/>
 						<span class="text-sm">No <em>.{name.split('_')[0]}</em> attached</span>
+						{#if !disabled && !file?.size}
+							<span class="text-sm text-red">Leaving it empty will delete the file</span>
+						{/if}
 					{/if}
 				</div>
 			{/each}

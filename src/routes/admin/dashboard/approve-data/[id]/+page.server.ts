@@ -90,6 +90,24 @@ export const actions: Actions = {
 		const api_key = url.searchParams.get('api_key') as string;
 		const post_url = `${DB_URL}/data/${api_key}/${id}/`;
 
+		// console.log('formData', Object.fromEntries(formData.entries()));
+
+		const formBody = new FormData();
+
+		for (const [key, value] of formData.entries()) {
+			if (value instanceof File) {
+				if (!(value.name && value.size)) formBody.append(key, '');
+			}
+			formBody.append(key, value);
+		}
+
+		// console.log('formBody', Object.fromEntries(formBody.entries()));
+
+		// return {
+		// 	success: false,
+		// 	message: 'test message'
+		// };
+
 		const res = await fetch(post_url, {
 			method: 'PATCH',
 			body: formData

@@ -25,32 +25,32 @@
 		{
 			name: 'A / MHz',
 			value: 'a_const',
-			formatter: (val: string) => (val ? Number(val).toFixed(4) : '-')
+			formatter: (val: string) => (val ? Number(val).toFixed(3) : '-')
 		},
 		{
 			name: 'B / MHz',
 			value: 'b_const',
-			formatter: (val: string) => (val ? Number(val).toFixed(4) : '-')
+			formatter: (val: string) => (val ? Number(val).toFixed(3) : '-')
 		},
 		{
 			name: 'C / MHz',
 			value: 'c_const',
-			formatter: (val: string) => (val ? Number(val).toFixed(4) : '-')
+			formatter: (val: string) => (val ? Number(val).toFixed(3) : '-')
 		},
 		{
 			name: 'μ<sub>a</sub> / D',
 			value: 'mu_a',
-			formatter: (val: string) => (val ? Number(val).toFixed(4) : '-')
+			formatter: (val: string) => (val ? Number(val).toFixed(3) : '-')
 		},
 		{
 			name: 'μ<sub>b</sub> / D',
 			value: 'mu_b',
-			formatter: (val: string) => (val ? Number(val).toFixed(4) : '-')
+			formatter: (val: string) => (val ? Number(val).toFixed(3) : '-')
 		},
 		{
 			name: 'μ<sub>c</sub> / D',
 			value: 'mu_c',
-			formatter: (val: string) => (val ? Number(val).toFixed(4) : '-')
+			formatter: (val: string) => (val ? Number(val).toFixed(3) : '-')
 		},
 		{ name: 'Hyperfine', value: 'hyperfine' },
 		{ name: 'Degree of freedom', value: 'degree_of_freedom' },
