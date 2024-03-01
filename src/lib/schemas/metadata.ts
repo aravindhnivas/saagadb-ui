@@ -106,7 +106,7 @@ export const ids = ['species-metadata', 'reference', 'meta-reference', 'line'] a
 
 export const metadata_items = [
 	{ value: 'species-metadata', name: 'Species metadata' },
+	{ value: 'line', name: 'Line' },
 	{ value: 'reference', name: 'Reference' },
-	{ value: 'meta-reference', name: 'Meta reference' },
-	{ value: 'line', name: 'Line' }
+	{ value: 'meta-reference', name: 'Meta reference' }
 ] as const;
