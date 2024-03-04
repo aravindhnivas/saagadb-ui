@@ -18,8 +18,8 @@ dependencies:
     specifier: ^1.0.2
     version: 1.0.2
   bits-ui:
-    specifier: ^0.15.1
-    version: 0.15.1(svelte@4.2.12)
+    specifier: ^0.19.3
+    version: 0.19.3(svelte@4.2.12)
   cdms-jpl-api:
     specifier: ^0.0.2
     version: 0.0.2
@@ -1005,8 +1005,8 @@ packages:
       svelte: 4.2.12
     dev: false
 
-  /@melt-ui/svelte@0.68.0(svelte@4.2.12):
-    resolution: {integrity: sha512-/QvA98hnYEodZtHJ71+ocum/WWp30hVNt3F8uiZKnNYwZDaiQYjlyR9AaGKYcZLCe6R68op1mfCzc0kTzJilyA==}
+  /@melt-ui/svelte@0.75.2(svelte@4.2.12):
+    resolution: {integrity: sha512-EZYH5iEzHs/CPsWqRlH6AnJ70sTuPB4llVK3ajafWig6I5q3qyGU8NIz4aozUssL0edf9BKmyDVAy6Vksy1fbA==}
     peerDependencies:
       svelte: '>=3 <5'
     dependencies:
@@ -1015,7 +1015,7 @@ packages:
       '@internationalized/date': 3.5.1
       dequal: 2.0.3
       focus-trap: 7.5.4
-      nanoid: 5.0.4
+      nanoid: 5.0.6
       svelte: 4.2.12
     dev: false
 
@@ -1817,14 +1817,14 @@ packages:
     resolution: {integrity: sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==}
     engines: {node: '>=8'}
 
-  /bits-ui@0.15.1(svelte@4.2.12):
-    resolution: {integrity: sha512-1Np8bT6W6SC2tKESfm0CySW+7+xU5S0GuUZqIxC41atZE3WIRiRlzXEYHxW88w6UaLFzZ51ns4E7pchkdV5XCQ==}
+  /bits-ui@0.19.3(svelte@4.2.12):
+    resolution: {integrity: sha512-0qqZ1bwE4ZmTnzTdsl4mYEbHY5f0NVgxhddIqscLjJZx4ltkVKDXxBwEusbE2NToqKtXNNrU0wy7sLusdzdhcg==}
     peerDependencies:
       svelte: ^4.0.0
     dependencies:
       '@internationalized/date': 3.5.1
-      '@melt-ui/svelte': 0.68.0(svelte@4.2.12)
-      nanoid: 5.0.4
+      '@melt-ui/svelte': 0.75.2(svelte@4.2.12)
+      nanoid: 5.0.6
       svelte: 4.2.12
     dev: false
 
@@ -3112,6 +3112,12 @@ packages:
 
   /nanoid@5.0.4:
     resolution: {integrity: sha512-vAjmBf13gsmhXSgBrtIclinISzFFy22WwCYoyilZlsrRXNIHSwgFQ1bEdjRwMT3aoadeIF6HMuDRlOxzfXV8ig==}
+    engines: {node: ^18 || >=20}
+    hasBin: true
+    dev: false
+
+  /nanoid@5.0.6:
+    resolution: {integrity: sha512-rRq0eMHoGZxlvaFOUdK1Ev83Bd1IgzzR+WJ3IbDJ7QOSdAxYjlurSPqFs9s4lJg29RT6nPwizFtJhQS6V5xgiA==}
     engines: {node: ^18 || >=20}
     hasBin: true
     dev: false
