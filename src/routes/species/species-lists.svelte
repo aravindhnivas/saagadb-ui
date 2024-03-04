@@ -17,7 +17,7 @@
 		// count: 1000,
 		getScrollElement: () => virtualListEl,
 		estimateSize: () => 35,
-		overscan: 1 // The number of items to render above and below the visible area.
+		overscan: 5 // The number of items to render above and below the visible area.
 		// debug: true
 	});
 	let searchKey = '';
