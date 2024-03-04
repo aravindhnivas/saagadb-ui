@@ -9,7 +9,7 @@
 	let mol: ReturnType<typeof window.RDKit.get_mol>;
 	let mol_descriptor: MolecularDescriptor;
 	let species_metadata_table: { [name: string]: string | number } = {};
-	console.log({ species });
+	// console.log({ species });
 
 	const load_all_data = () => {
 		mol = window.RDKit.get_mol(species.smiles);

@@ -6,6 +6,7 @@
 	import Label from '$lib/components/ui/label/label.svelte';
 	import SearchInput from '$lib/components/custom-input/search-input.svelte';
 	import Checkbox from '$lib/components/ui/checkbox/checkbox.svelte';
+	import { Separator } from '$lib/components/ui/separator';
 
 	export let species: Species[] = [];
 	export let user: User | null = null;
@@ -16,7 +17,7 @@
 		// count: 1000,
 		getScrollElement: () => virtualListEl,
 		estimateSize: () => 35,
-		overscan: 5 // The number of items to render above and below the visible area.
+		overscan: 1 // The number of items to render above and below the visible area.
 		// debug: true
 	});
 	let searchKey = '';
@@ -62,13 +63,15 @@
 				<div
 					style="position: absolute; top: 0; left: 0; width: 100%; height: {row.size}px; transform: translateY({row.start}px);"
 				>
-					<a class="w-full {active ? 'border-black border-b-2' : ''} " href="{base}/species/{sp.id}"
+					<!-- <a class="w-full {active ? 'border-black border-b-2' : ''} " href="{base}/species/{sp.id}" -->
+					<a class="w-full {active ? 'text-blue-500' : ''} " href="{base}/species/{sp.id}"
 						>{#if sp.name_html}
 							{@html sp.name_html}
 						{:else}
 							{sp.iupac_name ?? sp.name_formula}
 						{/if}</a
 					>
+					<Separator />
 				</div>
 			{/if}
 		{/each}

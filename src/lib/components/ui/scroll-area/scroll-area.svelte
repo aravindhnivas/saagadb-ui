@@ -1,27 +1,27 @@
 <script lang="ts">
-	import { ScrollArea as ScrollAreaPrimitive } from "bits-ui";
-	import { cn } from "$lib/utils.js";
-	import { Scrollbar } from "./index.js";
+	import { ScrollArea as ScrollAreaPrimitive } from 'bits-ui';
+	import { cn } from '$lib/utils';
+	import { Scrollbar } from './index.js';
 
 	type $$Props = ScrollAreaPrimitive.Props & {
-		orientation?: "vertical" | "horizontal" | "both";
+		orientation?: 'vertical' | 'horizontal' | 'both';
 	};
 
-	let className: $$Props["class"] = undefined;
+	let className: $$Props['class'] = undefined;
 	export { className as class };
-	export let orientation = "vertical";
+	export let orientation = 'vertical';
 </script>
 
-<ScrollAreaPrimitive.Root {...$$restProps} class={cn("relative overflow-hidden", className)}>
+<ScrollAreaPrimitive.Root {...$$restProps} class={cn('relative overflow-hidden', className)}>
 	<ScrollAreaPrimitive.Viewport class="h-full w-full rounded-[inherit]">
 		<ScrollAreaPrimitive.Content>
 			<slot />
 		</ScrollAreaPrimitive.Content>
 	</ScrollAreaPrimitive.Viewport>
-	{#if orientation === "vertical" || orientation === "both"}
+	{#if orientation === 'vertical' || orientation === 'both'}
 		<Scrollbar orientation="vertical" />
 	{/if}
-	{#if orientation === "horizontal" || orientation === "both"}
+	{#if orientation === 'horizontal' || orientation === 'both'}
 		<Scrollbar orientation="horizontal" />
 	{/if}
 	<ScrollAreaPrimitive.Corner />
