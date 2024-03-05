@@ -18,7 +18,7 @@
 	<DropdownMenu.Trigger asChild let:builder>
 		<Button variant="outline" builders={[builder]} class="mb-2">Select {label}</Button>
 	</DropdownMenu.Trigger>
-	<DropdownMenu.Content class="w-56">
+	<DropdownMenu.Content class="w-56 overflow-auto max-h-[200px]">
 		<DropdownMenu.Label>{label}</DropdownMenu.Label>
 		<DropdownMenu.Separator />
 		{#each items as item}
