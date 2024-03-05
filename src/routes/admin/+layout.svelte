@@ -56,7 +56,7 @@
 		},
 		{
 			id: uuidv4(),
-			name: 'Users',
+			name: 'Users control',
 			href: base + '/admin/users',
 			requires_super_user: true
 		}

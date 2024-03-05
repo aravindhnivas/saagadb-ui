@@ -4,13 +4,13 @@
 	import { Button, buttonVariants } from '$lib/components/ui/button';
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { enhance } from '$app/forms';
-	import { Checkbox } from '$lib/components/ui/checkbox';
 	import { Edit, LockKeyhole, UnlockKeyhole } from 'lucide-svelte/icons';
 	import CustomDropdown from '$lib/components/custom-dropdown.svelte';
 	import FormCheckbox from '$lib/components/forms/form-checkbox.svelte';
 
 	export let active_user: User;
 	export let all_staffs: User[] = [];
+	export let open = false;
 
 	let checked_row: {
 		label: string;
@@ -22,12 +22,10 @@
 		{ label: 'Admin', name: 'is_staff', disabled: true },
 		{ label: 'Approver(s)', name: 'approver', disabled: true }
 	];
-
-	let open = false;
 </script>
 
 <Dialog.Root bind:open>
-	<Dialog.Trigger class={buttonVariants({ variant: 'outline' })}><Edit /></Dialog.Trigger>
+	<!-- <Dialog.Trigger class={buttonVariants({ variant: 'outline' })}><Edit /></Dialog.Trigger> -->
 	<Dialog.Content class="sm:max-w-[425px]">
 		<form action="?/update_user&id={active_user.id}" method="POST" use:enhance>
 			<Dialog.Header>
