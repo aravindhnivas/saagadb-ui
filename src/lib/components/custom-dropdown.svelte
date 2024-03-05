@@ -9,7 +9,7 @@
 		checked: boolean;
 	}[] = [];
 	export let label: string;
-	export let selected_values: string[] | number[] = [];
+	export let selected_values: (string | number)[] = [];
 
 	// console.log(items);
 </script>
