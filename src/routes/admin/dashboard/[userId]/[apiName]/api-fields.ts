@@ -1,13 +1,13 @@
 export const api_fields = {
 	species: [
-		{ name: 'name', label: 'Name' },
-		{ name: 'iupac_name', label: 'IUPAC Name' },
-		{ name: 'name_formula', label: 'Name Formula' },
-		{ name: 'name_html', label: 'Name HTML' }
+		{ name: 'name', label: 'Name', search_field: true },
+		{ name: 'iupac_name', label: 'IUPAC', search_field: true },
+		{ name: 'name_formula', label: 'Molecular formula', search_field: true }
+		// { name: 'name_html', label: 'HTML' }
 	],
 	'species-metadata': [
 		{ name: 'approved', label: 'Approved' },
-		{ name: 'category', label: 'Category' },
+		{ name: 'category', label: 'Category', search_field: true },
 		{ name: 'degree_of_freedom', label: 'Degree of Freedom' },
 		{ name: 'hyperfine', label: 'Hyperfine' },
 		{ name: 'mu_a', label: 'μ<sub>a</sub> / D' },
@@ -18,14 +18,16 @@ export const api_fields = {
 		{ name: 'c_const', label: 'C / MHz' }
 	],
 	reference: [
-		{ name: 'doi', label: 'DOI' },
+		{ name: 'doi', label: 'DOI', search_field: true },
 		{ name: 'ref_url', label: 'Reference URL' }
 	],
 	'meta-reference': [
 		{ name: 'approved', label: 'Approved' },
-		{ name: 'doi', label: 'DOI' },
+		{ name: 'doi', label: 'DOI', search_field: true },
 		{ name: 'ref_url', label: 'Reference URL' },
 		{ name: 'dipole_moment', label: 'Dipole Moment' },
 		{ name: 'spectrum', label: 'Spectrum' }
 	]
+} as {
+	[name: string]: { name: string; label: string; search_field?: boolean }[];
 };
