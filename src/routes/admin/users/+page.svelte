@@ -31,6 +31,7 @@
 		{
 			title: 'Name',
 			field: 'name',
+			width: 150,
 			headerFilter: 'input'
 		},
 		{
@@ -60,12 +61,34 @@
 		},
 		{
 			title: 'Actions',
-			formatter: () => 'Edit',
-			hozAlign: 'center',
-			cellClick: (e, cell) => {
-				active_user = cell.getRow().getData() as User;
-				dialog_open = true;
-			}
+			columns: [
+				{
+					title: '',
+					width: 100,
+					formatter: () => 'Edit',
+					hozAlign: 'center',
+					cellClick: (e, cell) => {
+						active_user = cell.getRow().getData() as User;
+						dialog_open = true;
+					}
+				}
+				// {
+				// 	title: '',
+				// 	width: 100,
+				// 	formatter: () => 'Edit',
+				// 	hozAlign: 'center',
+				// 	cellClick: (e, cell) => {
+				// 		active_user = cell.getRow().getData() as User;
+				// 		dialog_open = true;
+				// 	}
+				// }
+			]
+			// formatter: () => 'Edit',
+			// hozAlign: 'center',
+			// cellClick: (e, cell) => {
+			// 	active_user = cell.getRow().getData() as User;
+			// 	dialog_open = true;
+			// }
 		}
 	];
 	let table: Tabulator;

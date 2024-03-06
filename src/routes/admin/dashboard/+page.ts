@@ -3,8 +3,6 @@ import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
 export const load: PageLoad = async ({ fetch, depends }) => {
-	// const { user } = await parent();
-
 	const fetch_approving_users = async (user: User) => {
 		depends('fetch:approving_users');
 		let approving_users: User[] = [];
@@ -42,8 +40,4 @@ export const load: PageLoad = async ({ fetch, depends }) => {
 		fetch_approving_users,
 		fetch_upload_count
 	};
-	// return {
-	// 	fetch_approving_users: fetch_approving_users(),
-	// 	fetch_upload_count: fetch_upload_count()
-	// };
 };

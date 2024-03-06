@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { Label } from '$lib/components/ui/label';
 	import { Input } from '$lib/components/ui/input';
-	import { Button, buttonVariants } from '$lib/components/ui/button';
+	import { Button } from '$lib/components/ui/button';
 	import * as Dialog from '$lib/components/ui/dialog';
 	import { enhance } from '$app/forms';
-	import { Edit, LockKeyhole, UnlockKeyhole } from 'lucide-svelte/icons';
+	import { LockKeyhole, UnlockKeyhole } from 'lucide-svelte/icons';
 	import CustomDropdown from '$lib/components/custom-dropdown.svelte';
 	import FormCheckbox from '$lib/components/forms/form-checkbox.svelte';
 
@@ -25,13 +25,18 @@
 </script>
 
 <Dialog.Root bind:open>
-	<!-- <Dialog.Trigger class={buttonVariants({ variant: 'outline' })}><Edit /></Dialog.Trigger> -->
-	<Dialog.Content class="sm:max-w-[425px]">
+	<Dialog.Content>
 		<form action="?/update_user&id={active_user.id}" method="POST" use:enhance>
 			<Dialog.Header>
-				<Dialog.Title>Edit user</Dialog.Title>
+				<Dialog.Title>Edit {active_user.name}</Dialog.Title>
 				<Dialog.Description>
-					Make changes to the user data here. Click save when you're done.
+					<span class="flex gap-2 items-center">
+						<span>Click on </span>
+						<LockKeyhole />
+						<span>to unlock </span>
+						<UnlockKeyhole />
+						<span> the field for editing.</span>
+					</span>
 				</Dialog.Description>
 			</Dialog.Header>
 			{#if active_user}
@@ -54,9 +59,9 @@
 							</div>
 
 							{#if typeof active_user[name] === 'boolean'}
-								<FormCheckbox {disabled} {name} bind:checked={active_user[name]} />
+								<FormCheckbox {disabled} {name} checked={active_user[name]} />
 							{:else}
-								<Input {disabled} bind:value={active_user[name]} {name} />
+								<Input {disabled} value={active_user[name]} {name} />
 							{/if}
 							{#if name === 'approver' && !disabled}
 								<CustomDropdown
@@ -73,7 +78,7 @@
 					{/each}
 				</div>
 			{/if}
-			<Dialog.Footer>
+			<Dialog.Footer class="my-2">
 				<Button on:click={() => (open = false)} type="submit">Save changes</Button>
 			</Dialog.Footer>
 		</form>
