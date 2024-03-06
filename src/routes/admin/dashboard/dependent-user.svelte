@@ -10,7 +10,7 @@
 	<Loader fetching={true} />
 {:then approving_users}
 	{#if approving_users?.length > 0}
-		<Table.Root class="text-md animate__animated animate__fadeIn">
+		<Table.Root class="text-md max-w-2xl">
 			<Table.Body>
 				{#each approving_users as approving_user, ind}
 					<Table.Row>
