@@ -1,17 +1,21 @@
 <script lang="ts">
 	import { api_fields } from './api-fields';
-	import { AlertTriangle, ArrowBigLeft, CheckCheck } from 'lucide-svelte/icons';
-	import type { PageData } from './$types';
+	import { ArrowBigLeft } from 'lucide-svelte/icons';
+	import type { ActionData, PageData } from './$types';
 	import { Button } from '$lib/components/ui/button';
 	import { page } from '$app/stores';
-	import * as Table from '$lib/components/ui/table';
 	import SearchInput from '$lib/components/custom-input/search-input.svelte';
+	import BoxContent from './box-content.svelte';
+	import { enhance } from '$app/forms';
+	import { toast } from 'svelte-sonner';
 
 	export let data: PageData;
-	const fields = api_fields[$page.params.apiName];
-	let searchKey = '';
+	export let form: ActionData;
 
+	const fields = api_fields[$page.params.apiName];
 	const search_fields = fields.filter((field) => field.search_field).map((f) => f.name);
+
+	let searchKey = '';
 
 	$: filtered_data = data.metadata.filter((f) => {
 		if (searchKey === '') return true;
@@ -23,6 +27,9 @@
 			.join(' ');
 		return val.includes(searchKey.toLowerCase());
 	});
+
+	$: if (form && form.success) toast.success(form.message);
+	$: if (form && !form.success) toast.error(form.message);
 </script>
 
 <Button
@@ -42,40 +49,26 @@
 
 	<SearchInput bind:searchKey />
 
-	<div class="auto-fill space-y-2">
-		{#each filtered_data as metadata}
-			<div class="grid border-solid border-2 p-5">
-				<Table.Root class="text-md max-w-2xl">
-					<Table.Body>
-						{#each fields as { name, label }}
-							<Table.Row>
-								{#if name === 'approved'}
-									{#if metadata[name]}
-										<Table.Cell class="p-0.5 text-green-700"><CheckCheck /></Table.Cell>
-										<Table.Cell class="p-0.5 text-green-700">APPROVED</Table.Cell>
-									{:else}
-										<Table.Cell class="p-0.5 text-red"><AlertTriangle /></Table.Cell>
-										<Table.Cell class="p-0.5 text-red">PENDING APPROVAL</Table.Cell>
-									{/if}
-								{:else}
-									<Table.Cell class="p-0.5">{@html label}</Table.Cell>
-									<Table.Cell class="p-0.5">
-										{metadata[name] ?? '-'}
-									</Table.Cell>
-								{/if}
-							</Table.Row>
-						{/each}
-					</Table.Body>
-				</Table.Root>
-			</div>
-		{/each}
-	</div>
+	<form
+		use:enhance={() => {
+			return async ({ update }) => {
+				update({ reset: false });
+			};
+		}}
+		method="POST"
+	>
+		<div class="auto-fill">
+			{#each filtered_data as metadata}
+				<BoxContent {metadata} />
+			{/each}
+		</div>
+	</form>
 </div>
 
 <style>
 	.auto-fill {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+		grid-template-columns: repeat(auto-fill, minmax(700px, 1fr));
 		grid-gap: 1rem;
 	}
 </style>
