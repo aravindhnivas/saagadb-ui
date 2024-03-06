@@ -22,7 +22,7 @@
 </Button>
 
 <h1 class="text-xl font-medium text-center">
-	Uploaded {$page.params.apiName} by {data.metadata[0].uploaded_by_name}
+	{$page.params.apiName.toLocaleUpperCase()} : Uploaded by {data.metadata[0].uploaded_by_name}
 </h1>
 
 <div class="auto-fill space-y-2">
