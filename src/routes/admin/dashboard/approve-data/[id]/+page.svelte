@@ -21,9 +21,15 @@
 
 <div class="grid gap-4 px-2">
 	<div class="flex gap-4">
-		<a class="flex gap-4 btn btn-sm btn-dark w-[150px]" href="{base}/admin/dashboard"
-			><ArrowBigLeft /> Go back</a
+		<Button
+			variant="outline"
+			class="w-[150px]"
+			on:click={() => {
+				history.back();
+			}}
 		>
+			<ArrowBigLeft /> Go back
+		</Button>
 		<Button
 			class="w-[200px] ml-auto"
 			on:click={async () => {
