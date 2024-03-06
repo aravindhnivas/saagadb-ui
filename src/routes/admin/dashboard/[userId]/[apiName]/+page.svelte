@@ -8,6 +8,7 @@
 
 	export let data: PageData;
 	const fields = api_fields[$page.params.apiName];
+	// console.log(data.metadata[0]);
 </script>
 
 <Button
@@ -21,7 +22,7 @@
 </Button>
 
 <h1 class="text-xl font-medium text-center">
-	Uploaded {$page.params.apiName}
+	Uploaded {$page.params.apiName} by {data.metadata[0].uploaded_by_name}
 </h1>
 
 <div class="auto-fill space-y-2">

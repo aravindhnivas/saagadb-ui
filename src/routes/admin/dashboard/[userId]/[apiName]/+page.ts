@@ -28,13 +28,17 @@ export const load: PageLoad = async ({ fetch, params, parent }) => {
 		}
 	}
 
-	const res = await fetch(`${base}/api/data/${apiName}?uploaded_by=${userId}`);
-	if (!res.ok) {
-		const reason = await res.json();
-		console.log({ reason });
-		error(400, { message: 'Could not fetch the data', title: 'Internal Server Error' });
-	}
-
-	const data = await res.json();
-	return { metadata: data };
+	const fetch_stuff = async <T>(url: string) => {
+		const res = await fetch(url);
+		if (!res.ok) {
+			const reason = await res.json();
+			console.log({ reason });
+			error(400, { message: 'Could not fetch the data', title: 'Internal Server Error' });
+		}
+		const data = (await res.json()) as T;
+		return data;
+	};
+	type Metadata = { [name: string]: string }[];
+	const metadata = await fetch_stuff<Metadata>(`${base}/api/data/${apiName}?uploaded_by=${userId}`);
+	return { metadata };
 };

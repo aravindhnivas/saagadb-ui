@@ -80,6 +80,7 @@ interface Reference {
 	bibtex: string;
 	notes: string;
 	uploaded_by: string;
+	uploaded_by_name: string;
 	approved: boolean;
 }
 
