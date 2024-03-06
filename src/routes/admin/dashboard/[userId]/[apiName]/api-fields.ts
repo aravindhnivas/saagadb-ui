@@ -2,8 +2,8 @@ export const api_fields = {
 	species: [
 		{ name: 'name', label: 'Name', search_field: true },
 		{ name: 'iupac_name', label: 'IUPAC', search_field: true },
-		{ name: 'name_formula', label: 'Molecular formula', search_field: true }
-		// { name: 'name_html', label: 'HTML' }
+		{ name: 'name_formula', label: 'Molecular formula', search_field: true },
+		{ name: 'name_html', label: 'HTML' }
 	],
 	'species-metadata': [
 		{ name: 'approved', label: 'Approved' },
