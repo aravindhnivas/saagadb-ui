@@ -10,7 +10,7 @@ export const load: PageServerLoad = async ({ fetch, parent }) => {
 	}
 
 	const fetch_all_users = async () => {
-		const parent_data = await parent();
+		// const parent_data = await parent();
 		if (!parent_data.user.is_superuser) return [];
 		const all_users_res = await fetch(`${base}/api/user/fetch`);
 		if (!all_users_res.ok) return [];

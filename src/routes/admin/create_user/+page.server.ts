@@ -1,14 +1,21 @@
 import type { Actions, PageServerLoad } from './$types';
 import { message, setError, superValidate } from 'sveltekit-superforms/server';
-import { fail } from '@sveltejs/kit';
+import { error, fail } from '@sveltejs/kit';
 import { DB_URL } from '$lib/server';
 import userSchema from './schema';
 import { base } from '$app/paths';
 import { z } from 'zod';
 
 export const load: PageServerLoad = async ({ fetch }) => {
-	const fetch_all_staff = await fetch(`${base}/api/user/fetch?is_staff=true`);
-	const all_staff = (await fetch_all_staff.json()) as User[];
+	const all_staff_res = await fetch(`${base}/api/user/fetch?is_staff=true`);
+	if (!all_staff_res.ok) {
+		const reason = await all_staff_res.json();
+
+		// console.log('reason', reason);
+		error(500, { message: reason.error, title: 'Unauthorized' });
+	}
+
+	const all_staff = (await all_staff_res.json()) as User[];
 	const form = await superValidate(userSchema);
 	return { form, all_staff };
 };
