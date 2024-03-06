@@ -1,6 +1,7 @@
 import type { Actions, PageServerLoad } from './$types';
 import { base } from '$app/paths';
 import { error } from '@sveltejs/kit';
+import { DB_URL } from '$lib/server';
 
 const allowed_api = ['species', 'species-metadata', 'reference', 'meta-reference'];
 
@@ -61,12 +62,10 @@ export const actions: Actions = {
 		// 	message: 'test message'
 		// };
 
-		const res = await fetch(`${base}/api/data/${params.apiName}/${id}`, {
+		const res = await fetch(`${DB_URL}/data/${params.apiName}/${id}/`, {
 			method: 'PATCH',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(body)
+			body: JSON.stringify(body),
+			headers: { 'Content-Type': 'application/json' }
 		});
 
 		console.log(res.ok, res.status, res.statusText);
@@ -76,7 +75,7 @@ export const actions: Actions = {
 			console.log({ reason });
 			return {
 				success: false,
-				message: reason
+				message: 'Something went wrong. Internal server error.'
 			};
 		}
 
@@ -84,7 +83,7 @@ export const actions: Actions = {
 		console.log({ data });
 		return {
 			success: true,
-			message: 'Metadata updated successfully'
+			message: `Metadata (id=${data?.id}) updated successfully`
 		};
 	}
 };
