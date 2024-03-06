@@ -5,7 +5,7 @@ import { delete_token } from '$lib/server/cookies';
 
 export const GET: RequestHandler = async ({ url, locals, cookies, fetch }) => {
 	if (!locals.token) {
-		error(401, { message: 'Unauthorized - login access needed' });
+		error(401, { message: 'Unauthorized - login required' });
 	}
 
 	const fetch_url = new URL(url.pathname, DB_ORIGIN);
