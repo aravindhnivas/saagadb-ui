@@ -6,6 +6,8 @@
 	import AlertBox from '$lib/components/utils/alert-box.svelte';
 	import { TabulatorFull as Tabulator } from 'tabulator-tables';
 	import type { OptionsColumns } from 'tabulator-tables';
+	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
 	// import { Edit } from 'lucide-svelte/icons';
 
 	export let data: PageData;
@@ -70,6 +72,15 @@
 					cellClick: (e, cell) => {
 						active_user = cell.getRow().getData() as User;
 						dialog_open = true;
+					}
+				},
+				{
+					title: '',
+					width: 100,
+					formatter: () => 'Uploads',
+					hozAlign: 'center',
+					cellClick: async (e, cell) => {
+						await goto(`${base}/admin/users/${cell.getRow().getData().id}`);
 					}
 				}
 			]
