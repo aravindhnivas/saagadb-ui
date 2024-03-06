@@ -16,9 +16,9 @@
 	{:then value}
 		{#if value}
 			{#if show_header}
-				<a class="flex gap-4 btn btn-sm btn-dark w-[150px]" href="{base}/admin/users"
-					><ArrowBigLeft /> Go back</a
-				>
+				<a class="flex gap-4 btn btn-sm btn-dark w-[150px]" href="{base}/admin/users">
+					<ArrowBigLeft /> Go back
+				</a>
 				<h1 class="text-2xl font-bold">Upload status for {user.name}</h1>
 			{/if}
 			<div class="stats stats-vertical shadow">
