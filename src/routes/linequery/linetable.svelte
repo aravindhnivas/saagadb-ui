@@ -54,14 +54,14 @@
 		{
 			title: 'Rovibrational',
 			field: 'rovibrational',
-			formatter: 'tickCross',
-			headerFilter: 'tickCross'
+			formatter: 'tickCross'
+			// headerFilter: 'tickCross'
 		},
 		{
 			title: 'Hyperfine',
 			field: 'hyperfine',
-			formatter: 'tickCross',
-			headerFilter: 'tickCross'
+			formatter: 'tickCross'
+			// headerFilter: 'tickCross'
 		},
 		{
 			title: 'Quantum Number ',
