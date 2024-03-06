@@ -8,11 +8,14 @@ export const load: PageLoad = async ({ fetch, params, parent }) => {
 	const { userId, apiName } = params;
 
 	if (Number.isNaN(parseInt(userId))) {
-		error(400, { message: 'Invalid User ID', title: 'Invalid User ID' });
+		error(400, {
+			message: `'${userId}' is not a valid user id. Please provide a valid user id in the URL`,
+			title: 'Invalid User ID'
+		});
 	}
 
 	if (!allowed_api.includes(apiName)) {
-		error(404, { message: 'Not Found', title: 'Invalid API' });
+		error(404, { message: `'${apiName}' is not a valid API name`, title: 'Invalid API' });
 	}
 
 	const parent_data = await parent();
