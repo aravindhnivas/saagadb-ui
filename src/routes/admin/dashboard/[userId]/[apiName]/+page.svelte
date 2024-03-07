@@ -83,20 +83,22 @@
 		{/each}
 	</RadioGroup.Root>
 
-	<form
-		use:enhance={() => {
-			return async ({ update }) => {
-				update({ reset: false });
-			};
-		}}
-		method="POST"
-	>
-		<div class="auto-fill">
-			{#each filtered_data as metadata}
-				<BoxContent {metadata} />
-			{/each}
-		</div>
-	</form>
+	{#key form}
+		<form
+			use:enhance={() => {
+				return async ({ update }) => {
+					update({ reset: false });
+				};
+			}}
+			method="POST"
+		>
+			<div class="auto-fill">
+				{#each filtered_data as metadata}
+					<BoxContent {metadata} />
+				{/each}
+			</div>
+		</form>
+	{/key}
 </div>
 
 <style>
