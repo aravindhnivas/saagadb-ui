@@ -51,7 +51,15 @@
 			{:else}
 				<div>{@html label}</div>
 				{#if disabled}
-					<div class="col-span-3">{metadata[name] ?? '-'}</div>
+					<div class="col-span-3">
+						{#if typeof metadata[name] === 'string' && metadata[name].startsWith('http')}
+							<a href={metadata[name]} target="_blank" rel="noopener noreferrer">
+								{metadata[name]}
+							</a>
+						{:else}
+							{metadata[name] ?? '-'}
+						{/if}
+					</div>
 				{:else if typeof metadata[name] === 'boolean'}
 					<FormCheckbox label="" {disabled} {name} checked={metadata[name]} />
 				{:else}
