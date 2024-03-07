@@ -2,7 +2,8 @@ import { base } from '$app/paths';
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 
-export const load: PageLoad = async ({ fetch, depends, params }) => {
+export const load: PageLoad = async ({ fetch, depends, params, parent }) => {
+	const { user: parent_user } = await parent();
 	const fetch_upload_count = async (user: User) => {
 		depends('fetch:upload_count_from_id');
 		const res = await fetch(`${base}/api/data/data_length/${user.id}`);
@@ -31,6 +32,7 @@ export const load: PageLoad = async ({ fetch, depends, params }) => {
 
 	return {
 		fetch_upload_count,
-		user: await fetch_user()
+		user: await fetch_user(),
+		allow_edit: parent_user.is_superuser
 	};
 };

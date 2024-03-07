@@ -6,6 +6,7 @@
 	import { page } from '$app/stores';
 	import { Button } from '$lib/components/ui/button';
 	import FormCheckbox from '$lib/components/forms/form-checkbox.svelte';
+
 	export let metadata: {
 		[name: string]: string;
 	};

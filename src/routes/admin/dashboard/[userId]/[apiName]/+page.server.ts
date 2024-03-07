@@ -19,14 +19,22 @@ export const load: PageServerLoad = async ({ fetch, params, parent }) => {
 		error(404, { message: `'${apiName}' is not a valid API name`, title: 'Invalid API' });
 	}
 
-	const parent_data = await parent();
-	if (parent_data.user.id !== Number(userId)) {
-		if (!parent_data.user.is_superuser) {
+	const { user: parent_user } = await parent();
+
+	if (parent_user.id !== Number(userId)) {
+		if (!parent_user.is_superuser) {
 			error(403, {
 				title: 'Unauthorized',
-				message: 'You do not have permission to access this user data'
+				message: 'You do not have permission to edit data of other users'
 			});
 		}
+	}
+
+	if (!(parent_user.is_staff || parent_user.is_superuser)) {
+		error(403, {
+			title: 'Unauthorized',
+			message: 'You do not have permission to edit data.'
+		});
 	}
 
 	const fetch_stuff = async <T>(url: string) => {

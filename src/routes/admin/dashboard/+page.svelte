@@ -11,10 +11,11 @@
 	import { invalidate } from '$app/navigation';
 	import { Button } from '$lib/components/ui/button';
 	import { toast } from 'svelte-sonner';
-	import { writable, sessionWritable } from '@macfja/svelte-persistent-store';
+	import { sessionWritable } from '@macfja/svelte-persistent-store';
 
 	export let data: PageData;
-	setContext('approve_btn', false);
+	// setContext('approve_btn', false);
+	setContext('allow_edit', data.user.is_staff || data.user.is_superuser);
 	$: if (data.user?.name) logged_in.set(data.user.name);
 	const active_tab = sessionWritable('dashboard-active-tab', 'upload-statistics');
 </script>
