@@ -5,7 +5,7 @@
 	import { api_fields } from './api-fields';
 	import { page } from '$app/stores';
 	import { Button } from '$lib/components/ui/button';
-
+	import FormCheckbox from '$lib/components/forms/form-checkbox.svelte';
 	export let metadata: {
 		[name: string]: string;
 	};
@@ -52,8 +52,10 @@
 				<div>{@html label}</div>
 				{#if disabled}
 					<div class="col-span-3">{metadata[name] ?? '-'}</div>
+				{:else if typeof metadata[name] === 'boolean'}
+					<FormCheckbox label="" {disabled} {name} checked={metadata[name]} />
 				{:else}
-					<Input type="text" bind:value={metadata[name]} class="h-7 col-span-3" {name} />
+					<Input type="text" value={metadata[name]} class="h-7 col-span-3" {name} />
 				{/if}
 			{/if}
 		</div>
