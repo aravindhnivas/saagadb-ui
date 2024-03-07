@@ -8,6 +8,8 @@
 	import BoxContent from './box-content.svelte';
 	import { enhance } from '$app/forms';
 	import { toast } from 'svelte-sonner';
+	import * as RadioGroup from '$lib/components/ui/radio-group';
+	import { Label } from '$lib/components/ui/label';
 
 	export let data: PageData;
 	export let form: ActionData;
@@ -17,19 +19,42 @@
 
 	let searchKey = '';
 
-	$: filtered_data = data.metadata.filter((f) => {
-		if (searchKey === '') return true;
-		const val = search_fields
-			.map((key) => {
-				if (typeof f[key] === 'object') return JSON.stringify(f[key]).toLowerCase();
-				return f[key].toLowerCase();
-			})
-			.join(' ');
-		return val.includes(searchKey.toLowerCase());
-	});
+	$: filtered_data = data.metadata
+		.filter((f) => {
+			if (searchKey === '') return true;
+			const val = search_fields
+				.map((key) => {
+					if (typeof f[key] === 'object') return JSON.stringify(f[key]).toLowerCase();
+					return f[key].toLowerCase();
+				})
+				.join(' ');
+			return val.includes(searchKey.toLowerCase());
+		})
+		.filter((f) => {
+			if (approved_status === 'all') return true;
+			if (approved_status === 'approved') return f.approved;
+			if (approved_status === 'not-approved') return !f.approved;
+		});
 
 	$: if (form && form.success) toast.success(form.message);
 	$: if (form && !form.success) toast.error(form.message);
+
+	let approved_status = 'all';
+	// $: console.log(approved_status);
+	const approved_radio = [
+		{
+			value: 'all',
+			label: 'All'
+		},
+		{
+			value: 'approved',
+			label: 'Approved'
+		},
+		{
+			value: 'not-approved',
+			label: 'NOT approved'
+		}
+	];
 </script>
 
 <Button
@@ -48,6 +73,15 @@
 	</h1>
 
 	<SearchInput bind:searchKey />
+
+	<RadioGroup.Root class="grid-cols-3 w-max" bind:value={approved_status}>
+		{#each approved_radio as { label, value }}
+			<div class="flex items-center space-x-2">
+				<RadioGroup.Item {value} id={value} />
+				<Label for={value}>{label}</Label>
+			</div>
+		{/each}
+	</RadioGroup.Root>
 
 	<form
 		use:enhance={() => {

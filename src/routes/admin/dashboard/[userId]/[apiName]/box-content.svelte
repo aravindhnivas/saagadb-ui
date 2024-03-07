@@ -5,7 +5,6 @@
 	import { api_fields } from './api-fields';
 	import { page } from '$app/stores';
 	import { Button } from '$lib/components/ui/button';
-	import { enhance } from '$app/forms';
 
 	export let metadata: {
 		[name: string]: string;
@@ -15,7 +14,7 @@
 	let disabled = true;
 </script>
 
-<div class="grid border-solid border-2 p-5">
+<div class="grid border-solid border-2 p-5 gap-1">
 	<div class="flex gap-4 items-center w-full my-2">
 		<button
 			class="w-max"

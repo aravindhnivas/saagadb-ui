@@ -1,5 +1,6 @@
 export const api_fields = {
 	species: [
+		{ name: 'approved', label: 'Approved' },
 		{ name: 'name', label: 'Name', search_field: true },
 		{ name: 'iupac_name', label: 'IUPAC', search_field: true },
 		{ name: 'name_formula', label: 'Molecular formula', search_field: true },
@@ -18,6 +19,7 @@ export const api_fields = {
 		{ name: 'c_const', label: 'C / MHz' }
 	],
 	reference: [
+		{ name: 'approved', label: 'Approved' },
 		{ name: 'doi', label: 'DOI', search_field: true },
 		{ name: 'ref_url', label: 'Reference URL' }
 	],
