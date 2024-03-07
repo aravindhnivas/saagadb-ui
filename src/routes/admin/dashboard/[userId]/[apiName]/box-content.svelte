@@ -58,6 +58,8 @@
 				{/if}
 			{/if}
 		</div>
-		<Separator />
+		{#if disabled}
+			<Separator />
+		{/if}
 	{/each}
 </div>
