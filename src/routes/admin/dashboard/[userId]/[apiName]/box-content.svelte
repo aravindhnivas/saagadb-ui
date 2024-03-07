@@ -40,21 +40,21 @@
 	</div>
 
 	{#each fields as { name, label }}
-		<div class="grid grid-cols-2 items-center">
+		<div class="grid grid-cols-4 items-center">
 			{#if name === 'approved'}
 				{#if metadata[name]}
 					<div class="text-green-700"><CheckCheck /></div>
-					<div class="text-green-700">APPROVED</div>
+					<div class="col-span-3 text-green-700">APPROVED</div>
 				{:else}
 					<div class="text-red"><AlertTriangle /></div>
-					<div class="text-red">PENDING APPROVAL</div>
+					<div class="col-span-3 text-red">PENDING APPROVAL</div>
 				{/if}
 			{:else}
 				<div>{@html label}</div>
 				{#if disabled}
-					<div>{metadata[name] ?? '-'}</div>
+					<div class="col-span-3">{metadata[name] ?? '-'}</div>
 				{:else}
-					<Input type="text" bind:value={metadata[name]} class="h-7" {name} />
+					<Input type="text" bind:value={metadata[name]} class="h-7 col-span-3" {name} />
 				{/if}
 			{/if}
 		</div>
