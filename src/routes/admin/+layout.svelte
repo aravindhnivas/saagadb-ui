@@ -33,7 +33,7 @@
 		{
 			id: uuidv4(),
 			name: 'Database name',
-			href: base + '/admin/database_name',
+			href: base + '/admin/database_name/linelist',
 			requires_verified_user: true,
 			requires_admin_user: true
 		},
