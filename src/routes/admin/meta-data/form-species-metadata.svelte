@@ -17,6 +17,7 @@
 	const linelist = getContext('linelist') as Linelist[];
 
 	const category = [
+		'',
 		'atom',
 		'diatomic',
 		'linear',
@@ -114,13 +115,14 @@
 			</Form.Item>
 		</Form.Field>
 
-		<Form.Field {config} name="category" let:setValue>
+		<Form.Field {config} name="category" let:setValue let:value>
 			<Form.Item class="flex flex-col">
 				<Form.Label>category</Form.Label>
 				<Svelecte
 					searchable={true}
 					virtualList={false}
 					options={category}
+					{value}
 					on:change={(e) => {
 						const value = e.detail?.value;
 						setValue(value);
@@ -143,7 +145,7 @@
 			<Form.Item>
 				<Form.Label>hyperfine</Form.Label>
 				<div class="w-full">
-					<Form.Checkbox checked="indeterminate" {...constraints} {...attrs} />
+					<Form.Checkbox checked={value} {...constraints} {...attrs} />
 					<span>{value}</span>
 				</div>
 				<Form.Validation />

@@ -41,8 +41,8 @@ export const actions: Actions = {
 		console.log('formData', { formData, metaid });
 
 		const form = await superValidate(formData, Schemas[metaid]);
-		console.log('posting', form.data);
-
+		// console.log('posting', form.data);
+		// return { form };
 		// Convenient validation check:
 		if (!form.valid) {
 			// Again, return { form } and things will just work.
