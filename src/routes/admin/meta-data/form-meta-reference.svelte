@@ -5,10 +5,14 @@
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import * as Form from '$lib/components/ui/form';
 	import FetchRefId from './fetch-ref-id.svelte';
+
 	export let form: SuperValidated<(typeof Schemas)['meta-reference']>;
 
 	const value = 'meta-reference';
 	const schema = Schemas[value];
+
+	let default_checked_val = false;
+	// $: console.log(form);
 </script>
 
 <FormTabContents
@@ -47,7 +51,7 @@
 			<div class="space-y-1 leading-none">
 				<Form.Label>Dipole moment</Form.Label>
 			</div>
-			<Form.Checkbox checked={false} />
+			<Form.Checkbox checked={form.data.dipole_moment} />
 			<Form.Validation />
 		</Form.Item>
 	</Form.Field>
@@ -57,7 +61,7 @@
 			<div class="space-y-1 leading-none">
 				<Form.Label>Spectrum</Form.Label>
 			</div>
-			<Form.Checkbox checked={false} />
+			<Form.Checkbox checked={form.data.spectrum} />
 			<Form.Validation />
 		</Form.Item>
 	</Form.Field>
