@@ -46,22 +46,22 @@
 		</Form.Item>
 	</Form.Field>
 
-	<Form.Field {config} name="dipole_moment">
+	<Form.Field {config} name="dipole_moment" let:value>
 		<Form.Item class="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
 			<div class="space-y-1 leading-none">
 				<Form.Label>Dipole moment</Form.Label>
 			</div>
-			<Form.Checkbox checked={form.data.dipole_moment} />
+			<Form.Checkbox checked={value} />
 			<Form.Validation />
 		</Form.Item>
 	</Form.Field>
 
-	<Form.Field {config} name="spectrum">
+	<Form.Field {config} name="spectrum" let:value>
 		<Form.Item class="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
 			<div class="space-y-1 leading-none">
 				<Form.Label>Spectrum</Form.Label>
 			</div>
-			<Form.Checkbox checked={form.data.spectrum} />
+			<Form.Checkbox checked={value} />
 			<Form.Validation />
 		</Form.Item>
 	</Form.Field>
