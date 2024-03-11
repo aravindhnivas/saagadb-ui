@@ -8,7 +8,6 @@
 	import { AlertTriangle } from 'lucide-svelte';
 
 	export let id: string | number;
-	console.log('id', id);
 	let delete_reason = '';
 	const api_key = getContext('api_key') as string;
 </script>
