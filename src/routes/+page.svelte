@@ -22,6 +22,5 @@
 				<ArrowRightCircle />
 			</a>
 		</Button>
-		<!-- </div> -->
 	</div>
 </div>
