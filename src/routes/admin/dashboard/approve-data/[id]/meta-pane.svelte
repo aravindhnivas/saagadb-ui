@@ -69,6 +69,7 @@
 	.r-pane,
 	.l-pane {
 		overflow: auto;
-		height: 500px;
+		min-height: 500px;
+		max-height: calc(100vh - 100px);
 	}
 </style>
