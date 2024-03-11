@@ -11,6 +11,6 @@
 <div class="flex items-center gap-4">
 	<Label for={name}>{label}</Label>
 	<Checkbox {disabled} bind:checked />
-	<span>{checked}</span>
+	<span class:text-gray-400={disabled}>{checked}</span>
 	<input hidden {name} value={checked} />
 </div>

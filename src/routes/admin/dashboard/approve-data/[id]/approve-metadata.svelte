@@ -13,6 +13,7 @@
 	import { base } from '$app/paths';
 	import { toast } from 'svelte-sonner';
 	import { fileInputs } from '$lib/schemas/metadata';
+	import FormCheckbox from '$lib/components/forms/form-checkbox.svelte';
 
 	export let obj: SpeciesMetadata | MetaReference;
 
@@ -105,6 +106,8 @@
 				</div>
 				{#if name === 'notes'}
 					<Textarea {disabled} bind:value={obj[name]} {name} />
+				{:else if typeof obj[name] === 'boolean'}
+					<FormCheckbox bind:checked={obj[name]} {disabled} {name} label="" />
 				{:else}
 					<Input {disabled} bind:value={obj[name]} {name} />
 				{/if}
@@ -117,15 +120,6 @@
 							</a>
 						{/if}
 					</Description>
-				{/if}
-
-				{#if typeof obj[name] === 'boolean'}
-					{#if !disabled}
-						<div class="flex gap-2 items-center">
-							<input type="checkbox" bind:checked={obj[name]} class="checkbox" />
-							<Description>use this checkbox to change value</Description>
-						</div>
-					{/if}
 				{/if}
 			</div>
 		{/each}

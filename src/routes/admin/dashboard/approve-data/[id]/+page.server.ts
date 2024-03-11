@@ -7,14 +7,16 @@ const parse_failed_response = async (res: Response) => {
 	const content_type = res.headers.get('content-type');
 	if (content_type && content_type.includes('application/json')) {
 		const text = (await res.json()) as {
-			code: string;
-			message: string;
-			error: {
+			code?: string;
+			message?: string;
+			error?: {
 				type: string;
 				message: string;
 			};
+			non_field_errors?: string[];
 		};
-		console.log({ text });
+		// console.log({ text });
+		if (text.non_field_errors) return { success: false, message: text.non_field_errors[0] };
 		return { success: false, message: text.error?.message || text.message };
 	}
 	let text = await res.text();
@@ -91,6 +93,11 @@ export const actions: Actions = {
 		const post_url = `${DB_URL}/data/${api_key}/${id}/`;
 
 		// console.log('formData', Object.fromEntries(formData.entries()));
+
+		// return {
+		// 	success: false,
+		// 	message: 'test message'
+		// };
 
 		const formBody = new FormData();
 
