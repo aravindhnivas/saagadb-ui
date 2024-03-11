@@ -33,10 +33,10 @@
 	<Card.Root>
 		<Card.Header>
 			<Card.Title>Create new user</Card.Title>
-			<Card.Description
-				>Please verify email address before submitting the form.
-				<br />
+			<Card.Description>
 				An email will be sent to the user with a link to verify their email address.
+				<br />
+				Please verify the email link to start uploading items to database.
 			</Card.Description>
 		</Card.Header>
 		<Card.Content>
