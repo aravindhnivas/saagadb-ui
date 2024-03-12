@@ -5,7 +5,7 @@
 	import Svelecte from 'svelecte';
 	import Label from '$lib/components/ui/label/label.svelte';
 	import SearchInput from '$lib/components/custom-input/search-input.svelte';
-	import Checkbox from '$lib/components/ui/checkbox/checkbox.svelte';
+	// import Checkbox from '$lib/components/ui/checkbox/checkbox.svelte';
 	import { Separator } from '$lib/components/ui/separator';
 
 	export let species: Species[] = [];
@@ -32,18 +32,9 @@
 	});
 
 	let filter_keys = ['name', 'name_formula', 'iupac_name'] as const;
-	let my_uploads = false;
-	// console.log('species', species[0]);
-	// console.log('user', user);
 </script>
 
 <div class="flex flex-col gap-4 mb-2">
-	{#if user}
-		<div class="flex gap-2 items-center">
-			<Checkbox bind:checked={my_uploads} />
-			<Label>My uploads only</Label>
-		</div>
-	{/if}
 	<Label>Search in</Label>
 	<Svelecte
 		searchable={false}
@@ -58,12 +49,11 @@
 	<div style="position: relative; height: {$virtualizer.getTotalSize()}px; width: 100%;">
 		{#each $virtualizer.getVirtualItems() as row (row.index)}
 			{@const sp = filteredSpecies[row.index]}
-			{#if sp && user ? (my_uploads ? sp.uploaded_by === user.id : true) : true}
-				{@const active = Number($page.params.id) === sp.id}
+			{#if sp}
+				{@const active = Number($page.params?.id) === sp?.id}
 				<div
 					style="position: absolute; top: 0; left: 0; width: 100%; height: {row.size}px; transform: translateY({row.start}px);"
 				>
-					<!-- <a class="w-full {active ? 'border-black border-b-2' : ''} " href="{base}/species/{sp.id}" -->
 					<a class="w-full {active ? 'text-blue-500' : ''} " href="{base}/species/{sp.id}"
 						>{#if sp.name_html}
 							{@html sp.name_html}
