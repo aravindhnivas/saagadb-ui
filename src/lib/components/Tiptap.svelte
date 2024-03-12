@@ -28,7 +28,7 @@
 </script>
 
 {#if editor}
-	<div class="flex gap-2 items-center h-10">
+	<div class="flex gap-2 items-center h-10 editor__toolbar">
 		<button
 			class:is-active={editor.isActive('bold')}
 			on:click|preventDefault={() => editor.chain().focus().toggleBold().run()}
@@ -78,7 +78,17 @@
 
 <div bind:this={element} />
 
-<style>
+<style lang="scss">
+	.editor__toolbar {
+		button {
+			width: 25px;
+		}
+		button:hover {
+			background-color: #f2f2f2;
+			border-radius: 5px;
+			border: solid 1px black;
+		}
+	}
 	.is-active {
 		background-color: #f2f2f2;
 		border-radius: 5px;
