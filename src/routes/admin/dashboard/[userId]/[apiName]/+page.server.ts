@@ -90,6 +90,7 @@ export const actions: Actions = {
 		const data = await res.json();
 		console.log({ data });
 		return {
+			posted: data,
 			success: true,
 			message: `Metadata (id=${data?.id}) updated successfully`
 		};

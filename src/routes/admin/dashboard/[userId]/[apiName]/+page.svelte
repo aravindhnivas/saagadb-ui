@@ -6,13 +6,10 @@
 	import { page } from '$app/stores';
 	import SearchInput from '$lib/components/custom-input/search-input.svelte';
 	import BoxContent from './box-content.svelte';
-	import { enhance } from '$app/forms';
-	import { toast } from 'svelte-sonner';
 	import * as RadioGroup from '$lib/components/ui/radio-group';
 	import { Label } from '$lib/components/ui/label';
 
 	export let data: PageData;
-	export let form: ActionData;
 
 	const fields = api_fields[$page.params.apiName];
 	const search_fields = fields.filter((field) => field.search_field).map((f) => f.name);
@@ -36,11 +33,7 @@
 			if (approved_status === 'not-approved') return !f.approved;
 		});
 
-	$: if (form && form.success) toast.success(form.message);
-	$: if (form && !form.success) toast.error(form.message);
-
 	let approved_status = 'all';
-	// $: console.log(approved_status);
 	const approved_radio = [
 		{
 			value: 'all',
@@ -83,22 +76,11 @@
 		{/each}
 	</RadioGroup.Root>
 
-	{#key form}
-		<form
-			use:enhance={() => {
-				return async ({ update }) => {
-					update({ reset: false });
-				};
-			}}
-			method="POST"
-		>
-			<div class="auto-fill">
-				{#each filtered_data as metadata}
-					<BoxContent {metadata} />
-				{/each}
-			</div>
-		</form>
-	{/key}
+	<div class="auto-fill">
+		{#each filtered_data as metadata (metadata.id)}
+			<BoxContent {metadata} />
+		{/each}
+	</div>
 </div>
 
 <style>
