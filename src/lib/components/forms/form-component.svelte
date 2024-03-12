@@ -20,7 +20,7 @@
 	const dispatch = createEventDispatcher();
 	let error_message = '';
 	const options: FormOptions<AnyZodObject> = {
-		// resetForm: true,
+		resetForm: true,
 		onResult: ({ result }) => {
 			console.log(result);
 			if (result.type === 'success') {

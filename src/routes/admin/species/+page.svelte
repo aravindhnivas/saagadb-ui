@@ -7,6 +7,7 @@
 	import AutoFillInchi from './auto-fill-inchi.svelte';
 	import AutoFillName from '../auto-fill-name.svelte';
 	import NameHtml from './name-html.svelte';
+	import FormField from '$lib/components/forms/form-field.svelte';
 
 	export let data: PageData;
 </script>
@@ -48,33 +49,13 @@
 				}}
 			/>
 
-			<Form.Field {config} name="name">
-				<Form.Item>
-					<Form.Label>name</Form.Label>
-					<Form.Input required />
-					<Form.Validation />
-					<Form.Description>Enter comma separated name(s)</Form.Description>
-				</Form.Item>
-			</Form.Field>
-
-			<Form.Field {config} name="iupac_name">
-				<Form.Item>
-					<Form.Label>iupac_name</Form.Label>
-					<Form.Input required />
-					<Form.Validation />
-					<Form.Description
-						>Unique IUPAC name. Tips: enter conformer type, vibrational states within parenthesis</Form.Description
-					>
-				</Form.Item>
-			</Form.Field>
-
-			<Form.Field {config} name="name_formula">
-				<Form.Item>
-					<Form.Label>name_formula</Form.Label>
-					<Form.Input required />
-					<Form.Validation />
-				</Form.Item>
-			</Form.Field>
+			<FormField {config} name="name" description="Enter comma separated name(s)" />
+			<FormField
+				{config}
+				name="iupac_name"
+				description="Unique IUPAC name. Tips: enter conformer type, vibrational states within parenthesis"
+			/>
+			<FormField {config} name="name_formula" />
 
 			<Form.Field {config} name="name_html">
 				<Form.Item>
@@ -100,30 +81,13 @@
 				</Form.Item>
 			</Form.Field>
 
-			<Form.Field {config} name="standard_inchi">
-				<Form.Item>
-					<Form.Label>InChI</Form.Label>
-					<Form.Input required />
-					<Form.Validation />
-				</Form.Item>
-			</Form.Field>
-
-			<Form.Field {config} name="standard_inchi_key">
-				<Form.Item>
-					<Form.Label>InChI Key</Form.Label>
-					<Form.Input required />
-					<Form.Validation />
-				</Form.Item>
-			</Form.Field>
-
-			<Form.Field {config} name="notes">
-				<Form.Item>
-					<Form.Label>notes</Form.Label>
-					<Form.Textarea />
-					<Form.Validation />
-					<Form.Description>Enter any notes. Tips: enter electronic state.</Form.Description>
-				</Form.Item>
-			</Form.Field>
+			<FormField {config} name="standard_inchi" label="InChI" />
+			<FormField {config} name="standard_inchi_key" label="InChI Key" />
+			<FormField
+				{config}
+				name="notes"
+				description="Enter any notes. Tips: enter electronic state."
+			/>
 		</Card.Content>
 		<Card.Footer class="flex gap-4 justify-center">
 			<Form.Button class="w-[150px] flex gap-4" disabled={submitting}>
