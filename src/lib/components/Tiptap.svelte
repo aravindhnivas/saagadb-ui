@@ -28,9 +28,9 @@
 </script>
 
 {#if editor}
-	<div class="flex gap-2 items-center">
+	<div class="flex gap-2 items-center h-10">
 		<button
-			class="{editor.isActive('bold') ? 'is-active' : ''} "
+			class:is-active={editor.isActive('bold')}
 			on:click|preventDefault={() => editor.chain().focus().toggleBold().run()}
 			disabled={!editor.can().chain().focus().toggleBold().run()}
 		>
@@ -38,7 +38,7 @@
 		</button>
 
 		<button
-			class={editor.isActive('italic') ? 'is-active' : ''}
+			class:is-active={editor.isActive('italic')}
 			on:click|preventDefault={() => editor.chain().focus().toggleItalic().run()}
 			disabled={!editor.can().chain().focus().toggleItalic().run()}
 		>
@@ -46,7 +46,7 @@
 		</button>
 
 		<button
-			class={editor.isActive('superscript') ? 'is-active' : ''}
+			class:is-active={editor.isActive('superscript')}
 			on:click|preventDefault={() => editor.chain().focus().toggleSuperscript().run()}
 			disabled={!editor.can().chain().focus().toggleSuperscript().run()}
 		>
@@ -54,7 +54,7 @@
 		</button>
 
 		<button
-			class={editor.isActive('subscript') ? 'is-active' : ''}
+			class:is-active={editor.isActive('subscript')}
 			on:click|preventDefault={() => editor.chain().focus().toggleSubscript().run()}
 			disabled={!editor.can().chain().focus().toggleSubscript().run()}
 		>
@@ -77,3 +77,11 @@
 {/if}
 
 <div bind:this={element} />
+
+<style>
+	.is-active {
+		background-color: #f2f2f2;
+		border-radius: 5px;
+		border: solid 1px black;
+	}
+</style>
