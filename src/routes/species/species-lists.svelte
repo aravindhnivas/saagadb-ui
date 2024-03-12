@@ -22,7 +22,7 @@
 	});
 	let searchKey = '';
 	$: filteredSpecies = species.filter((sp) => {
-		if (searchKey === '') return true;
+		if (searchKey === '' || filter_keys.length === 0) return true;
 		let val: string = '';
 		filter_keys.forEach((key) => {
 			if (key === 'name') val += ' ' + sp.name.join(' ');
@@ -31,7 +31,7 @@
 		return val.trim().includes(searchKey.toLowerCase());
 	});
 
-	let filter_keys = ['name', 'name_formula', 'iupac_name'] as const;
+	let filter_keys = ['name', 'name_formula', 'iupac_name'];
 </script>
 
 <div class="flex flex-col gap-4 mb-2">
