@@ -50,7 +50,7 @@
 		<Table.Row>
 			<Table.Cell class={cell_padding}>Ref. Notes</Table.Cell>
 			{#each references as ref}
-				<Table.Cell class="text-center {cell_padding}">{ref.notes ?? '-'}</Table.Cell>
+				<Table.Cell class="text-center {cell_padding}">{@html ref.notes ?? '-'}</Table.Cell>
 			{/each}
 		</Table.Row>
 
@@ -73,7 +73,7 @@
 		<Table.Row>
 			<Table.Cell class={cell_padding}>Notes</Table.Cell>
 			{#each meta_references as metaref (metaref.id)}
-				<Table.Cell class="text-center {cell_padding}">{metaref.notes ?? '-'}</Table.Cell>
+				<Table.Cell class="text-center {cell_padding}">{@html metaref.notes ?? '-'}</Table.Cell>
 			{/each}
 		</Table.Row>
 	</Table.Body>

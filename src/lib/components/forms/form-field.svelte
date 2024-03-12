@@ -1,5 +1,6 @@
 <script lang="ts">
 	import * as Form from '$lib/components/ui/form';
+	import Tiptap from '../Tiptap.svelte';
 
 	export let config: any;
 	export let name: string;
@@ -9,7 +10,7 @@
 	export let checkbox = false;
 </script>
 
-<Form.Field {config} {name} let:constraints let:attrs>
+<Form.Field {config} {name} let:constraints let:attrs let:setValue>
 	{#if checkbox}
 		<Form.Item class="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
 			<div class="space-y-1 leading-none">
@@ -20,10 +21,16 @@
 		</Form.Item>
 	{:else}
 		<Form.Item>
-			<Form.Label {...attrs.label}>{@html label || name}</Form.Label>
 			{#if textarea}
-				<Form.Textarea {...constraints} {...attrs.input} />
+				<!-- <div class="flex items-center gap-2 justify-between">
+					<Form.Label {...attrs.label}>{@html label || name}</Form.Label>
+					<NotesEditor />
+				</div> -->
+				<Form.Label {...attrs.label}>{@html label || name}</Form.Label>
+				<Form.Textarea hidden {...constraints} {...attrs.input} />
+				<Tiptap {setValue} />
 			{:else}
+				<Form.Label {...attrs.label}>{@html label || name}</Form.Label>
 				<Form.Input {...constraints} {...attrs.input} on:keyup />
 			{/if}
 			<Form.Validation {...attrs.validation} />
