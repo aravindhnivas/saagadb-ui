@@ -82,16 +82,12 @@
 	.editor__toolbar {
 		button {
 			width: 25px;
+			&.is-active,
+			&:hover {
+				background-color: #f2f2f2;
+				border-radius: 5px;
+				border: solid 1px black;
+			}
 		}
-		button:hover {
-			background-color: #f2f2f2;
-			border-radius: 5px;
-			border: solid 1px black;
-		}
-	}
-	.is-active {
-		background-color: #f2f2f2;
-		border-radius: 5px;
-		border: solid 1px black;
 	}
 </style>
