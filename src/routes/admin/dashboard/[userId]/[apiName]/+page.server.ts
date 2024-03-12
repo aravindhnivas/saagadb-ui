@@ -63,7 +63,7 @@ export const actions: Actions = {
 			body['name'] = body['name'].split(',').map((name: string) => name.trim());
 		}
 
-		console.log({ id, body });
+		// console.log({ id, body });
 
 		// return {
 		// 	success: false,
@@ -76,7 +76,7 @@ export const actions: Actions = {
 			headers: { 'Content-Type': 'application/json' }
 		});
 
-		console.log(res.ok, res.status, res.statusText);
+		// console.log(res.ok, res.status, res.statusText);
 
 		if (!res.ok) {
 			const reason = await res.text();
@@ -88,7 +88,7 @@ export const actions: Actions = {
 		}
 
 		const data = await res.json();
-		console.log({ data });
+		// console.log({ data });
 		return {
 			posted: data,
 			success: true,
