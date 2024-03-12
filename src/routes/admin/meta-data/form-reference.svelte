@@ -5,13 +5,15 @@
 	import * as Form from '$lib/components/ui/form';
 	import { Button } from '$lib/components/ui/button';
 	import fetch_bibfile from '$lib/utils/bibfile';
-	import { get } from 'svelte/store';
+	// import { get } from 'svelte/store';
 	import { toast } from 'svelte-sonner';
 	import { Label } from '$lib/components/ui/label';
 	import { Input } from '$lib/components/ui/input';
 	import AlertBox from '$lib/components/utils/alert-box.svelte';
-	import { tick } from 'svelte';
+	// import { tick } from 'svelte';
 	import { oO } from '@zmotivat0r/o0';
+	import FormField from '$lib/components/forms/form-field.svelte';
+	import Loader from '$lib/components/utils/loader.svelte';
 	export let form: SuperValidated<(typeof Schemas)['reference']>;
 
 	const value = 'reference';
@@ -31,13 +33,7 @@
 	title="Reference"
 	description="Please enter the details of the reference. DOI is required to auto-fill the form. If you have the bibtex file, you can upload it."
 >
-	<Form.Field {config} name="doi">
-		<Form.Item>
-			<Form.Label>doi</Form.Label>
-			<Form.Input />
-			<Form.Validation />
-		</Form.Item>
-	</Form.Field>
+	<FormField {config} name="doi" />
 
 	<Button
 		class="h-8"
@@ -65,35 +61,15 @@
 			}
 		}}>Auto-fill from DOI</Button
 	>
-
-	{#if fetching}
-		<div class="flex gap-2 items-center h-10">
-			<span class="loading loading-spinner"></span>
-			<span>Fetching...</span>
-		</div>
-	{/if}
-
-	<Form.Field {config} name="ref_url">
-		<Form.Item>
-			<Form.Label>ref_url</Form.Label>
-			<Form.Input required />
-			<Form.Validation />
-		</Form.Item>
-	</Form.Field>
-
-	<Form.Field {config} name="notes">
-		<Form.Item>
-			<Form.Label>notes</Form.Label>
-			<Form.Textarea />
-			<Form.Validation />
-		</Form.Item>
-	</Form.Field>
+	<Loader {fetching} />
+	<FormField {config} name="ref_url" />
+	<FormField {config} name="notes" textarea />
 
 	<div class="flex gap-4 w-full items-baseline">
-		<Form.Field {config} name="bibtex">
+		<Form.Field {config} name="bibtex" let:constraints let:attrs>
 			<Form.Item class="basis-3/4">
 				<Form.Label>bibtex</Form.Label>
-				<Form.Textarea required />
+				<Form.Textarea {...constraints} {...attrs.input} />
 				<Form.Validation />
 			</Form.Item>
 		</Form.Field>

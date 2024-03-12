@@ -84,11 +84,10 @@
 						<NameHtml />
 					</div>
 					<Form.Validation />
-					<Form.Description
-						>Enter symbols in sup or sub tags i.e., {'<sup> + </sup>'} for superscript H<sup>+</sup
-						>and {'<sub> 2 </sub>'}
-						for subscripts H<sub>2</sub>O</Form.Description
-					>
+					<Form.Description>
+						Enter symbols in sup or sub tags i.e., {'<sup>+</sup>'} for superscript H<sup>+</sup>and {'<sub>2</sub>'}
+						for subscripts H<sub>2</sub>O, and {'<i>c</i>-C<sub>3</sub>H<sup>+</sup>'} for {@html '<i>c</i>-C<sub>3</sub>H<sup>+</sup>'}
+					</Form.Description>
 				</Form.Item>
 			</Form.Field>
 

@@ -40,7 +40,7 @@
 
 	const fields = api_fields[$page.params.apiName];
 	let disabled = true;
-	console.log('mounted');
+	// console.log('mounted');
 </script>
 
 <form id="{metadata.id}-form" use:enhance={onSubmit} method="POST">
@@ -76,7 +76,7 @@
 		</div>
 
 		{#each fields as { name, label }}
-			<div class="grid grid-cols-4 items-center">
+			<div class="grid grid-cols-4 items-center select-text">
 				{#if name === 'approved'}
 					{#if metadata[name]}
 						<div class="text-green-700"><CheckCheck /></div>
@@ -94,7 +94,7 @@
 									{metadata[name]}
 								</a>
 							{:else}
-								{metadata[name] ?? '-'}
+								{@html metadata[name] ?? '-'}
 							{/if}
 						</div>
 					{:else if typeof metadata[name] === 'boolean'}

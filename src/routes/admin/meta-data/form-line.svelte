@@ -4,7 +4,7 @@
 	import type { SuperValidated } from 'sveltekit-superforms';
 	import * as Form from '$lib/components/ui/form';
 	import FetchMetaId from './fetch-meta-id.svelte';
-
+	import FormField from '$lib/components/forms/form-field.svelte';
 	export let form: SuperValidated<(typeof Schemas)['line']>;
 
 	const value = 'line';
@@ -26,55 +26,32 @@
 		<FetchMetaId />
 	</div>
 
-	<Form.Field {config} name="meta">
-		<Form.Item>
-			<Form.Label>meta</Form.Label>
-			<Form.Input required />
-			<Form.Validation />
-			<Form.Description>Please auto-fill this field using Fetch meta_id button</Form.Description>
-		</Form.Item>
-	</Form.Field>
+	<FormField
+		{config}
+		name="meta"
+		description="Please auto-fill this field using Fetch meta_id button"
+	/>
 
-	<Form.Field {config} name="qn_label_str">
-		<Form.Item>
-			<Form.Label>qn_label_str</Form.Label>
-			<Form.Input required />
-			<Form.Validation />
-			<Form.Description
-				>comma-separated string of quantum number labels. It must follow the order in which the
-				quantum numbers are stated in the .cat file</Form.Description
-			>
-		</Form.Item>
-	</Form.Field>
+	<FormField
+		{config}
+		name="qn_label_str"
+		description="comma-separated string of quantum number labels. It must follow the order in which the
+		quantum numbers are stated in the .cat file"
+	/>
 
-	<Form.Field {config} name="vib_qn">
-		<Form.Item>
-			<Form.Label>vib_qn</Form.Label>
-			<Form.Input
-				on:keyup={(e) => {
-					formStore.update((f) => {
-						f.contains_rovibrational = formValues.vib_qn.trim() !== '';
-						return f;
-					});
-				}}
-			/>
-			<Form.Validation />
-			<Form.Description>
-				Indicates the quantum number label that corresponds to the vibrational quantum number. The
-				quantum number label must be one of the values in qn_label_str
-			</Form.Description>
-		</Form.Item>
-	</Form.Field>
-
-	<Form.Field {config} name="contains_rovibrational">
-		<Form.Item class="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
-			<div class="space-y-1 leading-none">
-				<Form.Label>contains_rovibrational</Form.Label>
-			</div>
-			<Form.Checkbox checked={formValues.contains_rovibrational} />
-			<Form.Validation />
-		</Form.Item>
-	</Form.Field>
+	<FormField
+		{config}
+		name="vib_qn"
+		on:keyup={(e) => {
+			formStore.update((f) => {
+				f.contains_rovibrational = formValues.vib_qn.trim() !== '';
+				return f;
+			});
+		}}
+		description="Indicates the quantum number label that corresponds to the vibrational quantum number. The
+		quantum number label must be one of the values in qn_label_str"
+	/>
+	<FormField {config} name="contains_rovibrational" checkbox />
 
 	<Form.Field {config} name="cat_file">
 		<Form.Item>
@@ -89,12 +66,5 @@
 			>
 		</Form.Item>
 	</Form.Field>
-
-	<Form.Field {config} name="notes">
-		<Form.Item>
-			<Form.Label>notes</Form.Label>
-			<Form.Textarea />
-			<Form.Validation />
-		</Form.Item>
-	</Form.Field>
+	<FormField {config} name="notes" textarea />
 </FormTabContents>
