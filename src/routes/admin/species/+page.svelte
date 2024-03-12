@@ -85,6 +85,7 @@
 			<FormField {config} name="standard_inchi_key" label="InChI Key" />
 			<FormField
 				{config}
+				textarea
 				name="notes"
 				description="Enter any notes. Tips: enter electronic state."
 			/>
