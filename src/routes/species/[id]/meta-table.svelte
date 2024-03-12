@@ -178,6 +178,8 @@
 										<Download />
 									</div>
 								</a>
+							{:else if key.value === 'notes'}
+								{@html val ?? '-'}
 							{:else}
 								{key.formatter ? key.formatter(val) : val ?? '-'}
 							{/if}
