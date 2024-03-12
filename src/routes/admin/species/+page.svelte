@@ -24,7 +24,7 @@
 	<Card.Root>
 		<Card.Header>
 			<Card.Title>Upload new species</Card.Title>
-			<Card.Description></Card.Description>
+			<Card.Description>Add new species to the database. Approval not required.</Card.Description>
 		</Card.Header>
 		<Card.Content>
 			<AutoFillName
