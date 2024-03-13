@@ -117,6 +117,8 @@ export const actions: Actions = {
 					message(form, { type: 'error', text: msg_json.non_field_errors });
 				} else if (msg_json.message && msg_json.error) {
 					message(form, { type: 'error', text: `${msg_json.message}: ${msg_json.error.message}` });
+				} else {
+					message(form, { type: 'error', text: JSON.stringify(msg_json).slice(0, 500) + '...' });
 				}
 				for (const [key, value] of Object.entries(msg_json) as [string, string][]) {
 					setError(form, key, value);

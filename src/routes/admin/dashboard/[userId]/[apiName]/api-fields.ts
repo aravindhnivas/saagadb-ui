@@ -8,6 +8,8 @@ export const api_fields = {
 	],
 	'species-metadata': [
 		{ name: 'approved', label: 'Approved' },
+		{ name: 'molecule_tag', label: 'Molecule tag', search_field: true },
+		{ name: 'linelist_name', label: 'Linelist', search_field: true },
 		{ name: 'category', label: 'Category', search_field: true },
 		{ name: 'degree_of_freedom', label: 'Degree of Freedom' },
 		{ name: 'hyperfine', label: 'Hyperfine' },

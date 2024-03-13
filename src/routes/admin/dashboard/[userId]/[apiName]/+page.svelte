@@ -22,7 +22,8 @@
 			const val = search_fields
 				.map((key) => {
 					if (typeof f[key] === 'object') return JSON.stringify(f[key]).toLowerCase();
-					return f[key].toLowerCase();
+					else if (typeof f[key] === 'string') return f[key].toLowerCase();
+					else return f[key];
 				})
 				.join(' ');
 			return val.includes(searchKey.toLowerCase());
