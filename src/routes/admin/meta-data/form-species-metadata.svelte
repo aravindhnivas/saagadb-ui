@@ -10,6 +10,7 @@
 	import { Input } from '$lib/components/ui/input';
 	import { HelpCircle } from 'lucide-svelte/icons';
 	import Svelecte from 'svelecte';
+	import { Description } from '$lib/components/ui/alert';
 	export let form: SuperValidated<(typeof Schemas)['species-metadata']>;
 
 	const value = 'species-metadata';
@@ -167,16 +168,12 @@
 	<div class="flex gap-4 w-full items-baseline">
 		<Form.Field {config} name="qpart_file">
 			<Form.Item class="basis-3/4">
-				<Form.Label>
-					<div class="flex gap-4 items-center">
-						<span>qpart_file</span>
-						<span aria-label="Quantum partition function" data-cooltipz-dir="down">
-							<HelpCircle />
-						</span>
-					</div>
-				</Form.Label>
+				<Form.Label>qpart_file</Form.Label>
 				<Form.Textarea required />
 				<Form.Validation />
+				<Form.Description
+					>Quantum partition function file. Make sure temperature 300 K is present in the list.</Form.Description
+				>
 			</Form.Item>
 		</Form.Field>
 		<div class="grid w-full max-w-sm items-center gap-1.5">
