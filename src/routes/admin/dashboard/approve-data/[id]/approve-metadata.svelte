@@ -15,7 +15,7 @@
 	import { fileInputs } from '$lib/schemas/metadata';
 	import FormCheckbox from '$lib/components/forms/form-checkbox.svelte';
 	import type { SubmitFunction } from '@sveltejs/kit';
-	import type { ActionData } from './$types';
+	// import type { ActionData } from './$types';
 	import Loader from '$lib/components/utils/loader.svelte';
 
 	export let obj: SpeciesMetadata | MetaReference;
