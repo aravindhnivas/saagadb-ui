@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { api_fields } from './api-fields';
 	import { ArrowBigLeft } from 'lucide-svelte/icons';
-	import type { ActionData, PageData } from './$types';
+	import type { PageData } from './$types';
 	import { Button } from '$lib/components/ui/button';
 	import { page } from '$app/stores';
 	import SearchInput from '$lib/components/custom-input/search-input.svelte';

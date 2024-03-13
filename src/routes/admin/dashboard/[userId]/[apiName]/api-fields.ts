@@ -8,8 +8,8 @@ export const api_fields = {
 	],
 	'species-metadata': [
 		{ name: 'approved', label: 'Approved' },
-		{ name: 'molecule_tag', label: 'Molecule tag', search_field: true },
-		{ name: 'linelist_name', label: 'Linelist', search_field: true },
+		{ name: 'molecule_tag', label: 'Molecule tag', search_field: true, editable: false },
+		{ name: 'linelist_name', label: 'Linelist', search_field: true, editable: false },
 		{ name: 'category', label: 'Category', search_field: true },
 		{ name: 'degree_of_freedom', label: 'Degree of Freedom' },
 		{ name: 'hyperfine', label: 'Hyperfine' },
@@ -33,5 +33,5 @@ export const api_fields = {
 		{ name: 'spectrum', label: 'Spectrum' }
 	]
 } as {
-	[name: string]: { name: string; label: string; search_field?: boolean }[];
+	[name: string]: { name: string; label: string; search_field?: boolean; editable?: boolean }[];
 };

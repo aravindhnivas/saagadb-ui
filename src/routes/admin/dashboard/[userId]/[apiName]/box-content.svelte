@@ -75,7 +75,7 @@
 			{/if}
 		</div>
 
-		{#each fields as { name, label }}
+		{#each fields as { name, label, editable }}
 			<div class="grid grid-cols-4 items-center select-text">
 				{#if name === 'approved'}
 					{#if metadata[name]}
@@ -97,10 +97,13 @@
 								{@html metadata[name] ?? '-'}
 							{/if}
 						</div>
-					{:else if typeof metadata[name] === 'boolean'}
-						<FormCheckbox label="" {disabled} {name} checked={metadata[name]} />
-					{:else}
-						<Input type="text" value={metadata[name]} class="h-7 col-span-3" {name} />
+					{/if}
+					{#if !disabled && (editable === undefined || editable)}
+						{#if typeof metadata[name] === 'boolean'}
+							<FormCheckbox label="" {disabled} {name} checked={metadata[name]} />
+						{:else}
+							<Input type="text" value={metadata[name]} class="h-7 col-span-3" {name} />
+						{/if}
 					{/if}
 				{/if}
 			</div>
