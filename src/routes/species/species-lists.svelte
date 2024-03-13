@@ -70,7 +70,7 @@
 
 <style>
 	.scroll-container {
-		height: calc(100% - 15em);
+		max-height: 500px;
 		overflow: auto;
 		border: solid 1px gray;
 		padding: 1em;

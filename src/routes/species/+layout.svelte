@@ -8,7 +8,7 @@
 </script>
 
 <div class="flex gap-4 overflow-hidden">
-	<div class="basis-1/4 p-4">
+	<div class="basis-1/4 p-4 overflow-auto">
 		{#await data.load}
 			<div class="flex gap-2 items-center">
 				<span class="loading loading-spinner"></span>
