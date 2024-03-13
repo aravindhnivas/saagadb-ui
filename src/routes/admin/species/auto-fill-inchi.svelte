@@ -4,10 +4,12 @@
 	import { getForm } from 'formsnap';
 	import { toast } from 'svelte-sonner';
 	import * as Form from '$lib/components/ui/form';
+	import Loader from '$lib/components/utils/loader.svelte';
+	import { sleep } from '$lib/core';
 	const { form } = getForm();
 
 	const fetch_smiles = async () => {
-		console.log('Fetching SMILES');
+		// console.log('Fetching SMILES');
 		if (!$form.iupac_name) return toast.error('Please enter a name first');
 		// console.log(`Fetching SMILES for ${$form.name}`);
 		const res = await fetch(`${base}/api/pubchem/${$form.iupac_name}/CanonicalSMILES`);
@@ -16,8 +18,8 @@
 
 		const pubchem_data = (await res.json()) as { CID: string; CanonicalSMILES: string }[];
 
-		console.log(`Received ${pubchem_data.length} results`);
-		console.log(pubchem_data, pubchem_data[0].CanonicalSMILES);
+		// console.log(`Received ${pubchem_data.length} results`);
+		// console.log(pubchem_data, pubchem_data[0].CanonicalSMILES);
 
 		if (pubchem_data.length > 0) {
 			$form.smiles = pubchem_data[0].CanonicalSMILES;
@@ -32,6 +34,7 @@
 	const auto_fill_properties = async () => {
 		$form.smiles = $form.smiles.trim();
 		if (!$form.smiles) return toast.error('Please enter a SMILES string first');
+		if (!window.RDKit) return toast.error('RDKit not loaded. Please refresh the page.');
 		mol = window.RDKit.get_mol($form.smiles);
 		if (!mol) {
 			// console.log(mol);
@@ -42,18 +45,35 @@
 		$form.standard_inchi = InChI;
 		$form.standard_inchi_key = InChIkey;
 	};
+
+	let fetching = false;
 </script>
 
 <div class="grid grid-cols-5 gap-4 items-start">
 	<Button
+		disabled={fetching}
 		on:keyup={async (e) => {
 			e.preventDefault();
 			if (e.key === 'Enter') {
 				await auto_fill_properties();
 			}
 		}}
-		on:click={async () => await fetch_smiles()}>Fetch SMILES (PubChem)</Button
+		on:click={async () => {
+			try {
+				fetching = true;
+				await fetch_smiles();
+			} catch (error) {
+				if (error instanceof Error) toast.error(error.message);
+			} finally {
+				fetching = false;
+			}
+		}}
 	>
+		<Loader {fetching} description="Fetching..." />
+		{#if !fetching}
+			Fetch SMILES (PubChem)
+		{/if}
+	</Button>
 	<Form.Input
 		required
 		class="col-span-2"
