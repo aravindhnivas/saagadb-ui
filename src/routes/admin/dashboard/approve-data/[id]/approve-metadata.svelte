@@ -15,8 +15,9 @@
 	import { fileInputs } from '$lib/schemas/metadata';
 	import FormCheckbox from '$lib/components/forms/form-checkbox.svelte';
 	import type { SubmitFunction } from '@sveltejs/kit';
-	// import type { ActionData } from './$types';
+	import Tiptap from '$lib/components/Tiptap.svelte';
 	import Loader from '$lib/components/utils/loader.svelte';
+	import { string } from 'zod';
 
 	export let obj: SpeciesMetadata | MetaReference;
 
@@ -116,7 +117,12 @@
 					<Checkbox bind:checked />
 				</div>
 				{#if name === 'notes'}
-					<Textarea {disabled} bind:value={obj[name]} {name} />
+					{#if disabled}
+						<span class="text-gray-500 px-4">{@html obj[name] || 'No notes'}</span>
+					{:else}
+						<Textarea hidden bind:value={obj[name]} {name} />
+						<Tiptap setValue={(value) => (obj[name] = value)} content={obj[name]} />
+					{/if}
 				{:else if typeof obj[name] === 'boolean'}
 					<FormCheckbox bind:checked={obj[name]} {disabled} {name} label="" />
 				{:else}

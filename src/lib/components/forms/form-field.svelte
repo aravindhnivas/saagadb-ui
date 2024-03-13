@@ -1,6 +1,6 @@
 <script lang="ts">
 	import * as Form from '$lib/components/ui/form';
-	import Tiptap from '../Tiptap.svelte';
+	import Tiptap from '$lib/components/Tiptap.svelte';
 
 	export let config: any;
 	export let name: string;
@@ -22,10 +22,6 @@
 	{:else}
 		<Form.Item>
 			{#if textarea}
-				<!-- <div class="flex items-center gap-2 justify-between">
-					<Form.Label {...attrs.label}>{@html label || name}</Form.Label>
-					<NotesEditor />
-				</div> -->
 				<Form.Label {...attrs.label}>{@html label || name}</Form.Label>
 				<Form.Textarea hidden {...constraints} {...attrs.input} />
 				<Tiptap {setValue} />
