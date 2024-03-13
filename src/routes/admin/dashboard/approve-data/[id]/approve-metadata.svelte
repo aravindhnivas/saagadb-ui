@@ -6,7 +6,7 @@
 	import { Button } from '$lib/components/ui/button';
 	import { enhance } from '$app/forms';
 	import { Checkbox } from '$lib/components/ui/checkbox';
-	import { CheckCheck, Download, LockKeyhole, UnlockKeyhole } from 'lucide-svelte/icons';
+	import { CheckCheck, LockKeyhole, UnlockKeyhole } from 'lucide-svelte/icons';
 	import { getContext } from 'svelte';
 	import { url_from_cdms_tag, url_from_jpl_tag } from '$lib/core';
 	import { Description } from '$lib/components/ui/card';
@@ -14,6 +14,9 @@
 	import { toast } from 'svelte-sonner';
 	import { fileInputs } from '$lib/schemas/metadata';
 	import FormCheckbox from '$lib/components/forms/form-checkbox.svelte';
+	import type { SubmitFunction } from '@sveltejs/kit';
+	import type { ActionData } from './$types';
+	import Loader from '$lib/components/utils/loader.svelte';
 
 	export let obj: SpeciesMetadata | MetaReference;
 
@@ -43,6 +46,14 @@
 			: url_from_cdms_tag(obj.molecule_tag);
 
 	let modified = false;
+	let uploading = false;
+	const onSubmit: SubmitFunction = () => {
+		uploading = true;
+		return async ({ update }) => {
+			uploading = false;
+			await update();
+		};
+	};
 </script>
 
 <div class="flex gap-4 items-center p-2">
@@ -79,7 +90,7 @@
 </div>
 
 <form
-	use:enhance
+	use:enhance={onSubmit}
 	class="grid gap-4"
 	action="?/approve&id={obj.id}&api_key={api_key}"
 	method="POST"
@@ -224,6 +235,12 @@
 
 	<div class="flex gap-4 ml-auto">
 		<DeleteDialog id={obj.id} />
-		<Button type="submit" disabled={!all_approved}>Approve</Button>
+
+		<Button type="submit" disabled={!all_approved || uploading}>
+			<Loader fetching={uploading} description="Uploading..." />
+			{#if !uploading}
+				<span>Approve</span>
+			{/if}
+		</Button>
 	</div>
 </form>
