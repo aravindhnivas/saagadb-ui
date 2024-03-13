@@ -9,7 +9,7 @@
 	import { Separator } from '$lib/components/ui/separator';
 
 	export let species: Species[] = [];
-	export let user: User | null = null;
+	// export let user: User | null = null;
 
 	let virtualListEl: HTMLDivElement;
 	$: virtualizer = createVirtualizer<HTMLDivElement, HTMLDivElement>({
@@ -64,6 +64,8 @@
 					<Separator />
 				</div>
 			{/if}
+		{:else}
+			<span>No species found</span>
 		{/each}
 	</div>
 </div>

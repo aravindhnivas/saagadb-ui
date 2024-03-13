@@ -15,7 +15,7 @@
 				<span>Fetching data please wait...</span>
 			</div>
 		{:then { species }}
-			<SpeciesLists {species} user={data.user} />
+			<SpeciesLists {species} />
 		{:catch error}
 			<Alert.Root variant="destructive">
 				<AlertCircle class="h-4 w-4" />
