@@ -10,11 +10,11 @@
 	const active_tab = writable('active_tab_approval_page', 'species');
 
 	const species_keys = [
-		'species_name',
-		'species_formula',
+		// 'species_name',
+		// 'species_formula',
 		'category',
 		'hyperfine',
-		'linelist_name',
+		// 'linelist_name',
 		'degree_of_freedom',
 		'molecule_tag',
 		'mu_a',
