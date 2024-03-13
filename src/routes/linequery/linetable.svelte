@@ -89,8 +89,20 @@
 			]
 		},
 		// { title: 'S_ij', field: 's_ij' },
-		{ title: 'S_ij_mu2 (nm<sup>2</sup> )', field: 's_ij_mu2' },
-		{ title: 'A_ij (s<sup>-1</sup> )', field: 'a_ij' }
+		{
+			title: 'S_ij_mu2 (nm<sup>2</sup> )',
+			field: 's_ij_mu2',
+			formatter: (cell) => {
+				return Number(Number(cell.getValue()).toFixed(100)) === 0 ? '-' : cell.getValue();
+			}
+		},
+		{
+			title: 'A_ij (s<sup>-1</sup> )',
+			field: 'a_ij',
+			formatter: (cell) => {
+				return Number(Number(cell.getValue()).toFixed(100)) === 0 ? '-' : cell.getValue();
+			}
+		}
 	];
 
 	let table: Tabulator;
