@@ -171,9 +171,9 @@
 				<Form.Label>qpart_file</Form.Label>
 				<Form.Textarea required />
 				<Form.Validation />
-				<Form.Description
-					>Quantum partition function file. Make sure temperature 300 K is present in the list.</Form.Description
-				>
+				<Form.Description>
+					Quantum partition function file. Make sure temperature 300 K is present in the list.
+				</Form.Description>
 			</Form.Item>
 		</Form.Field>
 		<div class="grid w-full max-w-sm items-center gap-1.5">
