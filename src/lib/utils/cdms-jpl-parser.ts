@@ -29,9 +29,15 @@ export async function CDMS(html_data: string) {
 			} else {
 				value = [endash_str($(el.lastChild).text().trim())];
 			}
+		} else if (key.match(/Q\(\d+\.?\d*?\)/g)) {
+			const qpart_value = endash_str($(el.lastChild).text().trim());
+			const match = qpart_value.match(/^[^\s(]+/);
+			value = match ? match[0] : '';
+			// console.log({ key, value, match });
 		} else {
 			value = endash_str($(el.lastChild).text().trim());
 		}
+		// console.log({ key, value });
 		full_info[endash_str(key)] = value;
 	}
 

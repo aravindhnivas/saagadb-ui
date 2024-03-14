@@ -52,6 +52,7 @@
 			let fetched_data;
 			if ($database_type === 'cdms') {
 				fetched_data = await CDMS(html_data);
+				// console.log({ fetched_data });
 			} else if ($database_type === 'jpl') {
 				fetched_data = await JPL(html_data);
 			} else {
