@@ -14,7 +14,7 @@
 	export let metadata: {
 		[name: string]: string;
 	};
-
+	// console.log(metadata);
 	let uploading = false;
 
 	const onSubmit: SubmitFunction = () => {
@@ -41,6 +41,23 @@
 	const fields = api_fields[$page.params.apiName];
 	let disabled = true;
 	// console.log('mounted');
+
+	let mol: ReturnType<typeof window.RDKit.get_mol>;
+	const auto_fill_inchi_info = () => {
+		try {
+			if (!metadata.smiles) return toast.error('Please enter a SMILES string first');
+			if (!window.RDKit) return toast.error('RDKit not loaded. Please refresh the page.');
+			mol = window.RDKit.get_mol(metadata.smiles);
+			if (!mol) return toast.error('Invalid SMILES string');
+			const InChI = mol.get_inchi();
+			const InChIkey = window.RDKit.get_inchikey_for_inchi(mol?.get_inchi());
+			metadata.standard_inchi = InChI;
+			metadata.standard_inchi_key = InChIkey;
+			toast.success('InChI and InChIKey auto-filled');
+		} catch (error) {
+			if (error instanceof Error) toast.error(error.message);
+		}
+	};
 </script>
 
 <form id="{metadata.id}-form" use:enhance={onSubmit} method="POST">
@@ -87,7 +104,7 @@
 					{/if}
 				{:else}
 					<div>{@html label}</div>
-					{#if disabled}
+					{#if disabled || editable === false}
 						<div class="col-span-3">
 							{#if typeof metadata[name] === 'string' && metadata[name].startsWith('http')}
 								<a href={metadata[name]} target="_blank" rel="noopener noreferrer">
@@ -97,13 +114,21 @@
 								{@html metadata[name] ?? '-'}
 							{/if}
 						</div>
-					{/if}
-					{#if !disabled && (editable === undefined || editable)}
-						{#if typeof metadata[name] === 'boolean'}
-							<FormCheckbox label="" {disabled} {name} checked={metadata[name]} />
-						{:else}
-							<Input type="text" value={metadata[name]} class="h-7 col-span-3" {name} />
-						{/if}
+						<!-- {/if} -->
+					{:else if typeof metadata[name] === 'boolean'}
+						<FormCheckbox label="" {disabled} {name} checked={metadata[name]} />
+					{:else if name === 'smiles'}
+						<Input type="text" bind:value={metadata[name]} class="h-7 col-span-3" {name} />
+						<div class="flex gap-2 items-center h-[100px]">
+							<button class="btn btn-sm" on:click|preventDefault={() => auto_fill_inchi_info()}>
+								<span>Draw & auto-fill InChI</span>
+							</button>
+							{#if mol}
+								<div>{@html mol?.get_svg(100, 50)}</div>
+							{/if}
+						</div>
+					{:else}
+						<Input type="text" value={metadata[name]} class="h-7 col-span-3" {name} />
 					{/if}
 				{/if}
 			</div>

@@ -5,21 +5,15 @@
 	import { toast } from 'svelte-sonner';
 	import * as Form from '$lib/components/ui/form';
 	import Loader from '$lib/components/utils/loader.svelte';
-	import { sleep } from '$lib/core';
 	const { form } = getForm();
 
 	const fetch_smiles = async () => {
-		// console.log('Fetching SMILES');
 		if (!$form.iupac_name) return toast.error('Please enter a name first');
-		// console.log(`Fetching SMILES for ${$form.name}`);
 		const res = await fetch(`${base}/api/pubchem/${$form.iupac_name}/CanonicalSMILES`);
-		// console.log(`Received response ${res.status} ${res.statusText}`);
+
 		if (!res.ok) return toast.error(res.statusText + ': could not fetch SMILES');
 
 		const pubchem_data = (await res.json()) as { CID: string; CanonicalSMILES: string }[];
-
-		// console.log(`Received ${pubchem_data.length} results`);
-		// console.log(pubchem_data, pubchem_data[0].CanonicalSMILES);
 
 		if (pubchem_data.length > 0) {
 			$form.smiles = pubchem_data[0].CanonicalSMILES;

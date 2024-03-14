@@ -83,7 +83,7 @@ export const actions: Actions = {
 			console.log({ reason });
 			return {
 				success: false,
-				message: 'Something went wrong. Internal server error.'
+				message: reason
 			};
 		}
 

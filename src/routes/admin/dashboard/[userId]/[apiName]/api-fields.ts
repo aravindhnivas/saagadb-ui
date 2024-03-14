@@ -4,7 +4,10 @@ export const api_fields = {
 		{ name: 'name', label: 'Name', search_field: true },
 		{ name: 'iupac_name', label: 'IUPAC', search_field: true },
 		{ name: 'name_formula', label: 'Molecular formula', search_field: true },
-		{ name: 'name_html', label: 'Name HTML' }
+		{ name: 'name_html', label: 'Name HTML' },
+		{ name: 'smiles', label: 'SMILES', search_field: true },
+		{ name: 'standard_inchi', label: 'InChI', search_field: true },
+		{ name: 'standard_inchi_key', label: 'InChIKey', search_field: true }
 	],
 	'species-metadata': [
 		{ name: 'approved', label: 'Approved' },
