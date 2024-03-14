@@ -39,7 +39,10 @@ export const Schemas = {
 				message: 'Invalid date format. Expected format is YYYY-MM-DD'
 			}),
 		data_contributor: z.string().min(1),
-		qpart_file: z.string().optional(),
+		// qpart_file: z.string().optional(),
+		qpart_file: z.string().refine((str) => str.includes('300'), {
+			message: '300 K temperature is required'
+		}),
 		int_file: z.string().default('').optional(),
 		var_file: z.string().default('').optional(),
 		fit_file: z.string().default('').optional(),
