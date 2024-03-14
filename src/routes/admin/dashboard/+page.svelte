@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { logged_in } from '$lib/utils/stores';
 	import type { PageData } from './$types';
-	import { AlertCircle, ShieldCheck } from 'lucide-svelte/icons';
+	import { AlertCircle, ShieldCheck, ShieldPlus, User } from 'lucide-svelte/icons';
 	import UploadStatus from './upload-status.svelte';
 	import DependentUser from './dependent-user.svelte';
 	import * as Tabs from '$lib/components/ui/tabs';
@@ -34,7 +34,21 @@
 		<Tabs.Content value="upload-statistics">
 			<Card.Root>
 				<Card.Header>
-					<Card.Title>Upload statistics</Card.Title>
+					<Card.Title>
+						<div class="flex items-center gap-4">
+							<span>Upload statistics: {data.user.name}</span>
+							<User />
+							{#if data.user.is_superuser}
+								<ShieldPlus />
+								Superuser
+							{:else if data.user.is_staff}
+								<ShieldCheck />
+								Adminuser
+							{:else}
+								Normal user
+							{/if}
+						</div>
+					</Card.Title>
 					<Card.Description>
 						You can see the statistics of the data uploaded by you and the approval status
 					</Card.Description>
