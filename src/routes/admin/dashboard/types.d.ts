@@ -6,8 +6,8 @@ interface UploadCount {
 }
 
 interface unapproved_counts {
-	user: number;
-	user_name: string;
+	id: number;
+	name: string;
 	species_metadata: number;
 	meta_reference: number;
 }

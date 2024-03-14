@@ -18,7 +18,7 @@
 	) => {
 		console.log(unapproved_counts);
 		return unapproved_counts.filter(
-			(u) => u.user !== user.id && (u.species_metadata > 0 || u.meta_reference > 0)
+			(u) => u.id !== user.id && (u.species_metadata > 0 || u.meta_reference > 0)
 		);
 	};
 </script>
@@ -48,12 +48,12 @@
 						<div class="card-body">
 							<h2 class="card-title justify-center">The following users awaiting your approval</h2>
 							<div class="grid grid-cols-6 gap-4 items-center select-text">
-								{#each unapproved_counts as { user: user_id, user_name, species_metadata, meta_reference }}
+								{#each unapproved_counts as { id, name, species_metadata, meta_reference }}
 									<a
 										class="col-span-2 hover:underline"
-										href="{base}/admin/dashboard/approve-data/{user_id}"
+										href="{base}/admin/dashboard/approve-data/{id}"
 									>
-										{user_name}
+										{name}
 									</a>
 									<span class="text-red col-span-2">{species_metadata} species-metadata</span>
 									<span class="text-red col-span-2">{meta_reference} meta-reference</span>
