@@ -13,7 +13,7 @@
 	$: if (data.user?.name) logged_in.set(data.user.name);
 </script>
 
-<div class="pb-2 max-w-4xl">
+<div class="p-2 max-w-4xl">
 	{#if data.user}
 		<button
 			class="btn btn-sm my-5"
