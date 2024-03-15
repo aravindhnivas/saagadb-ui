@@ -1,7 +1,7 @@
 <script lang="ts">
 	import AlertBox from '$lib/components/utils/alert-box.svelte';
 	import Loader from '$lib/components/utils/loader.svelte';
-	import { BookMarked, Atom, ArrowBigLeft } from 'lucide-svelte/icons';
+	import { BookMarked, Atom, ArrowBigLeft, CheckCheck } from 'lucide-svelte/icons';
 	import StatComponent from './stat-component.svelte';
 	import { setContext } from 'svelte';
 	import { Button } from '$lib/components/ui/button';
@@ -17,16 +17,14 @@
 	const filter_unapproved_counts = (
 		unapproved_counts: UploadCountResponse['unapproved_counts']
 	) => {
-		// console.log(unapproved_counts);
-		// return unapproved_counts;
+		// return [];
 		return unapproved_counts.filter(
 			(u) => u.id !== user.id && (u.species_metadata > 0 || u.meta_reference > 0)
 		);
 	};
 </script>
 
-<!-- <button class="btn btn-sm">Buy Now</button> -->
-<div class="grid gap-4 px-5">
+<div class="grid gap-4">
 	{#await fetch_upload_count}
 		<Loader fetching={true} />
 	{:then value}
@@ -69,6 +67,11 @@
 								{/each}
 							</div>
 						</div>
+					</div>
+				{:else}
+					<div class="alert mb-2 alert-info">
+						<CheckCheck />
+						<span>No users awaiting your approval</span>
 					</div>
 				{/if}
 			{/if}
