@@ -82,6 +82,7 @@ export const fileInputs: {
 	[key: string]: { id: string; name: string; required: boolean; extension: string }[];
 } = {
 	'species-metadata': [
+		{ id: uuidv4(), name: 'cat_file', required: true, extension: '.cat' },
 		{ id: uuidv4(), name: 'qpart_file', required: true, extension: '.qpart' },
 		{ id: uuidv4(), name: 'int_file', required: false, extension: '.int' },
 		{ id: uuidv4(), name: 'var_file', required: false, extension: '.var' },

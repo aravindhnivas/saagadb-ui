@@ -10,11 +10,8 @@
 	const active_tab = writable('active_tab_approval_page', 'species');
 
 	const species_keys = [
-		// 'species_name',
-		// 'species_formula',
 		'category',
 		'hyperfine',
-		// 'linelist_name',
 		'degree_of_freedom',
 		'molecule_tag',
 		'mu_a',
@@ -25,6 +22,8 @@
 		'c_const',
 		'data_date',
 		'data_contributor',
+		'qn_label_str',
+		'vib_qn',
 		'notes'
 	];
 

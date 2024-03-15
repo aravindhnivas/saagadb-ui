@@ -54,6 +54,8 @@
 		},
 		{ name: 'Hyperfine', value: 'hyperfine' },
 		{ name: 'Degree of freedom', value: 'degree_of_freedom' },
+		{ name: 'Qunatum states', value: 'qn_label_str' },
+		{ name: 'Vibrational states', value: 'vib_qn' },
 		{ name: 'cat file', value: 'cat_file' },
 		{ name: 'int file', value: 'int_file' },
 		{ name: 'var file', value: 'var_file' },
@@ -64,6 +66,7 @@
 		{ name: 'Contributors', value: 'data_contributor' },
 		{ name: 'Notes', value: 'notes' }
 	];
+	// console.log({ species_metadata });
 
 	onMount(() => {
 		if ($edit_mode) {

@@ -17,7 +17,6 @@
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import Tiptap from '$lib/components/Tiptap.svelte';
 	import Loader from '$lib/components/utils/loader.svelte';
-	import { string } from 'zod';
 
 	export let obj: SpeciesMetadata | MetaReference;
 
@@ -30,13 +29,11 @@
 		checked: boolean;
 		disabled: boolean;
 		file: File | null;
-		value: string;
 	}[] = fileInputs['species-metadata'].map(({ name }) => ({
 		name,
 		checked: true,
 		disabled: true,
-		file: null,
-		value: ''
+		file: null
 	}));
 	$: all_approved = [...checked_row, ...files_checked_row].every((f) => f.checked);
 	let approve_all = false;
@@ -125,6 +122,15 @@
 					{/if}
 				{:else if typeof obj[name] === 'boolean'}
 					<FormCheckbox bind:checked={obj[name]} {disabled} {name} label="" />
+				{:else if ['vib_qn', 'qn_label_str'].includes(name)}
+					<span class="text-gray-500 px-4">{obj[name] || 'Not available'}</span>
+					{#if !disabled}
+						<span class="text-sm"
+							>You cannot edit this field, due to the nature of the data (line informations are
+							already parsed with molsim)
+						</span>
+						<span class="text-sm text-red">Reject this entry if labelling is wrong.</span>
+					{/if}
 				{:else}
 					<Input {disabled} bind:value={obj[name]} {name} />
 				{/if}
@@ -156,7 +162,9 @@
 		</div>
 
 		<div class="grid-auto-fill">
-			{#each files_checked_row as { name, checked, disabled, file, value }}
+			{#each files_checked_row as { name, checked, disabled, file }}
+				{@const filename = obj[name]?.split('/').pop()}
+
 				<div class="flex flex-col gap-1">
 					<div class="flex gap-4 items-center p-2">
 						<button
@@ -174,49 +182,30 @@
 						<Label for={name}>{name}</Label>
 						<Checkbox bind:checked />
 					</div>
-					{#if obj[name]}
-						{@const filename = obj[name].split('/').pop()}
+					{#if filename && disabled}
 						{@const href = `${base}/uploads/sp/${filename}`}
+						<a class="btn btn-sm btn-primary w-45" {href} target="_blank" rel="noopener noreferrer">
+							<span>Download</span>
+						</a>
+					{:else if name === 'cat_file'}
 						{#if disabled}
-							<a
-								class="btn btn-sm btn-primary w-45"
-								{href}
-								target="_blank"
-								rel="noopener noreferrer"
-							>
-								<span>Download</span>
-							</a>
+							<span class="text-gray-500 text-sm">Awaiting cat file upload from user</span>
 						{:else}
-							<Input
-								type="file"
-								{disabled}
-								{name}
-								on:input={(e) => {
-									const newfile = e.target?.files?.[0];
-									const allowed_ext = '.' + name.split('_')[0];
-									if (newfile && !newfile.name.endsWith(allowed_ext)) {
-										toast.error(`File extension should be ${allowed_ext}`);
-										e.target.value = '';
-										return;
-									}
-									toast.success('File attached');
-									file = newfile;
-								}}
-							/>
-							<span class="text-sm flex items-center gap-4">
-								{#if file?.size}
-									<CheckCheck />
-									<span>New file attached</span>
-								{:else}
-									<span class=" text-red">Leaving it empty will delete the file</span>
-								{/if}
+							<span class="text-sm">
+								You cannot upload new cat file here, due to the nature of the data (line
+								informations are only parsed with molsim when uploaded through Line page)
 							</span>
 						{/if}
+					{:else if name === 'qpart_file' && obj.cat_file}
+						<span class="text-sm">
+							You cannot upload new qpart file here, due to the nature of the data (line
+							informations are already parsed with molsim using uploaded cat file and qpart file)
+						</span>
 					{:else}
 						<Input
 							type="file"
-							{disabled}
 							{name}
+							{disabled}
 							on:input={(e) => {
 								const newfile = e.target?.files?.[0];
 								const allowed_ext = '.' + name.split('_')[0];
@@ -229,10 +218,19 @@
 								file = newfile;
 							}}
 						/>
-						<span class="text-sm">No <em>.{name.split('_')[0]}</em> attached</span>
-						{#if !disabled && !file?.size}
-							<span class="text-sm text-red">Leaving it empty will delete the file</span>
-						{/if}
+						<span class="text-sm flex items-center gap-4">
+							{#if file?.size}
+								<CheckCheck />
+								<span>New file attached</span>
+							{:else if disabled}
+								<span class="text-gray-500">{`No .${name.split('_')[0]} file attached`}</span>
+							{:else}
+								<span class="text-gray-500">Attach new .{name.split('_')[0]} file</span>
+								{#if filename}
+									<span class=" text-red">Leaving it empty will delete the file</span>
+								{/if}
+							{/if}
+						</span>
 					{/if}
 				</div>
 			{/each}
@@ -241,12 +239,18 @@
 
 	<div class="flex gap-4 ml-auto">
 		<DeleteDialog id={obj.id} />
-
-		<Button type="submit" disabled={!all_approved || uploading}>
-			<Loader fetching={uploading} description="Uploading..." />
-			{#if !uploading}
-				<span>Approve</span>
-			{/if}
-		</Button>
+		{#if api_key === 'species-metadata' && obj.cat_file}
+			<Button type="submit" disabled={!all_approved || uploading}>
+				<Loader fetching={uploading} description="Uploading..." />
+				{#if !uploading}
+					<span>Approve</span>
+				{/if}
+			</Button>
+		{:else}
+			<span class="text-gray-500 text-sm">
+				Please wait for the user to upload the cat file to approve. OR if cat is file uploaded then
+				try re-fetching the data (top right corner)
+			</span>
+		{/if}
 	</div>
 </form>
