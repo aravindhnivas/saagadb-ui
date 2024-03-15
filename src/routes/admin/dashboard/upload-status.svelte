@@ -72,7 +72,7 @@
 					</div>
 				{/if}
 			{/if}
-			<div class="stats stats-vertical shadow px-5">
+			<div class="stats stats-vertical shadow-xl px-5">
 				<StatComponent
 					apiName="species"
 					total={value.full.species}

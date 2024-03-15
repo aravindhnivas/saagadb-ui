@@ -20,8 +20,10 @@
 			on:click={async () => {
 				await invalidate('fetch:upload_count');
 				toast.success('Fetched upload count');
-			}}>Fetch upload count</button
+			}}
 		>
+			Fetch upload count
+		</button>
 		<div class="alert mb-2">
 			{#if data.user.approver_name}
 				{@const approver_name = data.user.approver_name}
