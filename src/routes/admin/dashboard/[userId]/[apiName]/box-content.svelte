@@ -10,11 +10,11 @@
 	import { enhance } from '$app/forms';
 	import { toast } from 'svelte-sonner';
 	import type { SubmitFunction } from '@sveltejs/kit';
+	import { onMount } from 'svelte';
 
 	export let metadata: {
 		[name: string]: string;
 	};
-	// console.log(metadata);
 	let uploading = false;
 
 	const onSubmit: SubmitFunction = () => {
@@ -53,11 +53,16 @@
 			const InChIkey = window.RDKit.get_inchikey_for_inchi(mol?.get_inchi());
 			metadata.standard_inchi = InChI;
 			metadata.standard_inchi_key = InChIkey;
-			toast.success('InChI and InChIKey auto-filled');
 		} catch (error) {
 			if (error instanceof Error) toast.error(error.message);
 		}
 	};
+
+	onMount(() => {
+		if ($page.params.apiName === 'species' && metadata.smiles) {
+			auto_fill_inchi_info();
+		}
+	});
 </script>
 
 <form id="{metadata.id}-form" use:enhance={onSubmit} method="POST">
@@ -75,6 +80,9 @@
 					<UnlockKeyhole />
 				{/if}
 			</button>
+			{#if disabled && $page.params.apiName === 'species'}
+				<div class="ml-auto">{@html mol?.get_svg(100, 50)}</div>
+			{/if}
 			{#if !disabled}
 				<div class="ml-auto">
 					{#if uploading}
@@ -120,7 +128,13 @@
 					{:else if name === 'smiles'}
 						<Input type="text" bind:value={metadata[name]} class="h-7 col-span-3" {name} />
 						<div class="flex gap-2 items-center h-[100px]">
-							<button class="btn btn-sm" on:click|preventDefault={() => auto_fill_inchi_info()}>
+							<button
+								class="btn btn-sm"
+								on:click|preventDefault={() => {
+									auto_fill_inchi_info();
+									toast.success('InChI and InChIKey auto-filled');
+								}}
+							>
 								<span>Draw & auto-fill InChI</span>
 							</button>
 							{#if mol}
