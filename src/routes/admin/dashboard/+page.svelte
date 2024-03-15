@@ -4,6 +4,8 @@
 	import { AlertCircle, ShieldCheck } from 'lucide-svelte/icons';
 	import UploadStatus from './upload-status.svelte';
 	import { setContext } from 'svelte';
+	import { invalidate } from '$app/navigation';
+	import { toast } from 'svelte-sonner';
 
 	export let data: PageData;
 
@@ -13,6 +15,13 @@
 
 <div class="pb-2">
 	{#if data.user}
+		<button
+			class="btn btn-sm my-5"
+			on:click={async () => {
+				await invalidate('fetch:upload_count');
+				toast.success('Fetched upload count');
+			}}>Fetch upload count</button
+		>
 		<div class="alert mb-2">
 			{#if data.user.approver_name}
 				{@const approver_name = data.user.approver_name}

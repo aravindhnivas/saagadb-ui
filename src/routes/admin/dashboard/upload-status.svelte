@@ -6,6 +6,7 @@
 	import { setContext } from 'svelte';
 	import { Button } from '$lib/components/ui/button';
 	import { base } from '$app/paths';
+	import Separator from '$lib/components/ui/separator/separator.svelte';
 
 	export let user: User;
 	export let fetch_upload_count: Promise<UploadCountResponse>;
@@ -16,13 +17,15 @@
 	const filter_unapproved_counts = (
 		unapproved_counts: UploadCountResponse['unapproved_counts']
 	) => {
-		console.log(unapproved_counts);
+		// console.log(unapproved_counts);
+		// return unapproved_counts;
 		return unapproved_counts.filter(
 			(u) => u.id !== user.id && (u.species_metadata > 0 || u.meta_reference > 0)
 		);
 	};
 </script>
 
+<!-- <button class="btn btn-sm">Buy Now</button> -->
 <div class="grid gap-4 px-5">
 	{#await fetch_upload_count}
 		<Loader fetching={true} />
@@ -46,22 +49,25 @@
 				{#if unapproved_counts.length > 0}
 					<div class="card shadow-xl">
 						<div class="card-body">
-							<h2 class="card-title justify-center">The following users awaiting your approval</h2>
+							<h2 class="card-title justify-center">
+								The following users awaiting your approval. Click on the user name to approve them.
+							</h2>
+							<Separator />
 							<div class="grid grid-cols-6 gap-4 items-center select-text">
-								{#each unapproved_counts as { id, name, species_metadata, meta_reference }}
+								{#each unapproved_counts as { id, name, species_metadata, meta_reference }, ind}
 									<a
 										class="col-span-2 hover:underline"
 										href="{base}/admin/dashboard/approve-data/{id}"
 									>
-										{name}
+										<span>
+											{ind + 1}
+											{name}
+										</span>
 									</a>
 									<span class="text-red col-span-2">{species_metadata} species-metadata</span>
 									<span class="text-red col-span-2">{meta_reference} meta-reference</span>
 								{/each}
 							</div>
-							<!-- <div class="card-actions justify-end">
-						<button class="btn btn-primary">Buy Now</button>
-					</div> -->
 						</div>
 					</div>
 				{/if}
