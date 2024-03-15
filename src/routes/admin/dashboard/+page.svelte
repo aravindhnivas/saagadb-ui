@@ -19,7 +19,6 @@
 			class="btn btn-sm my-5"
 			on:click={async () => {
 				await invalidate('fetch:upload_count');
-				toast.success('Fetched upload count');
 			}}
 		>
 			Fetch upload count
