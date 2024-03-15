@@ -5,10 +5,8 @@
 	import UploadStatus from './upload-status.svelte';
 	import { setContext } from 'svelte';
 	import { invalidate } from '$app/navigation';
-	import { toast } from 'svelte-sonner';
 
 	export let data: PageData;
-
 	setContext('allow_edit', data.user.is_staff || data.user.is_superuser);
 	$: if (data.user?.name) logged_in.set(data.user.name);
 </script>
