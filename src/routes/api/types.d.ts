@@ -74,6 +74,7 @@ interface SpeciesMetadata {
 	vib_qn: string;
 	qn_label_str: string;
 	contains_rovibrational: boolean;
+	cat_file_added: boolean;
 }
 
 interface Reference {
