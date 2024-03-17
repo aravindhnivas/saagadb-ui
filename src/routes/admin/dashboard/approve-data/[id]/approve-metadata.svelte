@@ -239,18 +239,27 @@
 
 	<div class="flex gap-4 ml-auto">
 		<DeleteDialog id={obj.id} />
-		{#if api_key === 'species-metadata' && obj.cat_file}
+		{#if api_key === 'species-metadata'}
+			{#if obj.cat_file}
+				<Button type="submit" disabled={!all_approved || uploading}>
+					<Loader fetching={uploading} description="Uploading..." />
+					{#if !uploading}
+						<span>Approve</span>
+					{/if}
+				</Button>
+			{:else}
+				<span class="text-gray-500 text-sm">
+					Please wait for the user to upload the cat file to approve. OR if cat is file uploaded
+					then try re-fetching the data (top right corner)
+				</span>
+			{/if}
+		{:else}
 			<Button type="submit" disabled={!all_approved || uploading}>
 				<Loader fetching={uploading} description="Uploading..." />
 				{#if !uploading}
 					<span>Approve</span>
 				{/if}
 			</Button>
-		{:else}
-			<span class="text-gray-500 text-sm">
-				Please wait for the user to upload the cat file to approve. OR if cat is file uploaded then
-				try re-fetching the data (top right corner)
-			</span>
 		{/if}
 	</div>
 </form>
