@@ -88,8 +88,8 @@
 						<UnlockKeyhole />
 					{/if}
 				</button>
-				{#if disabled && $page.params.apiName === 'species'}
-					<div class="ml-auto">{@html mol?.get_svg(100, 50)}</div>
+				{#if disabled && $page.params.apiName === 'species' && mol}
+					<div class="ml-auto">{@html mol.get_svg(100, 50)}</div>
 				{/if}
 				{#if !disabled}
 					<div class="ml-auto">
@@ -107,8 +107,8 @@
 					</div>
 				{/if}
 			</div>
-		{:else if $page.params.apiName === 'species'}
-			<div class="ml-auto">{@html mol?.get_svg(100, 50)}</div>
+		{:else if $page.params.apiName === 'species' && mol}
+			<div class="ml-auto">{@html mol.get_svg(100, 50)}</div>
 		{/if}
 		{#each fields as { name, label, editable, link, download }}
 			<div class="grid grid-cols-4 items-center select-text">
