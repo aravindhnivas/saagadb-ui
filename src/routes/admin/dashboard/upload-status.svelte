@@ -17,10 +17,7 @@
 	const filter_unapproved_counts = (
 		unapproved_counts: UploadCountResponse['unapproved_counts']
 	) => {
-		// return [];
-		return unapproved_counts.filter(
-			(u) => u.id !== user.id && (u.species_metadata > 0 || u.meta_reference > 0)
-		);
+		return unapproved_counts.filter((u) => u.species_metadata > 0 || u.meta_reference > 0);
 	};
 </script>
 
