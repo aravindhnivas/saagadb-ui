@@ -79,7 +79,7 @@
 
 	<div class="auto-fill">
 		{#each filtered_data as metadata (metadata.id)}
-			<BoxContent {metadata} />
+			<BoxContent {metadata} edit={data.user.is_superuser || data.user.is_staff} />
 		{/each}
 	</div>
 </div>

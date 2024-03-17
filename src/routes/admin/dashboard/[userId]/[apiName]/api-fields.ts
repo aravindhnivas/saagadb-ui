@@ -11,6 +11,7 @@ export const api_fields = {
 	],
 	'species-metadata': [
 		{ name: 'approved', label: 'Approved' },
+		{ name: 'cat_file', label: 'Cat file', editable: false, link: true, download: true },
 		{ name: 'molecule_tag', label: 'Molecule tag', search_field: true, editable: false },
 		{ name: 'linelist_name', label: 'Linelist', search_field: true, editable: false },
 		{ name: 'category', label: 'Category', search_field: true },
@@ -26,15 +27,22 @@ export const api_fields = {
 	reference: [
 		{ name: 'approved', label: 'Approved' },
 		{ name: 'doi', label: 'DOI', search_field: true },
-		{ name: 'ref_url', label: 'Reference URL' }
+		{ name: 'ref_url', label: 'Reference URL', link: true }
 	],
 	'meta-reference': [
 		{ name: 'approved', label: 'Approved' },
 		{ name: 'doi', label: 'DOI', search_field: true },
-		{ name: 'ref_url', label: 'Reference URL' },
+		{ name: 'ref_url', label: 'Reference URL', link: true },
 		{ name: 'dipole_moment', label: 'Dipole Moment' },
 		{ name: 'spectrum', label: 'Spectrum' }
 	]
 } as {
-	[name: string]: { name: string; label: string; search_field?: boolean; editable?: boolean }[];
+	[name: string]: {
+		name: string;
+		label: string;
+		search_field?: boolean;
+		editable?: boolean;
+		link?: boolean;
+		download?: boolean;
+	}[];
 };

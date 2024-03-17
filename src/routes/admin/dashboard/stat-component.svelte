@@ -41,13 +41,13 @@
 				class:text-yellow-500={percent_approved >= 0.5 && percent_approved < 1}
 				class:text-green-500={percent_approved === 1}
 			>
-				{#if allow_edit}
-					<a class="hover:underline" href="{base}/admin/dashboard/{user.id}/{apiName}">
-						{approved} / {total} approved
-					</a>
-				{:else}
+				<!-- {#if allow_edit} -->
+				<a class="hover:underline" href="{base}/admin/dashboard/{user.id}/{apiName}">
 					{approved} / {total} approved
-				{/if}
+				</a>
+				<!-- {:else}
+					{approved} / {total} approved
+				{/if} -->
 			</div>
 		</div>
 	{:else}

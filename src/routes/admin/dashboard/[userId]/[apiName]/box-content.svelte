@@ -1,6 +1,12 @@
 <script lang="ts">
 	import type { ActionData } from './$types';
-	import { AlertTriangle, CheckCheck, LockKeyhole, UnlockKeyhole } from 'lucide-svelte/icons';
+	import {
+		AlertTriangle,
+		CheckCheck,
+		Download,
+		LockKeyhole,
+		UnlockKeyhole
+	} from 'lucide-svelte/icons';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
 	import Input from '$lib/components/ui/input/input.svelte';
 	import { api_fields } from './api-fields';
@@ -15,6 +21,7 @@
 	export let metadata: {
 		[name: string]: string;
 	};
+	export let edit: boolean = false;
 	let uploading = false;
 
 	const onSubmit: SubmitFunction = () => {
@@ -67,40 +74,43 @@
 
 <form id="{metadata.id}-form" use:enhance={onSubmit} method="POST">
 	<div class="grid border-solid border-2 p-5 gap-1">
-		<div class="flex gap-4 items-center w-full my-2">
-			<button
-				class="w-max"
-				on:click|preventDefault={() => {
-					disabled = !disabled;
-				}}
-			>
-				{#if disabled}
-					<LockKeyhole />
-				{:else}
-					<UnlockKeyhole />
-				{/if}
-			</button>
-			{#if disabled && $page.params.apiName === 'species'}
-				<div class="ml-auto">{@html mol?.get_svg(100, 50)}</div>
-			{/if}
-			{#if !disabled}
-				<div class="ml-auto">
-					{#if uploading}
-						<div class="loading loading-spinner"></div>
+		{#if edit}
+			<div class="flex gap-4 items-center w-full my-2">
+				<button
+					class="w-max"
+					on:click|preventDefault={() => {
+						disabled = !disabled;
+					}}
+				>
+					{#if disabled}
+						<LockKeyhole />
+					{:else}
+						<UnlockKeyhole />
 					{/if}
-					<Button
-						class={uploading ? 'hidden' : ''}
-						formaction="?/update_metadata&id={metadata.id}"
-						type="submit"
-						variant="outline"
-					>
-						Save
-					</Button>
-				</div>
-			{/if}
-		</div>
-
-		{#each fields as { name, label, editable }}
+				</button>
+				{#if disabled && $page.params.apiName === 'species'}
+					<div class="ml-auto">{@html mol?.get_svg(100, 50)}</div>
+				{/if}
+				{#if !disabled}
+					<div class="ml-auto">
+						{#if uploading}
+							<div class="loading loading-spinner"></div>
+						{/if}
+						<Button
+							class={uploading ? 'hidden' : ''}
+							formaction="?/update_metadata&id={metadata.id}"
+							type="submit"
+							variant="outline"
+						>
+							Save
+						</Button>
+					</div>
+				{/if}
+			</div>
+		{:else if $page.params.apiName === 'species'}
+			<div class="ml-auto">{@html mol?.get_svg(100, 50)}</div>
+		{/if}
+		{#each fields as { name, label, editable, link, download }}
 			<div class="grid grid-cols-4 items-center select-text">
 				{#if name === 'approved'}
 					{#if metadata[name]}
@@ -114,10 +124,21 @@
 					<div>{@html label}</div>
 					{#if disabled || editable === false}
 						<div class="col-span-3">
-							{#if typeof metadata[name] === 'string' && metadata[name].startsWith('http')}
-								<a href={metadata[name]} target="_blank" rel="noopener noreferrer">
-									{metadata[name]}
-								</a>
+							{#if link}
+								{#if metadata[name]}
+									<a href={metadata[name]} target="_blank" rel="noopener noreferrer">
+										{#if download}
+											<!-- <div class="flex gap-4 items-center"> -->
+											<!-- <span>Download</span> -->
+											<Download />
+											<!-- </div> -->
+										{:else}
+											{metadata[name]}
+										{/if}
+									</a>
+								{:else}
+									<span class="text-red">File not uploaded</span>
+								{/if}
 							{:else}
 								{@html metadata[name] ?? '-'}
 							{/if}

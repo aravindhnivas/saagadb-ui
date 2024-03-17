@@ -30,12 +30,12 @@ export const load: PageServerLoad = async ({ fetch, params, parent }) => {
 		}
 	}
 
-	if (!(parent_user.is_staff || parent_user.is_superuser)) {
-		error(403, {
-			title: 'Unauthorized',
-			message: 'You do not have permission to edit data.'
-		});
-	}
+	// if (!(parent_user.is_staff || parent_user.is_superuser)) {
+	// 	error(403, {
+	// 		title: 'Unauthorized',
+	// 		message: 'You do not have permission to edit data.'
+	// 	});
+	// }
 
 	const fetch_stuff = async <T>(url: string) => {
 		const res = await fetch(url);
@@ -60,7 +60,7 @@ export const actions: Actions = {
 		const body = Object.fromEntries(formData.entries());
 
 		if (params.apiName === 'species') {
-			body['name'] = body['name'].split(',').map((name: string) => name.trim());
+			body['name'] = body['name']?.split(',').map((name: string) => name.trim());
 		}
 
 		// console.log({ id, body });
