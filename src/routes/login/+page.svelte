@@ -19,18 +19,22 @@
 				<Card.Description>Enter your email and password below</Card.Description>
 			</Card.Header>
 			<Card.Content class="grid gap-4">
-				<Form.Field {config} name="email">
+				<Form.Field {config} name="email" let:constraints let:attrs>
 					<Form.Item>
 						<Form.Label>Email</Form.Label>
-						<Form.Input type="email" required />
-						<Form.Validation />
+						<Form.Input type="email" {...constraints} {...attrs.input} />
+						<Form.Validation {...attrs.validation} />
 					</Form.Item>
 				</Form.Field>
-				<Form.Field {config} name="password">
+				<Form.Field {config} name="password" let:constraints let:attrs>
 					<Form.Item>
 						<Form.Label>Password</Form.Label>
-						<Form.Input type={show_password ? 'string' : 'password'} required />
-						<Form.Validation />
+						<Form.Input
+							type={show_password ? 'text' : 'password'}
+							{...constraints}
+							{...attrs.input}
+						/>
+						<Form.Validation {...attrs.validation} />
 					</Form.Item>
 				</Form.Field>
 			</Card.Content>
