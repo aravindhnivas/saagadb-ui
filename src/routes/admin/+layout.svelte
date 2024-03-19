@@ -15,50 +15,58 @@
 		requires_verified_user?: boolean;
 		requires_admin_user?: boolean;
 		requires_super_user?: boolean;
+		preload: boolean;
 	}
 
 	const admin_menu: AdminMenu[] = [
 		{
 			id: uuidv4(),
 			name: 'Dashboard',
-			href: base + '/admin/dashboard'
+			href: base + '/admin/dashboard',
+			preload: true
 		},
 		{
 			id: uuidv4(),
 			name: 'Create New user',
 			href: base + '/admin/create_user',
 			requires_verified_user: true,
-			requires_admin_user: true
+			requires_admin_user: true,
+			preload: data.user.is_staff
 		},
 		{
 			id: uuidv4(),
 			name: 'Database name',
 			href: base + '/admin/database_name/linelist',
 			requires_verified_user: true,
-			requires_admin_user: true
+			requires_admin_user: true,
+			preload: data.user.is_staff
 		},
 		{
 			id: uuidv4(),
 			name: 'Species',
 			href: base + '/admin/species',
-			requires_verified_user: true
+			requires_verified_user: true,
+			preload: true
 		},
 		{
 			id: uuidv4(),
 			name: 'Metadata',
 			href: base + '/admin/meta-data',
-			requires_verified_user: true
+			requires_verified_user: true,
+			preload: true
 		},
 		{
 			id: uuidv4(),
 			name: 'Profile',
-			href: base + '/admin/profile'
+			href: base + '/admin/profile',
+			preload: true
 		},
 		{
 			id: uuidv4(),
 			name: 'Users control',
 			href: base + '/admin/users',
-			requires_super_user: true
+			requires_super_user: true,
+			preload: data.user.is_superuser
 		}
 	];
 
@@ -76,14 +84,14 @@
 	<div class="settings__div">
 		<ul class=" menu menu-sm lg:menu-md px-4 py-0 gap-2">
 			<li class="menu-title">Admin panel</li>
-			{#each admin_menu as { href, name, id } (id)}
+			{#each admin_menu as { href, name, id, preload } (id)}
 				<li>
 					<a
+						data-sveltekit-preload-data={preload ? 'hover' : 'false'}
 						class:active={active_tab === name}
 						{href}
 						on:click={() => {
 							active_tab = name;
-							console.log('active_tab', active_tab);
 						}}>{name}</a
 					>
 				</li>
