@@ -4,7 +4,7 @@ import { DB_ORIGIN } from '$lib/server';
 import { delete_token } from '$lib/server/cookies';
 
 export const GET: RequestHandler = async ({ url, locals, cookies, params, fetch }) => {
-	if (!locals.token) {
+	if (!locals.refresh_token) {
 		if (params.name !== 'verify-email') {
 			error(401, { message: 'Unauthorized - login required' });
 		}

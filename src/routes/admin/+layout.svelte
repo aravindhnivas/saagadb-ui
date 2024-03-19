@@ -83,6 +83,7 @@
 						{href}
 						on:click={() => {
 							active_tab = name;
+							console.log('active_tab', active_tab);
 						}}>{name}</a
 					>
 				</li>

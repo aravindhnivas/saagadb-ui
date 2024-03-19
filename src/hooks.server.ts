@@ -1,11 +1,18 @@
 import { redirect, type Handle, type HandleFetch } from '@sveltejs/kit';
 import { env } from '$env/dynamic/private';
+import { DB_URL } from '$lib/server';
+import { set_JWT } from '$lib/server/cookies';
 
 export const handle: Handle = async ({ event, resolve }) => {
-	const token = event.cookies.get('token') || '';
-	if (token) event.locals.token = token;
+	// const token = event.cookies.get('token') || '';
+	const access_token = event.cookies.get('JWT-access') || '';
+	const refresh_token = event.cookies.get('JWT-refresh') || '';
+	if (access_token) event.locals.access_token = access_token;
+	if (refresh_token) event.locals.refresh_token = refresh_token;
+	// console.log('event.locals', event.locals);
+
 	if (event.url.pathname.startsWith('/admin')) {
-		if (!event.locals.token) {
+		if (!event.locals.refresh_token) {
 			const fromUrl = event.url.pathname + event.url.search;
 			redirect(303, `/login?redirectTo=${fromUrl}`);
 		}
@@ -31,9 +38,19 @@ export const handleFetch: HandleFetch = async ({ event, request, fetch }) => {
 	request.headers.set('accept', 'application/json');
 	request.headers.set('Access-Control-Allow-Credentials', 'true');
 
-	if (event.locals.token) {
-		request.headers.set('Authorization', `Token ${event.locals.token}`);
+	if (event.locals.access_token) {
+		request.headers.set('Authorization', `Bearer ${event.locals.access_token}`);
+	} else if (event.locals.refresh_token) {
+		const res = await fetch(`${DB_URL}/token/refresh/`, {
+			method: 'POST',
+			body: JSON.stringify({ refresh: event.locals.refresh_token }),
+			headers: { 'Content-Type': 'application/json' }
+		});
+		const JWT = (await res.json()) as { access: string; refresh: string };
+
+		set_JWT({ cookies: event.cookies, JWT });
+		request.headers.set('Authorization', `Bearer ${JWT.access}`);
 	}
-	// console.log('request', request.url, request.headers);
+
 	return fetch(request);
 };

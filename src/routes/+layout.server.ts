@@ -4,7 +4,7 @@ import { oO } from '@zmotivat0r/o0';
 
 export const load: LayoutServerLoad = async ({ fetch, locals }) => {
 	const fetch_user = async () => {
-		if (!locals.token) return null;
+		if (!locals.refresh_token) return null;
 		try {
 			const [, res] = await oO(fetch(`${base}/api/user/me`));
 			if (!(res && res?.ok)) return null;

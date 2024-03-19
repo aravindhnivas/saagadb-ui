@@ -2,7 +2,6 @@ import type { Actions, PageServerLoad } from './$types';
 import { superValidate, setError } from 'sveltekit-superforms/server';
 import { fail, redirect } from '@sveltejs/kit';
 import { DB_URL } from '$lib/server';
-// import { set_token } from '$lib/server/cookies';
 import { base } from '$app/paths';
 import { PasswordSchema } from './schema';
 

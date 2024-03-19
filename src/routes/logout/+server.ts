@@ -6,6 +6,8 @@ import { base } from '$app/paths';
 
 export const POST: RequestHandler = async ({ cookies }) => {
 	logged_in.set('');
-	delete_token({ cookies });
+	// delete_token({ cookies });
+	delete_token({ cookies, name: 'JWT-access' });
+	delete_token({ cookies, name: 'JWT-refresh' });
 	redirect(303, `${base}/login?redirectTo=/admin/dashboard/`);
 };

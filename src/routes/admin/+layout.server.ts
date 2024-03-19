@@ -7,6 +7,7 @@ export const load: LayoutServerLoad = async ({ fetch }) => {
 	const fetch_user = async () => {
 		try {
 			const [, res] = await oO(fetch(`${base}/api/user/me`));
+			// console.log({ res });
 			if (!(res && res?.ok)) return null;
 			const data = (await res.json()) as User;
 			return data;
@@ -16,6 +17,7 @@ export const load: LayoutServerLoad = async ({ fetch }) => {
 	};
 
 	const user = await fetch_user();
+	// console.log('user', user);
 	if (!user) {
 		error(403, { title: 'Invalid user', message: 'Invalid User' });
 	}

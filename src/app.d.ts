@@ -8,7 +8,9 @@ declare global {
 			title?: string;
 		}
 		interface Locals {
-			token: string | null;
+			access_token: string | null;
+			refresh_token: string | null;
+			// token: string | null;
 			domain: string;
 		}
 		interface PageState {
