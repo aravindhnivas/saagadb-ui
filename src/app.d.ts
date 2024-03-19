@@ -7,10 +7,9 @@ declare global {
 			message: string;
 			title?: string;
 		}
-		interface Locals {
-			access_token: string | null;
-			refresh_token: string | null;
-			// token: string | null;
+		interface Locals extends TokenDecodedUser {
+			access_token?: string;
+			refresh_token?: string;
 			domain: string;
 		}
 		interface PageState {

@@ -2,17 +2,26 @@ import { redirect, type Handle, type HandleFetch } from '@sveltejs/kit';
 import { env } from '$env/dynamic/private';
 import { DB_URL } from '$lib/server';
 import { set_JWT } from '$lib/server/cookies';
+import { jwtDecode } from 'jwt-decode';
 
 export const handle: Handle = async ({ event, resolve }) => {
 	// const token = event.cookies.get('token') || '';
 	const access_token = event.cookies.get('JWT-access') || '';
 	const refresh_token = event.cookies.get('JWT-refresh') || '';
 	if (access_token) event.locals.access_token = access_token;
-	if (refresh_token) event.locals.refresh_token = refresh_token;
 	// console.log('event.locals', event.locals);
 
+	if (refresh_token) {
+		event.locals.refresh_token = refresh_token;
+		const decoded = jwtDecode(refresh_token) as TokenDecoded;
+		event.locals.user_id = decoded.user_id;
+		event.locals.user = decoded.user;
+		event.locals.user_approvers = decoded.user_approvers;
+		// console.log('decoded', decoded, event.locals);
+	}
+
 	if (event.url.pathname.startsWith('/admin')) {
-		if (!event.locals.refresh_token) {
+		if (!event.locals.refresh_token && event.locals.user) {
 			const fromUrl = event.url.pathname + event.url.search;
 			redirect(303, `/login?redirectTo=${fromUrl}`);
 		}

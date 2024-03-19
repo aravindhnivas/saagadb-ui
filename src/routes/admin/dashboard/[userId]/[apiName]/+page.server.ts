@@ -5,7 +5,7 @@ import { DB_URL } from '$lib/server';
 
 const allowed_api = ['species', 'species-metadata', 'reference', 'meta-reference'];
 
-export const load: PageServerLoad = async ({ fetch, params, parent }) => {
+export const load: PageServerLoad = async ({ fetch, params, locals }) => {
 	const { userId, apiName } = params;
 	// console.log({ userId, apiName });
 	if (Number.isNaN(parseInt(userId))) {
@@ -19,10 +19,8 @@ export const load: PageServerLoad = async ({ fetch, params, parent }) => {
 		error(404, { message: `'${apiName}' is not a valid API name`, title: 'Invalid API' });
 	}
 
-	const { user: parent_user } = await parent();
-
-	if (parent_user.id !== Number(userId)) {
-		if (!parent_user.is_superuser) {
+	if (locals.user.id !== Number(userId)) {
+		if (!locals.user.is_superuser) {
 			error(403, {
 				title: 'Unauthorized',
 				message: 'You do not have permission to edit data of other users'
@@ -30,7 +28,7 @@ export const load: PageServerLoad = async ({ fetch, params, parent }) => {
 		}
 	}
 
-	// if (!(parent_user.is_staff || parent_user.is_superuser)) {
+	// if (!(locals.user.is_staff || locals.user.is_superuser)) {
 	// 	error(403, {
 	// 		title: 'Unauthorized',
 	// 		message: 'You do not have permission to edit data.'

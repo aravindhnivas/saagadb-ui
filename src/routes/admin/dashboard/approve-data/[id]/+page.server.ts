@@ -27,10 +27,10 @@ const parse_failed_response = async (res: Response) => {
 	return { success: false, message: text };
 };
 
-export const load: PageServerLoad = async ({ fetch, params, depends, parent }) => {
+export const load: PageServerLoad = async ({ fetch, params, depends, locals }) => {
 	// console.log('Approve data page server load');
-	const { user: parent_user } = await parent();
-	if (!parent_user.is_staff || !parent_user.is_superuser) {
+	// const { user: parent_user } = await parent();
+	if (!locals.user.is_staff || !locals.user.is_superuser) {
 		error(403, {
 			title: 'Forbidden',
 			message: 'You do not have permission to access this page'
@@ -46,7 +46,7 @@ export const load: PageServerLoad = async ({ fetch, params, depends, parent }) =
 
 	const user = (await user_res.json()) as User;
 
-	if (!user.approver.includes(parent_user.id)) {
+	if (!user.approver.includes(locals.user.id)) {
 		error(403, {
 			title: 'You are not the approver for this user',
 			message: 'You do not have permission to approve data for this user.'
