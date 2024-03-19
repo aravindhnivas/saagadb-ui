@@ -11,6 +11,8 @@ export const api_fields = {
 	],
 	'species-metadata': [
 		{ name: 'approved', label: 'Approved' },
+		{ name: 'species_smiles', label: 'SMILES', search_field: true, editable: false },
+		{ name: 'species_name', label: 'Species name', search_field: true, editable: false },
 		{ name: 'cat_file', label: 'Cat file', editable: false, link: true, download: true },
 		{ name: 'molecule_tag', label: 'Molecule tag', search_field: true, editable: false },
 		{ name: 'linelist_name', label: 'Linelist', search_field: true, editable: false },

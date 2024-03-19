@@ -47,6 +47,7 @@ export const load: PageServerLoad = async ({ fetch, params, locals }) => {
 	};
 	type Metadata = { [name: string]: string }[];
 	const metadata = await fetch_stuff<Metadata>(`${base}/api/data/${apiName}?uploaded_by=${userId}`);
+	// console.log({ metadata });
 	return { metadata };
 };
 

@@ -22,6 +22,8 @@
 		[name: string]: string;
 	};
 	export let edit: boolean = false;
+
+	// console.log(metadata);
 	let uploading = false;
 
 	const onSubmit: SubmitFunction = () => {
@@ -49,25 +51,28 @@
 	let disabled = true;
 	// console.log('mounted');
 
+	let smiles = metadata.smiles || metadata.species_smiles;
 	let mol: ReturnType<typeof window.RDKit.get_mol>;
-	const auto_fill_inchi_info = () => {
+	const auto_fill_inchi_info = (smi: string) => {
 		try {
-			if (!metadata.smiles) return toast.error('Please enter a SMILES string first');
+			if (!smi) return toast.error('Please enter a SMILES string first');
 			if (!window.RDKit) return toast.error('RDKit not loaded. Please refresh the page.');
-			mol = window.RDKit.get_mol(metadata.smiles);
+			mol = window.RDKit.get_mol(smi);
+			// console.log(mol);
 			if (!mol) return toast.error('Invalid SMILES string');
 			const InChI = mol.get_inchi();
 			const InChIkey = window.RDKit.get_inchikey_for_inchi(mol?.get_inchi());
-			metadata.standard_inchi = InChI;
-			metadata.standard_inchi_key = InChIkey;
+			if (metadata.standard_inchi) metadata.standard_inchi = InChI;
+			if (metadata.standard_inchi_key) metadata.standard_inchi_key = InChIkey;
 		} catch (error) {
 			if (error instanceof Error) toast.error(error.message);
 		}
 	};
 
 	onMount(() => {
-		if ($page.params.apiName === 'species' && metadata.smiles) {
-			auto_fill_inchi_info();
+		console.log(smiles);
+		if (smiles) {
+			auto_fill_inchi_info(smiles);
 		}
 	});
 </script>
@@ -88,7 +93,7 @@
 						<UnlockKeyhole />
 					{/if}
 				</button>
-				{#if disabled && $page.params.apiName === 'species' && mol}
+				{#if disabled && mol}
 					<div class="ml-auto">{@html mol.get_svg(100, 50)}</div>
 				{/if}
 				{#if !disabled}
@@ -107,7 +112,7 @@
 					</div>
 				{/if}
 			</div>
-		{:else if $page.params.apiName === 'species' && mol}
+		{:else if mol}
 			<div class="ml-auto">{@html mol.get_svg(100, 50)}</div>
 		{/if}
 		{#each fields as { name, label, editable, link, download }}
@@ -152,7 +157,7 @@
 							<button
 								class="btn btn-sm"
 								on:click|preventDefault={() => {
-									auto_fill_inchi_info();
+									auto_fill_inchi_info(metadata[name]);
 									toast.success('InChI and InChIKey auto-filled');
 								}}
 							>
