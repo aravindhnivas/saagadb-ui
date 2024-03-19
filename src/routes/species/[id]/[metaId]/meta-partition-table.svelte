@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { base } from '$app/paths';
+	// import { base } from '$app/paths';
 	import * as Table from '$lib/components/ui/table';
 	import { Download } from 'lucide-svelte/icons';
 

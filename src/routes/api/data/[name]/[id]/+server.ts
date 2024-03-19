@@ -25,12 +25,14 @@ export const GET: RequestHandler = async ({ url, params, fetch }) => {
 	const data = await res.json();
 
 	if (params.name === 'species-metadata' || params.name === 'reference') {
+		const URL_BASE =
+			params.name === 'species-metadata' ? `${base}/uploads/sp` : `${base}/uploads/bib`;
 		let new_data = {};
 		Object.keys(data).forEach((i) => {
 			let val = data[i];
 			if ((i.endsWith('_file') && val) || i === 'bibtex') {
 				const filename = val.split('/').pop();
-				val = `${base}/uploads/sp/${filename}`;
+				val = `${URL_BASE}/${filename}`;
 			}
 			new_data = {
 				...new_data,

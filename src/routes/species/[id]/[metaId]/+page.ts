@@ -10,9 +10,9 @@ export const load: PageLoad = async ({ fetch, params }) => {
 			meta_references.map(async ({ ref }) => {
 				const res = await fetch(`${base}/api/data/reference/${ref}`);
 				if (!res.ok) return null;
-				const { bibtex, ...restRef } = (await res.json()) as Reference;
-				const bibfile = `${base}/uploads/bib/` + bibtex.split('/').at(-1);
-				return { ...restRef, bibtex: bibfile };
+
+				const data = (await res.json()) as Reference;
+				return data;
 			})
 		)) as Reference[];
 		return { meta_references, references };
