@@ -8,7 +8,7 @@
 	const current_meta = meta.find((m) => m.id == id);
 	// console.log({ current_meta });
 	const { partition_function, qpart_file } = current_meta ?? {};
-	const qpart_filename = qpart_file?.split('/').pop();
+	// console.log({ qpart_file });
 	const cell_padding = 'p-2';
 
 	const sortedObj: Record<string, string> | undefined =
@@ -24,7 +24,7 @@
 	<div class="flex gap-4 items-center">
 		<h1>Parition function</h1>
 		<a
-			href="{base}/uploads/sp/{qpart_filename}"
+			href={qpart_file}
 			download={`${species_formula}_${linelist_name}_${molecule_tag}.qpart`}
 			target="_blank"
 			rel="noopener noreferrer"
