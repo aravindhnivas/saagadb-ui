@@ -19,13 +19,12 @@ export const GET: RequestHandler = async ({ url, fetch, params }) => {
 
 	const data = await res.json();
 
-	if (params.name === 'species-metadata') {
+	if (params.name === 'species-metadata' || params.name === 'reference') {
 		const new_data = data.map((d: SpeciesMetadata) => {
 			let new_d = {};
 			Object.keys(d).forEach((i) => {
 				let val = d[i];
-				if (i.endsWith('_file') && val) {
-					// val = val.split('/').pop();
+				if ((i.endsWith('_file') && val) || i === 'bibtex') {
 					const filename = val.split('/').pop();
 					val = `${base}/uploads/sp/${filename}`;
 				}
@@ -36,7 +35,6 @@ export const GET: RequestHandler = async ({ url, fetch, params }) => {
 			});
 			return new_d;
 		});
-		// console.log(new_data);
 		return json(new_data, {
 			status: 200
 		});
