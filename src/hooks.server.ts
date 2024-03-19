@@ -21,7 +21,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	}
 
 	if (event.url.pathname.startsWith('/admin')) {
-		if (!event.locals.refresh_token && event.locals.user) {
+		if (!event.locals.refresh_token) {
 			const fromUrl = event.url.pathname + event.url.search;
 			redirect(303, `/login?redirectTo=${fromUrl}`);
 		}
