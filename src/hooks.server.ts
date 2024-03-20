@@ -8,10 +8,10 @@ export const handle: Handle = async ({ event, resolve }) => {
 	// const token = event.cookies.get('token') || '';
 	const access_token = event.cookies.get('JWT-access') || '';
 	const refresh_token = event.cookies.get('JWT-refresh') || '';
-	if (access_token) event.locals.access_token = access_token;
+	if (access_token && access_token !== 'undefined') event.locals.access_token = access_token;
 	// console.log('event.locals', event.locals);
 
-	if (refresh_token) {
+	if (refresh_token && refresh_token !== 'undefined') {
 		event.locals.refresh_token = refresh_token;
 		const decoded = jwtDecode(refresh_token) as TokenDecoded;
 		event.locals.user_id = decoded.user_id;
