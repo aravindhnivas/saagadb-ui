@@ -49,6 +49,15 @@
 			label: 'NOT approved'
 		}
 	];
+
+	let edit_criteria = (metadata: { [name: string]: string }) => {
+		return (
+			['species', 'reference'].includes($page.params.apiName) ||
+			!metadata.approved ||
+			data.user.is_superuser ||
+			(data.user.is_staff && data.user.id === Number($page.params.userId))
+		);
+	};
 </script>
 
 <Button
@@ -79,10 +88,7 @@
 
 	<div class="auto-fill">
 		{#each filtered_data as metadata (metadata.id)}
-			<BoxContent
-				{metadata}
-				edit={!metadata.approved || data.user.is_superuser || data.user.is_staff}
-			/>
+			<BoxContent {metadata} edit={edit_criteria(metadata)} />
 		{/each}
 	</div>
 </div>
