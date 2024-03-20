@@ -17,6 +17,8 @@
 	import { toast } from 'svelte-sonner';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import { onMount } from 'svelte';
+	import { Textarea } from '$lib/components/ui/textarea';
+	import Tiptap from '$lib/components/Tiptap.svelte';
 
 	export let metadata: {
 		[name: string]: string;
@@ -167,6 +169,15 @@
 								<div>{@html mol?.get_svg(100, 50)}</div>
 							{/if}
 						</div>
+					{:else if name === 'notes'}
+						{#if disabled}
+							<span class="text-gray-500 px-4">{@html metadata[name] || 'No notes'}</span>
+						{:else}
+							<Textarea hidden bind:value={metadata[name]} {name} />
+							<div class="col-span-3">
+								<Tiptap setValue={(value) => (metadata[name] = value)} content={metadata[name]} />
+							</div>
+						{/if}
 					{:else}
 						<Input type="text" value={metadata[name]} class="h-7 col-span-3" {name} />
 					{/if}

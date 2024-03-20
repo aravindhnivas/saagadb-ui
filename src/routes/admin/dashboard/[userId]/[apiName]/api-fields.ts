@@ -7,7 +7,8 @@ export const api_fields = {
 		{ name: 'name_html', label: 'Name HTML' },
 		{ name: 'smiles', label: 'SMILES', search_field: true },
 		{ name: 'standard_inchi', label: 'InChI', search_field: true },
-		{ name: 'standard_inchi_key', label: 'InChIKey', search_field: true }
+		{ name: 'standard_inchi_key', label: 'InChIKey', search_field: true },
+		{ name: 'notes', label: 'Notes' }
 	],
 	'species-metadata': [
 		{ name: 'approved', label: 'Approved' },
@@ -24,19 +25,22 @@ export const api_fields = {
 		{ name: 'mu_c', label: 'μ<sub>c</sub> / D' },
 		{ name: 'a_const', label: 'A / MHz' },
 		{ name: 'b_const', label: 'B / MHz' },
-		{ name: 'c_const', label: 'C / MHz' }
+		{ name: 'c_const', label: 'C / MHz' },
+		{ name: 'notes', label: 'Notes' }
 	],
 	reference: [
 		{ name: 'approved', label: 'Approved' },
 		{ name: 'doi', label: 'DOI', search_field: true },
-		{ name: 'ref_url', label: 'Reference URL', link: true }
+		{ name: 'ref_url', label: 'Reference URL', link: true },
+		{ name: 'notes', label: 'Notes' }
 	],
 	'meta-reference': [
 		{ name: 'approved', label: 'Approved' },
 		{ name: 'doi', label: 'DOI', search_field: true },
 		{ name: 'ref_url', label: 'Reference URL', link: true },
 		{ name: 'dipole_moment', label: 'Dipole Moment' },
-		{ name: 'spectrum', label: 'Spectrum' }
+		{ name: 'spectrum', label: 'Spectrum' },
+		{ name: 'notes', label: 'Notes' }
 	]
 } as {
 	[name: string]: {
