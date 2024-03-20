@@ -87,9 +87,11 @@
 	<div class="grid border-solid border-2 p-5 gap-1">
 		{#if edit}
 			<div class="flex gap-4 items-center w-full my-2">
-				<button
-					class="w-max"
-					on:click|preventDefault={() => {
+				<Button
+					variant="outline"
+					class="w-[100px] flex gap-4 items-center"
+					on:click={(e) => {
+						e.preventDefault();
 						disabled = !disabled;
 					}}
 				>
@@ -98,7 +100,8 @@
 					{:else}
 						<UnlockKeyhole />
 					{/if}
-				</button>
+					<span>Edit</span>
+				</Button>
 				{#if disabled && mol}
 					<div class="ml-auto">{@html mol.get_svg(100, 50)}</div>
 				{/if}
