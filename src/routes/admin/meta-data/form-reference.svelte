@@ -46,9 +46,10 @@
 					return f;
 				});
 
-				if (formValues.doi.includes('http')) {
+				if (formValues.doi.includes('doi.org')) {
+					const corr_doi = formValues.doi.split('doi.org/')[1];
 					formStore.update((f) => {
-						f.doi = f.doi.replace('http://dx.doi.org/', '');
+						f.doi = corr_doi;
 						return f;
 					});
 				}
