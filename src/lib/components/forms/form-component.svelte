@@ -22,8 +22,9 @@
 	const options: FormOptions<AnyZodObject> = {
 		resetForm: true,
 		onResult: ({ result }) => {
-			console.log(result);
+			// console.log(result);
 			if (result.type === 'success') {
+				dispatch('success', { result });
 				dispatch('success', { result });
 				error_message = '';
 			} else if (result.type === 'failure') {

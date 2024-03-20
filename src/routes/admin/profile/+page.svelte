@@ -8,18 +8,20 @@
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
 	import Separator from '$lib/components/ui/separator/separator.svelte';
+	import type { SubmitFunction } from '@sveltejs/kit';
+	import Loader from '$lib/components/utils/loader.svelte';
 
 	export let data: PageData;
-	export let form: ActionData;
+	// export let form: ActionData;
 
-	$: if (form && form.success) {
-		disabled = true;
-		toast.success(form.message);
-	}
+	// $: if (form && form.success) {
+	// 	disabled = true;
+	// 	toast.success(form.message);
+	// }
 
-	$: if (form && !form.success) {
-		toast.error('An error occurred. Please try again');
-	}
+	// $: if (form && !form.success) {
+	// 	toast.error(form.message);
+	// }
 
 	let disabled = true;
 	const userKeys = [
@@ -52,6 +54,37 @@
 			toast.error(data.detail);
 		}
 	}
+
+	let uploading = false;
+	const onSubmit: SubmitFunction = () => {
+		uploading = true;
+		return async ({ update, result }) => {
+			const { data, type, status } = result as {
+				data: {
+					success: boolean;
+					message: string;
+				};
+				type: string;
+				status: number;
+			};
+
+			if (type !== 'success' || status !== 200) {
+				toast.error('An error occurred');
+				uploading = false;
+				return;
+			}
+
+			if (data.success) {
+				disabled = true;
+				toast.success(data.message);
+			} else {
+				toast.error(data.message);
+			}
+			uploading = false;
+			// disabled = true;
+			await update({ reset: false });
+		};
+	};
 </script>
 
 <h1 class="text-2xl font-bold mb-4">Profile</h1>
@@ -69,7 +102,7 @@
 
 <form
 	enctype="multipart/form-data"
-	use:enhance
+	use:enhance={onSubmit}
 	method="POST"
 	action="?/updateProfile&id={data.user.id}"
 	class="grid grid-cols-4 items-center select-text max-w-xl py-5"
@@ -103,7 +136,12 @@
 	</div>
 
 	{#if !disabled}
-		<Button type="submit" size="sm" class="col-span-4 w-[150px] ml-auto">Save</Button>
+		<Button type="submit" size="sm" class="col-span-4 w-[150px] ml-auto" disabled={uploading}>
+			<Loader fetching={uploading} description="Uploading..." />
+			{#if !uploading}
+				<span>Save</span>
+			{/if}
+		</Button>
 	{/if}
 </form>
 

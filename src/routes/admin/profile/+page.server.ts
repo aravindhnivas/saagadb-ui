@@ -55,10 +55,10 @@ export const actions: Actions = {
 			const msg = (await res.json()) as {
 				detail: string;
 			};
-			console.log('msg', msg);
+			// console.log('msg', msg);
 			return {
 				success: false,
-				message: msg.detail
+				message: JSON.stringify(msg)
 			};
 		}
 		// const data = await res.json();
