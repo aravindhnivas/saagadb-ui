@@ -34,5 +34,38 @@ export const actions: Actions = {
 
 		delete_token({ cookies });
 		return { form };
+	},
+
+	updateProfile: async ({ request, fetch, url }) => {
+		const formData = await request.formData();
+		const id = url.searchParams.get('id') as string;
+		// console.log('formData', formData);
+
+		// return {
+		// 	success: false,
+		// 	message: 'test message'
+		// };
+
+		const res = await fetch(`${DB_URL}/user/fetch/${id}/`, {
+			method: 'PATCH',
+			body: formData
+		});
+
+		if (!res.ok) {
+			const msg = (await res.json()) as {
+				detail: string;
+			};
+			console.log('msg', msg);
+			return {
+				success: false,
+				message: msg.detail
+			};
+		}
+		// const data = await res.json();
+		// console.log(data);
+		return {
+			success: res.ok,
+			message: 'User updated successfully'
+		};
 	}
 };
