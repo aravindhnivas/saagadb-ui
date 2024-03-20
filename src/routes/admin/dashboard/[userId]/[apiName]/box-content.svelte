@@ -55,24 +55,28 @@
 
 	let smiles = metadata.smiles || metadata.species_smiles;
 	let mol: ReturnType<typeof window.RDKit.get_mol>;
-	const auto_fill_inchi_info = (smi: string) => {
+	const auto_fill_inchi_info = (smi: string, notify: boolean = false) => {
 		try {
 			if (!smi) return toast.error('Please enter a SMILES string first');
 			if (!window.RDKit) return toast.error('RDKit not loaded. Please refresh the page.');
 			mol = window.RDKit.get_mol(smi);
 			// console.log(mol);
-			if (!mol) return toast.error('Invalid SMILES string');
+			if (!mol) {
+				if (notify) toast.error('Invalid SMILES string');
+				return;
+			}
 			const InChI = mol.get_inchi();
 			const InChIkey = window.RDKit.get_inchikey_for_inchi(mol?.get_inchi());
 			if (metadata.standard_inchi) metadata.standard_inchi = InChI;
 			if (metadata.standard_inchi_key) metadata.standard_inchi_key = InChIkey;
+			if (notify) toast.success('InChI and InChIKey auto-filled');
 		} catch (error) {
 			if (error instanceof Error) toast.error(error.message);
 		}
 	};
 
 	onMount(() => {
-		console.log(smiles);
+		// console.log(smiles);
 		if (smiles) {
 			auto_fill_inchi_info(smiles);
 		}
@@ -154,19 +158,20 @@
 					{:else if typeof metadata[name] === 'boolean'}
 						<FormCheckbox label="" {disabled} {name} checked={metadata[name]} />
 					{:else if name === 'smiles'}
-						<Input type="text" bind:value={metadata[name]} class="h-7 col-span-3" {name} />
+						<Input type="text" value={metadata[name]} class="h-7 col-span-3" {name} />
 						<div class="flex gap-2 items-center h-[100px]">
 							<button
 								class="btn btn-sm"
 								on:click|preventDefault={() => {
-									auto_fill_inchi_info(metadata[name]);
-									toast.success('InChI and InChIKey auto-filled');
+									auto_fill_inchi_info(metadata[name], true);
 								}}
 							>
 								<span>Draw & auto-fill InChI</span>
 							</button>
 							{#if mol}
 								<div>{@html mol?.get_svg(100, 50)}</div>
+							{:else}
+								<span class="text-red">Invalid SMILES</span>
 							{/if}
 						</div>
 					{:else if name === 'notes'}
