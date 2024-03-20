@@ -41,9 +41,11 @@
 				{/if}
 			</Table.Cell>
 			{#each references as ref}
-				<Table.Cell class="text-center {cell_padding}">
-					<Bibfile bibtex={ref.bibtex} />
-				</Table.Cell>
+				{#if ref.bibtex}
+					<Table.Cell class="text-center {cell_padding}">
+						<Bibfile bib_url={ref.bibtex} />
+					</Table.Cell>
+				{/if}
 			{/each}
 		</Table.Row>
 

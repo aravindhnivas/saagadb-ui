@@ -3,9 +3,11 @@ import type { PageLoad } from './$types';
 
 export const load: PageLoad = async ({ fetch, params }) => {
 	const fetch_data = async () => {
-		const meta_references = (await fetch(
-			`${base}/api/data/meta-reference?meta=${params.metaId}`
-		).then((res) => res.json())) as MetaReference[];
+		const res = await fetch(`${base}/api/data/meta-reference?meta=${params.metaId}`);
+		if (!res.ok) return { meta_references: [], references: [] };
+
+		const meta_references: MetaReference[] = await res.json();
+
 		const references = (await Promise.all(
 			meta_references.map(async ({ ref }) => {
 				const res = await fetch(`${base}/api/data/reference/${ref}`);
