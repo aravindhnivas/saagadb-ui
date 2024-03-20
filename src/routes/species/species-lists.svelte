@@ -35,7 +35,9 @@
 </script>
 
 <div class="flex flex-col gap-4 mb-2">
-	<Label>Search in</Label>
+	<Label>
+		Search in (<span class="text-sm ml-auto w-full">{species.length} species available</span>)
+	</Label>
 	<Svelecte
 		searchable={false}
 		multiple
@@ -70,10 +72,12 @@
 	</div>
 </div>
 
+<!-- <span class="text-sm ml-auto w-full">{species.length} species available</span> -->
+
 <style>
 	.scroll-container {
 		min-height: 300px;
-		max-height: 500px;
+		max-height: calc(100vh - 200px);
 		overflow: auto;
 		border: solid 1px gray;
 		padding: 1em;
