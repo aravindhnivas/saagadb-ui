@@ -45,6 +45,13 @@
 					f.doi = f.doi.trim();
 					return f;
 				});
+
+				if (formValues.doi.includes('http')) {
+					formStore.update((f) => {
+						f.doi = f.doi.replace('http://dx.doi.org/', '');
+						return f;
+					});
+				}
 				const doi = formValues.doi;
 				if (!doi) throw new Error('DOI is required');
 				const { href, bibtex_text, parsed } = await fetch_bibfile({ doi });
@@ -70,7 +77,7 @@
 			<Form.Item class="basis-3/4">
 				<Form.Label>bibtex</Form.Label>
 				<Form.Textarea {...constraints} {...attrs.input} />
-				<Form.Validation />
+				<Form.Validation {...attrs.validation} />
 			</Form.Item>
 		</Form.Field>
 		<div class="grid w-full max-w-sm items-center gap-1.5">
