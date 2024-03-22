@@ -13,6 +13,7 @@
 	import FormField from '$lib/components/forms/form-field.svelte';
 	import Loader from '$lib/components/utils/loader.svelte';
 	import Textarea from '$lib/components/ui/textarea/textarea.svelte';
+	import AutoFillName from '../auto-fill-name.svelte';
 	// import CrossRef from 'crossref';
 
 	export let form: SuperValidated<(typeof Schemas)['reference']>;
@@ -25,6 +26,13 @@
 	let citation = '';
 	let fetching_doi = false;
 	// let auto_fill_doi_button: HTMLButtonElement;
+
+	const fetch_all_ref = (db: string, data: Object) => {
+		console.log({ db, data });
+		// if (db !== 'CDMS') return toast.error('Only CDMS references are supported');
+		if (!data) return toast.error('No data found');
+		citation = data.references.join('\n');
+	};
 </script>
 
 <FormTabContents
@@ -39,6 +47,8 @@
 	description="Please enter the details of the reference. DOI is required to auto-fill the form. If you have the bibtex file, you can upload it."
 >
 	<div class="grid gap-4 p-2 border-2 border-rounded-2 border-gray-300">
+		<AutoFillName callback={fetch_all_ref} />
+
 		<Label>DOI fetcher</Label>
 		<div class="grid grid-cols-4 gap-4 items-center">
 			<Textarea class="col-span-3" bind:value={citation} />
