@@ -5,21 +5,20 @@
 	import Svelecte from 'svelecte';
 	import Label from '$lib/components/ui/label/label.svelte';
 	import SearchInput from '$lib/components/custom-input/search-input.svelte';
-	// import Checkbox from '$lib/components/ui/checkbox/checkbox.svelte';
 	import { Separator } from '$lib/components/ui/separator';
 
 	export let species: Species[] = [];
-	// export let user: User | null = null;
 
 	let virtualListEl: HTMLDivElement;
+
 	$: virtualizer = createVirtualizer<HTMLDivElement, HTMLDivElement>({
 		count: species.length,
-		// count: 1000,
 		getScrollElement: () => virtualListEl,
 		estimateSize: () => 35,
 		overscan: 5 // The number of items to render above and below the visible area.
 		// debug: true
 	});
+
 	let searchKey = '';
 	$: filteredSpecies = species.filter((sp) => {
 		if (searchKey === '' || filter_keys.length === 0) return true;
@@ -71,8 +70,6 @@
 		{/each}
 	</div>
 </div>
-
-<!-- <span class="text-sm ml-auto w-full">{species.length} species available</span> -->
 
 <style>
 	.scroll-container {
