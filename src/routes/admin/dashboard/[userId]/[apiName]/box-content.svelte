@@ -20,6 +20,7 @@
 	import { Textarea } from '$lib/components/ui/textarea';
 	import Tiptap from '$lib/components/Tiptap.svelte';
 
+	export let id: string;
 	export let metadata: {
 		[name: string]: string;
 	};
@@ -27,11 +28,11 @@
 
 	// console.log(metadata);
 	let uploading = false;
-
 	const onSubmit: SubmitFunction = () => {
 		uploading = true;
 		return async ({ update, result }) => {
 			uploading = false;
+
 			// console.log(result);
 			const { data } = result as {
 				type: string;
@@ -40,18 +41,17 @@
 			};
 			if (data?.success) {
 				toast.success(data.message);
-				metadata = data?.posted;
+				// metadata = data?.posted;
 			} else if (data?.message) {
 				toast.error(data.message);
 			}
 			disabled = true;
-			await update({ reset: false, invalidateAll: false });
+			await update();
 		};
 	};
 
 	const fields = api_fields[$page.params.apiName];
 	let disabled = true;
-	// console.log('mounted');
 
 	let smiles = metadata.smiles || metadata.species_smiles;
 	let mol: ReturnType<typeof window.RDKit.get_mol>;
@@ -83,10 +83,10 @@
 	});
 </script>
 
-<form id="{metadata.id}-form" use:enhance={onSubmit} method="POST">
-	<div class="grid border-solid border-2 p-5 gap-1">
+<form {id} use:enhance={onSubmit} method="POST">
+	<div class="grid border-solid border-2 border-rounded-2 p-5 gap-1">
 		{#if edit}
-			<div class="flex gap-4 items-center w-full my-2">
+			<div class="flex gap-4 items-center w-full">
 				<Button
 					variant="outline"
 					class="w-[100px] flex gap-4 items-center"
