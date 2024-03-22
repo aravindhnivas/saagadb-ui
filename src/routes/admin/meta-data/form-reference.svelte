@@ -5,21 +5,25 @@
 	import * as Form from '$lib/components/ui/form';
 	import { Button } from '$lib/components/ui/button';
 	import fetch_bibfile from '$lib/utils/bibfile';
-	// import { get } from 'svelte/store';
 	import { toast } from 'svelte-sonner';
 	import { Label } from '$lib/components/ui/label';
 	import { Input } from '$lib/components/ui/input';
 	import AlertBox from '$lib/components/utils/alert-box.svelte';
-	// import { tick } from 'svelte';
 	import { oO } from '@zmotivat0r/o0';
 	import FormField from '$lib/components/forms/form-field.svelte';
 	import Loader from '$lib/components/utils/loader.svelte';
+	// import CrossRef from 'crossref';
+
 	export let form: SuperValidated<(typeof Schemas)['reference']>;
 
+	// console.log({ CrossRef });
 	const value = 'reference';
 	const schema = Schemas[value];
 	let fetching = false;
 	let parsed_bibtex = '';
+	let citation = '';
+	let fetching_doi = false;
+	// let auto_fill_doi_button: HTMLButtonElement;
 </script>
 
 <FormTabContents
@@ -33,9 +37,71 @@
 	title="Reference"
 	description="Please enter the details of the reference. DOI is required to auto-fill the form. If you have the bibtex file, you can upload it."
 >
+	<div class="grid gap-4 p-2 border-2 border-rounded-2 border-gray-300">
+		<Label>DOI fetcher</Label>
+		<div class="grid grid-cols-4 gap-4 items-center">
+			<Input class="col-span-3" bind:value={citation} />
+			<Button
+				class="w-[150px]"
+				disabled={fetching_doi}
+				on:click={() => {
+					if (!citation) {
+						toast.error('Please enter the citation');
+						return;
+					}
+					fetching_doi = true;
+					console.time('crossref');
+					window.CrossRef.works({ query: citation }, (err, obj) => {
+						if (err) {
+							fetching_doi = false;
+							toast.error(err);
+							return;
+						}
+						console.timeEnd('crossref');
+						fetching_doi = false;
+						const doi = obj[0].DOI;
+						// const url = obj[0].URL;
+						// console.log({ doi, url });
+						if (!doi) {
+							toast.error('DOI not found');
+							return;
+						}
+
+						const auto_fill_doi_button = document.getElementById('auto_fill_doi_button');
+						// console.log(auto_fill_doi_button);
+
+						formStore.update((f) => {
+							f.doi = doi;
+							auto_fill_doi_button?.click();
+							return f;
+						});
+					});
+				}}
+			>
+				<Loader fetching={fetching_doi} description="" />
+				<span>Fetch-DOI</span>
+			</Button>
+		</div>
+		<span class="text-xs text-gray-500"
+			>Use description such as <em
+				>M. Tonooka, S. Yamamoto, K. Kobayashi, and S. Saito, 1997, J. Chem. Phys. 106, 2563.</em
+			>
+			to search this ref. using
+			<a
+				href="https://github.com/scienceai/crossref"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="underline"
+			>
+				Crossref API
+			</a></span
+		>
+	</div>
+
 	<FormField {config} name="doi" />
 
 	<Button
+		id="auto_fill_doi_button"
 		class="h-8"
 		variant="outline"
 		on:click={async () => {
@@ -71,6 +137,13 @@
 	>
 	<Loader {fetching} />
 	<FormField {config} name="ref_url" />
+
+	{#if formValues.ref_url}
+		<a href={formValues.ref_url} target="_blank" rel="noopener noreferrer" class="underline">
+			Check reference link
+		</a>
+	{/if}
+
 	<FormField {config} name="notes" textarea />
 
 	<div class="flex gap-4 w-full items-baseline">

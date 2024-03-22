@@ -21,6 +21,7 @@ declare global {
 
 	interface Window {
 		RDKit: RDKitModule;
+		CrossRef: any;
 	}
 }
 
