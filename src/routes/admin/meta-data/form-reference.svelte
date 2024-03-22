@@ -40,6 +40,24 @@
 		// ref_entries = [...ref_entries, 'asdsdads', 'dsadsads'];
 		citation = data.references?.join('\n');
 	};
+
+	const fetch_doi_collections = () => {
+		if (!citation.trim()) {
+			toast.error('Please enter the citation');
+			return;
+		}
+		fetching_doi = true;
+		doi_collections = [];
+		ref_entries.forEach((query) => {
+			window.CrossRef.works({ query }, (err, obj) => {
+				let doi = null;
+				if (!err && obj[0]) {
+					doi = obj[0].DOI || null;
+				}
+				doi_collections = [...doi_collections, { doi, query }];
+			});
+		});
+	};
 </script>
 
 <FormTabContents
@@ -59,27 +77,7 @@
 		<Label>DOI fetcher {ref_entries.length ? `(${ref_entries.length}) citations` : ''}</Label>
 		<Textarea bind:value={citation} />
 
-		<Button
-			class="w-[250px]"
-			disabled={fetching_doi}
-			on:click={() => {
-				if (!citation.trim()) {
-					toast.error('Please enter the citation');
-					return;
-				}
-				fetching_doi = true;
-				doi_collections = [];
-				ref_entries.forEach((query) => {
-					window.CrossRef.works({ query }, (err, obj) => {
-						let doi = null;
-						if (!err && obj[0]) {
-							doi = obj[0].DOI || null;
-						}
-						doi_collections = [...doi_collections, { doi, query }];
-					});
-				});
-			}}
-		>
+		<Button class="w-[250px]" disabled={fetching_doi} on:click={fetch_doi_collections}>
 			<Loader fetching={fetching_doi} description="" />
 			<span
 				>Fetch-DOI
