@@ -123,7 +123,7 @@
 			{#each doi_collections as item, i}
 				<div
 					class="grid gap-4 grid-flow-col"
-					style="grid-template-columns: auto 2fr 1fr 1fr; grid-auto-flow: row;"
+					style="grid-template-columns: auto 1fr 1fr 1fr 3fr; grid-auto-flow: row;"
 				>
 					<span>{i + 1}</span>
 					<span>{item.query}</span>
@@ -136,6 +136,8 @@
 					>
 						{item.ref_url}
 					</a>
+
+					<Textarea value={item.bibtex} placeholder="Bibtex" />
 				</div>
 				<span class="w-full text-xs text-gray-500 text-center">{item.cite}</span>
 				<Separator />
@@ -179,6 +181,7 @@
 			}
 		}}>Auto-fill from DOI</Button
 	>
+
 	<Loader {fetching} />
 	<FormField {config} name="ref_url" />
 
