@@ -30,15 +30,13 @@
 		fetching_doi = false;
 		console.log({ doi_collections });
 	}
-	$: console.log({ doi_collections });
-	// let auto_fill_doi_button: HTMLButtonElement;
+
 	let ref_entries: string[] = [];
 	let doi_collections: { query: string; doi: string | null }[] = [];
 	const fetch_all_ref = (db: string, data: { references: string[] }) => {
-		// console.log({ db, data });
-		// if (db !== 'CDMS') return toast.error('Only CDMS references are supported');
 		if (!data) return toast.error('No data found');
 		ref_entries = data.references || [];
+		ref_entries = [...ref_entries, 'asdsdads', 'dsadsads'];
 		citation = ref_entries?.join('\n');
 	};
 </script>
@@ -68,54 +66,19 @@
 						toast.error('Please enter the citation');
 						return;
 					}
-					const citations_list = citation.split('\n').filter((c) => c.trim());
-					// console.log({ citations_list });
-					// return;
 					fetching_doi = true;
-					console.time('crossref');
 					doi_collections = [];
 					ref_entries.forEach((query) => {
-						// doi_collections = [...doi_collections, { query, doi: null }];
-						window.CrossRef.works({ query: citations_list[0] }, (err, obj) => {
+						window.CrossRef.works({ query }, (err, obj) => {
+							let doi = null;
 							if (!err && obj[0]) {
-								const doi = obj[0].DOI || null;
-								doi_collections = [...doi_collections, { doi, query }];
-							} else {
-								doi_collections = [...doi_collections, { doi: null, query }];
+								doi = obj[0].DOI || null;
 							}
+							// console.log({ doi, query });
+							doi_collections = [...doi_collections, { doi, query }];
+							// console.log({ doi_collections });
 						});
 					});
-					// console.log({ doi_collections });
-					// fetching_doi = false;
-					// window.CrossRef.works({ query: citations_list[0] }, (err, obj) => {
-					// 	if (err) {
-					// 		fetching_doi = false;
-					// 		toast.error(err);
-					// 		return;
-					// 	}
-					// 	console.timeEnd('crossref');
-					// 	fetching_doi = false;
-					// 	if (!obj[0]) {
-					// 		toast.error('DOI not found');
-					// 		return;
-					// 	}
-					// 	const doi = obj[0].DOI;
-					// 	// const url = obj[0].URL;
-					// 	// console.log({ doi, url });
-					// 	if (!doi) {
-					// 		toast.error('DOI not found');
-					// 		return;
-					// 	}
-
-					// 	const auto_fill_doi_button = document.getElementById('auto_fill_doi_button');
-					// 	// console.log(auto_fill_doi_button);
-
-					// 	formStore.update((f) => {
-					// 		f.doi = doi;
-					// 		auto_fill_doi_button?.click();
-					// 		return f;
-					// 	});
-					// });
 				}}
 			>
 				<Loader fetching={fetching_doi} description="" />
@@ -123,7 +86,7 @@
 					>Fetch-DOI
 
 					{#if fetching_doi}
-						({(doi_collections.length / ref_entries.length) * 100}%)
+						({Number((doi_collections.length / ref_entries.length) * 100).toFixed(2)}%)
 					{/if}
 				</span>
 			</Button>
