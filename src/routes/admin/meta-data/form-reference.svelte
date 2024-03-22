@@ -14,6 +14,7 @@
 	import Loader from '$lib/components/utils/loader.svelte';
 	import Textarea from '$lib/components/ui/textarea/textarea.svelte';
 	import AutoFillName from '../auto-fill-name.svelte';
+	import Separator from '$lib/components/ui/separator/separator.svelte';
 	// import CrossRef from 'crossref';
 
 	export let form: SuperValidated<(typeof Schemas)['reference']>;
@@ -36,7 +37,7 @@
 	const fetch_all_ref = (db: string, data: { references: string[] }) => {
 		if (!data) return toast.error('No data found');
 		ref_entries = data.references || [];
-		ref_entries = [...ref_entries, 'asdsdads', 'dsadsads'];
+		// ref_entries = [...ref_entries, 'asdsdads', 'dsadsads'];
 		citation = ref_entries?.join('\n');
 	};
 </script>
@@ -106,6 +107,16 @@
 			</a></span
 		>
 	</div>
+	{#if doi_collections.length > 0}
+		<div class="grid grid-cols-3">
+			{#each doi_collections as { query, doi }, i}
+				<span>{i + 1}</span>
+				<span>{query}</span>
+				<span>{doi}</span>
+			{/each}
+		</div>
+		<Separator />
+	{/if}
 
 	<FormField {config} name="doi" />
 	<Button
