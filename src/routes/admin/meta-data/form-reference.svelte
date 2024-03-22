@@ -28,10 +28,10 @@
 	// let auto_fill_doi_button: HTMLButtonElement;
 
 	const fetch_all_ref = (db: string, data: Object) => {
-		console.log({ db, data });
+		// console.log({ db, data });
 		// if (db !== 'CDMS') return toast.error('Only CDMS references are supported');
 		if (!data) return toast.error('No data found');
-		citation = data.references.join('\n');
+		citation = data.references?.join('\n');
 	};
 </script>
 
