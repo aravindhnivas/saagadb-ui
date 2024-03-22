@@ -31,14 +31,14 @@
 		fetching_doi = false;
 		console.log({ doi_collections });
 	}
-
-	let ref_entries: string[] = [];
+	$: ref_entries = citation.split('\n').filter((r) => r.trim()) || [];
+	// let ref_entries: string[] = [];
 	let doi_collections: { query: string; doi: string | null }[] = [];
 	const fetch_all_ref = (db: string, data: { references: string[] }) => {
 		if (!data) return toast.error('No data found');
-		ref_entries = data.references || [];
+		// ref_entries = data.references || [];
 		// ref_entries = [...ref_entries, 'asdsdads', 'dsadsads'];
-		citation = ref_entries?.join('\n');
+		citation = data.references?.join('\n');
 	};
 </script>
 
@@ -56,42 +56,39 @@
 	<div class="grid gap-4 p-2 border-2 border-rounded-2 border-gray-300">
 		<AutoFillName callback={fetch_all_ref} />
 
-		<Label>DOI fetcher</Label>
-		<div class="grid grid-cols-4 gap-4 items-center">
-			<Textarea class="col-span-3" bind:value={citation} />
-			<Button
-				class="w-[250px]"
-				disabled={fetching_doi}
-				on:click={() => {
-					if (!citation.trim()) {
-						toast.error('Please enter the citation');
-						return;
-					}
-					fetching_doi = true;
-					doi_collections = [];
-					ref_entries.forEach((query) => {
-						window.CrossRef.works({ query }, (err, obj) => {
-							let doi = null;
-							if (!err && obj[0]) {
-								doi = obj[0].DOI || null;
-							}
-							// console.log({ doi, query });
-							doi_collections = [...doi_collections, { doi, query }];
-							// console.log({ doi_collections });
-						});
-					});
-				}}
-			>
-				<Loader fetching={fetching_doi} description="" />
-				<span
-					>Fetch-DOI
+		<Label>DOI fetcher {ref_entries.length ? `(${ref_entries.length}) citations` : ''}</Label>
+		<Textarea bind:value={citation} />
 
-					{#if fetching_doi}
-						({Number((doi_collections.length / ref_entries.length) * 100).toFixed(2)}%)
-					{/if}
-				</span>
-			</Button>
-		</div>
+		<Button
+			class="w-[250px]"
+			disabled={fetching_doi}
+			on:click={() => {
+				if (!citation.trim()) {
+					toast.error('Please enter the citation');
+					return;
+				}
+				fetching_doi = true;
+				doi_collections = [];
+				ref_entries.forEach((query) => {
+					window.CrossRef.works({ query }, (err, obj) => {
+						let doi = null;
+						if (!err && obj[0]) {
+							doi = obj[0].DOI || null;
+						}
+						doi_collections = [...doi_collections, { doi, query }];
+					});
+				});
+			}}
+		>
+			<Loader fetching={fetching_doi} description="" />
+			<span
+				>Fetch-DOI
+
+				{#if fetching_doi}
+					({Number((doi_collections.length / ref_entries.length) * 100).toFixed(2)}%)
+				{/if}
+			</span>
+		</Button>
 		<span class="text-xs text-gray-500"
 			>Use description such as <em
 				>M. Tonooka, S. Yamamoto, K. Kobayashi, and S. Saito, 1997, J. Chem. Phys. 106, 2563.</em
@@ -108,7 +105,7 @@
 		>
 	</div>
 	{#if doi_collections.length > 0}
-		<div class="grid grid-cols-3">
+		<div class="grid grid-cols-6">
 			{#each doi_collections as { query, doi }, i}
 				<span>{i + 1}</span>
 				<span>{query}</span>
