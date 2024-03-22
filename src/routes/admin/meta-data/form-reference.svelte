@@ -25,13 +25,21 @@
 	let parsed_bibtex = '';
 	let citation = '';
 	let fetching_doi = false;
-	// let auto_fill_doi_button: HTMLButtonElement;
 
-	const fetch_all_ref = (db: string, data: Object) => {
+	$: if (fetching_doi && doi_collections.length === ref_entries.length) {
+		fetching_doi = false;
+		console.log({ doi_collections });
+	}
+	$: console.log({ doi_collections });
+	// let auto_fill_doi_button: HTMLButtonElement;
+	let ref_entries: string[] = [];
+	let doi_collections: { query: string; doi: string | null }[] = [];
+	const fetch_all_ref = (db: string, data: { references: string[] }) => {
 		// console.log({ db, data });
 		// if (db !== 'CDMS') return toast.error('Only CDMS references are supported');
 		if (!data) return toast.error('No data found');
-		citation = data.references?.join('\n');
+		ref_entries = data.references || [];
+		citation = ref_entries?.join('\n');
 	};
 </script>
 
@@ -53,7 +61,7 @@
 		<div class="grid grid-cols-4 gap-4 items-center">
 			<Textarea class="col-span-3" bind:value={citation} />
 			<Button
-				class="w-[150px]"
+				class="w-[250px]"
 				disabled={fetching_doi}
 				on:click={() => {
 					if (!citation.trim()) {
@@ -65,39 +73,59 @@
 					// return;
 					fetching_doi = true;
 					console.time('crossref');
-					window.CrossRef.works({ query: citations_list[0] }, (err, obj) => {
-						if (err) {
-							fetching_doi = false;
-							toast.error(err);
-							return;
-						}
-						console.timeEnd('crossref');
-						fetching_doi = false;
-						if (!obj[0]) {
-							toast.error('DOI not found');
-							return;
-						}
-						const doi = obj[0].DOI;
-						// const url = obj[0].URL;
-						// console.log({ doi, url });
-						if (!doi) {
-							toast.error('DOI not found');
-							return;
-						}
-
-						const auto_fill_doi_button = document.getElementById('auto_fill_doi_button');
-						// console.log(auto_fill_doi_button);
-
-						formStore.update((f) => {
-							f.doi = doi;
-							auto_fill_doi_button?.click();
-							return f;
+					doi_collections = [];
+					ref_entries.forEach((query) => {
+						// doi_collections = [...doi_collections, { query, doi: null }];
+						window.CrossRef.works({ query: citations_list[0] }, (err, obj) => {
+							if (!err && obj[0]) {
+								const doi = obj[0].DOI || null;
+								doi_collections = [...doi_collections, { doi, query }];
+							} else {
+								doi_collections = [...doi_collections, { doi: null, query }];
+							}
 						});
 					});
+					// console.log({ doi_collections });
+					// fetching_doi = false;
+					// window.CrossRef.works({ query: citations_list[0] }, (err, obj) => {
+					// 	if (err) {
+					// 		fetching_doi = false;
+					// 		toast.error(err);
+					// 		return;
+					// 	}
+					// 	console.timeEnd('crossref');
+					// 	fetching_doi = false;
+					// 	if (!obj[0]) {
+					// 		toast.error('DOI not found');
+					// 		return;
+					// 	}
+					// 	const doi = obj[0].DOI;
+					// 	// const url = obj[0].URL;
+					// 	// console.log({ doi, url });
+					// 	if (!doi) {
+					// 		toast.error('DOI not found');
+					// 		return;
+					// 	}
+
+					// 	const auto_fill_doi_button = document.getElementById('auto_fill_doi_button');
+					// 	// console.log(auto_fill_doi_button);
+
+					// 	formStore.update((f) => {
+					// 		f.doi = doi;
+					// 		auto_fill_doi_button?.click();
+					// 		return f;
+					// 	});
+					// });
 				}}
 			>
 				<Loader fetching={fetching_doi} description="" />
-				<span>Fetch-DOI</span>
+				<span
+					>Fetch-DOI
+
+					{#if fetching_doi}
+						({(doi_collections.length / ref_entries.length) * 100}%)
+					{/if}
+				</span>
 			</Button>
 		</div>
 		<span class="text-xs text-gray-500"
