@@ -33,7 +33,13 @@
 	}
 	$: ref_entries = citation.split('\n').filter((r) => r.trim()) || [];
 	// let ref_entries: string[] = [];
-	let doi_collections: { query: string; doi: string | null; url: string | null }[] = [];
+	let doi_collections: {
+		query: string;
+		doi: string;
+		ref_url: string;
+		bibtex: string;
+		cite: string;
+	}[] = [];
 	const fetch_all_ref = (db: string, data: { references: string[] }) => {
 		if (!data) return toast.error('No data found');
 		// ref_entries = data.references || [];
@@ -49,15 +55,22 @@
 		fetching_doi = true;
 		doi_collections = [];
 		ref_entries.forEach((query) => {
-			window.CrossRef.works({ query }, (err, obj) => {
-				let doi = null;
-				let url = null;
+			window.CrossRef.works({ query }, async (err, obj) => {
+				let doi: string = '';
+				let ref_url: string = '';
+				let bibtex: string = '';
+				let cite: string = '';
 				if (!err && obj[0]) {
 					doi = obj[0].DOI || null;
-					// url = obj[0].URL || null;
-					if (doi) url = `https://doi.org/${doi}`;
+					if (doi) {
+						const { bibtex_text, parsed } = await fetch_bibfile({ doi });
+
+						ref_url = `https://doi.org/${doi}`;
+						bibtex = bibtex_text;
+						cite = parsed;
+					}
 				}
-				doi_collections = [...doi_collections, { doi, query, url }];
+				doi_collections = [...doi_collections, { doi, query, ref_url, bibtex, cite }];
 			});
 		});
 	};
@@ -107,13 +120,24 @@
 	</div>
 	{#if doi_collections.length > 0}
 		<div class="grid gap-4 select-text">
-			{#each doi_collections as { query, doi, url }, i}
-				<div class="grid gap-4 grid-flow-col" style="grid-template-columns: auto 2fr 1fr 1fr;">
+			{#each doi_collections as item, i}
+				<div
+					class="grid gap-4 grid-flow-col"
+					style="grid-template-columns: auto 2fr 1fr 1fr; grid-auto-flow: row;"
+				>
 					<span>{i + 1}</span>
-					<span>{query}</span>
-					<span>{doi}</span>
-					<span>{url}</span>
+					<span>{item.query}</span>
+					<span>{item.doi}</span>
+					<a
+						href={item.ref_url}
+						class="underline text-blue"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						{item.ref_url}
+					</a>
 				</div>
+				<span class="w-full text-xs text-gray-500 text-center">{item.cite}</span>
 				<Separator />
 			{/each}
 		</div>
