@@ -33,7 +33,7 @@
 	}
 	$: ref_entries = citation.split('\n').filter((r) => r.trim()) || [];
 	// let ref_entries: string[] = [];
-	let doi_collections: { query: string; doi: string | null }[] = [];
+	let doi_collections: { query: string; doi: string | null; url: string | null }[] = [];
 	const fetch_all_ref = (db: string, data: { references: string[] }) => {
 		if (!data) return toast.error('No data found');
 		// ref_entries = data.references || [];
@@ -51,10 +51,13 @@
 		ref_entries.forEach((query) => {
 			window.CrossRef.works({ query }, (err, obj) => {
 				let doi = null;
+				let url = null;
 				if (!err && obj[0]) {
 					doi = obj[0].DOI || null;
+					// url = obj[0].URL || null;
+					if (doi) url = `https://doi.org/${doi}`;
 				}
-				doi_collections = [...doi_collections, { doi, query }];
+				doi_collections = [...doi_collections, { doi, query, url }];
 			});
 		});
 	};
@@ -103,11 +106,15 @@
 		>
 	</div>
 	{#if doi_collections.length > 0}
-		<div class="grid grid-cols-6">
-			{#each doi_collections as { query, doi }, i}
-				<span>{i + 1}</span>
-				<span>{query}</span>
-				<span>{doi}</span>
+		<div class="grid gap-4 select-text">
+			{#each doi_collections as { query, doi, url }, i}
+				<div class="grid gap-4 grid-flow-col" style="grid-template-columns: auto 2fr 1fr 1fr;">
+					<span>{i + 1}</span>
+					<span>{query}</span>
+					<span>{doi}</span>
+					<span>{url}</span>
+				</div>
+				<Separator />
 			{/each}
 		</div>
 		<Separator />
