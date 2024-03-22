@@ -40,7 +40,7 @@
 	<div class="grid gap-4 p-2 border-2 border-rounded-2 border-gray-300">
 		<Label>DOI fetcher</Label>
 		<div class="grid grid-cols-4 gap-4 items-center">
-			<Input class="col-span-3" bind:value={citation} />
+			<Input type="text" aria-autocomplete="list" class="col-span-3" bind:value={citation} />
 			<Button
 				class="w-[150px]"
 				disabled={fetching_doi}
@@ -59,6 +59,10 @@
 						}
 						console.timeEnd('crossref');
 						fetching_doi = false;
+						if (!obj[0]) {
+							toast.error('DOI not found');
+							return;
+						}
 						const doi = obj[0].DOI;
 						// const url = obj[0].URL;
 						// console.log({ doi, url });
@@ -86,7 +90,7 @@
 			>Use description such as <em
 				>M. Tonooka, S. Yamamoto, K. Kobayashi, and S. Saito, 1997, J. Chem. Phys. 106, 2563.</em
 			>
-			to search this ref. using
+			to search citations using
 			<a
 				href="https://github.com/scienceai/crossref"
 				target="_blank"
@@ -99,10 +103,8 @@
 	</div>
 
 	<FormField {config} name="doi" />
-
 	<Button
 		id="auto_fill_doi_button"
-		class="h-8"
 		variant="outline"
 		on:click={async () => {
 			try {
