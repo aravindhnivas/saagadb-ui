@@ -12,6 +12,7 @@
 	import { oO } from '@zmotivat0r/o0';
 	import FormField from '$lib/components/forms/form-field.svelte';
 	import Loader from '$lib/components/utils/loader.svelte';
+	import Textarea from '$lib/components/ui/textarea/textarea.svelte';
 	// import CrossRef from 'crossref';
 
 	export let form: SuperValidated<(typeof Schemas)['reference']>;
@@ -40,18 +41,21 @@
 	<div class="grid gap-4 p-2 border-2 border-rounded-2 border-gray-300">
 		<Label>DOI fetcher</Label>
 		<div class="grid grid-cols-4 gap-4 items-center">
-			<Input type="text" aria-autocomplete="list" class="col-span-3" bind:value={citation} />
+			<Textarea class="col-span-3" bind:value={citation} />
 			<Button
 				class="w-[150px]"
 				disabled={fetching_doi}
 				on:click={() => {
-					if (!citation) {
+					if (!citation.trim()) {
 						toast.error('Please enter the citation');
 						return;
 					}
+					const citations_list = citation.split('\n').filter((c) => c.trim());
+					// console.log({ citations_list });
+					// return;
 					fetching_doi = true;
 					console.time('crossref');
-					window.CrossRef.works({ query: citation }, (err, obj) => {
+					window.CrossRef.works({ query: citations_list[0] }, (err, obj) => {
 						if (err) {
 							fetching_doi = false;
 							toast.error(err);
@@ -126,7 +130,7 @@
 				const { href, bibtex_text, parsed } = await fetch_bibfile({ doi });
 				parsed_bibtex = parsed;
 				formStore.update((f) => {
-					f.ref_url = href;
+					f.ref_url = href.replace('http://dx.doi.org/', 'https://doi.org/');
 					f.bibtex = bibtex_text;
 					return f;
 				});
