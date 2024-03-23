@@ -10,15 +10,16 @@
 	import { getForm } from 'formsnap';
 	import AlertBox from '$lib/components/utils/alert-box.svelte';
 	import { oO } from '@zmotivat0r/o0';
+	import { sleep } from '$lib/core';
 
 	const { form, message } = getForm();
 
 	let submitted_index: number | undefined = undefined;
-	$: if ($message) {
-		submitted_index = active_obj?.index;
-	}
+	// $: if ($message?.type) {
+	// 	submitted_index = active_obj?.index;
+	// }
 
-	$: console.log(submitted_index, $message);
+	// $: console.log(submitted_index, $message);
 
 	let fetching_doi = false;
 	let citation = '';
@@ -58,6 +59,7 @@
 		doi_collections = [];
 	};
 
+	let cancel_doi_fetching = false;
 	const fetch_doi_collections = () => {
 		if (!citation.trim()) {
 			toast.error('Please enter the citation');
@@ -68,6 +70,8 @@
 
 		ref_entries.forEach((query, index) => {
 			window.CrossRef.works({ query }, async (err, obj) => {
+				if (cancel_doi_fetching) return (fetching_doi = false);
+				console.log('fetching', query);
 				let doi: string = '';
 				let ref_url: string = '';
 				let bibtex: string = '';
@@ -96,8 +100,6 @@
 </script>
 
 <div class="grid gap-4 p-2 border-2 border-rounded-2 border-gray-300">
-	<slot name="header" />
-
 	<AutoFillName callback={fetch_all_ref} />
 	<Label>DOI fetcher {ref_entries.length ? `(${ref_entries.length}) citations` : ''}</Label>
 	<Textarea bind:value={citation} />
@@ -116,6 +118,8 @@
 			Crossref API
 		</a></span
 	>
+
+	<slot name="header" />
 </div>
 
 <AlertBox
@@ -124,16 +128,29 @@
 	variant="default"
 />
 
-<Button class="w-[250px]" disabled={fetching_doi} on:click={fetch_doi_collections}>
-	<Loader fetching={fetching_doi} description="" />
-	<span
-		>Fetch-DOI
+<div class="flex gap-4 items-center">
+	<Button class="w-[250px]" disabled={fetching_doi} on:click={fetch_doi_collections}>
+		<Loader fetching={fetching_doi} description="" />
+		<span>
+			Fetch-DOI
 
-		{#if fetching_doi}
-			({Number((doi_collections.length / ref_entries.length) * 100).toFixed(2)}%)
-		{/if}
-	</span>
-</Button>
+			{#if fetching_doi}
+				({Number((doi_collections.length / ref_entries.length) * 100).toFixed(2)}%)
+			{/if}
+		</span>
+	</Button>
+	{#if fetching_doi}
+		<Button
+			class="w-[250px]"
+			variant="destructive"
+			on:click={() => {
+				cancel_doi_fetching = true;
+			}}
+		>
+			Cancel
+		</Button>
+	{/if}
+</div>
 
 <Resizable.PaneGroup direction="horizontal" class="rounded-lg border h-full">
 	<Resizable.Pane defaultSize={25}>
@@ -146,8 +163,8 @@
 					class="cursor-pointer hover:underline p-2 rounded-lg {active_obj?.index === index
 						? 'bg-gray-200'
 						: ''}"
-					class:bg-red-200={submitted_index === index && $message?.type !== 'success'}
-					class:bg-green-200={submitted_index === index && $message?.type === 'success'}
+					class:bg-red-200={submitted_index === index && $message.type !== 'success'}
+					class:bg-green-200={submitted_index === index && $message.type === 'success'}
 					on:click={() => {
 						active_obj = doi_collections.find((d) => d.query === query);
 						if (!active_obj) return;
