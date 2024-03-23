@@ -1,34 +1,58 @@
 <script lang="ts">
 	import { Button } from '$lib/components/ui/button';
 	import { Label } from '$lib/components/ui/label';
-	import { Separator } from '$lib/components/ui/separator';
 	import fetch_bibfile from '$lib/utils/bibfile';
 	import { Textarea } from '$lib/components/ui/textarea';
 	import Loader from '$lib/components/utils/loader.svelte';
 	import { toast } from 'svelte-sonner';
 	import AutoFillName from '../auto-fill-name.svelte';
+	import * as Resizable from '$lib/components/ui/resizable';
+	import { getForm } from 'formsnap';
+	import AlertBox from '$lib/components/utils/alert-box.svelte';
+
+	const { form } = getForm();
+
+	// console.log({ $form });
 
 	let fetching_doi = false;
-	let citation = '';
+	let citation = localStorage.getItem('citation') || '';
 
 	$: if (fetching_doi && doi_collections.length === ref_entries.length) {
 		fetching_doi = false;
-		console.log({ doi_collections });
+		if (doi_collections.length > 0) {
+			active_obj = doi_collections[0];
+			formUpadte(active_obj);
+		}
+		// console.log({ doi_collections });
+		localStorage.setItem('doi_collections', JSON.stringify(doi_collections));
 	}
+
 	$: ref_entries = citation.split('\n').filter((r) => r.trim()) || [];
-	// let ref_entries: string[] = [];
 	let doi_collections: {
+		index: number;
 		query: string;
 		doi: string;
 		ref_url: string;
 		bibtex: string;
 		cite: string;
-	}[] = [];
+	}[] = localStorage.getItem('doi_collections')
+		? JSON.parse(localStorage.getItem('doi_collections') as string)
+		: [];
+
+	const formUpadte = (obj: (typeof doi_collections)[0]) => {
+		if (!obj) return;
+		form.update((f) => {
+			f.doi = obj.doi;
+			f.ref_url = obj.ref_url;
+			f.bibtex = obj.bibtex;
+			return f;
+		});
+	};
+
 	const fetch_all_ref = (db: string, data: { references: string[] }) => {
 		if (!data) return toast.error('No data found');
-		// ref_entries = data.references || [];
-		// ref_entries = [...ref_entries, 'asdsdads', 'dsadsads'];
 		citation = data.references?.join('\n');
+		localStorage.setItem('citation', citation);
 	};
 
 	const fetch_doi_collections = () => {
@@ -38,7 +62,7 @@
 		}
 		fetching_doi = true;
 		doi_collections = [];
-		ref_entries.forEach((query) => {
+		ref_entries.forEach((query, index) => {
 			window.CrossRef.works({ query }, async (err, obj) => {
 				let doi: string = '';
 				let ref_url: string = '';
@@ -48,16 +72,20 @@
 					doi = obj[0].DOI || null;
 					if (doi) {
 						const { bibtex_text, parsed } = await fetch_bibfile({ doi });
-
 						ref_url = `https://doi.org/${doi}`;
 						bibtex = bibtex_text;
 						cite = parsed;
 					}
 				}
-				doi_collections = [...doi_collections, { doi, query, ref_url, bibtex, cite }];
+
+				doi_collections = [...doi_collections, { index, doi, query, ref_url, bibtex, cite }];
+				doi_collections.sort((a, b) => a.index - b.index);
 			});
 		});
 	};
+
+	let active_obj: (typeof doi_collections)[0] | undefined = doi_collections[0];
+	let active_index: number = 0;
 </script>
 
 <div class="grid gap-4 p-2 border-2 border-rounded-2 border-gray-300">
@@ -66,16 +94,6 @@
 	<Label>DOI fetcher {ref_entries.length ? `(${ref_entries.length}) citations` : ''}</Label>
 	<Textarea bind:value={citation} />
 
-	<Button class="w-[250px]" disabled={fetching_doi} on:click={fetch_doi_collections}>
-		<Loader fetching={fetching_doi} description="" />
-		<span
-			>Fetch-DOI
-
-			{#if fetching_doi}
-				({Number((doi_collections.length / ref_entries.length) * 100).toFixed(2)}%)
-			{/if}
-		</span>
-	</Button>
 	<span class="text-xs text-gray-500"
 		>Use description such as <em
 			>M. Tonooka, S. Yamamoto, K. Kobayashi, and S. Saito, 1997, J. Chem. Phys. 106, 2563.</em
@@ -91,31 +109,74 @@
 		</a></span
 	>
 </div>
-{#if doi_collections.length > 0}
-	<div class="grid gap-4 select-text">
-		{#each doi_collections as item, i}
-			<div
-				class="grid gap-4 grid-flow-col"
-				style="grid-template-columns: auto 1fr 1fr 3fr; grid-auto-flow: row;"
-			>
-				<span>{i + 1}</span>
-				<span>{item.query}</span>
-				<!-- <span>{item.doi}</span> -->
-				<a
-					href={item.ref_url}
-					class="underline text-blue"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					<!-- {item.ref_url} -->
-					{item.doi}
-				</a>
 
-				<Textarea value={item.bibtex} placeholder="Bibtex" />
-			</div>
-			<span class="w-full text-xs text-gray-500 text-center">{item.cite}</span>
-			<Separator />
-		{/each}
-	</div>
-	<Separator />
-{/if}
+<AlertBox
+	title="NOTE!"
+	message="The fetched doi from Fetch-DOI function may very well be wrong. So please check reference_link once generated. If not correct enter doi manually in the field and auto-fill from DOI, and check again."
+	variant="default"
+/>
+
+<Button class="w-[250px]" disabled={fetching_doi} on:click={fetch_doi_collections}>
+	<Loader fetching={fetching_doi} description="" />
+	<span
+		>Fetch-DOI
+
+		{#if fetching_doi}
+			({Number((doi_collections.length / ref_entries.length) * 100).toFixed(2)}%)
+		{/if}
+	</span>
+</Button>
+
+<Resizable.PaneGroup direction="horizontal" class="rounded-lg border h-full">
+	<Resizable.Pane defaultSize={25}>
+		<div class="l-pane flex flex-col gap-4 text-sm p-4">
+			<!-- <ul class="menu p-4 gap-4"> -->
+			{#each ref_entries as query, index}
+				<!-- svelte-ignore a11y-click-events-have-key-events -->
+				<!-- svelte-ignore a11y-no-static-element-interactions -->
+				<div
+					class="cursor-pointer hover:bg-gray-200"
+					class:bg-gray-200={active_index === index}
+					on:click={() => {
+						active_obj = doi_collections.find((d) => d.query === query);
+						if (!active_obj) return;
+						active_index = active_obj.index;
+						formUpadte(active_obj);
+					}}
+				>
+					<span>{index + 1}: {query}</span>
+				</div>
+			{/each}
+			<!-- </ul> -->
+		</div>
+	</Resizable.Pane>
+	<Resizable.Handle withHandle />
+	<Resizable.Pane defaultSize={75}>
+		<div class="r-pane flex flex-col p-4">
+			<slot {active_obj}>
+				{#if active_obj}
+					<a
+						href={active_obj.ref_url}
+						class="underline text-blue"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						{active_obj.doi}
+					</a>
+
+					<Textarea value={active_obj.bibtex} placeholder="Bibtex" />
+					<span class="w-full text-xs text-gray-500 text-center">{active_obj.cite}</span>
+				{/if}
+			</slot>
+		</div>
+	</Resizable.Pane>
+</Resizable.PaneGroup>
+
+<style>
+	.r-pane,
+	.l-pane {
+		overflow: auto;
+		min-height: 500px;
+		max-height: calc(100vh - 100px);
+	}
+</style>

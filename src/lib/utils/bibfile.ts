@@ -3,7 +3,7 @@ import Cite from 'citation-js';
 export default async function ({ doi = '', bibtex = '' }) {
 	if (!(doi || bibtex)) throw new Error('doi and bibtex are both empty');
 	const doi_mode = !!doi;
-	console.log({ doi_mode, doi, bibtex });
+	// console.log({ doi_mode, doi, bibtex });
 
 	const parsed_data = await Cite.async(doi_mode ? doi : bibtex);
 	if (parsed_data.data.length === 0) throw new Error('No data found');
