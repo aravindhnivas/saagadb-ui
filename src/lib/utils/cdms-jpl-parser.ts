@@ -8,8 +8,11 @@ export async function CDMS(html_data: string) {
 	if (!html_data) throw new Error('No data provided');
 
 	const $ = cheerio.load(html_data);
-	const ref_element = $('p font[color="#064898"]');
-	// const references: string[] = [];
+	// const ref_full = $('p[align="justify"]');
+	// console.log(ref_full.html());
+	// console.log(ref_full.text())
+
+	const ref_element = $('p[align="justify"] font[color="#064898"]');
 
 	const references: string[] = ref_element
 		.text()
