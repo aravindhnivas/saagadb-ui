@@ -9,6 +9,7 @@
 	import * as Resizable from '$lib/components/ui/resizable';
 	import { getForm } from 'formsnap';
 	import AlertBox from '$lib/components/utils/alert-box.svelte';
+	import { oO } from '@zmotivat0r/o0';
 
 	const { form, message } = getForm();
 
@@ -20,7 +21,7 @@
 	$: console.log(submitted_index, $message);
 
 	let fetching_doi = false;
-	let citation = localStorage.getItem('citation') || '';
+	let citation = '';
 
 	$: if (fetching_doi && doi_collections.length === ref_entries.length) {
 		fetching_doi = false;
@@ -39,9 +40,9 @@
 		ref_url: string;
 		bibtex: string;
 		cite: string;
-	}[] = JSON.parse(localStorage.getItem('doi_collections') || '') || [];
+	}[] = [];
 
-	const formUpadte = (obj: (typeof doi_collections)[0]) => {
+	const formUpadte = (obj: (typeof doi_collections)[number]) => {
 		if (!obj) return;
 		form.update((f) => {
 			f.doi = obj.doi;
@@ -64,6 +65,7 @@
 		}
 		fetching_doi = true;
 		doi_collections = [];
+
 		ref_entries.forEach((query, index) => {
 			window.CrossRef.works({ query }, async (err, obj) => {
 				let doi: string = '';
@@ -73,10 +75,13 @@
 				if (!err && obj[0]) {
 					doi = obj[0].DOI || null;
 					if (doi) {
-						const { bibtex_text, parsed } = await fetch_bibfile({ doi });
-						ref_url = `https://doi.org/${doi}`;
-						bibtex = bibtex_text;
-						cite = parsed;
+						const [_, result] = await oO(fetch_bibfile({ doi }));
+						if (result) {
+							const { bibtex_text, parsed } = result;
+							ref_url = `https://doi.org/${doi}`;
+							bibtex = bibtex_text;
+							cite = parsed;
+						}
 					}
 				}
 
@@ -86,7 +91,7 @@
 		});
 	};
 
-	let active_obj: (typeof doi_collections)[0] | undefined = doi_collections[0];
+	let active_obj: (typeof doi_collections)[number] | undefined = doi_collections[0];
 	// let active_index: number = 0;
 </script>
 
@@ -157,21 +162,7 @@
 	<Resizable.Handle withHandle />
 	<Resizable.Pane defaultSize={75}>
 		<div class="r-pane flex flex-col gap-2 p-4">
-			<slot {active_obj}>
-				{#if active_obj}
-					<a
-						href={active_obj.ref_url}
-						class="underline text-blue"
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						{active_obj.doi}
-					</a>
-
-					<Textarea value={active_obj.bibtex} placeholder="Bibtex" />
-					<span class="w-full text-xs text-gray-500 text-center">{active_obj.cite}</span>
-				{/if}
-			</slot>
+			<slot {active_obj} />
 		</div>
 	</Resizable.Pane>
 </Resizable.PaneGroup>
