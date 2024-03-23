@@ -111,7 +111,10 @@ export const actions: Actions = {
 				const msg_json = await res.json();
 				console.log('msg_json', msg_json);
 				if (msg_json.non_field_errors) {
-					message(form, { type: 'error', text: msg_json.non_field_errors });
+					if (msg_json.non_field_errors[0].includes('must make a unique set')) {
+						const text = 'This entry already exists in the database';
+						message(form, { type: 'error', text });
+					}
 				} else if (msg_json.message && msg_json.error) {
 					message(form, { type: 'error', text: `${msg_json.message}: ${msg_json.error.message}` });
 				} else {
