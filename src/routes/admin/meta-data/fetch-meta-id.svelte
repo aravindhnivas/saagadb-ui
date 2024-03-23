@@ -83,7 +83,8 @@
 	<Button
 		variant="outline"
 		disabled={fetching_meta_id}
-		on:click={async () => {
+		on:click={async (e) => {
+			e.preventDefault();
 			const [err, id] = await oO(fetch_meta_id());
 			if (err instanceof Error) return toast.error(err.message);
 			$form.meta = id;

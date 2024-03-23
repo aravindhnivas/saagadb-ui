@@ -37,7 +37,8 @@
 	<Input class="col-span-2" bind:value={ref_doi} placeholder="Enter reference doi" />
 	<Button
 		variant="outline"
-		on:click={async () => {
+		on:click={async (e) => {
+			e.preventDefault();
 			const [err, id] = await oO(fetch_ref_id());
 			if (err instanceof Error) return toast.error(err.message);
 			$form.ref = id;

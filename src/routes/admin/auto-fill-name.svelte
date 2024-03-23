@@ -93,7 +93,12 @@
 				}}
 			/>
 		</div>
-		<Button on:click={async () => await fetch_from_database()}>Fetch & auto-fill</Button>
+		<Button
+			on:click={async (e) => {
+				e.preventDefault();
+				await fetch_from_database();
+			}}>Fetch & auto-fill</Button
+		>
 		<Loader {fetching} />
 		{#if !fetching && status && link}
 			<p>{status}</p>
