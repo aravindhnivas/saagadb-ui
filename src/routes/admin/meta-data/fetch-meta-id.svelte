@@ -82,16 +82,20 @@
 	</div>
 	<Button
 		variant="outline"
+		disabled={fetching_meta_id}
 		on:click={async () => {
 			const [err, id] = await oO(fetch_meta_id());
 			if (err instanceof Error) return toast.error(err.message);
 			$form.meta = id;
-		}}>Fetch meta_id</Button
+		}}
 	>
-	{#if fetching_meta_id}
-		<div class="flex gap-2 items-center h-10">
-			<span class="loading loading-spinner"></span>
-			<span>Fetching...</span>
-		</div>
-	{/if}
+		{#if fetching_meta_id}
+			<div class="flex gap-2 items-center h-10">
+				<span class="loading loading-spinner"></span>
+				<span>Fetching...</span>
+			</div>
+		{:else}
+			Fetch meta_id
+		{/if}
+	</Button>
 </div>

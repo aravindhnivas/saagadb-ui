@@ -4,10 +4,10 @@
 	import { getForm } from 'formsnap';
 	import { confetti } from '@neoconfetti/svelte';
 	// import { Button } from '$lib/components/ui/button';
-
+	export let showModal = true;
 	const { message } = getForm();
 	let modal: HTMLDialogElement;
-	$: if (modal && $message && $message.text && $message.type === 'success') {
+	$: if (showModal && modal && $message && $message.text && $message.type === 'success') {
 		modal.showModal();
 	}
 </script>

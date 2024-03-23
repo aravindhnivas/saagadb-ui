@@ -10,9 +10,14 @@
 	import { getForm } from 'formsnap';
 	import AlertBox from '$lib/components/utils/alert-box.svelte';
 
-	const { form } = getForm();
+	const { form, message } = getForm();
 
-	// console.log({ $form });
+	let submitted_index: number | undefined = undefined;
+	$: if ($message) {
+		submitted_index = active_obj?.index;
+	}
+
+	$: console.log(submitted_index, $message);
 
 	let fetching_doi = false;
 	let citation = localStorage.getItem('citation') || '';
@@ -24,7 +29,6 @@
 			formUpadte(active_obj);
 		}
 		// console.log({ doi_collections });
-		localStorage.setItem('doi_collections', JSON.stringify(doi_collections));
 	}
 
 	$: ref_entries = citation.split('\n').filter((r) => r.trim()) || [];
@@ -35,9 +39,7 @@
 		ref_url: string;
 		bibtex: string;
 		cite: string;
-	}[] = localStorage.getItem('doi_collections')
-		? JSON.parse(localStorage.getItem('doi_collections') as string)
-		: [];
+	}[] = JSON.parse(localStorage.getItem('doi_collections') || '') || [];
 
 	const formUpadte = (obj: (typeof doi_collections)[0]) => {
 		if (!obj) return;
@@ -52,7 +54,7 @@
 	const fetch_all_ref = (db: string, data: { references: string[] }) => {
 		if (!data) return toast.error('No data found');
 		citation = data.references?.join('\n');
-		localStorage.setItem('citation', citation);
+		doi_collections = [];
 	};
 
 	const fetch_doi_collections = () => {
@@ -85,12 +87,13 @@
 	};
 
 	let active_obj: (typeof doi_collections)[0] | undefined = doi_collections[0];
-	let active_index: number = 0;
+	// let active_index: number = 0;
 </script>
 
 <div class="grid gap-4 p-2 border-2 border-rounded-2 border-gray-300">
-	<AutoFillName callback={fetch_all_ref} />
+	<slot name="header" />
 
+	<AutoFillName callback={fetch_all_ref} />
 	<Label>DOI fetcher {ref_entries.length ? `(${ref_entries.length}) citations` : ''}</Label>
 	<Textarea bind:value={citation} />
 
@@ -131,28 +134,29 @@
 	<Resizable.Pane defaultSize={25}>
 		<div class="l-pane flex flex-col gap-4 text-sm p-4">
 			<!-- <ul class="menu p-4 gap-4"> -->
-			{#each ref_entries as query, index}
+			{#each doi_collections as { query }, index}
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
 				<!-- svelte-ignore a11y-no-static-element-interactions -->
 				<div
-					class="cursor-pointer hover:bg-gray-200"
-					class:bg-gray-200={active_index === index}
+					class="cursor-pointer hover:underline p-2 rounded-lg {active_obj?.index === index
+						? 'bg-gray-200'
+						: ''}"
+					class:bg-red-200={submitted_index === index && $message?.type !== 'success'}
+					class:bg-green-200={submitted_index === index && $message?.type === 'success'}
 					on:click={() => {
 						active_obj = doi_collections.find((d) => d.query === query);
 						if (!active_obj) return;
-						active_index = active_obj.index;
 						formUpadte(active_obj);
 					}}
 				>
 					<span>{index + 1}: {query}</span>
 				</div>
 			{/each}
-			<!-- </ul> -->
 		</div>
 	</Resizable.Pane>
 	<Resizable.Handle withHandle />
 	<Resizable.Pane defaultSize={75}>
-		<div class="r-pane flex flex-col p-4">
+		<div class="r-pane flex flex-col gap-2 p-4">
 			<slot {active_obj}>
 				{#if active_obj}
 					<a
@@ -177,6 +181,6 @@
 	.l-pane {
 		overflow: auto;
 		min-height: 500px;
-		max-height: calc(100vh - 100px);
+		max-height: calc(100vh - 10px);
 	}
 </style>

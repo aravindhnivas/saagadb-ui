@@ -1,6 +1,6 @@
 import type { Actions, PageServerLoad } from './$types';
 import { message, setError, superValidate } from 'sveltekit-superforms/server';
-import { Schemas, fileInputs } from '$lib/schemas/metadata';
+import { ids, Schemas, fileInputs } from '$lib/schemas/metadata';
 import type { SuperValidated } from 'sveltekit-superforms';
 import { fail } from '@sveltejs/kit';
 import { DB_URL } from '$lib/server';
@@ -9,14 +9,11 @@ import { base } from '$app/paths';
 type FormKeys = keyof typeof Schemas;
 
 export const load: PageServerLoad = async ({ fetch }) => {
-	const forms: Record<FormKeys, SuperValidated<(typeof Schemas)[FormKeys]>> = {
-		'species-metadata': await superValidate(Schemas['species-metadata'], {
-			id: 'species-metadata'
-		}),
-		reference: await superValidate(Schemas['reference'], { id: 'reference' }),
-		'meta-reference': await superValidate(Schemas['meta-reference'], { id: 'meta-reference' }),
-		line: await superValidate(Schemas['line'], { id: 'line' })
-	};
+	const forms: Record<FormKeys, SuperValidated<(typeof Schemas)[FormKeys]>> = {};
+
+	for (const id of ids) {
+		forms[id] = await superValidate(Schemas[id], { id });
+	}
 
 	const fetch_fn = async <T>(url: string) => {
 		let response: T[] = [];
@@ -137,7 +134,8 @@ export const actions: Actions = {
 				type: 'success',
 				text:
 					`Form (${metaid} ${response?.id ? ': with id = ' + response.id : ''}) submitted succesfully` +
-					(metaid === 'reference' ? ` for DOI: ${response?.doi}` : '')
+					(metaid === 'reference' ? ` for DOI: ${response?.doi}` : ''),
+				response
 			});
 			return { form, response };
 		} else {
