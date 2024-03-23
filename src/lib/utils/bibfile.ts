@@ -3,7 +3,7 @@ import Cite from 'citation-js';
 export default async function ({ doi = '', bibtex = '' }) {
 	if (!(doi || bibtex)) throw new Error('doi and bibtex are both empty');
 	const doi_mode = !!doi;
-	// console.log({ doi_mode });
+	console.log({ doi_mode, doi, bibtex });
 
 	const parsed_data = await Cite.async(doi_mode ? doi : bibtex);
 	if (parsed_data.data.length === 0) throw new Error('No data found');
@@ -30,7 +30,7 @@ export default async function ({ doi = '', bibtex = '' }) {
 	});
 
 	const bibtex_text = parsed_data.format('bibtex');
-	const citation_key = bibtex_text.match(/@article\{(.+),/)[1];
+	const citation_key = bibtex_text.match(/@article\{(.+),/)?.[1];
 	const blob = new Blob([bibtex_text], { type: 'text/plain' });
 	const bibtex_download_href = URL.createObjectURL(blob);
 
