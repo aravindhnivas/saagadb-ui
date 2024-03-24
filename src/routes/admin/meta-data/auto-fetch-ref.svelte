@@ -10,16 +10,15 @@
 	import { getForm } from 'formsnap';
 	import AlertBox from '$lib/components/utils/alert-box.svelte';
 	import { oO } from '@zmotivat0r/o0';
-	import { sleep } from '$lib/core';
 
 	const { form, message } = getForm();
 
 	let submitted_index: number | undefined = undefined;
-	// $: if ($message?.type) {
-	// 	submitted_index = active_obj?.index;
-	// }
+	$: if ($message?.type) {
+		submitted_index = active_obj?.index;
+	}
 
-	// $: console.log(submitted_index, $message);
+	$: console.log(submitted_index, $message);
 
 	let fetching_doi = false;
 	let citation = '';
@@ -30,7 +29,6 @@
 			active_obj = doi_collections[0];
 			formUpadte(active_obj);
 		}
-		// console.log({ doi_collections });
 	}
 
 	$: ref_entries = citation.split('\n').filter((r) => r.trim()) || [];
@@ -96,7 +94,6 @@
 	};
 
 	let active_obj: (typeof doi_collections)[number] | undefined = doi_collections[0];
-	// let active_index: number = 0;
 </script>
 
 <div class="grid gap-4 p-2 border-2 border-rounded-2 border-gray-300">
@@ -116,8 +113,8 @@
 			class="underline"
 		>
 			Crossref API
-		</a></span
-	>
+		</a>
+	</span>
 
 	<slot name="header" />
 </div>
@@ -140,13 +137,7 @@
 		</span>
 	</Button>
 	{#if fetching_doi}
-		<Button
-			class="w-[250px]"
-			variant="destructive"
-			on:click={() => {
-				cancel_doi_fetching = true;
-			}}
-		>
+		<Button class="w-[250px]" variant="destructive" on:click={() => (cancel_doi_fetching = true)}>
 			Cancel
 		</Button>
 	{/if}
@@ -155,7 +146,6 @@
 <Resizable.PaneGroup direction="horizontal" class="rounded-lg border h-full">
 	<Resizable.Pane defaultSize={25}>
 		<div class="l-pane flex flex-col gap-4 text-sm p-4">
-			<!-- <ul class="menu p-4 gap-4"> -->
 			{#each doi_collections as { query }, index}
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
 				<!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -163,12 +153,13 @@
 					class="cursor-pointer hover:underline p-2 rounded-lg {active_obj?.index === index
 						? 'bg-gray-200'
 						: ''}"
-					class:bg-red-200={submitted_index === index && $message.type !== 'success'}
-					class:bg-green-200={submitted_index === index && $message.type === 'success'}
+					class:bg-red-200={submitted_index === index && $message?.type === 'error'}
+					class:bg-green-200={submitted_index === index && $message?.type === 'success'}
 					on:click={() => {
 						active_obj = doi_collections.find((d) => d.query === query);
 						if (!active_obj) return;
 						formUpadte(active_obj);
+						$message = undefined;
 					}}
 				>
 					<span>{index + 1}: {query}</span>
