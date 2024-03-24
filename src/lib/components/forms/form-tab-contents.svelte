@@ -14,7 +14,7 @@
 	export let form: SuperValidated<AnyZodObject>;
 	export let schema: AnyZodObject;
 	export let opts: FormOptions<AnyZodObject> = {};
-
+	export let show_message_alert = true;
 	let className = '';
 	export { className as class };
 	// console.log(value);
@@ -54,9 +54,18 @@
 				</Card.Description>
 			</Card.Header>
 			<Card.Content class="space-y-2 {className}">
-				<MessageAlert />
+				{#if show_message_alert}
+					<MessageAlert />
+				{/if}
 
 				<slot {config} {formStore} {formValues} {submitting} {posted} {errors} />
+				{#if !Object.values(errors).every((value) => value === undefined)}
+					<AlertBox
+						variant="destructive"
+						message="Please check above for error messages"
+						title="Error"
+					/>
+				{/if}
 			</Card.Content>
 
 			{#if footer}
@@ -75,14 +84,6 @@
 						{/if}
 					</slot>
 				</Card.Footer>
-			{/if}
-
-			{#if !Object.values(errors).every((value) => value === undefined)}
-				<AlertBox
-					variant="destructive"
-					message="Please check above for error messages"
-					title="Error"
-				/>
 			{/if}
 		</Form.Root>
 	</Card.Root>
