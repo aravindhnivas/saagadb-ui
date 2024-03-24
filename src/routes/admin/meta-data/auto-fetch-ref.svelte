@@ -11,12 +11,17 @@
 	import AlertBox from '$lib/components/utils/alert-box.svelte';
 	import { oO } from '@zmotivat0r/o0';
 
+	import * as Card from '$lib/components/ui/card';
+	import * as Form from '$lib/components/ui/form';
+	import MessageAlert from '$lib/components/forms/message-alert.svelte';
+
+	export let submitting = false;
 	const { form, message } = getForm();
 
 	let submitted_index: number | undefined = undefined;
-	$: if ($message?.type) {
-		submitted_index = active_obj?.index;
-	}
+	// $: if ($message?.type) {
+	// 	submitted_index = active_obj?.index;
+	// }
 
 	$: console.log(submitted_index, $message);
 
@@ -92,7 +97,7 @@
 			});
 		});
 	};
-
+	let show_submission_message = false;
 	let active_obj: (typeof doi_collections)[number] | undefined = doi_collections[0];
 </script>
 
@@ -146,23 +151,24 @@
 <Resizable.PaneGroup direction="horizontal" class="rounded-lg border h-full">
 	<Resizable.Pane defaultSize={25}>
 		<div class="l-pane flex flex-col gap-4 text-sm p-4">
-			{#each doi_collections as { query }, index}
+			{#each doi_collections as doi_obj}
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
 				<!-- svelte-ignore a11y-no-static-element-interactions -->
 				<div
-					class="cursor-pointer hover:underline p-2 rounded-lg {active_obj?.index === index
+					class="cursor-pointer hover:underline p-2 rounded-lg {active_obj?.index === doi_obj.index
 						? 'bg-gray-200'
 						: ''}"
-					class:bg-red-200={submitted_index === index && $message?.type === 'error'}
-					class:bg-green-200={submitted_index === index && $message?.type === 'success'}
+					class:bg-red-200={submitted_index === doi_obj.index && $message?.type === 'error'}
+					class:bg-green-200={submitted_index === doi_obj.index && $message?.type === 'success'}
 					on:click={() => {
-						active_obj = doi_collections.find((d) => d.query === query);
+						active_obj = doi_obj;
 						if (!active_obj) return;
 						formUpadte(active_obj);
-						$message = undefined;
+
+						show_submission_message = submitted_index === active_obj.index;
 					}}
 				>
-					<span>{index + 1}: {query}</span>
+					<span>{doi_obj.index + 1}: {doi_obj.query}</span>
 				</div>
 			{/each}
 		</div>
@@ -170,10 +176,33 @@
 	<Resizable.Handle withHandle />
 	<Resizable.Pane defaultSize={75}>
 		<div class="r-pane flex flex-col gap-2 p-4">
+			{#if show_submission_message}
+				<MessageAlert showModal={false} />
+			{/if}
 			<slot {active_obj} />
 		</div>
 	</Resizable.Pane>
 </Resizable.PaneGroup>
+
+<Card.Footer class="flex flex-col gap-4 justify-center">
+	<Form.Button
+		class="w-[150px] flex gap-4"
+		disabled={submitting}
+		on:click={() => {
+			submitted_index = active_obj?.index;
+		}}
+	>
+		<span>{submitting ? 'Uploading...' : 'Upload'}</span>
+		{#if submitting}
+			<span class="loading loading-spinner"></span>
+		{/if}
+	</Form.Button>
+	{#if submitting}
+		<span class="text-sm"
+			>Uploading will take a few minutes depending on the size of the file
+		</span>
+	{/if}
+</Card.Footer>
 
 <style>
 	.r-pane,

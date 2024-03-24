@@ -100,11 +100,11 @@ export const actions: Actions = {
 			body: formBody
 		});
 
-		console.log({
-			ok: res.ok,
-			status: res.status,
-			statusText: res.statusText
-		});
+		// console.log({
+		// 	ok: res.ok,
+		// 	status: res.status,
+		// 	statusText: res.statusText
+		// });
 
 		if (!res.ok && res.status === 400) {
 			try {

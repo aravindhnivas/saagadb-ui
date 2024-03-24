@@ -33,10 +33,12 @@
 	let:config
 	let:formStore
 	let:formValues
+	let:submitting
+	footer={false}
 	title="Direct Reference"
 	description="Add references to the species-metadata"
 >
-	<AutoFetchRef let:active_obj>
+	<AutoFetchRef {submitting} let:active_obj>
 		<svelte:fragment slot="header">
 			<div class="flex items-end gap-4">
 				<FetchMetaId />
@@ -44,7 +46,6 @@
 			</div>
 		</svelte:fragment>
 
-		<MessageAlert showModal={false} />
 		<FormField {config} name="doi" />
 		<Button
 			id="auto_fill_doi_button"
