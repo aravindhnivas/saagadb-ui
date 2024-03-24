@@ -10,21 +10,15 @@
 	import { getForm } from 'formsnap';
 	import AlertBox from '$lib/components/utils/alert-box.svelte';
 	import { oO } from '@zmotivat0r/o0';
-
 	import * as Card from '$lib/components/ui/card';
 	import * as Form from '$lib/components/ui/form';
 	import MessageAlert from '$lib/components/forms/message-alert.svelte';
 
 	export let submitting = false;
+
 	const { form, message } = getForm();
 
 	let submitted_index: number | undefined = undefined;
-	// $: if ($message?.type) {
-	// 	submitted_index = active_obj?.index;
-	// }
-
-	$: console.log(submitted_index, $message);
-
 	let fetching_doi = false;
 	let citation = '';
 
@@ -163,8 +157,8 @@
 					on:click={() => {
 						active_obj = doi_obj;
 						if (!active_obj) return;
-						formUpadte(active_obj);
 
+						formUpadte(active_obj);
 						show_submission_message = submitted_index === active_obj.index;
 					}}
 				>
