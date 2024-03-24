@@ -203,6 +203,6 @@
 	.l-pane {
 		overflow: auto;
 		min-height: 500px;
-		max-height: calc(100vh - 10px);
+		max-height: calc(50vh - 100px);
 	}
 </style>
