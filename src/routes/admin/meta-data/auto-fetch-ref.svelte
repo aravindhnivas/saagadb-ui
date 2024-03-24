@@ -12,7 +12,8 @@
 	import { oO } from '@zmotivat0r/o0';
 	import * as Card from '$lib/components/ui/card';
 	import * as Form from '$lib/components/ui/form';
-	import MessageAlert from '$lib/components/forms/message-alert.svelte';
+	import { tick } from 'svelte';
+	// import MessageAlert from '$lib/components/forms/message-alert.svelte';
 
 	export let submitting = false;
 
@@ -21,6 +22,17 @@
 	let submitted_index: number | undefined = undefined;
 	let fetching_doi = false;
 	let citation = '';
+
+	const update_doi_obj = async () => {
+		if (!active_obj) return;
+		active_obj.type = $message.type;
+		active_obj.status = $message.text;
+		await tick();
+	};
+
+	$: if (active_obj && submitted_index === active_obj?.index && $message) {
+		update_doi_obj();
+	}
 
 	$: if (fetching_doi && doi_collections.length === ref_entries.length) {
 		fetching_doi = false;
@@ -38,6 +50,8 @@
 		ref_url: string;
 		bibtex: string;
 		cite: string;
+		type?: 'success' | 'error';
+		status?: string;
 	}[] = [];
 
 	const formUpadte = (obj: (typeof doi_collections)[number]) => {
@@ -73,7 +87,7 @@
 				let ref_url: string = '';
 				let bibtex: string = '';
 				let cite: string = '';
-				if (!err && obj[0]) {
+				if (!err && obj?.[0]) {
 					doi = obj[0].DOI || null;
 					if (doi) {
 						const [_, result] = await oO(fetch_bibfile({ doi }));
@@ -152,8 +166,8 @@
 					class="cursor-pointer hover:underline p-2 rounded-lg {active_obj?.index === doi_obj.index
 						? 'bg-gray-200'
 						: ''}"
-					class:bg-red-200={submitted_index === doi_obj.index && $message?.type === 'error'}
-					class:bg-green-200={submitted_index === doi_obj.index && $message?.type === 'success'}
+					class:bg-red-200={doi_obj.type === 'error'}
+					class:bg-green-200={doi_obj.type === 'success'}
 					on:click={() => {
 						active_obj = doi_obj;
 						if (!active_obj) return;
@@ -170,8 +184,15 @@
 	<Resizable.Handle withHandle />
 	<Resizable.Pane defaultSize={75}>
 		<div class="r-pane flex flex-col gap-2 p-4">
-			{#if show_submission_message}
+			<!-- {#if show_submission_message}
 				<MessageAlert showModal={false} />
+			{/if} -->
+			{#if active_obj?.status}
+				<AlertBox
+					message={active_obj.status}
+					variant={active_obj?.type === 'error' ? 'destructive' : 'default'}
+					title={active_obj?.type === 'error' ? 'Error' : 'Success'}
+				/>
 			{/if}
 			<slot {active_obj} />
 		</div>

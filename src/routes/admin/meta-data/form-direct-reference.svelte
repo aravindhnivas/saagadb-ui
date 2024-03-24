@@ -35,6 +35,7 @@
 	let:formValues
 	let:submitting
 	footer={false}
+	resetForm={false}
 	show_message_alert={false}
 	title="Direct Reference"
 	description="Add references to the species-metadata"

@@ -15,11 +15,12 @@
 	export let schema: AnyZodObject;
 	export let opts: FormOptions<AnyZodObject> = {};
 	export let show_message_alert = true;
+	export let resetForm = true;
 	let className = '';
 	export { className as class };
 	// console.log(value);
 	const options: FormOptions<typeof schema> = {
-		resetForm: true,
+		resetForm,
 
 		// when one form is submitted, the other forms’ data are lost. This is due to the page being invalidated by default on a successful response. If you want to preserve their data, you’d almost certainly want to set invalidateAll: false or applyAction: false on them.
 		invalidateAll: true,
