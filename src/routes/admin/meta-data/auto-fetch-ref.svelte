@@ -184,6 +184,7 @@
 		disabled={submitting}
 		on:click={() => {
 			submitted_index = active_obj?.index;
+			show_submission_message = true;
 		}}
 	>
 		<span>{submitting ? 'Uploading...' : 'Upload'}</span>
