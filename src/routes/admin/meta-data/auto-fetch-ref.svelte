@@ -12,20 +12,26 @@
 	import { oO } from '@zmotivat0r/o0';
 	import * as Card from '$lib/components/ui/card';
 	import * as Form from '$lib/components/ui/form';
+	import { tick } from 'svelte';
 
 	export let submitting = false;
 
-	const { form, message } = getForm();
+	const { form, message, posted } = getForm();
 
 	let submitted_index: number | undefined = undefined;
 	let fetching_doi = false;
 	let citation = '';
+	let render = false;
+	// $: console.log({ $posted });
 
-	const update_doi_obj = () => {
+	const update_doi_obj = async () => {
+		// console.log('update_doi_obj', { submitted_index, $message, active_obj, doi_collections });
 		if (!active_obj) return;
 		active_obj.type = $message.type;
 		active_obj.status = $message.text;
 		doi_collections = doi_collections; // trigger reactivity
+		await tick();
+		render = !render;
 	};
 
 	$: if (active_obj && submitted_index === active_obj?.index && $message) {
@@ -159,24 +165,27 @@
 <Resizable.PaneGroup direction="horizontal" class="rounded-lg border h-full">
 	<Resizable.Pane defaultSize={25}>
 		<div class="l-pane flex flex-col gap-4 text-sm p-4">
-			{#each doi_collections as doi_obj (doi_obj.index)}
-				<!-- svelte-ignore a11y-click-events-have-key-events -->
-				<!-- svelte-ignore a11y-no-static-element-interactions -->
-				<div
-					class="cursor-pointer hover:underline p-2 rounded-lg"
-					class:bg-gray-200={active_obj?.index === doi_obj.index}
-					class:bg-red-200={doi_obj.type === 'error'}
-					class:bg-green-200={doi_obj.type === 'success'}
-					on:click={() => {
-						active_obj = doi_obj;
-						if (!active_obj) return;
-						formUpadte(active_obj);
-						show_submission_message = submitted_index === active_obj.index;
-					}}
-				>
-					<span>{doi_obj.index + 1}: {doi_obj.query}</span>
-				</div>
-			{/each}
+			{#key render}
+				{#each doi_collections as doi_obj (doi_obj.index)}
+					<!-- svelte-ignore a11y-click-events-have-key-events -->
+					<!-- svelte-ignore a11y-no-static-element-interactions -->
+					<div
+						class="cursor-pointer hover:underline p-2 rounded-lg"
+						class:bg-gray-200={active_obj?.index === doi_obj.index}
+						class:bg-red-200={doi_obj.type === 'error'}
+						class:bg-green-200={doi_obj.type === 'success'}
+						on:click={() => {
+							// doi_collections = doi_collections;
+							active_obj = doi_obj;
+							if (!active_obj) return;
+							formUpadte(active_obj);
+							show_submission_message = submitted_index === active_obj.index;
+						}}
+					>
+						<span>{doi_obj.index + 1}: {doi_obj.query}</span>
+					</div>
+				{/each}
+			{/key}
 		</div>
 	</Resizable.Pane>
 	<Resizable.Handle withHandle />
@@ -199,6 +208,8 @@
 		class="w-[150px] flex gap-4"
 		disabled={submitting}
 		on:click={() => {
+			$message = undefined;
+			$posted = false;
 			submitted_index = active_obj?.index;
 			show_submission_message = true;
 		}}
