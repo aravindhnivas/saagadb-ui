@@ -12,8 +12,6 @@
 	import { oO } from '@zmotivat0r/o0';
 	import * as Card from '$lib/components/ui/card';
 	import * as Form from '$lib/components/ui/form';
-	import { tick } from 'svelte';
-	// import MessageAlert from '$lib/components/forms/message-alert.svelte';
 
 	export let submitting = false;
 
@@ -23,11 +21,11 @@
 	let fetching_doi = false;
 	let citation = '';
 
-	const update_doi_obj = async () => {
+	const update_doi_obj = () => {
 		if (!active_obj) return;
 		active_obj.type = $message.type;
 		active_obj.status = $message.text;
-		await tick();
+		doi_collections = doi_collections; // trigger reactivity
 	};
 
 	$: if (active_obj && submitted_index === active_obj?.index && $message) {
@@ -39,6 +37,7 @@
 		if (doi_collections.length > 0) {
 			active_obj = doi_collections[0];
 			formUpadte(active_obj);
+			localStorage.setItem('doi_collections', JSON.stringify(doi_collections));
 		}
 	}
 
@@ -52,7 +51,8 @@
 		cite: string;
 		type?: 'success' | 'error';
 		status?: string;
-	}[] = [];
+	}[] = JSON.parse(localStorage.getItem('doi_collections') || '[]') || [];
+	// }[] = [];
 
 	const formUpadte = (obj: (typeof doi_collections)[number]) => {
 		if (!obj) return;
@@ -159,19 +159,17 @@
 <Resizable.PaneGroup direction="horizontal" class="rounded-lg border h-full">
 	<Resizable.Pane defaultSize={25}>
 		<div class="l-pane flex flex-col gap-4 text-sm p-4">
-			{#each doi_collections as doi_obj}
+			{#each doi_collections as doi_obj (doi_obj.index)}
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
 				<!-- svelte-ignore a11y-no-static-element-interactions -->
 				<div
-					class="cursor-pointer hover:underline p-2 rounded-lg {active_obj?.index === doi_obj.index
-						? 'bg-gray-200'
-						: ''}"
+					class="cursor-pointer hover:underline p-2 rounded-lg"
+					class:bg-gray-200={active_obj?.index === doi_obj.index}
 					class:bg-red-200={doi_obj.type === 'error'}
 					class:bg-green-200={doi_obj.type === 'success'}
 					on:click={() => {
 						active_obj = doi_obj;
 						if (!active_obj) return;
-
 						formUpadte(active_obj);
 						show_submission_message = submitted_index === active_obj.index;
 					}}
@@ -184,9 +182,6 @@
 	<Resizable.Handle withHandle />
 	<Resizable.Pane defaultSize={75}>
 		<div class="r-pane flex flex-col gap-2 p-4">
-			<!-- {#if show_submission_message}
-				<MessageAlert showModal={false} />
-			{/if} -->
 			{#if active_obj?.status}
 				<AlertBox
 					message={active_obj.status}
