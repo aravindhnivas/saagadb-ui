@@ -93,9 +93,9 @@ const directReferenceScheme = z.object({
 export const metadata_items = [
 	{ value: 'species-metadata', name: 'Species metadata', scheme: speciesMetadataScheme },
 	{ value: 'line', name: 'Line', scheme: lineScheme },
-	{ value: 'direct-reference', name: 'Direct-reference', scheme: directReferenceScheme }
-	// { value: 'reference', name: 'Reference', scheme: referenceScheme },
-	// { value: 'meta-reference', name: 'Meta reference', scheme: metaReferenceScheme }
+	{ value: 'direct-reference', name: 'Direct-reference', scheme: directReferenceScheme },
+	{ value: 'reference', name: 'Reference', scheme: referenceScheme },
+	{ value: 'meta-reference', name: 'Meta reference', scheme: metaReferenceScheme }
 ] as const;
 
 export const ids = metadata_items.map((item) => item.value);
