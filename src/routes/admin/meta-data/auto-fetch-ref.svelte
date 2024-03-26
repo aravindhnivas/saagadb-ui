@@ -25,7 +25,6 @@
 	// $: console.log({ $posted });
 
 	const update_doi_obj = async () => {
-		// console.log('update_doi_obj', { submitted_index, $message, active_obj, doi_collections });
 		if (!active_obj) return;
 		active_obj.type = $message.type;
 		active_obj.status = $message.text;
@@ -191,13 +190,16 @@
 	<Resizable.Handle withHandle />
 	<Resizable.Pane defaultSize={75}>
 		<div class="r-pane flex flex-col gap-2 p-4">
-			{#if active_obj?.status}
-				<AlertBox
-					message={active_obj.status}
-					variant={active_obj?.type === 'error' ? 'destructive' : 'default'}
-					title={active_obj?.type === 'error' ? 'Error' : 'Success'}
-				/>
-			{/if}
+			{#key render}
+				{#if active_obj?.status}
+					<AlertBox
+						message={active_obj.status}
+						variant={active_obj?.type === 'error' ? 'destructive' : 'default'}
+						title={active_obj?.type === 'error' ? 'Error' : 'Success'}
+					/>
+				{/if}
+			{/key}
+
 			<slot {active_obj} />
 		</div>
 	</Resizable.Pane>
