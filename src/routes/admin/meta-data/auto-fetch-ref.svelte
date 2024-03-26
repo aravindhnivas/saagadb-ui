@@ -42,7 +42,6 @@
 		if (doi_collections.length > 0) {
 			active_obj = doi_collections[0];
 			formUpadte(active_obj);
-			localStorage.setItem('doi_collections', JSON.stringify(doi_collections));
 		}
 	}
 
@@ -56,8 +55,7 @@
 		cite: string;
 		type?: 'success' | 'error';
 		status?: string;
-	}[] = JSON.parse(localStorage.getItem('doi_collections') || '[]') || [];
-	// }[] = [];
+	}[] = [];
 
 	const formUpadte = (obj: (typeof doi_collections)[number]) => {
 		if (!obj) return;
