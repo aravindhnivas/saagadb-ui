@@ -40,6 +40,11 @@
 	title="Direct Reference"
 	description="Add references to the species-metadata"
 >
+	<AlertBox
+		message="You can skip the next two steps (Reference and Meta reference) if you complete this without error."
+		variant="default"
+		title="NOTE"
+	/>
 	<AutoFetchRef {submitting} let:active_obj>
 		<svelte:fragment slot="header">
 			<div class="flex items-end gap-4">
