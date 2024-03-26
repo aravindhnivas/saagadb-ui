@@ -83,7 +83,7 @@
 		}
 		fetching_doi = true;
 		doi_collections = [];
-
+		active_obj = undefined;
 		ref_entries.forEach((query, index) => {
 			window.CrossRef.works({ query }, async (err, obj) => {
 				if (cancel_doi_fetching) return (fetching_doi = false);
