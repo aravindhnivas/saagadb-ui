@@ -149,6 +149,9 @@
 
 			{#if fetching_doi}
 				({Number((doi_collections.length / ref_entries.length) * 100).toFixed(2)}%)
+				<span>{doi_collections.length}</span>
+				/
+				<span>{ref_entries.length}</span>
 			{/if}
 		</span>
 	</Button>
