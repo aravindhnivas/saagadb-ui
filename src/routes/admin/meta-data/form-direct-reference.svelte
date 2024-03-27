@@ -14,11 +14,9 @@
 	import Loader from '$lib/components/utils/loader.svelte';
 	import AutoFetchRef from './auto-fetch-ref.svelte';
 	import FetchMetaId from './fetch-meta-id.svelte';
-	import MessageAlert from '$lib/components/forms/message-alert.svelte';
 
 	export let form: SuperValidated<(typeof Schemas)['direct-reference']>;
 
-	// $: console.log({ form });
 	const value = 'direct-reference';
 	const schema = Schemas[value];
 	let fetching = false;
@@ -41,7 +39,7 @@
 	description="Add references to the species-metadata"
 >
 	<AlertBox
-		message="You can skip the next two steps (Reference and Meta reference) if you complete this without error."
+		message="[Only for CDMS] You can skip the next two steps (Reference and Meta reference) if you complete this without error."
 		variant="default"
 		title="NOTE"
 	/>
