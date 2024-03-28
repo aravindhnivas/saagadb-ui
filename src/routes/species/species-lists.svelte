@@ -12,11 +12,10 @@
 	let virtualListEl: HTMLDivElement;
 
 	$: virtualizer = createVirtualizer<HTMLDivElement, HTMLDivElement>({
-		count: species.length,
+		count: filteredSpecies.length,
 		getScrollElement: () => virtualListEl,
 		estimateSize: () => 35,
-		overscan: 5 // The number of items to render above and below the visible area.
-		// debug: true
+		overscan: 2 // The number of items to render above and below the visible area.
 	});
 
 	let searchKey = '';
@@ -74,7 +73,7 @@
 <style>
 	.scroll-container {
 		min-height: 300px;
-		max-height: calc(100vh - 200px);
+		max-height: calc(100vh - 350px);
 		overflow: auto;
 		border: solid 1px gray;
 		padding: 1em;
