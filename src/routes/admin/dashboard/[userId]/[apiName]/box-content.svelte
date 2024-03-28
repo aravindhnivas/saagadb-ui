@@ -140,7 +140,12 @@
 						<div class="col-span-3">
 							{#if link}
 								{#if metadata[name]}
-									<a href={metadata[name]} target="_blank" rel="noopener noreferrer">
+									<a
+										class="text-blue underline text-sm font-italic"
+										href={metadata[name]}
+										target="_blank"
+										rel="noopener noreferrer"
+									>
 										{#if download}
 											<!-- <div class="flex gap-4 items-center"> -->
 											<!-- <span>Download</span> -->
