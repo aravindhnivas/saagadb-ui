@@ -3,12 +3,12 @@
 	import { AlertCircle } from 'lucide-svelte/icons';
 	import * as Alert from '$lib/components/ui/alert';
 	import SpeciesLists from './species-lists.svelte';
-
+	import * as Resizable from '$lib/components/ui/resizable';
 	export let data: LayoutData;
 </script>
 
-<div class="flex gap-4 overflow-hidden">
-	<div class="basis-1/4 p-4 overflow-auto">
+<Resizable.PaneGroup direction="horizontal" class="rounded-lg border h-full">
+	<Resizable.Pane defaultSize={20} class="w-full p-4 overflow-auto">
 		{#await data.load}
 			<div class="flex gap-2 items-center">
 				<span class="loading loading-spinner"></span>
@@ -23,6 +23,14 @@
 				<Alert.Description>{error?.message ?? error}</Alert.Description>
 			</Alert.Root>
 		{/await}
-	</div>
-	<div class="basis-3/4 p-4 overflow-auto"><slot /></div>
-</div>
+	</Resizable.Pane>
+	<Resizable.Handle withHandle />
+	<Resizable.Pane defaultSize={80} class="p-4">
+		<div
+			class="grid gap-4 h-full overflow-auto w-full items-start px-5"
+			style="grid-template-rows: auto auto 1fr;"
+		>
+			<slot />
+		</div>
+	</Resizable.Pane>
+</Resizable.PaneGroup>

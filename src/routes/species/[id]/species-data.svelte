@@ -44,7 +44,7 @@
 		{/if}
 	</div>
 
-	<div class="grid grid-cols-2 gap-4 my-2 max-w-4xl">
+	<div class="grid grid-cols-2 gap-4 max-w-4xl">
 		{#if mol}
 			{@const svg = mol.get_svg()}
 			{@const blob = new Blob([svg], { type: 'image/svg+xml' })}

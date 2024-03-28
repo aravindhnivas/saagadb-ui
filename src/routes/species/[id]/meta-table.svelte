@@ -117,85 +117,86 @@
 	};
 </script>
 
-{#if species_metadata.length > 0}
-	<Table.Root class="max-w-4xl">
-		<Table.Caption>Species-metadata</Table.Caption>
-		<Table.Header>
-			<Table.Row>
-				<Table.Head class="flex items-center gap-2 {cell_padding}"
-					><span>Database</span>
-					<span
-						aria-label="Click on the database name to get more metadata such as references, bibtex file, spectrum informations, etc."
-						data-cooltipz-dir="down"
-					>
-						<HelpCircle />
-					</span>
-				</Table.Head>
-				{#each species_metadata as { id, linelist_name } (id)}
-					<Table.Head class="text-center font-bold">
-						<a
-							href="{base}/species/{species_id}/{id}"
-							on:click={(e) => {
-								if (linelist_name) meta_name = linelist_name;
-								nav_to_ref(e);
-							}}
-						>
-							<span class="underline hover:text-blue">{linelist_name.toUpperCase()}</span>
-						</a>
-					</Table.Head>
-				{/each}
-			</Table.Row>
-		</Table.Header>
-		<Table.Body>
-			{#each metadata_keys as key}
+<div class="border-2 border-solid border-gray border-rounded-5 p-4 max-w-4xl">
+	{#if species_metadata.length > 0}
+		<Table.Root>
+			<Table.Caption>Species-metadata</Table.Caption>
+			<Table.Header>
 				<Table.Row>
-					<Table.Cell class={cell_padding}>{@html key.name}</Table.Cell>
-					{#each species_metadata as metadata (metadata.id)}
-						{@const val = metadata[key.value]}
-						{@const linelist_name = metadata.linelist_name.toLocaleUpperCase()}
-						<Table.Cell class="text-center {cell_padding}">
-							{#if typeof val === 'boolean'}
-								{val ? '✅' : '❌'}
-							{:else if key.value === 'molecule_tag' && typeof val !== 'object'}
-								{@const info = fetch_from_database(val, linelist_name)}
-								<a
-									class="underline hover:text-blue"
-									href={info?.fileinfo}
-									target="_blank"
-									rel="noopener noreferrer"
-									>{info?.tag_val ?? val}
-								</a>
-							{:else if key.value.endsWith('_file') && metadata?.[key.value]}
-								{@const file = metadata[key.value].split('/').at(-1)}
-								{@const ext = file.split('.').at(-1)}
-								{@const filename = `${linelist_name}_${metadata.species_formula}_${metadata.molecule_tag}.${ext}`}
-								<a
-									class="btn btn-sm w-[150px]"
-									href="{base}/uploads/sp/{file}"
-									download={filename}
-									target="_blank"
-									rel="noopener noreferrer"
-								>
-									<div class="flex gap-4 items-center justify-evenly">
-										<span>.{ext}</span>
-										<Download />
-									</div>
-								</a>
-							{:else if key.value === 'notes'}
-								{@html val ?? '-'}
-							{:else}
-								{key.formatter ? key.formatter(val) : val ?? '-'}
-							{/if}
-						</Table.Cell>
+					<Table.Head class="flex items-center gap-2 {cell_padding}"
+						><span>Database</span>
+						<span
+							aria-label="Click on the database name to get more metadata such as references, bibtex file, spectrum informations, etc."
+							data-cooltipz-dir="down"
+						>
+							<HelpCircle />
+						</span>
+					</Table.Head>
+					{#each species_metadata as { id, linelist_name } (id)}
+						<Table.Head class="text-center font-bold">
+							<a
+								href="{base}/species/{species_id}/{id}"
+								on:click={(e) => {
+									if (linelist_name) meta_name = linelist_name;
+									nav_to_ref(e);
+								}}
+							>
+								<span class="underline hover:text-blue">{linelist_name.toUpperCase()}</span>
+							</a>
+						</Table.Head>
 					{/each}
 				</Table.Row>
-			{/each}
-		</Table.Body>
-	</Table.Root>
-{:else}
-	<p>No metadata found</p>
-{/if}
-
+			</Table.Header>
+			<Table.Body>
+				{#each metadata_keys as key}
+					<Table.Row>
+						<Table.Cell class={cell_padding}>{@html key.name}</Table.Cell>
+						{#each species_metadata as metadata (metadata.id)}
+							{@const val = metadata[key.value]}
+							{@const linelist_name = metadata.linelist_name.toLocaleUpperCase()}
+							<Table.Cell class="text-center {cell_padding}">
+								{#if typeof val === 'boolean'}
+									{val ? '✅' : '❌'}
+								{:else if key.value === 'molecule_tag' && typeof val !== 'object'}
+									{@const info = fetch_from_database(val, linelist_name)}
+									<a
+										class="underline hover:text-blue"
+										href={info?.fileinfo}
+										target="_blank"
+										rel="noopener noreferrer"
+										>{info?.tag_val ?? val}
+									</a>
+								{:else if key.value.endsWith('_file') && metadata?.[key.value]}
+									{@const file = metadata[key.value].split('/').at(-1)}
+									{@const ext = file.split('.').at(-1)}
+									{@const filename = `${linelist_name}_${metadata.species_formula}_${metadata.molecule_tag}.${ext}`}
+									<a
+										class="btn btn-sm w-[150px]"
+										href="{base}/uploads/sp/{file}"
+										download={filename}
+										target="_blank"
+										rel="noopener noreferrer"
+									>
+										<div class="flex gap-4 items-center justify-evenly">
+											<span>.{ext}</span>
+											<Download />
+										</div>
+									</a>
+								{:else if key.value === 'notes'}
+									{@html val ?? '-'}
+								{:else}
+									{key.formatter ? key.formatter(val) : val ?? '-'}
+								{/if}
+							</Table.Cell>
+						{/each}
+					</Table.Row>
+				{/each}
+			</Table.Body>
+		</Table.Root>
+	{:else}
+		<p>No metadata found</p>
+	{/if}
+</div>
 {#if $page.state.ready}
 	<MetaPage bind:open={open_meta_ref} data={meta_page_data} {meta_name} {species_name} />
 {/if}
