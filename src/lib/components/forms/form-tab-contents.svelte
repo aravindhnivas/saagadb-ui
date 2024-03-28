@@ -6,6 +6,7 @@
 	import type { AnyZodObject } from 'zod';
 	import MessageAlert from './message-alert.svelte';
 	import AlertBox from '../utils/alert-box.svelte';
+	import { createEventDispatcher } from 'svelte';
 
 	export let value: string;
 	export let footer = true;
@@ -18,6 +19,8 @@
 	export let resetForm = true;
 	let className = '';
 	export { className as class };
+
+	const dispatch = createEventDispatcher();
 	// console.log(value);
 	const options: FormOptions<typeof schema> = {
 		resetForm,
@@ -26,6 +29,14 @@
 		invalidateAll: true,
 		applyAction: true,
 		taintedMessage: null,
+		onResult: ({ result }) => {
+			// console.log(result);
+			if (result.type === 'failure') {
+				dispatch('failure', result);
+			} else if (result.type === 'success') {
+				dispatch('success', result);
+			}
+		},
 		...opts
 	};
 </script>

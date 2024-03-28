@@ -6,9 +6,12 @@
 	export let message: string = '';
 	export let error: Error | null = null;
 	export let title: string = 'Info';
+
+	let className = '';
+	export { className as class };
 </script>
 
-<Alert.Root class="select-text" variant={error ? 'destructive' : variant || 'default'}>
+<Alert.Root class="select-text {className}" variant={error ? 'destructive' : variant || 'default'}>
 	<slot><AlertCircle class="h-4 w-4" /></slot>
 
 	<Alert.Title>

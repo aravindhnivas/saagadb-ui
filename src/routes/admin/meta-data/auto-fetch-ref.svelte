@@ -12,7 +12,8 @@
 	import { oO } from '@zmotivat0r/o0';
 	import * as Card from '$lib/components/ui/card';
 	import * as Form from '$lib/components/ui/form';
-	import { tick } from 'svelte';
+	import { onMount, tick } from 'svelte';
+	import { RefreshCcw } from 'lucide-svelte/icons';
 
 	export let submitting = false;
 
@@ -20,9 +21,8 @@
 
 	let submitted_index: number | undefined = undefined;
 	let fetching_doi = false;
-	let citation = '';
+
 	let render = false;
-	// $: console.log({ $posted });
 
 	const update_doi_obj = async () => {
 		if (!active_obj) return;
@@ -31,6 +31,19 @@
 		doi_collections = doi_collections; // trigger reactivity
 		await tick();
 		render = !render;
+
+		if (
+			$message.type === 'success' ||
+			($message.type === 'error' &&
+				$message.text.includes('This entry already exists in the database'))
+		) {
+			form.update((f) => {
+				f.notes = '';
+				f.dipole_moment = false;
+				f.spectrum = false;
+				return f;
+			});
+		}
 	};
 
 	$: if (active_obj && submitted_index === active_obj?.index && $message) {
@@ -41,10 +54,15 @@
 		fetching_doi = false;
 		if (doi_collections.length > 0) {
 			active_obj = doi_collections[0];
-			formUpadte(active_obj);
+			formUpadte();
+
+			if (import.meta.env.DEV) {
+				localStorage.setItem('citation', citation);
+				localStorage.setItem('doi_collections', JSON.stringify(doi_collections));
+			}
 		}
 	}
-
+	let citation = '';
 	$: ref_entries = citation.split('\n').filter((r) => r.trim()) || [];
 	let doi_collections: {
 		index: number;
@@ -57,12 +75,14 @@
 		status?: string;
 	}[] = [];
 
-	const formUpadte = (obj: (typeof doi_collections)[number]) => {
-		if (!obj) return;
+	const formUpadte = () => {
+		if (!active_obj) return;
+
 		form.update((f) => {
-			f.doi = obj.doi;
-			f.ref_url = obj.ref_url;
-			f.bibtex = obj.bibtex;
+			if (!active_obj) return f;
+			f.doi = active_obj.doi;
+			f.ref_url = active_obj.ref_url;
+			f.bibtex = active_obj.bibtex;
 			return f;
 		});
 	};
@@ -71,6 +91,9 @@
 		if (!data) return toast.error('No data found');
 		citation = data.references?.join('\n');
 		doi_collections = [];
+		if (import.meta.env.DEV) {
+			doi_collections = JSON.parse(localStorage.getItem('doi_collections') || '[]');
+		}
 	};
 
 	let cancel_doi_fetching = false;
@@ -110,6 +133,13 @@
 	};
 	let show_submission_message = false;
 	let active_obj: (typeof doi_collections)[number] | undefined = doi_collections[0];
+
+	onMount(() => {
+		if (import.meta.env.DEV) {
+			citation = localStorage.getItem('citation') || '';
+			doi_collections = JSON.parse(localStorage.getItem('doi_collections') || '[]') || [];
+		}
+	});
 </script>
 
 <div class="grid gap-4 p-2 border-2 border-rounded-2 border-gray-300">
@@ -160,6 +190,31 @@
 			Cancel
 		</Button>
 	{/if}
+
+	{#if doi_collections.length > 0}
+		<Button
+			class="w-[250px] ml-auto"
+			variant="outline"
+			disabled={fetching_doi}
+			on:click={(e) => {
+				e.preventDefault();
+				doi_collections = doi_collections.map((f) => {
+					delete f.status;
+					delete f.type;
+					return f;
+				});
+				active_obj = doi_collections[0];
+				$message = undefined;
+				$posted = false;
+				render = !render;
+			}}
+		>
+			<div class="flex gap-4 items-center">
+				<RefreshCcw />
+				<span>Refresh</span>
+			</div>
+		</Button>
+	{/if}
 </div>
 
 <Resizable.PaneGroup direction="horizontal" class="rounded-lg border h-full">
@@ -171,6 +226,7 @@
 					<!-- svelte-ignore a11y-no-static-element-interactions -->
 					<div
 						class="cursor-pointer hover:underline p-2 rounded-lg"
+						class:underline={active_obj?.index === doi_obj.index}
 						class:bg-gray-200={active_obj?.index === doi_obj.index}
 						class:bg-red-200={doi_obj.type === 'error'}
 						class:bg-green-200={doi_obj.type === 'success'}
@@ -178,7 +234,7 @@
 							// doi_collections = doi_collections;
 							active_obj = doi_obj;
 							if (!active_obj) return;
-							formUpadte(active_obj);
+							formUpadte();
 							show_submission_message = submitted_index === active_obj.index;
 						}}
 					>
@@ -194,14 +250,14 @@
 			{#key render}
 				{#if active_obj?.status}
 					<AlertBox
+						class={active_obj?.type === 'success' ? 'bg-green-200' : ''}
 						message={active_obj.status}
 						variant={active_obj?.type === 'error' ? 'destructive' : 'default'}
 						title={active_obj?.type === 'error' ? 'Error' : 'Success'}
 					/>
 				{/if}
+				<slot {active_obj} />
 			{/key}
-
-			<slot {active_obj} />
 		</div>
 	</Resizable.Pane>
 </Resizable.PaneGroup>
@@ -210,7 +266,11 @@
 	<Form.Button
 		class="w-[150px] flex gap-4"
 		disabled={submitting}
-		on:click={() => {
+		on:click={(e) => {
+			if (active_obj?.type === 'success') {
+				e.preventDefault();
+				toast.warning('Reference already added. Please select another one.');
+			}
 			$message = undefined;
 			$posted = false;
 			submitted_index = active_obj?.index;

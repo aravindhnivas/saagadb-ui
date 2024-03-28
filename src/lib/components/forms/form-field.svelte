@@ -8,6 +8,7 @@
 	export let description: string = '';
 	export let textarea = false;
 	export let checkbox = false;
+	// export let setValue: (value: string) => void;
 </script>
 
 <Form.Field {config} {name} let:constraints let:attrs let:setValue>

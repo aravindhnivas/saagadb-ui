@@ -51,120 +51,122 @@
 			</div>
 		</svelte:fragment>
 
-		<FormField {config} name="doi" />
-		<Button
-			id="auto_fill_doi_button"
-			variant="outline"
-			class="w-[150px]"
-			on:click={async () => {
-				try {
-					fetching = true;
-					formStore.update((f) => {
-						f.doi = f.doi.trim();
-						return f;
-					});
-
-					if (formValues.doi.includes('doi.org')) {
-						const corr_doi = formValues.doi.split('doi.org/')[1];
+		{#if active_obj?.type !== 'success' && !active_obj?.status?.includes('This entry already exists in the database')}
+			<FormField {config} name="doi" />
+			<Button
+				id="auto_fill_doi_button"
+				variant="outline"
+				class="w-[150px]"
+				on:click={async () => {
+					try {
+						fetching = true;
 						formStore.update((f) => {
-							f.doi = corr_doi;
+							f.doi = f.doi.trim();
 							return f;
 						});
-					}
-					const doi = formValues.doi;
-					if (!doi) throw new Error('DOI is required');
-					const { href, bibtex_text, parsed } = await fetch_bibfile({ doi });
-					parsed_bibtex = parsed;
-					formStore.update((f) => {
-						f.ref_url = href.replace('http://dx.doi.org/', 'https://doi.org/');
-						f.bibtex = bibtex_text;
-						return f;
-					});
-				} catch (error) {
-					if (error instanceof Error) toast.error(error.message);
-				} finally {
-					fetching = false;
-				}
-			}}>Auto-fill from DOI</Button
-		>
 
-		<Loader {fetching} />
-		<FormField {config} name="ref_url" />
-
-		{#if formValues.ref_url}
-			<a href={formValues.ref_url} target="_blank" rel="noopener noreferrer" class="underline">
-				Check reference link
-			</a>
-		{/if}
-
-		<div class="flex gap-4 w-full items-baseline">
-			<Form.Field {config} name="bibtex" let:constraints let:attrs>
-				<Form.Item class="basis-3/4">
-					<Form.Label>bibtex</Form.Label>
-					<Form.Textarea {...constraints} {...attrs.input} />
-					<Form.Validation {...attrs.validation} />
-				</Form.Item>
-			</Form.Field>
-			<div class="grid w-full max-w-sm items-center gap-1.5">
-				<Label>OR choose bibtex file</Label>
-				<Input
-					type="file"
-					required={false}
-					on:change={(e) => {
-						const target = e.target;
-						const file = target?.files?.[0];
-						if (!file) return;
-						const reader = new FileReader();
-						reader.onload = async (e) => {
-							const text = e.target?.result;
+						if (formValues.doi.includes('doi.org')) {
+							const corr_doi = formValues.doi.split('doi.org/')[1];
 							formStore.update((f) => {
-								f.bibtex = text;
+								f.doi = corr_doi;
 								return f;
 							});
-						};
-						reader.readAsText(file);
-					}}
-				/>
-			</div>
-		</div>
+						}
+						const doi = formValues.doi;
+						if (!doi) throw new Error('DOI is required');
+						const { href, bibtex_text, parsed } = await fetch_bibfile({ doi });
+						parsed_bibtex = parsed;
+						formStore.update((f) => {
+							f.ref_url = href.replace('http://dx.doi.org/', 'https://doi.org/');
+							f.bibtex = bibtex_text;
+							return f;
+						});
+					} catch (error) {
+						if (error instanceof Error) toast.error(error.message);
+					} finally {
+						fetching = false;
+					}
+				}}>Auto-fill from DOI</Button
+			>
 
-		{#if (parsed_bibtex && formValues.bibtex) || active_obj?.cite}
-			<div class="grid gap-2">
-				<AlertBox
-					message={parsed_bibtex || active_obj?.cite}
-					variant="default"
-					title="Fetched citation"
-				/>
-				<button
-					class="btn btn-sm w-[150px]"
-					on:click={async (e) => {
-						e.preventDefault();
-						if (!formValues.doi) return;
-						if (!formValues.bibtex) return;
-						const [err, data] = await oO(fetch_bibfile({ bibtex: formValues.bibtex }));
-						if (err instanceof Error) {
-							console.error(err.stack);
-							toast.error(err.message);
-							return;
-						}
-						if (!data?.parsed) {
-							toast.error('Failed to parse bibtex');
-							return;
-						}
-						parsed_bibtex = data.parsed;
-						toast.success('Bibtex parsed successfully');
-					}}
-					>Parse bibtex
-				</button>
-				<div class="alert text-sm p-1">
-					Check the fetched citation and if needded make changes to the bibtex and then click on the
-					"Parse bibtex" button.
+			<Loader {fetching} />
+			<FormField {config} name="ref_url" />
+
+			{#if formValues.ref_url}
+				<a href={formValues.ref_url} target="_blank" rel="noopener noreferrer" class="underline">
+					Check reference link
+				</a>
+			{/if}
+
+			<div class="flex gap-4 w-full items-baseline">
+				<Form.Field {config} name="bibtex" let:constraints let:attrs>
+					<Form.Item class="basis-3/4">
+						<Form.Label>bibtex</Form.Label>
+						<Form.Textarea {...constraints} {...attrs.input} />
+						<Form.Validation {...attrs.validation} />
+					</Form.Item>
+				</Form.Field>
+				<div class="grid w-full max-w-sm items-center gap-1.5">
+					<Label>OR choose bibtex file</Label>
+					<Input
+						type="file"
+						required={false}
+						on:change={(e) => {
+							const target = e.target;
+							const file = target?.files?.[0];
+							if (!file) return;
+							const reader = new FileReader();
+							reader.onload = async (e) => {
+								const text = e.target?.result;
+								formStore.update((f) => {
+									f.bibtex = text;
+									return f;
+								});
+							};
+							reader.readAsText(file);
+						}}
+					/>
 				</div>
 			</div>
-		{/if}
 
-		<FormField {config} name="notes" textarea />
-		<FormField {config} name="dipole_moment" checkbox />
-		<FormField {config} name="spectrum" checkbox />
+			{#if (parsed_bibtex && formValues.bibtex) || active_obj?.cite}
+				<div class="grid gap-2">
+					<AlertBox
+						message={parsed_bibtex || active_obj?.cite}
+						variant="default"
+						title="Fetched citation"
+					/>
+					<button
+						class="btn btn-sm w-[150px]"
+						on:click={async (e) => {
+							e.preventDefault();
+							if (!formValues.doi) return;
+							if (!formValues.bibtex) return;
+							const [err, data] = await oO(fetch_bibfile({ bibtex: formValues.bibtex }));
+							if (err instanceof Error) {
+								console.error(err.stack);
+								toast.error(err.message);
+								return;
+							}
+							if (!data?.parsed) {
+								toast.error('Failed to parse bibtex');
+								return;
+							}
+							parsed_bibtex = data.parsed;
+							toast.success('Bibtex parsed successfully');
+						}}
+						>Parse bibtex
+					</button>
+					<div class="alert text-sm p-1">
+						Check the fetched citation and if needded make changes to the bibtex and then click on
+						the "Parse bibtex" button.
+					</div>
+				</div>
+			{/if}
+
+			<FormField {config} name="notes" textarea />
+			<FormField {config} name="dipole_moment" checkbox />
+			<FormField {config} name="spectrum" checkbox />
+		{/if}
 	</AutoFetchRef>
 </FormTabContents>
