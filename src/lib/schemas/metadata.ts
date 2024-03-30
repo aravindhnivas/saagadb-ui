@@ -66,29 +66,37 @@ const referenceScheme = z.object({
 	bibtex: z.string().optional()
 });
 
-const metaReferenceScheme = z.object({
-	meta: z.union([z.string(), z.number().int()]).refine((str) => !isNaN(parseFloat(str)), {
-		message: 'Invalid id number'
-	}),
-	ref: z.union([z.string(), z.number().int()]).refine((str) => !isNaN(parseFloat(str)), {
-		message: 'Invalid id number'
-	}),
-	dipole_moment: z.boolean(),
-	spectrum: z.boolean(),
-	notes: z.string().default('').optional()
-});
+const metaReferenceScheme = z
+	.object({
+		meta: z.union([z.string(), z.number().int()]).refine((str) => !isNaN(parseFloat(str)), {
+			message: 'Invalid id number'
+		}),
+		ref: z.union([z.string(), z.number().int()]).refine((str) => !isNaN(parseFloat(str)), {
+			message: 'Invalid id number'
+		}),
+		dipole_moment: z.boolean(),
+		spectrum: z.boolean(),
+		notes: z.string().default('').optional()
+	})
+	.refine((data) => data.dipole_moment || data.spectrum, {
+		message: 'Either dipole_moment or spectrum must be true'
+	});
 
-const directReferenceScheme = z.object({
-	meta: z.union([z.string(), z.number().int()]).refine((str) => !isNaN(parseFloat(str)), {
-		message: 'Invalid id number'
-	}),
-	doi: z.string().min(5),
-	ref_url: z.string().min(5),
-	bibtex: z.string().optional(),
-	dipole_moment: z.boolean(),
-	spectrum: z.boolean(),
-	notes: z.string().default('').optional()
-});
+const directReferenceScheme = z
+	.object({
+		meta: z.union([z.string(), z.number().int()]).refine((str) => !isNaN(parseFloat(str)), {
+			message: 'Invalid id number'
+		}),
+		doi: z.string().min(5),
+		ref_url: z.string().min(5),
+		bibtex: z.string().optional(),
+		dipole_moment: z.boolean(),
+		spectrum: z.boolean(),
+		notes: z.string().default('').optional()
+	})
+	.refine((data) => data.dipole_moment || data.spectrum, {
+		message: 'Either dipole_moment or spectrum must be true'
+	});
 
 export const metadata_items = [
 	{ value: 'species-metadata', name: 'Species metadata', scheme: speciesMetadataScheme },
