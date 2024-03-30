@@ -3,7 +3,6 @@
 	import * as Alert from '$lib/components/ui/alert';
 	import { getForm } from 'formsnap';
 	import { confetti } from '@neoconfetti/svelte';
-	// import { Button } from '$lib/components/ui/button';
 	export let showModal = true;
 	const { message } = getForm();
 	let modal: HTMLDialogElement;
