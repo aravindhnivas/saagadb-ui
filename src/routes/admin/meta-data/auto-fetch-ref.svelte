@@ -211,6 +211,9 @@
 				$doi_collections = $doi_collections.map((f) => {
 					delete f.status;
 					delete f.type;
+					f.dipole_moment = false;
+					f.spectrum = false;
+					f.notes = '';
 					return f;
 				});
 				// active_obj = $doi_collections[0];
