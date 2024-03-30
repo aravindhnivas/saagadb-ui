@@ -52,7 +52,13 @@
 		</svelte:fragment>
 
 		{#if $active_obj?.type !== 'success' && !$active_obj?.status?.includes('This entry already exists in the database')}
-			<FormField {config} name="doi" />
+			<FormField
+				{config}
+				name="doi"
+				on:change={() => {
+					$doi_collections[$active_ind]['doi'] = formValues.doi;
+				}}
+			/>
 			<Button
 				id="auto_fill_doi_button"
 				variant="outline"
@@ -91,7 +97,13 @@
 			>
 
 			<Loader {fetching} />
-			<FormField {config} name="ref_url" />
+			<FormField
+				{config}
+				name="ref_url"
+				on:change={() => {
+					$doi_collections[$active_ind]['ref_url'] = formValues.ref_url;
+				}}
+			/>
 
 			{#if formValues.ref_url}
 				<a href={formValues.ref_url} target="_blank" rel="noopener noreferrer" class="underline">
