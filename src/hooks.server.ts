@@ -15,7 +15,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 		event.locals.refresh_token = refresh_token;
 
 		if (!access_token || access_token === 'undefined') {
-			console.log('refreshing token');
+			// console.log('refreshing token');
 			const res = await fetch(`${DB_URL}/token/refresh/`, {
 				method: 'POST',
 				body: JSON.stringify({ refresh: event.locals.refresh_token }),
