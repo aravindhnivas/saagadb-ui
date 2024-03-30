@@ -13,6 +13,20 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	if (refresh_token && refresh_token !== 'undefined') {
 		event.locals.refresh_token = refresh_token;
+
+		if (!access_token || access_token === 'undefined') {
+			console.log('refreshing token');
+			const res = await fetch(`${DB_URL}/token/refresh/`, {
+				method: 'POST',
+				body: JSON.stringify({ refresh: event.locals.refresh_token }),
+				headers: { 'Content-Type': 'application/json' }
+			});
+			const JWT = (await res.json()) as { access: string; refresh: string };
+			set_JWT({ cookies: event.cookies, JWT });
+			event.locals.access_token = JWT.access;
+			event.locals.refresh_token = JWT.refresh;
+		}
+
 		const decoded = jwtDecode(refresh_token) as TokenDecoded;
 		event.locals.user_id = decoded.user_id;
 		event.locals.user = decoded.user;
