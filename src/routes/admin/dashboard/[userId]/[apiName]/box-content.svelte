@@ -51,6 +51,14 @@
 	};
 
 	const fields = api_fields[$page.params.apiName];
+	let edit_files = {} as Record<number, boolean>;
+
+	fields.forEach((field, ind) => {
+		if (field.file) {
+			edit_files[ind] = false;
+		}
+	});
+	// $: console.log(edit_files);
 	let disabled = true;
 
 	let smiles = metadata.smiles || metadata.species_smiles;
@@ -124,7 +132,7 @@
 		{:else if mol}
 			<div class="ml-auto">{@html mol.get_svg(100, 50)}</div>
 		{/if}
-		{#each fields as { name, label, editable, link, download, file }}
+		{#each fields as { name, label, editable, link, download, file }, ind}
 			<div class="grid grid-cols-4 items-center select-text">
 				{#if name === 'approved'}
 					{#if metadata[name]}
@@ -192,7 +200,31 @@
 							</div>
 						{/if}
 					{:else if file}
-						<Input type="file" class="col-span-3" {name} />
+						{#if metadata[name]}
+							<button
+								class="select-none"
+								class:col-span-3={!edit_files[ind]}
+								on:click={(e) => {
+									e.preventDefault();
+									edit_files[ind] = !edit_files[ind];
+								}}
+							>
+								{#if edit_files[ind]}
+									<UnlockKeyhole />
+								{:else}
+									<div class="flex items-center gap-4">
+										<span><LockKeyhole /></span>
+										<span>Unlock to replace "<em>{name}</em>" </span>
+									</div>
+								{/if}
+							</button>
+
+							{#if edit_files[ind]}
+								<Input type="file" class="col-span-2" {name} />
+							{/if}
+						{:else}
+							<Input type="file" class="col-span-3" {name} />
+						{/if}
 					{:else}
 						<Input type="text" value={metadata[name]} class="col-span-3" {name} />
 					{/if}
