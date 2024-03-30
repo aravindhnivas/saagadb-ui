@@ -2,28 +2,53 @@
 	import StarterKit from '@tiptap/starter-kit';
 	import Superscript from '@tiptap/extension-superscript';
 	import Subscript from '@tiptap/extension-subscript';
+	import Underline from '@tiptap/extension-underline';
 	import { Editor } from '@tiptap/core';
-	import { onMount } from 'svelte';
-	import { Redo, Undo, Bold, Italic, SuperscriptIcon, SubscriptIcon } from 'lucide-svelte/icons';
+	import { createEventDispatcher, onMount } from 'svelte';
+	import {
+		Redo,
+		Undo,
+		Bold,
+		Italic,
+		Underline as UnderlineIcon,
+		SuperscriptIcon,
+		SubscriptIcon
+	} from 'lucide-svelte/icons';
 
 	export let content: string = '';
 	export let setValue: (value: string) => void;
+
+	// $: console.log(content, editor?.getHTML());
+
+	$: if (content !== editor?.getHTML()) {
+		editor?.commands.setContent(content);
+	}
+
+	const dispatch = createEventDispatcher();
+
 	let element: HTMLDivElement;
 	let editor: Editor;
 
 	onMount(() => {
+		// console.log('creating editor');
 		editor = new Editor({
 			element: element,
-			extensions: [StarterKit, Superscript, Subscript],
+			extensions: [StarterKit, Underline, Superscript, Subscript],
 			content,
 			onTransaction: () => {
 				// force re-render so `editor.isActive` works as expected
 				editor = editor;
 				content = editor.getHTML();
-				if (content === '<p></p>') setValue?.('');
-				else setValue?.(content);
+				const value = content === '<p></p>' ? '' : content.trim();
+				setValue?.(value);
+				dispatch('change', { value });
 			}
 		});
+
+		return () => {
+			// console.log('destroying editor');
+			editor.destroy();
+		};
 	});
 </script>
 
@@ -35,6 +60,14 @@
 			disabled={!editor.can().chain().focus().toggleBold().run()}
 		>
 			<Bold />
+		</button>
+
+		<button
+			class:is-active={editor.isActive('underline')}
+			on:click|preventDefault={() => editor.chain().focus().toggleUnderline().run()}
+			disabled={!editor.can().chain().focus().toggleItalic().run()}
+		>
+			<UnderlineIcon />
 		</button>
 
 		<button

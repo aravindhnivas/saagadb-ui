@@ -61,6 +61,7 @@
 		"@tiptap/core": "^2.2.4",
 		"@tiptap/extension-subscript": "^2.2.4",
 		"@tiptap/extension-superscript": "^2.2.4",
+		"@tiptap/extension-underline": "^2.2.4",
 		"@tiptap/pm": "^2.2.4",
 		"@tiptap/starter-kit": "^2.2.4",
 		"@zmotivat0r/o0": "^1.0.2",

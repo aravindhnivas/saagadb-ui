@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { doi_collections, active_obj, active_ind } from './stores';
 	import { Button } from '$lib/components/ui/button';
 	import { Label } from '$lib/components/ui/label';
 	import fetch_bibfile from '$lib/utils/bibfile';
@@ -25,10 +26,13 @@
 	let render = false;
 
 	const update_doi_obj = async () => {
-		if (!active_obj) return;
-		active_obj.type = $message.type;
-		active_obj.status = $message.text;
-		doi_collections = doi_collections; // trigger reactivity
+		if (!$active_obj) return;
+		$doi_collections[$active_ind] = {
+			...$active_obj,
+			status: $message.text,
+			type: $message.type
+		};
+		$doi_collections = $doi_collections; // trigger reactivity
 		await tick();
 		render = !render;
 
@@ -46,43 +50,38 @@
 		}
 	};
 
-	$: if (active_obj && submitted_index === active_obj?.index && $message) {
+	$: if ($active_obj && submitted_index === $active_ind && $message) {
 		update_doi_obj();
 	}
 
-	$: if (fetching_doi && doi_collections.length === ref_entries.length) {
+	$: if (fetching_doi && $doi_collections.length === ref_entries.length) {
 		fetching_doi = false;
-		if (doi_collections.length > 0) {
-			active_obj = doi_collections[0];
+		if ($doi_collections.length > 0) {
+			// active_obj = $doi_collections[0];
+
+			$active_ind = 0;
 			formUpadte();
 
 			if (import.meta.env.DEV) {
 				localStorage.setItem('citation', citation);
-				localStorage.setItem('doi_collections', JSON.stringify(doi_collections));
+				localStorage.setItem('doi_collections', JSON.stringify($doi_collections));
 			}
 		}
 	}
+
 	let citation = '';
 	$: ref_entries = citation.split('\n').filter((r) => r.trim()) || [];
-	let doi_collections: {
-		index: number;
-		query: string;
-		doi: string;
-		ref_url: string;
-		bibtex: string;
-		cite: string;
-		type?: 'success' | 'error';
-		status?: string;
-	}[] = [];
 
 	const formUpadte = () => {
-		if (!active_obj) return;
-
+		if (!$active_obj) return;
 		form.update((f) => {
-			if (!active_obj) return f;
-			f.doi = active_obj.doi;
-			f.ref_url = active_obj.ref_url;
-			f.bibtex = active_obj.bibtex;
+			if (!$active_obj) return f;
+			f.doi = $active_obj.doi;
+			f.ref_url = $active_obj.ref_url;
+			f.bibtex = $active_obj.bibtex;
+			f.notes = $active_obj.notes;
+			f.dipole_moment = $active_obj.dipole_moment;
+			f.spectrum = $active_obj.spectrum;
 			return f;
 		});
 	};
@@ -90,9 +89,11 @@
 	const fetch_all_ref = (db: string, data: { references: string[] }) => {
 		if (!data) return toast.error('No data found');
 		citation = data.references?.join('\n');
-		doi_collections = [];
+
 		if (import.meta.env.DEV) {
-			doi_collections = JSON.parse(localStorage.getItem('doi_collections') || '[]');
+			$doi_collections = JSON.parse(localStorage.getItem('doi_collections') || '[]');
+		} else {
+			$doi_collections = [];
 		}
 	};
 
@@ -103,8 +104,9 @@
 			return;
 		}
 		fetching_doi = true;
-		doi_collections = [];
-		active_obj = undefined;
+		$doi_collections = [];
+		$active_ind = -1;
+		// active_obj = undefined;
 		ref_entries.forEach((query, index) => {
 			window.CrossRef.works({ query }, async (err, obj) => {
 				if (cancel_doi_fetching) return (fetching_doi = false);
@@ -125,19 +127,27 @@
 						}
 					}
 				}
-
-				doi_collections = [...doi_collections, { index, doi, query, ref_url, bibtex, cite }];
-				doi_collections.sort((a, b) => a.index - b.index);
+				const _obj = {
+					index,
+					doi,
+					query,
+					ref_url,
+					bibtex,
+					cite,
+					dipole_moment: false,
+					spectrum: false,
+					notes: ''
+				};
+				$doi_collections = [...$doi_collections, { ..._obj }];
+				$doi_collections.sort((a, b) => a.index - b.index);
 			});
 		});
 	};
-	let show_submission_message = false;
-	let active_obj: (typeof doi_collections)[number] | undefined = doi_collections[0];
 
 	onMount(() => {
 		if (import.meta.env.DEV) {
 			citation = localStorage.getItem('citation') || '';
-			doi_collections = JSON.parse(localStorage.getItem('doi_collections') || '[]') || [];
+			$doi_collections = JSON.parse(localStorage.getItem('doi_collections') || '[]') || [];
 		}
 	});
 </script>
@@ -178,8 +188,8 @@
 			Fetch-DOI
 
 			{#if fetching_doi}
-				({Number((doi_collections.length / ref_entries.length) * 100).toFixed(2)}%)
-				<span>{doi_collections.length}</span>
+				({Number(($doi_collections.length / ref_entries.length) * 100).toFixed(2)}%)
+				<span>{$doi_collections.length}</span>
 				/
 				<span>{ref_entries.length}</span>
 			{/if}
@@ -191,19 +201,20 @@
 		</Button>
 	{/if}
 
-	{#if doi_collections.length > 0}
+	{#if $doi_collections.length > 0}
 		<Button
 			class="w-[250px] ml-auto"
 			variant="outline"
 			disabled={fetching_doi}
 			on:click={(e) => {
 				e.preventDefault();
-				doi_collections = doi_collections.map((f) => {
+				$doi_collections = $doi_collections.map((f) => {
 					delete f.status;
 					delete f.type;
 					return f;
 				});
-				active_obj = doi_collections[0];
+				// active_obj = $doi_collections[0];
+				$active_ind = 0;
 				$message = undefined;
 				$posted = false;
 				render = !render;
@@ -221,21 +232,22 @@
 	<Resizable.Pane defaultSize={25}>
 		<div class="l-pane flex flex-col gap-4 text-sm p-4">
 			{#key render}
-				{#each doi_collections as doi_obj (doi_obj.index)}
+				{#each $doi_collections as doi_obj (doi_obj.index)}
 					<!-- svelte-ignore a11y-click-events-have-key-events -->
 					<!-- svelte-ignore a11y-no-static-element-interactions -->
 					<div
 						class="cursor-pointer hover:underline p-2 rounded-lg"
-						class:underline={active_obj?.index === doi_obj.index}
-						class:bg-gray-200={active_obj?.index === doi_obj.index}
+						class:underline={$active_ind === doi_obj.index}
+						class:bg-gray-200={$active_ind === doi_obj.index}
 						class:bg-red-200={doi_obj.type === 'error'}
 						class:bg-green-200={doi_obj.type === 'success'}
 						on:click={() => {
-							// doi_collections = doi_collections;
-							active_obj = doi_obj;
-							if (!active_obj) return;
+							$active_ind = doi_obj.index;
+							// $doi_collections = $doi_collections;
+							// active_obj = doi_obj;
+							// active_obj_index = doi_obj.index;
+							// if (!active_obj) return;
 							formUpadte();
-							show_submission_message = submitted_index === active_obj.index;
 						}}
 					>
 						<span>{doi_obj.index + 1}: {doi_obj.query}</span>
@@ -248,15 +260,15 @@
 	<Resizable.Pane defaultSize={75}>
 		<div class="r-pane flex flex-col gap-2 p-4">
 			{#key render}
-				{#if active_obj?.status}
+				{#if $active_obj?.status}
 					<AlertBox
-						class={active_obj?.type === 'success' ? 'bg-green-200' : ''}
-						message={active_obj.status}
-						variant={active_obj?.type === 'error' ? 'destructive' : 'default'}
-						title={active_obj?.type === 'error' ? 'Error' : 'Success'}
+						class={$active_obj?.type === 'success' ? 'bg-green-200' : ''}
+						message={$active_obj.status}
+						variant={$active_obj?.type === 'error' ? 'destructive' : 'default'}
+						title={$active_obj?.type === 'error' ? 'Error' : 'Success'}
 					/>
 				{/if}
-				<slot {active_obj} />
+				<slot />
 			{/key}
 		</div>
 	</Resizable.Pane>
@@ -267,14 +279,13 @@
 		class="w-[150px] flex gap-4"
 		disabled={submitting}
 		on:click={(e) => {
-			if (active_obj?.type === 'success') {
+			if ($active_obj?.type === 'success') {
 				e.preventDefault();
 				toast.warning('Reference already added. Please select another one.');
 			}
 			$message = undefined;
 			$posted = false;
-			submitted_index = active_obj?.index;
-			show_submission_message = true;
+			submitted_index = $active_ind;
 		}}
 	>
 		<span>{submitting ? 'Uploading...' : 'Upload'}</span>

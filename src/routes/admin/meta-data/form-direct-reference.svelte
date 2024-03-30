@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { active_obj, active_ind, doi_collections } from './stores';
 	import FormTabContents from '$lib/components/forms/form-tab-contents.svelte';
 	import { Schemas } from '$lib/schemas/metadata';
 	import type { SuperValidated } from 'sveltekit-superforms';
@@ -20,7 +21,6 @@
 	const value = 'direct-reference';
 	const schema = Schemas[value];
 	let fetching = false;
-	let parsed_bibtex = '';
 </script>
 
 <FormTabContents
@@ -43,7 +43,7 @@
 		variant="default"
 		title="NOTE"
 	/>
-	<AutoFetchRef {submitting} let:active_obj>
+	<AutoFetchRef {submitting}>
 		<svelte:fragment slot="header">
 			<div class="flex items-end gap-4">
 				<FetchMetaId />
@@ -51,7 +51,7 @@
 			</div>
 		</svelte:fragment>
 
-		{#if active_obj?.type !== 'success' && !active_obj?.status?.includes('This entry already exists in the database')}
+		{#if $active_obj?.type !== 'success' && !$active_obj?.status?.includes('This entry already exists in the database')}
 			<FormField {config} name="doi" />
 			<Button
 				id="auto_fill_doi_button"
@@ -75,7 +75,8 @@
 						const doi = formValues.doi;
 						if (!doi) throw new Error('DOI is required');
 						const { href, bibtex_text, parsed } = await fetch_bibfile({ doi });
-						parsed_bibtex = parsed;
+						// if($doi_collections[$active_ind]) return;
+						$doi_collections[$active_ind]['cite'] = parsed;
 						formStore.update((f) => {
 							f.ref_url = href.replace('http://dx.doi.org/', 'https://doi.org/');
 							f.bibtex = bibtex_text;
@@ -102,7 +103,13 @@
 				<Form.Field {config} name="bibtex" let:constraints let:attrs>
 					<Form.Item class="basis-3/4">
 						<Form.Label>bibtex</Form.Label>
-						<Form.Textarea {...constraints} {...attrs.input} />
+						<Form.Textarea
+							{...constraints}
+							{...attrs.input}
+							on:change={() => {
+								$doi_collections[$active_ind]['bibtex'] = formValues.bibtex;
+							}}
+						/>
 						<Form.Validation {...attrs.validation} />
 					</Form.Item>
 				</Form.Field>
@@ -129,13 +136,9 @@
 				</div>
 			</div>
 
-			{#if (parsed_bibtex && formValues.bibtex) || active_obj?.cite}
+			{#if $active_obj?.cite}
 				<div class="grid gap-2">
-					<AlertBox
-						message={parsed_bibtex || active_obj?.cite}
-						variant="default"
-						title="Fetched citation"
-					/>
+					<AlertBox message={$active_obj?.cite} variant="default" title="Fetched citation" />
 					<button
 						class="btn btn-sm w-[150px]"
 						on:click={async (e) => {
@@ -152,7 +155,7 @@
 								toast.error('Failed to parse bibtex');
 								return;
 							}
-							parsed_bibtex = data.parsed;
+							$doi_collections[$active_ind]['cite'] = data.parsed;
 							toast.success('Bibtex parsed successfully');
 						}}
 						>Parse bibtex
@@ -164,9 +167,33 @@
 				</div>
 			{/if}
 
-			<FormField {config} name="notes" textarea />
-			<FormField {config} name="dipole_moment" checkbox />
-			<FormField {config} name="spectrum" checkbox />
+			<FormField
+				{config}
+				name="notes"
+				textarea
+				on:change={(e) => {
+					// console.log('formValues.notes', formValues.notes);
+					if ($active_ind < 0) return;
+					$doi_collections[$active_ind]['notes'] = e.detail.value;
+				}}
+			/>
+
+			<FormField
+				{config}
+				name="dipole_moment"
+				checkbox
+				on:change={(e) => {
+					$doi_collections[$active_ind]['dipole_moment'] = e.detail.value;
+				}}
+			/>
+			<FormField
+				{config}
+				name="spectrum"
+				checkbox
+				on:change={(e) => {
+					$doi_collections[$active_ind]['spectrum'] = e.detail.value;
+				}}
+			/>
 		{/if}
 	</AutoFetchRef>
 </FormTabContents>
