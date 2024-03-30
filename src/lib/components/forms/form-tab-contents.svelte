@@ -72,11 +72,15 @@
 
 				<slot {config} {formStore} {formValues} {submitting} {posted} {errors} />
 				{#if !Object.values(errors).every((value) => value === undefined)}
-					<AlertBox
-						variant="destructive"
-						message="Please check above for error messages"
-						title="Error"
-					/>
+					{#if errors._errors}
+						<AlertBox variant="destructive" message={errors._errors.join(', ')} title="NOTE" />
+					{:else}
+						<AlertBox
+							variant="destructive"
+							message="Please check above for error messages"
+							title="Error"
+						/>
+					{/if}
 				{/if}
 			</Card.Content>
 
