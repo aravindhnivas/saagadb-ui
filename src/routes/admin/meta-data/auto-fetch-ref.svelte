@@ -34,7 +34,7 @@
 		};
 		$doi_collections = $doi_collections; // trigger reactivity
 		await tick();
-		render = !render;
+		render = !render; // trigger reactivity
 
 		if (
 			$message.type === 'success' ||
@@ -57,8 +57,6 @@
 	$: if (fetching_doi && $doi_collections.length === ref_entries.length) {
 		fetching_doi = false;
 		if ($doi_collections.length > 0) {
-			// active_obj = $doi_collections[0];
-
 			$active_ind = 0;
 			formUpadte();
 
@@ -246,10 +244,6 @@
 						class:bg-green-200={doi_obj.type === 'success'}
 						on:click={() => {
 							$active_ind = doi_obj.index;
-							// $doi_collections = $doi_collections;
-							// active_obj = doi_obj;
-							// active_obj_index = doi_obj.index;
-							// if (!active_obj) return;
 							formUpadte();
 						}}
 					>
