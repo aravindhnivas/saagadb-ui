@@ -83,7 +83,7 @@
 	});
 </script>
 
-<form {id} use:enhance={onSubmit} method="POST">
+<form {id} use:enhance={onSubmit} method="POST" enctype="multipart/form-data">
 	<div class="grid border-solid border-2 border-rounded-2 p-5 gap-1">
 		{#if edit}
 			<div class="flex gap-4 items-center w-full">
@@ -124,7 +124,7 @@
 		{:else if mol}
 			<div class="ml-auto">{@html mol.get_svg(100, 50)}</div>
 		{/if}
-		{#each fields as { name, label, editable, link, download }}
+		{#each fields as { name, label, editable, link, download, file }}
 			<div class="grid grid-cols-4 items-center select-text">
 				{#if name === 'approved'}
 					{#if metadata[name]}
@@ -191,8 +191,10 @@
 								<Tiptap setValue={(value) => (metadata[name] = value)} content={metadata[name]} />
 							</div>
 						{/if}
+					{:else if file}
+						<Input type="file" class="col-span-3" {name} />
 					{:else}
-						<Input type="text" value={metadata[name]} class="h-7 col-span-3" {name} />
+						<Input type="text" value={metadata[name]} class="col-span-3" {name} />
 					{/if}
 				{/if}
 			</div>

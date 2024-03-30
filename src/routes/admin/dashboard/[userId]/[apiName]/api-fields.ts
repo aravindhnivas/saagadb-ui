@@ -14,7 +14,39 @@ export const api_fields = {
 		{ name: 'approved', label: 'Approved' },
 		{ name: 'species_smiles', label: 'SMILES', search_field: true, editable: false },
 		{ name: 'species_name', label: 'Species name', search_field: true, editable: false },
-		{ name: 'cat_file', label: 'Cat file', editable: false, link: true, download: true },
+		{ name: 'cat_file', label: 'cat_file', editable: false, link: true, download: true },
+		{
+			name: 'fit_file',
+			label: 'fit_file',
+			editable: true,
+			link: true,
+			download: true,
+			file: true
+		},
+		{
+			name: 'lin_file',
+			label: 'lin_file',
+			editable: true,
+			link: true,
+			download: true,
+			file: true
+		},
+		{
+			name: 'var_file',
+			label: 'var_file',
+			editable: true,
+			link: true,
+			download: true,
+			file: true
+		},
+		{
+			name: 'int_file',
+			label: 'int_file',
+			editable: true,
+			link: true,
+			download: true,
+			file: true
+		},
 		{ name: 'molecule_tag', label: 'Molecule tag', search_field: true, editable: false },
 		{ name: 'linelist_name', label: 'Linelist', search_field: true, editable: false },
 		{ name: 'category', label: 'Category', search_field: true },
@@ -50,5 +82,6 @@ export const api_fields = {
 		editable?: boolean;
 		link?: boolean;
 		download?: boolean;
+		file?: boolean;
 	}[];
 };

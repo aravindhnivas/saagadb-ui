@@ -58,8 +58,10 @@ export const actions: Actions = {
 		const id = url.searchParams.get('id') as string;
 		const body = Object.fromEntries(formData.entries());
 
+		let name: string[] | undefined;
 		if (params.apiName === 'species') {
-			body['name'] = body['name']?.split(',').map((name: string) => name.trim());
+			name = body['name']?.split(',').map((name: string) => name.trim());
+			if (name) formData.set('name', JSON.stringify(name));
 		}
 
 		// console.log({ id, body });
@@ -71,8 +73,7 @@ export const actions: Actions = {
 
 		const res = await fetch(`${DB_URL}/data/${params.apiName}/${id}/`, {
 			method: 'PATCH',
-			body: JSON.stringify(body),
-			headers: { 'Content-Type': 'application/json' }
+			body: formData
 		});
 
 		// console.log(res.ok, res.status, res.statusText);
