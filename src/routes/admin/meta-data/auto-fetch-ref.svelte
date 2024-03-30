@@ -59,7 +59,7 @@
 		if ($doi_collections.length > 0) {
 			$active_ind = 0;
 			formUpadte();
-
+			// console.log({ $doi_collections });
 			if (import.meta.env.DEV) {
 				localStorage.setItem('citation', citation);
 				localStorage.setItem('doi_collections', JSON.stringify($doi_collections));
@@ -104,7 +104,7 @@
 		fetching_doi = true;
 		$doi_collections = [];
 		$active_ind = -1;
-		// active_obj = undefined;
+		// console.log('fetching doi', { $doi_collections });
 		ref_entries.forEach((query, index) => {
 			window.CrossRef.works({ query }, async (err, obj) => {
 				if (cancel_doi_fetching) return (fetching_doi = false);
