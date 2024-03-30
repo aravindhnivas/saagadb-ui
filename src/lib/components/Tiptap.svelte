@@ -20,7 +20,7 @@
 
 	// $: console.log(content, editor?.getHTML());
 
-	$: if (content !== editor?.getHTML()) {
+	$: if (content.trim() !== editor?.getHTML().trim()) {
 		editor?.commands.setContent(content);
 	}
 
