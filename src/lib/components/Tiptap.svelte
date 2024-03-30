@@ -18,19 +18,23 @@
 	export let content: string = '';
 	export let setValue: (value: string) => void;
 
-	// $: import.meta.env.DEV &&
-	// 	console.log({
-	// 		content,
-	// 		editor: editor?.getHTML()
-	// 	});
+	$: import.meta.env.DEV &&
+		console.log({
+			content,
+			editor: editor?.getHTML()
+		});
 
-	$: if (editor?.getHTML() !== '<p></p>' && content.trim() !== editor?.getHTML().trim()) {
+	$: if (
+		(editor?.getHTML() !== '<p></p>' || (editor?.getHTML() === '<p></p>' && content !== '')) &&
+		content.trim() !== editor?.getHTML().trim()
+	) {
 		editor?.commands.setContent(content);
 		// content = editor?.getHTML();
-		// console.log({
-		// 	content,
-		// 	editor: editor?.getHTML()
-		// });
+		import.meta.env.DEV &&
+			console.log('fixed: ', {
+				content,
+				editor: editor?.getHTML()
+			});
 	}
 
 	const dispatch = createEventDispatcher();
