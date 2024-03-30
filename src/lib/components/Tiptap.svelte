@@ -18,9 +18,12 @@
 	export let content: string = '';
 	export let setValue: (value: string) => void;
 
-	// $: console.log(content, editor?.getHTML());
+	// $: console.log({
+	// 	content,
+	// 	editor: editor?.getHTML()
+	// });
 
-	$: if (content.trim() !== editor?.getHTML().trim()) {
+	$: if (editor?.getHTML() !== '<p></p>' && content.trim() !== editor?.getHTML().trim()) {
 		editor?.commands.setContent(content);
 	}
 
@@ -44,7 +47,8 @@
 				dispatch('change', { value });
 			}
 		});
-
+		// content = editor.getHTML();
+		console.log(editor.getHTML());
 		return () => {
 			// console.log('destroying editor');
 			editor.destroy();
