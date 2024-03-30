@@ -39,6 +39,8 @@
 		},
 		...opts
 	};
+
+	// $: console.log();
 </script>
 
 <Tabs.Content {value}>
@@ -71,9 +73,14 @@
 				{/if}
 
 				<slot {config} {formStore} {formValues} {submitting} {posted} {errors} />
+				<!-- <pre>
+					{JSON.stringify(errors, null, 2)}
+				</pre> -->
 				{#if !Object.values(errors).every((value) => value === undefined)}
 					{#if errors._errors}
 						<AlertBox variant="destructive" message={errors._errors.join(', ')} title="NOTE" />
+					{:else if !show_message_alert}
+						<AlertBox variant="destructive" message={JSON.stringify(errors)} title="NOTE" />
 					{:else}
 						<AlertBox
 							variant="destructive"
