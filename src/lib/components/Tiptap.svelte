@@ -57,7 +57,7 @@
 			}
 		});
 		// content = editor.getHTML();
-		console.log(editor.getHTML());
+		// console.log(editor.getHTML());
 		return () => {
 			// console.log('destroying editor');
 			editor.destroy();
