@@ -26,6 +26,8 @@
 	};
 	export let edit: boolean = false;
 
+	const new_metadata = structuredClone(metadata);
+
 	// console.log(metadata);
 	let uploading = false;
 	const onSubmit: SubmitFunction = () => {
@@ -155,10 +157,7 @@
 										rel="noopener noreferrer"
 									>
 										{#if download}
-											<!-- <div class="flex gap-4 items-center"> -->
-											<!-- <span>Download</span> -->
 											<Download />
-											<!-- </div> -->
 										{:else}
 											{metadata[name]}
 										{/if}
@@ -174,7 +173,15 @@
 					{:else if typeof metadata[name] === 'boolean'}
 						<FormCheckbox label="" {disabled} {name} checked={metadata[name]} />
 					{:else if name === 'smiles'}
-						<Input type="text" value={metadata[name]} class="h-7 col-span-3" {name} />
+						<Input
+							type="text"
+							bind:value={metadata[name]}
+							class="h-7 col-span-3"
+							{name}
+							on:keyup={() => {
+								auto_fill_inchi_info(metadata[name]);
+							}}
+						/>
 						<div class="flex gap-2 items-center h-[100px]">
 							<button
 								class="btn btn-sm"
