@@ -41,8 +41,12 @@
 				<Form.Input {...constraints} {...attrs.input} on:keyup on:change />
 			{/if}
 			<Form.Validation {...attrs.validation} />
-			{#if description}
-				<Form.Description {...attrs.description}>{description}</Form.Description>
+			{#if description || $$slots.description}
+				<Form.Description {...attrs.description}>
+					<slot name="description">
+						{description}
+					</slot>
+				</Form.Description>
 			{/if}
 		</Form.Item>
 	{/if}
