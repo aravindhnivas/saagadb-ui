@@ -35,7 +35,7 @@
 		description="Please auto-fill this field using Fetch meta_id button"
 	/>
 
-	<FormField {config} name="name" description="Enter the name of the file" />
+	<!-- <FormField {config} name="name" description="Enter the name of the file" /> -->
 	<Form.Field {config} name="misc_file" let:attrs let:constraints>
 		<Form.Item>
 			<div class="grid w-full max-w-sm items-center gap-1.5">
@@ -43,7 +43,7 @@
 				<Form.Input type="file" {...constraints} {...attrs.input} multiple />
 			</div>
 			<Form.Validation {...attrs.validation} />
-			<!-- <Form.Description></Form.Description> -->
+			<Form.Description>You can select more than one file(s)</Form.Description>
 		</Form.Item>
 	</Form.Field>
 	<FormField {config} name="notes" textarea />
