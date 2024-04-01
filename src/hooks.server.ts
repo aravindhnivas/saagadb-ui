@@ -3,6 +3,7 @@ import { env } from '$env/dynamic/private';
 import { DB_URL } from '$lib/server';
 import { set_JWT } from '$lib/server/cookies';
 import { jwtDecode } from 'jwt-decode';
+import { base } from '$app/paths';
 
 export const handle: Handle = async ({ event, resolve }) => {
 	// const token = event.cookies.get('token') || '';
@@ -34,10 +35,10 @@ export const handle: Handle = async ({ event, resolve }) => {
 		// console.log('decoded', decoded, event.locals);
 	}
 
-	if (event.url.pathname.startsWith('/admin')) {
+	if (event.url.pathname.startsWith(`${base}/admin`)) {
 		if (!event.locals.refresh_token) {
 			const fromUrl = event.url.pathname + event.url.search;
-			redirect(303, `/login?redirectTo=${fromUrl}`);
+			redirect(303, `${base}/login?redirectTo=${fromUrl}`);
 		}
 	}
 
