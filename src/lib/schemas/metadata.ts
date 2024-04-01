@@ -102,7 +102,7 @@ const miscFilesUploadScheme = z.object({
 	meta: z.union([z.string(), z.number().int()]).refine((str) => !isNaN(parseFloat(str)), {
 		message: 'Invalid id number'
 	}),
-	name: z.string().min(3),
+	// name: z.string().min(3),
 	misc_file: z.string().default(''),
 	notes: z.string().default('').optional()
 });
