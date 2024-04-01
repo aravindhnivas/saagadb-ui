@@ -83,12 +83,16 @@
 
 			<FormField {config} name="standard_inchi" label="InChI" />
 			<FormField {config} name="standard_inchi_key" label="InChI Key" />
-			<FormField
-				{config}
-				textarea
-				name="notes"
-				description="Enter any notes. Tips: enter electronic state. NOTE: Please enter the notes to species-metadata if it is obtained/relevant to the specific database notes such as CDMS or JPL. Only general notes related to species should be entered here."
-			/>
+			<FormField {config} textarea name="notes">
+				<svelte:fragment slot="description">
+					<span>Enter any notes. Tips: enter electronic state.</span>
+					<span class="text-blue">
+						NOTE: Please enter the notes to species-metadata if it is obtained/relevant to the
+						specific database notes such as CDMS or JPL. Only general notes related to species
+						should be entered here.
+					</span>
+				</svelte:fragment>
+			</FormField>
 		</Card.Content>
 		<Card.Footer class="flex gap-4 justify-center">
 			<Form.Button class="w-[150px] flex gap-4" disabled={submitting}>
