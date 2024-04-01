@@ -98,9 +98,19 @@ const directReferenceScheme = z
 		message: 'Either dipole_moment or spectrum must be true'
 	});
 
+const miscFilesUploadScheme = z.object({
+	meta: z.union([z.string(), z.number().int()]).refine((str) => !isNaN(parseFloat(str)), {
+		message: 'Invalid id number'
+	}),
+	name: z.string().min(3),
+	misc_file: z.string().default(''),
+	notes: z.string().default('').optional()
+});
+
 export const metadata_items = [
 	{ value: 'species-metadata', name: 'Species metadata', scheme: speciesMetadataScheme },
 	{ value: 'line', name: 'Line', scheme: lineScheme },
+	{ value: 'misc-files-upload', name: 'Misc. files', scheme: miscFilesUploadScheme },
 	{ value: 'direct-reference', name: 'Direct-reference', scheme: directReferenceScheme },
 	{ value: 'reference', name: 'Reference', scheme: referenceScheme },
 	{ value: 'meta-reference', name: 'Meta reference', scheme: metaReferenceScheme }
@@ -128,7 +138,8 @@ export const fileInputs: {
 	reference: [{ id: uuidv4(), name: 'bibtex', required: true, extension: '.bib' }],
 	'direct-reference': [{ id: uuidv4(), name: 'bibtex', required: true, extension: '.bib' }],
 	'meta-reference': [],
-	line: [{ id: uuidv4(), name: 'cat_file', required: true, extension: '.cat' }]
+	line: [{ id: uuidv4(), name: 'cat_file', required: true, extension: '.cat' }],
+	'misc-files-upload': [{ id: uuidv4(), name: 'misc_file', required: true, extension: '' }]
 };
 
 export const dropdowns: {

@@ -5,7 +5,8 @@
 	const width = {
 		'3': 'w-lg',
 		'4': 'w-xl',
-		'5': 'w-2xl'
+		'5': 'w-2xl',
+		'6': 'w-4xl'
 	};
 
 	let className = `grid grid-cols-${metadata_items.length} ${width[metadata_items.length]}`;

@@ -6,7 +6,7 @@
 	import FormSpeciesMetadata from './form-species-metadata.svelte';
 	import FormReference from './form-reference.svelte';
 	import FormMetaReference from './form-meta-reference.svelte';
-
+	import FormMiscFilesUpload from './form-misc-files-upload.svelte';
 	export let data: PageData;
 	setContext('species', data.species);
 	setContext('linelist', data.linelist);
@@ -17,3 +17,4 @@
 <FormDirectReference form={data.forms['direct-reference']} />
 <FormReference form={data.forms['reference']} />
 <FormMetaReference form={data.forms['meta-reference']} />
+<FormMiscFilesUpload form={data.forms['misc-files-upload']} />

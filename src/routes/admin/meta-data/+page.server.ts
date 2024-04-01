@@ -5,6 +5,7 @@ import type { SuperValidated } from 'sveltekit-superforms';
 import { fail } from '@sveltejs/kit';
 import { DB_URL } from '$lib/server';
 import { base } from '$app/paths';
+import type { AnyZodObject } from 'zod';
 
 type FormKeys = keyof typeof Schemas;
 
@@ -30,81 +31,91 @@ export const load: PageServerLoad = async ({ fetch }) => {
 	return { forms, species, linelist };
 };
 
+const process_form_data = (
+	form: SuperValidated<AnyZodObject>,
+	formData: FormData,
+	metaid: FormKeys
+) => {
+	const formBody = new FormData();
+
+	// Append the file data
+	for (const key of fileInputs[metaid]) {
+		const file = formData.get(key.name);
+		if (file instanceof File) {
+			if (file.name && !file.name.endsWith(key.extension)) {
+				return setError(form, key.name, `File must have extension ${key.extension}`);
+			}
+			if (!file.name || !file.size) {
+				if (key.required) return setError(form, key.name, 'File is required');
+				console.log('file not required', key.name, file, 'skipping...');
+				formBody.append(key.name, '');
+				continue;
+			}
+			console.log('append file instance', key.name, 'to formBody');
+			formBody.append(key.name, file);
+		} else if (typeof file === 'string') {
+			if (!file) {
+				if (key.required) return setError(form, key.name, 'File is required');
+				console.log('file not required', key.name, file, 'skipping...');
+				formBody.append(key.name, '');
+				continue;
+			}
+			console.log('append file string', key.name, 'to formBody');
+			const binaryData = new TextEncoder().encode(file);
+			const fileInstance = new File([binaryData], `${key.name}${key.extension}`, {
+				type: 'application/octet-stream'
+			});
+
+			formBody.append(key.name, fileInstance);
+		}
+	}
+
+	// Append the other form data
+	for (const key in form.data) {
+		if (formBody.has(key)) continue;
+		formBody.append(key, form.data[key]);
+	}
+
+	for (const [key, value] of formBody.entries()) {
+		if (value === 'undefined') {
+			console.log('undefined value', key, value);
+			formBody.set(key, '');
+		}
+		// console.log({ key, value });
+	}
+
+	return formBody;
+};
+
 export const actions: Actions = {
 	default: async ({ request, fetch }) => {
-		console.log('default action called');
 		const formData = await request.formData();
 		const metaid = formData.get('__superform_id') as FormKeys;
-		console.log('formData', { formData, metaid });
+
+		console.log({ metaid });
+		console.log(Array.from(formData.entries()));
 
 		const form = await superValidate(formData, Schemas[metaid]);
-		console.log('posting', form.data);
-		// return { form };
-		// Convenient validation check:
 		if (!form.valid) {
-			// Again, return { form } and things will just work.
+			console.log('form not valid');
 			return fail(400, { form });
 		}
 
-		const formBody = new FormData();
+		let res: Response;
 
-		// Append the file data
-		for (const key of fileInputs[metaid]) {
-			const file = formData.get(key.name);
-			if (file instanceof File) {
-				if (file.name && !file.name.endsWith(key.extension)) {
-					return setError(form, key.name, `File must have extension ${key.extension}`);
-				}
-				if (!file.name || !file.size) {
-					if (key.required) return setError(form, key.name, 'File is required');
-					console.log('file not required', key.name, file, 'skipping...');
-					formBody.append(key.name, '');
-					continue;
-				}
-				console.log('append file instance', key.name, 'to formBody');
-				formBody.append(key.name, file);
-			} else if (typeof file === 'string') {
-				if (!file) {
-					if (key.required) return setError(form, key.name, 'File is required');
-					console.log('file not required', key.name, file, 'skipping...');
-					formBody.append(key.name, '');
-					continue;
-				}
-				console.log('append file string', key.name, 'to formBody');
-				const binaryData = new TextEncoder().encode(file);
-				const fileInstance = new File([binaryData], `${key.name}${key.extension}`, {
-					type: 'application/octet-stream'
-				});
-
-				formBody.append(key.name, fileInstance);
-			}
+		if (metaid === 'misc-files-upload') {
+			console.log('processing: misc-files-upload');
+			res = await fetch(`${DB_URL}/data/${metaid}/`, {
+				method: 'POST',
+				body: formData
+			});
+		} else {
+			const formBody = process_form_data(form, formData, metaid);
+			res = await fetch(`${DB_URL}/data/${metaid}/`, {
+				method: 'POST',
+				body: formBody
+			});
 		}
-
-		// Append the other form data
-		for (const key in form.data) {
-			if (formBody.has(key)) continue;
-			formBody.append(key, form.data[key]);
-		}
-
-		for (const [key, value] of formBody.entries()) {
-			if (value === 'undefined') {
-				console.log('undefined value', key, value);
-				formBody.set(key, '');
-			}
-			console.log({ key, value });
-		}
-		console.log('formBody', Array.from(formBody.entries()));
-
-		const res = await fetch(`${DB_URL}/data/${metaid}/`, {
-			method: 'POST',
-			body: formBody
-		});
-
-		// console.log({
-		// 	ok: res.ok,
-		// 	status: res.status,
-		// 	statusText: res.statusText
-		// });
 
 		if (!res.ok && res.status === 400) {
 			try {
@@ -130,7 +141,6 @@ export const actions: Actions = {
 		}
 
 		if (res.ok) {
-			// let res_data;
 			const response = await res.json();
 			console.log('response', response);
 			message(form, {
