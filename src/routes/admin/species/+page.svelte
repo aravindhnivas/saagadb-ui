@@ -87,7 +87,7 @@
 				{config}
 				textarea
 				name="notes"
-				description="Enter any notes. Tips: enter electronic state."
+				description="Enter any notes. Tips: enter electronic state. NOTE: Please enter the notes to species-metadata if it is obtained/relevant to the specific database notes such as CDMS or JPL. Only general notes related to species should be entered here."
 			/>
 		</Card.Content>
 		<Card.Footer class="flex gap-4 justify-center">
