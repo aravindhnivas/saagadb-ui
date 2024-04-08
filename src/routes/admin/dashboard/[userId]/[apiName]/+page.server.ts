@@ -79,11 +79,12 @@ export const actions: Actions = {
 		// console.log(res.ok, res.status, res.statusText);
 
 		if (!res.ok) {
+			console.log('body send:', body, Object.fromEntries(formData.entries()));
 			const reason = await res.text();
-			console.log({ reason });
+			console.log(reason.slice(0, 500) + '...');
 			return {
 				success: false,
-				message: reason
+				message: 'Internal ERROR: [check backend logs for more info]'
 			};
 		}
 
