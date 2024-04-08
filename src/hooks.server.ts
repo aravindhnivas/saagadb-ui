@@ -15,12 +15,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	if (refresh_token && refresh_token !== 'undefined') {
 		event.locals.refresh_token = refresh_token;
-		console.log('logged In user', event.locals.user);
-		if (!event.locals.user) {
-			logged_in.set('');
-			delete_token({ cookies: event.cookies, name: 'JWT-access' });
-			delete_token({ cookies: event.cookies, name: 'JWT-refresh' });
-		}
 
 		if (!access_token || access_token === 'undefined') {
 			// console.log('refreshing token');
@@ -33,13 +27,28 @@ export const handle: Handle = async ({ event, resolve }) => {
 			set_JWT({ cookies: event.cookies, JWT });
 			event.locals.access_token = JWT.access;
 			event.locals.refresh_token = JWT.refresh;
-		}
 
-		const decoded = jwtDecode(refresh_token) as TokenDecoded;
-		event.locals.user_id = decoded.user_id;
-		event.locals.user = decoded.user;
-		event.locals.user_approvers = decoded.user_approvers;
-		// console.log('decoded', decoded, event.locals);
+			const decoded = jwtDecode(refresh_token) as TokenDecoded;
+			event.locals.user_id = decoded.user_id;
+			event.locals.user = decoded.user;
+			event.locals.user_approvers = decoded.user_approvers;
+			// console.log('decoded', decoded, event.locals);
+
+			console.log('Renewing access token using refresh token');
+			if (!event.locals.user) {
+				console.log('Invalid token found, logging out user...');
+				logged_in.set('');
+				delete_token({ cookies: event.cookies, name: 'JWT-access' });
+				delete_token({ cookies: event.cookies, name: 'JWT-refresh' });
+			}
+		} else if (access_token && !event.locals.user) {
+			console.log('logged In user', event.locals.user);
+			const decoded = jwtDecode(refresh_token) as TokenDecoded;
+			event.locals.user_id = decoded.user_id;
+			event.locals.user = decoded.user;
+			event.locals.user_approvers = decoded.user_approvers;
+			console.log('logged In user', event.locals.user);
+		}
 	}
 
 	if (event.url.pathname.startsWith(`${base}/admin`)) {
