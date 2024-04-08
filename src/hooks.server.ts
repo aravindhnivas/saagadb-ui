@@ -1,9 +1,10 @@
 import { redirect, type Handle, type HandleFetch } from '@sveltejs/kit';
 import { env } from '$env/dynamic/private';
 import { DB_URL } from '$lib/server';
-import { set_JWT } from '$lib/server/cookies';
+import { delete_token, set_JWT } from '$lib/server/cookies';
 import { jwtDecode } from 'jwt-decode';
 import { base } from '$app/paths';
+import { logged_in } from '$lib/utils/stores';
 
 export const handle: Handle = async ({ event, resolve }) => {
 	// const token = event.cookies.get('token') || '';
@@ -14,6 +15,12 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	if (refresh_token && refresh_token !== 'undefined') {
 		event.locals.refresh_token = refresh_token;
+		console.log('logged In user', event.locals.user);
+		if (!event.locals.user) {
+			logged_in.set('');
+			delete_token({ cookies: event.cookies, name: 'JWT-access' });
+			delete_token({ cookies: event.cookies, name: 'JWT-refresh' });
+		}
 
 		if (!access_token || access_token === 'undefined') {
 			// console.log('refreshing token');
@@ -64,17 +71,21 @@ export const handleFetch: HandleFetch = async ({ event, request, fetch }) => {
 
 	if (event.locals.access_token) {
 		request.headers.set('Authorization', `Bearer ${event.locals.access_token}`);
-	} else if (event.locals.refresh_token) {
-		const res = await fetch(`${DB_URL}/token/refresh/`, {
-			method: 'POST',
-			body: JSON.stringify({ refresh: event.locals.refresh_token }),
-			headers: { 'Content-Type': 'application/json' }
-		});
-		const JWT = (await res.json()) as { access: string; refresh: string };
-
-		set_JWT({ cookies: event.cookies, JWT });
-		request.headers.set('Authorization', `Bearer ${JWT.access}`);
 	}
+
+	// if (event.locals.access_token) {
+	// 	request.headers.set('Authorization', `Bearer ${event.locals.access_token}`);
+	// } else if (event.locals.refresh_token) {
+	// 	const res = await fetch(`${DB_URL}/token/refresh/`, {
+	// 		method: 'POST',
+	// 		body: JSON.stringify({ refresh: event.locals.refresh_token }),
+	// 		headers: { 'Content-Type': 'application/json' }
+	// 	});
+	// 	const JWT = (await res.json()) as { access: string; refresh: string };
+
+	// 	set_JWT({ cookies: event.cookies, JWT });
+	// 	request.headers.set('Authorization', `Bearer ${JWT.access}`);
+	// }
 
 	return fetch(request);
 };
