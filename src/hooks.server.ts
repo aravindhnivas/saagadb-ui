@@ -42,12 +42,12 @@ export const handle: Handle = async ({ event, resolve }) => {
 				delete_token({ cookies: event.cookies, name: 'JWT-refresh' });
 			}
 		} else if (access_token && !event.locals.user) {
-			console.log('logged In user', event.locals.user);
+			// console.log('logged In user', event.locals.user);
 			const decoded = jwtDecode(refresh_token) as TokenDecoded;
 			event.locals.user_id = decoded.user_id;
 			event.locals.user = decoded.user;
 			event.locals.user_approvers = decoded.user_approvers;
-			console.log('logged In user', event.locals.user);
+			// console.log('logged In user', event.locals.user);
 		}
 	}
 
@@ -81,20 +81,6 @@ export const handleFetch: HandleFetch = async ({ event, request, fetch }) => {
 	if (event.locals.access_token) {
 		request.headers.set('Authorization', `Bearer ${event.locals.access_token}`);
 	}
-
-	// if (event.locals.access_token) {
-	// 	request.headers.set('Authorization', `Bearer ${event.locals.access_token}`);
-	// } else if (event.locals.refresh_token) {
-	// 	const res = await fetch(`${DB_URL}/token/refresh/`, {
-	// 		method: 'POST',
-	// 		body: JSON.stringify({ refresh: event.locals.refresh_token }),
-	// 		headers: { 'Content-Type': 'application/json' }
-	// 	});
-	// 	const JWT = (await res.json()) as { access: string; refresh: string };
-
-	// 	set_JWT({ cookies: event.cookies, JWT });
-	// 	request.headers.set('Authorization', `Bearer ${JWT.access}`);
-	// }
 
 	return fetch(request);
 };
