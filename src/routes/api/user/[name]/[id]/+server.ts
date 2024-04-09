@@ -2,13 +2,14 @@ import { error, json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { DB_ORIGIN } from '$lib/server';
 import { delete_token } from '$lib/server/cookies';
+import { base } from '$app/paths';
 
 export const GET: RequestHandler = async ({ url, locals, cookies, fetch }) => {
 	if (!locals.refresh_token) {
 		error(401, { message: 'Unauthorized - login required' });
 	}
 
-	const fetch_url = new URL(url.pathname, DB_ORIGIN);
+	const fetch_url = new URL(url.pathname.replace(`${base}`, ''), DB_ORIGIN);
 
 	url.searchParams.forEach((value, key) => {
 		fetch_url.searchParams.append(key, value);

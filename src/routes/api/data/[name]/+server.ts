@@ -5,7 +5,7 @@ import { base } from '$app/paths';
 import { modify_backend_url } from '$lib/server';
 
 export const GET: RequestHandler = async ({ url, fetch, params }) => {
-	const fetch_url = new URL(url.pathname, DB_ORIGIN);
+	const fetch_url = new URL(url.pathname.replace(`${base}`, ''), DB_ORIGIN);
 
 	url.searchParams.forEach((value, key) => {
 		fetch_url.searchParams.append(key, value);
