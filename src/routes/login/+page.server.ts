@@ -2,13 +2,13 @@ import type { Actions, PageServerLoad } from './$types';
 import { superValidate, setError } from 'sveltekit-superforms/server';
 import { fail, redirect } from '@sveltejs/kit';
 import { DB_URL } from '$lib/server';
-import { set_token, set_JWT } from '$lib/server/cookies';
+import { set_JWT } from '$lib/server/cookies';
 import { base } from '$app/paths';
 import loginSchema from '$lib/schemas/login';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	if (locals.refresh_token) {
-		redirect(303, base + '/admin/dashboard');
+		redirect(303, `${base}/admin/dashboard`);
 	}
 
 	const form = await superValidate(loginSchema);
