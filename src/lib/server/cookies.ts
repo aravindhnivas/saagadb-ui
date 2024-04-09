@@ -1,8 +1,9 @@
 import type { Cookies } from '@sveltejs/kit';
+import { base } from '$app/paths';
 
 export const delete_token = ({ cookies, name = 'token' }: { cookies: Cookies; name?: string }) => {
 	cookies.delete(name, {
-		path: '/',
+		path: base || '/',
 		httpOnly: true,
 		sameSite: 'lax',
 		secure: false
@@ -21,7 +22,7 @@ export const set_token = ({
 	maxAge?: number;
 }) => {
 	cookies.set(name, token, {
-		path: '/',
+		path: base || '/',
 		maxAge,
 		httpOnly: true,
 		sameSite: 'lax',
