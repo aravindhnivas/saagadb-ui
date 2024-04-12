@@ -84,13 +84,26 @@
 			<FormField {config} name="standard_inchi" label="InChI" />
 			<FormField {config} name="standard_inchi_key" label="InChI Key" />
 			<FormField {config} textarea name="notes">
+				<svelte:fragment slot="name">
+					<br />
+					<div class="flex flex-col gap-1 text-info">
+						<span>
+							<span class="font-bold">NOTE:</span> Only general notes related to species should be entered
+							here like it's electronic state, detected in space, etc.,.
+						</span>
+						<span>
+							Please enter the notes to <span class="font-bold">species-metadata</span> (next step in
+							metadata page) if it is obtained/relevant to the specific database such as CDMS or JPL.
+						</span>
+					</div>
+				</svelte:fragment>
 				<svelte:fragment slot="description">
 					<span>Enter any notes. Tips: enter electronic state.</span>
-					<span class="text-blue">
+					<!-- <span class="text-blue">
 						NOTE: Please enter the notes to species-metadata if it is obtained/relevant to the
 						specific database notes such as CDMS or JPL. Only general notes related to species
 						should be entered here.
-					</span>
+					</span> -->
 				</svelte:fragment>
 			</FormField>
 		</Card.Content>
