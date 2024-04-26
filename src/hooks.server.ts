@@ -7,7 +7,6 @@ import { base } from '$app/paths';
 import { logged_in } from '$lib/utils/stores';
 
 export const handle: Handle = async ({ event, resolve }) => {
-	// const token = event.cookies.get('token') || '';
 	const access_token = event.cookies.get('JWT-access') || '';
 	const refresh_token = event.cookies.get('JWT-refresh') || '';
 	if (access_token && access_token !== 'undefined') event.locals.access_token = access_token;
@@ -16,7 +15,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 		event.locals.refresh_token = refresh_token;
 
 		if (!access_token || access_token === 'undefined') {
-			// console.log('refreshing token');
 			const res = await fetch(`${DB_URL}/token/refresh/`, {
 				method: 'POST',
 				body: JSON.stringify({ refresh: event.locals.refresh_token }),
@@ -30,7 +28,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 			const decoded = jwtDecode(refresh_token) as TokenDecoded;
 			event.locals.user = decoded.user;
 			event.locals.user_approvers = decoded.user_approvers;
-			// console.log('decoded', decoded, event.locals);
 
 			console.log('Renewing access token using refresh token');
 			if (!event.locals.user) {
@@ -40,16 +37,13 @@ export const handle: Handle = async ({ event, resolve }) => {
 				delete_token({ cookies: event.cookies, name: 'JWT-refresh' });
 			}
 		} else if (access_token && !event.locals.user) {
-			// console.log('logged In user', event.locals.user);
 			const decoded = jwtDecode(refresh_token) as TokenDecoded;
 			event.locals.user = decoded.user;
 			event.locals.user_approvers = decoded.user_approvers;
-			// console.log('logged In user', event.locals.user);
 		}
 	}
 
 	if (event.url.pathname.startsWith(`${base}/admin`)) {
-		console.log('event.locals', event.locals.user);
 		if (!event.locals.refresh_token) {
 			const fromUrl = event.url.pathname + event.url.search;
 			redirect(303, `${base}/login?redirectTo=${fromUrl}`);
