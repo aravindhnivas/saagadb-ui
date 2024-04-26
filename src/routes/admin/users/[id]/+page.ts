@@ -4,6 +4,7 @@ import type { PageLoad } from './$types';
 
 export const load: PageLoad = async ({ fetch, depends, params, parent }) => {
 	const { user: parent_user } = await parent();
+	console.log({ parent_user });
 	const fetch_upload_count = async (user: User) => {
 		depends('fetch:upload_count_from_id');
 		const res = await fetch(`${base}/api/data/data_length/${user.id}`);

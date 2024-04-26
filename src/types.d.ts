@@ -1,5 +1,4 @@
 interface TokenDecodedUser {
-	user_id: number;
 	user_approvers: string[];
 	user: {
 		id: number;
@@ -9,6 +8,7 @@ interface TokenDecodedUser {
 		is_staff: boolean;
 		is_superuser: boolean;
 		is_active: boolean;
+		is_verified: boolean;
 	};
 }
 

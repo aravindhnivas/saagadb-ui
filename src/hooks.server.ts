@@ -11,7 +11,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 	const access_token = event.cookies.get('JWT-access') || '';
 	const refresh_token = event.cookies.get('JWT-refresh') || '';
 	if (access_token && access_token !== 'undefined') event.locals.access_token = access_token;
-	// console.log('event.locals', event.locals);
 
 	if (refresh_token && refresh_token !== 'undefined') {
 		event.locals.refresh_token = refresh_token;
@@ -29,7 +28,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 			event.locals.refresh_token = JWT.refresh;
 
 			const decoded = jwtDecode(refresh_token) as TokenDecoded;
-			event.locals.user_id = decoded.user_id;
 			event.locals.user = decoded.user;
 			event.locals.user_approvers = decoded.user_approvers;
 			// console.log('decoded', decoded, event.locals);
@@ -44,7 +42,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 		} else if (access_token && !event.locals.user) {
 			// console.log('logged In user', event.locals.user);
 			const decoded = jwtDecode(refresh_token) as TokenDecoded;
-			event.locals.user_id = decoded.user_id;
 			event.locals.user = decoded.user;
 			event.locals.user_approvers = decoded.user_approvers;
 			// console.log('logged In user', event.locals.user);
@@ -52,6 +49,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	}
 
 	if (event.url.pathname.startsWith(`${base}/admin`)) {
+		console.log('event.locals', event.locals.user);
 		if (!event.locals.refresh_token) {
 			const fromUrl = event.url.pathname + event.url.search;
 			redirect(303, `${base}/login?redirectTo=${fromUrl}`);

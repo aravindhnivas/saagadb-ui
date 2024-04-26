@@ -1,26 +1,9 @@
-import { base } from '$app/paths';
-import { oO } from '@zmotivat0r/o0';
 import type { LayoutServerLoad } from './$types';
 import { error } from '@sveltejs/kit';
 
-export const load: LayoutServerLoad = async ({ fetch }) => {
-	const fetch_user = async () => {
-		try {
-			const [, res] = await oO(fetch(`${base}/api/user/me`));
-			// console.log({ res });
-			if (!(res && res?.ok)) return null;
-			const data = (await res.json()) as User;
-			return data;
-		} catch (error) {
-			return null;
-		}
-	};
-
-	const user = await fetch_user();
-	// console.log('user', user);
-	if (!user) {
+export const load: LayoutServerLoad = async ({ locals }) => {
+	if (!locals.user) {
 		error(403, { title: 'Invalid user', message: 'Invalid User' });
 	}
-
-	return { user };
+	return { user: locals.user };
 };

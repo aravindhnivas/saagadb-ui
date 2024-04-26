@@ -28,8 +28,6 @@ const parse_failed_response = async (res: Response) => {
 };
 
 export const load: PageServerLoad = async ({ fetch, params, depends, locals }) => {
-	// console.log('Approve data page server load');
-	// const { user: parent_user } = await parent();
 	if (!locals.user.is_staff || !locals.user.is_superuser) {
 		error(403, {
 			title: 'Forbidden',

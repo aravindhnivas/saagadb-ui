@@ -4,13 +4,11 @@ import type { PageServerLoad, Actions } from './$types';
 import { DB_URL } from '$lib/server';
 
 export const load: PageServerLoad = async ({ fetch, locals }) => {
-	// const parent_data = await parent();
 	if (!locals.user.is_superuser) {
 		error(403, { message: 'Requires superuser permission', title: 'Forbidden' });
 	}
 
 	const fetch_all_users = async () => {
-		// const parent_data = await parent();
 		if (!locals.user.is_superuser) return [];
 		const all_users_res = await fetch(`${base}/api/user/fetch`);
 		if (!all_users_res.ok) return [];
