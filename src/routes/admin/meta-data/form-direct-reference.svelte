@@ -148,7 +148,7 @@
 				</div>
 			</div>
 
-			{#if $active_obj?.cite}
+			{#if $active_obj?.cite || formValues.bibtex}
 				<div class="grid gap-2">
 					<AlertBox message={$active_obj?.cite} variant="default" title="Fetched citation" />
 					<button
