@@ -81,13 +81,15 @@
 						const doi = formValues.doi;
 						if (!doi) throw new Error('DOI is required');
 						const { href, bibtex_text, parsed } = await fetch_bibfile({ doi });
-						// if($doi_collections[$active_ind]) return;
-						$doi_collections[$active_ind]['cite'] = parsed;
+
 						formStore.update((f) => {
 							f.ref_url = href.replace('http://dx.doi.org/', 'https://doi.org/');
 							f.bibtex = bibtex_text;
 							return f;
 						});
+						$doi_collections[$active_ind]['cite'] = parsed;
+						$doi_collections[$active_ind]['ref_url'] = formValues.ref_url;
+						$doi_collections[$active_ind]['bibtex'] = formValues.bibtex;
 					} catch (error) {
 						if (error instanceof Error) toast.error(error.message);
 					} finally {
