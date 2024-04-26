@@ -58,7 +58,7 @@
 		fetching_doi = false;
 		if ($doi_collections.length > 0) {
 			$active_ind = 0;
-			formUpadte();
+			formupdate();
 			// console.log({ $doi_collections });
 			if (import.meta.env.DEV) {
 				localStorage.setItem('citation', citation);
@@ -70,7 +70,7 @@
 	let citation = '';
 	$: ref_entries = citation.split('\n').filter((r) => r.trim()) || [];
 
-	const formUpadte = () => {
+	const formupdate = () => {
 		if (!$active_obj) return;
 		form.update((f) => {
 			if (!$active_obj) return f;
@@ -244,7 +244,7 @@
 						class:bg-green-200={doi_obj.type === 'success'}
 						on:click={() => {
 							$active_ind = doi_obj.index;
-							formUpadte();
+							formupdate();
 						}}
 					>
 						<span>{doi_obj.index + 1}: {doi_obj.query}</span>
