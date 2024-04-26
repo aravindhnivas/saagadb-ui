@@ -87,7 +87,6 @@
 					}))}
 					on:change={(e) => {
 						setValue(e.detail?.id);
-						// species_id.set(e.detail?.id);
 					}}
 					{value}
 					required
@@ -112,7 +111,6 @@
 					}))}
 					on:change={(e) => {
 						setValue(e.detail?.id);
-						// linelist_id.set(e.detail?.id);
 					}}
 					{value}
 					required
@@ -156,13 +154,7 @@
 			<Form.Item>
 				<Form.Label>hyperfine</Form.Label>
 				<div class="w-full">
-					<Form.Checkbox
-						{...constraints}
-						{...attrs}
-						onCheckedChange={(state) => {
-							// hyperfine.set(state);
-						}}
-					/>
+					<Form.Checkbox {...constraints} {...attrs} />
 					<span>{value}</span>
 				</div>
 				<Form.Validation />
