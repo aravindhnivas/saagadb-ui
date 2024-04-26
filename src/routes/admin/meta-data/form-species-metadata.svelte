@@ -9,6 +9,8 @@
 	import { Label } from '$lib/components/ui/label';
 	import { Input } from '$lib/components/ui/input';
 	import Svelecte from 'svelecte';
+	import { hyperfine, linelist_id, species_id } from './stores';
+
 	export let form: SuperValidated<(typeof Schemas)['species-metadata']>;
 
 	const value = 'species-metadata';
@@ -83,7 +85,10 @@
 						id: f.id,
 						label: f.name_formula
 					}))}
-					on:change={(e) => setValue(e.detail?.id)}
+					on:change={(e) => {
+						setValue(e.detail?.id);
+						species_id.set(e.detail?.id);
+					}}
 					{value}
 					required
 				/>
@@ -105,7 +110,10 @@
 						id: f.id,
 						label: f.linelist_name
 					}))}
-					on:change={(e) => setValue(e.detail?.id)}
+					on:change={(e) => {
+						setValue(e.detail?.id);
+						linelist_id.set(e.detail?.id);
+					}}
 					{value}
 					required
 				/>
@@ -148,7 +156,13 @@
 			<Form.Item>
 				<Form.Label>hyperfine</Form.Label>
 				<div class="w-full">
-					<Form.Checkbox {...constraints} {...attrs} />
+					<Form.Checkbox
+						{...constraints}
+						{...attrs}
+						onCheckedChange={(state) => {
+							hyperfine.set(state);
+						}}
+					/>
 					<span>{value}</span>
 				</div>
 				<Form.Validation />

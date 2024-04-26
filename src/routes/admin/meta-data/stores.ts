@@ -23,3 +23,7 @@ export const active_obj = derived(
 		return $doi_collections[$active_ind];
 	}
 );
+
+export const species_id = writable(0);
+export const linelist_id = writable(0);
+export const hyperfine = writable<boolean | 'indeterminate'>(false);
