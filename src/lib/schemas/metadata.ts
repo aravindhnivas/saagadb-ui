@@ -60,7 +60,7 @@ const lineScheme = z.object({
 });
 
 const referenceScheme = z.object({
-	doi: z.string().min(5),
+	doi: z.string().optional(),
 	ref_url: z.string().min(5),
 	notes: z.string().default('').optional(),
 	bibtex: z.string().optional()
@@ -87,7 +87,7 @@ const directReferenceScheme = z
 		meta: z.union([z.string(), z.number().int()]).refine((str) => !isNaN(parseFloat(str)), {
 			message: 'Invalid id number'
 		}),
-		doi: z.string().min(5),
+		doi: z.string().optional(),
 		ref_url: z.string().min(5),
 		bibtex: z.string().optional(),
 		dipole_moment: z.boolean(),
