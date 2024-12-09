@@ -36,6 +36,6 @@ export const actions: Actions = {
 		}
 		// console.log(await res.json());
 
-		redirect(303, base + `/login?redirectTo=/admin/dashboard/`);
+		redirect(303, `${base}/login?redirectTo=/admin/dashboard/`);
 	}
 };
