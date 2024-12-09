@@ -54,7 +54,7 @@
 		},
 		{ name: 'Hyperfine', value: 'hyperfine' },
 		{ name: 'Degree of freedom', value: 'degree_of_freedom' },
-		{ name: 'Qunatum states', value: 'qn_label_str' },
+		{ name: 'Quantum states', value: 'qn_label_str' },
 		{ name: 'Vibrational states', value: 'vib_qn' },
 		{ name: 'cat file', value: 'cat_file' },
 		{ name: 'int file', value: 'int_file' },
@@ -185,7 +185,7 @@
 								{:else if key.value === 'notes'}
 									{@html val ?? '-'}
 								{:else}
-									{key.formatter ? key.formatter(val) : val ?? '-'}
+									{key.formatter ? key.formatter(val) : (val ?? '-')}
 								{/if}
 							</Table.Cell>
 						{/each}
