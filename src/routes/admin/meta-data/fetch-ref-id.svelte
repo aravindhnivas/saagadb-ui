@@ -4,6 +4,7 @@
 	import { Input } from '$lib/components/ui/input';
 	import { toast } from 'svelte-sonner';
 	import { oO } from '@zmotivat0r/o0';
+	import { base } from '$app/paths';
 
 	const { form } = getForm();
 	let ref_doi = '';
@@ -11,13 +12,14 @@
 	async function fetch_ref_id(): Promise<string | number | undefined> {
 		try {
 			ref_doi = ref_doi.trim();
+			console.log(ref_doi);
 			if (!ref_doi) {
 				toast.error('Please enter a reference doi');
 				return;
 			}
 			fetching_ref_id = true;
 
-			const res = await fetch(`/api/data/reference?doi=${ref_doi}`);
+			const res = await fetch(`${base}/api/data/reference?doi=${ref_doi}`);
 			const data = (await res.json()) as Reference[];
 			if (data.length === 0) {
 				toast.error('No reference found for this doi');
