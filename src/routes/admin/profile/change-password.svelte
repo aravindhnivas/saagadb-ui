@@ -4,7 +4,7 @@
 	import FormComponent from '$lib/components/forms/form-component.svelte';
 	import schema from './schema';
 	import type { SuperValidated } from 'sveltekit-superforms';
-	import { redirect } from '@sveltejs/kit';
+	// import { redirect } from '@sveltejs/kit';
 	import { base } from '$app/paths';
 	import { goto } from '$app/navigation';
 
