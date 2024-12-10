@@ -34,7 +34,6 @@ const parse_failed_response = async (res: Response) => {
 			};
 			non_field_errors?: string[];
 		};
-		// console.log({ text });
 		if (text.non_field_errors) return { success: false, message: text.non_field_errors[0] };
 		return { success: false, message: text.error?.message || text.message };
 	}
@@ -49,11 +48,14 @@ const parse_failed_response = async (res: Response) => {
 export const actions: Actions = {
 	async update({ fetch, url, request }) {
 		const formData = await request.formData();
-		// formData.append('approved', 'true');
-
 		const id = url.searchParams.get('id') as string;
 		const api_key = url.searchParams.get('api_key') as string;
 		const post_url = `${DB_URL}/data/${api_key}/${id}/`;
+		// console.log({ id, api_key, post_url });
+		// return {
+		// 	success: true,
+		// 	message: 'Testing update'
+		// };
 
 		const formBody = new FormData();
 
