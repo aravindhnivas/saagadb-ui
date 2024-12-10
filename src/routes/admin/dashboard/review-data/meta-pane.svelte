@@ -12,7 +12,7 @@
 	setContext('include_keys', include_keys);
 	setContext('api_key', api_key);
 
-	console.log(Object.keys(metadata[0]));
+	// console.log(Object.keys(metadata[0]));
 	const grouped_by_species_formula = groupBy(metadata, (f) => f.species_formula);
 
 	let active_obj: SpeciesMetadata | MetaReference;
