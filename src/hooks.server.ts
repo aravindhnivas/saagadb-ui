@@ -45,7 +45,10 @@ export const handle: Handle = async ({ event, resolve }) => {
 
 	if (event.url.pathname.startsWith(`${base}/admin`)) {
 		if (!event.locals.refresh_token) {
-			const fromUrl = event.url.pathname + event.url.search;
+			let fromUrl = event.url.pathname + event.url.search;
+			fromUrl = fromUrl.replace(`${base}`, '');
+			// console.log('Redirecting to login page');
+			// console.log('fromUrl:', fromUrl);
 			redirect(303, `${base}/login?redirectTo=${fromUrl}`);
 		}
 	}
