@@ -35,11 +35,18 @@
 				<span>No approver assigned</span>
 			{/if}
 		</div>
-		<UploadStatus
-			user={data.user}
-			fetch_upload_count={data.fetch_upload_count(data.user)}
-			show_header={false}
-		/>
+
+		<div class="grid gap-2">
+			<span class="text-lg font-bold">
+				Click on the following titles to EDIT (non-approved; exception to Species) the uploaded data
+			</span>
+
+			<UploadStatus
+				user={data.user}
+				fetch_upload_count={data.fetch_upload_count(data.user)}
+				show_header={false}
+			/>
+		</div>
 	{:else}
 		<p>Invalid user</p>
 	{/if}
