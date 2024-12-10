@@ -1,6 +1,4 @@
 <script lang="ts">
-	import AlertBox from '$lib/components/utils/alert-box.svelte';
-	import { AlertCircle, CheckCheck } from 'lucide-svelte/icons';
 	import { writable } from '@macfja/svelte-persistent-store';
 	import MetaPane from './meta-pane.svelte';
 

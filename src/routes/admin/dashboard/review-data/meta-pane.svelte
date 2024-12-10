@@ -1,20 +1,21 @@
 <script lang="ts">
-	import { getContext, setContext } from 'svelte';
+	import { setContext } from 'svelte';
 	import { groupBy } from 'lodash-es';
 	import * as Resizable from '$lib/components/ui/resizable';
 	import ApproveMetadata from './approve-metadata.svelte';
 	import { LockKeyhole, UnlockKeyhole } from 'lucide-svelte/icons';
 
-	export let metadata: SpeciesMetadata[];
+	export let metadata: (SpeciesMetadata | MetaReference)[];
 	export let include_keys: string[];
 	export let api_key: string;
 
 	setContext('include_keys', include_keys);
 	setContext('api_key', api_key);
 
+	console.log(Object.keys(metadata[0]));
 	const grouped_by_species_formula = groupBy(metadata, (f) => f.species_formula);
 
-	let active_obj: SpeciesMetadata;
+	let active_obj: SpeciesMetadata | MetaReference;
 	let active_id: number;
 </script>
 

@@ -90,7 +90,7 @@ interface Reference {
 }
 
 interface MetaReference {
-	id: string;
+	id: number;
 	meta: string;
 	ref: string;
 	dipole_moment: boolean;
