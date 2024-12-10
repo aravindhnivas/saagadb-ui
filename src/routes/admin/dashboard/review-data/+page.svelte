@@ -15,7 +15,7 @@
 	$: if (form && !form.success) toast.error(form.message || 'Error');
 </script>
 
-<div class="grid gap-4 px-2">
+<div class="grid gap-4 px-2 mb-[100px]">
 	<div class="flex gap-4">
 		<Button
 			variant="outline"

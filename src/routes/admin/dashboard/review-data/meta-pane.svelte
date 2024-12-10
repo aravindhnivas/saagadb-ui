@@ -20,7 +20,7 @@
 
 <Resizable.PaneGroup direction="horizontal" class="rounded-lg border h-full">
 	<Resizable.Pane defaultSize={25}>
-		<div class="l-pane flex flex-col mr-2">
+		<div class="flex flex-col mr-2">
 			<ul class="menu">
 				{#each Object.keys(grouped_by_species_formula) as species_formula, ind}
 					{@const species_name = grouped_by_species_formula[species_formula][0].species_name}
@@ -52,7 +52,7 @@
 	<Resizable.Handle withHandle />
 	<Resizable.Pane defaultSize={75}>
 		{#if active_obj}
-			<div class="r-pane flex flex-col p-6">
+			<div class="flex flex-col p-6">
 				<div class="text-lg {active_obj.approved ? 'text-success' : 'text-blue'}">
 					{active_obj.approved ? 'Approved' : 'Not-Approved yet'}
 				</div>
@@ -68,12 +68,3 @@
 		{/if}
 	</Resizable.Pane>
 </Resizable.PaneGroup>
-
-<style>
-	.r-pane,
-	.l-pane {
-		overflow: auto;
-		min-height: 500px;
-		max-height: calc(100vh - 100px);
-	}
-</style>
