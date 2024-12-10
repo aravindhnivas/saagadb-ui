@@ -43,7 +43,7 @@
 			<span>{$message.type.toUpperCase()}</span>
 		</Alert.Title>
 		<Alert.Description class="grid gap-2 select-text">
-			<span>{$message.text}</span>
+			<span>{@html $message.text}</span>
 			<button class="btn btn-sm w-[150px]" on:click={() => ($message = null)}>Okay</button>
 		</Alert.Description>
 	</Alert.Root>
