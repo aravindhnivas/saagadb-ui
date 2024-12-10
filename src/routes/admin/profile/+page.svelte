@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { Check, LockKeyhole, UnlockKeyhole } from 'lucide-svelte/icons';
-	import type { ActionData, PageData } from './$types';
+	import type { PageData } from './$types';
 	import ChangePassword from './change-password.svelte';
 	import { base } from '$app/paths';
 	import { toast } from 'svelte-sonner';
@@ -12,16 +12,6 @@
 	import Loader from '$lib/components/utils/loader.svelte';
 
 	export let data: PageData;
-	// export let form: ActionData;
-
-	// $: if (form && form.success) {
-	// 	disabled = true;
-	// 	toast.success(form.message);
-	// }
-
-	// $: if (form && !form.success) {
-	// 	toast.error(form.message);
-	// }
 
 	let disabled = true;
 	const userKeys = [
@@ -36,7 +26,6 @@
 	let verificationSent = false;
 
 	async function resend_verification() {
-		// return;
 		if (verificationSent) return toast.info('Verification email already sent');
 		verificationSent = false;
 		const res = await fetch(`${base}/api/user/resend-verify-email`, {
@@ -81,7 +70,6 @@
 				toast.error(data.message);
 			}
 			uploading = false;
-			// disabled = true;
 			await update({ reset: false });
 		};
 	};
@@ -105,7 +93,7 @@
 	use:enhance={onSubmit}
 	method="POST"
 	action="?/updateProfile&id={data.user.id}"
-	class="grid grid-cols-4 items-center select-text max-w-xl py-5"
+	class="grid grid-cols-4 gap-2 items-center select-text max-w-xl py-5"
 >
 	{#each userKeys as { key, label, editable }}
 		<div class="col-span-1">{label}</div>
@@ -117,6 +105,7 @@
 			{/if}
 		</div>
 	{/each}
+
 	<div class="col-span-1">Account verified</div>
 	<div class="col-span-3">
 		{#if data.user.is_verified}
@@ -134,7 +123,6 @@
 			</div>
 		{/if}
 	</div>
-
 	{#if !disabled}
 		<Button type="submit" size="sm" class="col-span-4 w-[150px] ml-auto" disabled={uploading}>
 			<Loader fetching={uploading} description="Uploading..." />
