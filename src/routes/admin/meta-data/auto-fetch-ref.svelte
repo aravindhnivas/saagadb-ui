@@ -165,20 +165,26 @@
 	<Label>DOI fetcher {ref_entries.length ? `(${ref_entries.length}) citations` : ''}</Label>
 	<Textarea bind:value={citation} />
 
-	<span class="text-xs text-gray-500"
-		>Use description such as <em
-			>M. Tonooka, S. Yamamoto, K. Kobayashi, and S. Saito, 1997, J. Chem. Phys. 106, 2563.</em
-		>
-		to search citations using
-		<a
-			href="https://github.com/scienceai/crossref"
-			target="_blank"
-			rel="noopener noreferrer"
-			class="underline"
-		>
-			Crossref API
-		</a>
-	</span>
+	<div class="grid">
+		<span class="text-xs text-gray-500"
+			>Use description such as <em
+				>M. Tonooka, S. Yamamoto, K. Kobayashi, and S. Saito, 1997, J. Chem. Phys. 106, 2563.</em
+			>
+			to search citations using
+			<a
+				href="https://github.com/scienceai/crossref"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="underline"
+			>
+				Crossref API
+			</a>
+		</span>
+		<span class="text-sm text-blue-500">
+			Please check all the fetched references (each line should contain one reference) above and
+			delete line with unncessary reference.
+		</span>
+	</div>
 
 	<slot name="header" />
 </div>
