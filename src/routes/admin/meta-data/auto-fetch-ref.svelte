@@ -15,6 +15,7 @@
 	import * as Form from '$lib/components/ui/form';
 	import { onMount, tick } from 'svelte';
 	import { RefreshCcw } from 'lucide-svelte/icons';
+	import { sleep } from '$lib/core';
 
 	export let submitting = false;
 
@@ -96,7 +97,7 @@
 	};
 
 	let cancel_doi_fetching = false;
-	const fetch_doi_collections = () => {
+	const fetch_doi_collections = async () => {
 		if (!citation.trim()) {
 			toast.error('Please enter the citation');
 			return;
@@ -104,11 +105,14 @@
 		fetching_doi = true;
 		$doi_collections = [];
 		$active_ind = -1;
-		// console.log('fetching doi', { $doi_collections });
-		ref_entries.forEach((query, index) => {
+
+		// ref_entries.forEach((query, index) => {
+		for (let index = 0; index < ref_entries.length; index++) {
+			const query = ref_entries[index];
+			console.log(`${index} - fetching ref: `, query);
 			window.CrossRef.works({ query }, async (err, obj) => {
 				if (cancel_doi_fetching) return (fetching_doi = false);
-				console.log('fetching', query);
+				console.log('CrossRef fetching', query);
 				let doi: string = '';
 				let ref_url: string = '';
 				let bibtex: string = '';
@@ -139,7 +143,11 @@
 				$doi_collections = [...$doi_collections, { ..._obj }];
 				$doi_collections.sort((a, b) => a.index - b.index);
 			});
-		});
+			await sleep(2000);
+			await tick();
+			// fetching_doi = false;
+		}
+		// });
 	};
 
 	onMount(() => {
