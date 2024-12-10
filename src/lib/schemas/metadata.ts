@@ -9,50 +9,65 @@ const optional_number = z
 	})
 	.optional();
 
-export const Schemas = {
-	'species-metadata': z.object({
-		species: z.union([z.string(), z.number().int()]),
-		linelist: z.union([z.string(), z.number().int()]),
-		degree_of_freedom: z
-			.union([z.string(), z.number().int()])
-			.refine((str) => !isNaN(parseFloat(str)), {
-				message: 'Invalid number'
-			}),
-		molecule_tag: z.union([z.string(), z.number().int()]).refine((str) => !isNaN(parseFloat(str)), {
+const speciesMetadataScheme = z.object({
+	species: z.union([z.string(), z.number().int()]),
+	linelist: z.union([z.string(), z.number().int()]),
+	degree_of_freedom: z
+		.union([z.string(), z.number().int()])
+		.refine((str) => !isNaN(parseFloat(str)), {
 			message: 'Invalid number'
 		}),
-		hyperfine: z.boolean(),
-		category: z.string().min(1),
-		mu_a: optional_number,
-		mu_b: optional_number,
-		mu_c: optional_number,
-		a_const: optional_number,
-		b_const: optional_number,
-		c_const: optional_number,
-		data_date: z
-			.string()
-			.min(1)
-			.refine((str) => !isNaN(Date.parse(str)), {
-				message: 'Invalid date format'
-			})
-			.refine((str) => /^(\d{4})-(\d{2})-(\d{2})$/.test(str), {
-				message: 'Invalid date format. Expected format is YYYY-MM-DD'
-			}),
-		data_contributor: z.string().min(1),
-		qpart_file: z.string().optional(),
-		int_file: z.string().default('').optional(),
-		var_file: z.string().default('').optional(),
-		fit_file: z.string().default('').optional(),
-		lin_file: z.string().default('').optional(),
-		notes: z.string().default('').optional()
+	molecule_tag: z.union([z.string(), z.number().int()]).refine((str) => !isNaN(parseFloat(str)), {
+		message: 'Invalid number'
 	}),
-	reference: z.object({
-		doi: z.string().min(5),
-		ref_url: z.string().min(5),
-		notes: z.string().default('').optional(),
-		bibtex: z.string().optional()
+	hyperfine: z.boolean(),
+	category: z.string().min(1),
+	mu_a: optional_number,
+	mu_b: optional_number,
+	mu_c: optional_number,
+	a_const: optional_number,
+	b_const: optional_number,
+	c_const: optional_number,
+	data_date: z
+		.string()
+		.min(1)
+		.refine((str) => !isNaN(Date.parse(str)), {
+			message: 'Invalid date format'
+		})
+		.refine((str) => /^(\d{4})-(\d{2})-(\d{2})$/.test(str), {
+			message: 'Invalid date format. Expected format is YYYY-MM-DD'
+		}),
+	data_contributor: z.string().min(1),
+	qpart_file: z.string().refine((str) => str.includes('300'), {
+		message: '300 K temperature is required'
 	}),
-	'meta-reference': z.object({
+	int_file: z.string().default('').optional(),
+	var_file: z.string().default('').optional(),
+	fit_file: z.string().default('').optional(),
+	lin_file: z.string().default('').optional(),
+	notes: z.string().default('').optional()
+});
+
+const lineScheme = z.object({
+	meta: z.union([z.string(), z.number().int()]).refine((str) => !isNaN(parseFloat(str)), {
+		message: 'Invalid id number'
+	}),
+	cat_file: z.string().default(''),
+	qn_label_str: z.string().min(1),
+	contains_rovibrational: z.boolean(),
+	vib_qn: z.string().default('').optional(),
+	notes: z.string().default('').optional()
+});
+
+const referenceScheme = z.object({
+	doi: z.string().optional(),
+	ref_url: z.string().min(5),
+	notes: z.string().default('').optional(),
+	bibtex: z.string().optional()
+});
+
+const metaReferenceScheme = z
+	.object({
 		meta: z.union([z.string(), z.number().int()]).refine((str) => !isNaN(parseFloat(str)), {
 			message: 'Invalid id number'
 		}),
@@ -62,23 +77,58 @@ export const Schemas = {
 		dipole_moment: z.boolean(),
 		spectrum: z.boolean(),
 		notes: z.string().default('').optional()
-	}),
-	line: z.object({
+	})
+	.refine((data) => data.dipole_moment || data.spectrum, {
+		message: 'Either dipole_moment or spectrum must be true'
+	});
+
+const directReferenceScheme = z
+	.object({
 		meta: z.union([z.string(), z.number().int()]).refine((str) => !isNaN(parseFloat(str)), {
 			message: 'Invalid id number'
 		}),
-		cat_file: z.string().default(''),
-		qn_label_str: z.string().min(1),
-		contains_rovibrational: z.boolean(),
-		vib_qn: z.string().default('').optional(),
+		doi: z.string().optional(),
+		ref_url: z.string().min(5),
+		bibtex: z.string().optional(),
+		dipole_moment: z.boolean(),
+		spectrum: z.boolean(),
 		notes: z.string().default('').optional()
 	})
-} as const;
+	.refine((data) => data.dipole_moment || data.spectrum, {
+		message: 'Either dipole_moment or spectrum must be true'
+	});
+
+const miscFilesUploadScheme = z.object({
+	meta: z.union([z.string(), z.number().int()]).refine((str) => !isNaN(parseFloat(str)), {
+		message: 'Invalid id number'
+	}),
+	// name: z.string().min(3),
+	misc_file: z.string().default(''),
+	notes: z.string().default('').optional()
+});
+
+export const metadata_items = [
+	{ value: 'species-metadata', name: 'Species metadata', scheme: speciesMetadataScheme },
+	{ value: 'line', name: 'Line', scheme: lineScheme },
+	{ value: 'misc-files-upload', name: 'Misc. files', scheme: miscFilesUploadScheme },
+	{ value: 'direct-reference', name: 'Direct-reference', scheme: directReferenceScheme },
+	{ value: 'reference', name: 'Reference', scheme: referenceScheme },
+	{ value: 'meta-reference', name: 'Meta reference', scheme: metaReferenceScheme }
+] as const;
+
+export const ids = metadata_items.map((item) => item.value);
+
+const Schemas: Record<string, z.ZodObject<{ [key: string]: z.ZodTypeAny }>> = {};
+metadata_items.forEach((item) => {
+	Schemas[item.value] = item.scheme;
+});
+export { Schemas };
 
 export const fileInputs: {
 	[key: string]: { id: string; name: string; required: boolean; extension: string }[];
 } = {
 	'species-metadata': [
+		{ id: uuidv4(), name: 'cat_file', required: true, extension: '.cat' },
 		{ id: uuidv4(), name: 'qpart_file', required: true, extension: '.qpart' },
 		{ id: uuidv4(), name: 'int_file', required: false, extension: '.int' },
 		{ id: uuidv4(), name: 'var_file', required: false, extension: '.var' },
@@ -86,8 +136,10 @@ export const fileInputs: {
 		{ id: uuidv4(), name: 'lin_file', required: false, extension: '.lin' }
 	],
 	reference: [{ id: uuidv4(), name: 'bibtex', required: true, extension: '.bib' }],
+	'direct-reference': [{ id: uuidv4(), name: 'bibtex', required: true, extension: '.bib' }],
 	'meta-reference': [],
-	line: [{ id: uuidv4(), name: 'cat_file', required: true, extension: '.cat' }]
+	line: [{ id: uuidv4(), name: 'cat_file', required: true, extension: '.cat' }],
+	'misc-files-upload': [{ id: uuidv4(), name: 'misc_file', required: true, extension: '' }]
 };
 
 export const dropdowns: {
@@ -101,12 +153,3 @@ export const dropdowns: {
 	'meta-reference': [],
 	line: []
 };
-
-export const ids = ['species-metadata', 'reference', 'meta-reference', 'line'] as const;
-
-export const metadata_items = [
-	{ value: 'species-metadata', name: 'Species metadata' },
-	{ value: 'reference', name: 'Reference' },
-	{ value: 'meta-reference', name: 'Meta reference' },
-	{ value: 'line', name: 'Line' }
-] as const;

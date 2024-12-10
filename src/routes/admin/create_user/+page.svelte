@@ -8,8 +8,7 @@
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 	import { Button } from '$lib/components/ui/button';
 	import { tick } from 'svelte';
-	import FormInput from '$lib/components/forms/form-input.svelte';
-
+	import FormField from '$lib/components/forms/form-field.svelte';
 	export let data: PageData;
 
 	let show_password = false;
@@ -33,39 +32,43 @@
 	<Card.Root>
 		<Card.Header>
 			<Card.Title>Create new user</Card.Title>
-			<Card.Description
-				>Please verify email address before submitting the form.
-				<br />
+			<Card.Description>
 				An email will be sent to the user with a link to verify their email address.
+				<br />
+				Please verify the email link to start uploading items to database.
 			</Card.Description>
 		</Card.Header>
 		<Card.Content>
-			<FormInput {config} name="name" />
-			<FormInput {config} name="email" type="email" />
+			<FormField {config} name="name" />
+			<FormField {config} name="email" />
 			<Form.Field {config} name="password">
 				<Form.Item>
 					<Form.Label>password</Form.Label>
-					<!-- svelte-ignore a11y-interactive-supports-focus -->
-					<div class="flex items-center gap-1">
-						<Form.Input type={show_password ? 'text' : 'password'} required />
-						<!-- svelte-ignore a11y-interactive-supports-focus -->
-						<!-- svelte-ignore a11y-click-events-have-key-events -->
-						<!-- svelte-ignore a11y-no-static-element-interactions -->
-						<span class="cursor-pointer" on:click={() => (show_password = !show_password)}>
+					<div class="relative h-10 w-full" style="z-index: 0;">
+						<Form.Input
+							type={show_password ? 'text' : 'password'}
+							required
+							class="pl-10 pr-3 py-2 text-md w-full border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-[#6E23DD] focus:border-transparent"
+						/>
+						<button on:click|preventDefault={() => (show_password = !show_password)}>
 							{#if show_password}
-								<EyeOff />
+								<Eye
+									class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 z-10"
+								/>
 							{:else}
-								<Eye />
+								<EyeOff
+									class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 z-10"
+								/>
 							{/if}
-						</span>
+						</button>
 					</div>
+
 					<Form.Validation />
 				</Form.Item>
 			</Form.Field>
-
-			<FormInput {config} name="organization" />
+			<FormField {config} name="organization" />
 			<div class="flex gap-4 items-end">
-				<FormInput {config} name="approver" label="approvers" class="w-full" />
+				<FormField {config} name="approver" label="approvers" />
 				<DropdownMenu.Root>
 					<DropdownMenu.Trigger asChild let:builder>
 						<Button variant="outline" builders={[builder]} class="mb-2">Select approvers</Button>
@@ -94,7 +97,7 @@
 			</div>
 
 			{#if data.user?.is_superuser}
-				<FormInput {config} name="is_staff" checkbox={true} label="Admin privilege" />
+				<FormField {config} name="is_staff" checkbox={true} label="Admin privilege" />
 			{/if}
 		</Card.Content>
 		<Card.Footer class="flex justify-center">

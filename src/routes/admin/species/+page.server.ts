@@ -38,8 +38,8 @@ export const actions: Actions = {
 			try {
 				type SchemaType = z.infer<typeof speciesSchema>;
 				type SchemaKeys = keyof SchemaType;
-				const msg_json = await res.json() as Record<SchemaKeys, string>;
-				
+				const msg_json = (await res.json()) as Record<SchemaKeys, string>;
+
 				for (const [key, value] of Object.entries(msg_json) as [SchemaKeys, string][]) {
 					setError(form, key, value);
 				}
@@ -56,9 +56,11 @@ export const actions: Actions = {
 			return;
 		}
 
-		const res_data = await res.json();
-		message(form, { type: 'success', text: 'Form submitted succesfully' });
-		// Yep, return { form } here too
-		return { form, response: res_data };
+		const response = await res.json();
+		message(form, {
+			type: 'success',
+			text: `Form  (${response?.id && 'with id = ' + response.id}) submitted succesfully`
+		});
+		return { form, response };
 	}
 };

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import FormField from '$lib/components/forms/form-field.svelte';
 	import FormTabContents from '$lib/components/forms/form-tab-contents.svelte';
 	import { Schemas } from '$lib/schemas/metadata';
 	import { getContext } from 'svelte';
@@ -7,8 +8,9 @@
 	import AutoFillMetadata from './auto-fill-metadata.svelte';
 	import { Label } from '$lib/components/ui/label';
 	import { Input } from '$lib/components/ui/input';
-	import { HelpCircle } from 'lucide-svelte/icons';
 	import Svelecte from 'svelecte';
+	// import { hyperfine, linelist_id, species_id } from './stores';
+
 	export let form: SuperValidated<(typeof Schemas)['species-metadata']>;
 
 	const value = 'species-metadata';
@@ -17,6 +19,7 @@
 	const linelist = getContext('linelist') as Linelist[];
 
 	const category = [
+		'',
 		'atom',
 		'diatomic',
 		'linear',
@@ -48,11 +51,11 @@
 	const files_keys = [
 		{
 			name: 'int_file',
-			description: '(Optional) If provided - dipoles moments will be extracted and overwritten'
+			description: '(Optional) dipoles moments information'
 		},
 		{
 			name: 'var_file',
-			description: '(Optional) If provided - rotational constants will be extracted and overwritten'
+			description: '(Optional) rotational constants information'
 		},
 		{ name: 'fit_file', description: '(Optional) .fit file of the species' },
 		{ name: 'lin_file', description: '(Optional) .lin file of the species' }
@@ -72,7 +75,7 @@
 	<AutoFillMetadata />
 
 	<div class="grid-auto-fill">
-		<Form.Field {config} name="species" let:setValue let:value>
+		<Form.Field {config} name="species" let:setValue let:value let:constraints let:attrs>
 			<Form.Item class="flex flex-col">
 				<Form.Label>species</Form.Label>
 				<Svelecte
@@ -82,10 +85,13 @@
 						id: f.id,
 						label: f.name_formula
 					}))}
-					on:change={(e) => setValue(e.detail?.id)}
+					on:change={(e) => {
+						setValue(e.detail?.id);
+					}}
 					{value}
+					required
 				/>
-				<Form.Input hidden />
+				<Form.Input hidden {...constraints} {...attrs.input} />
 				<Form.Validation />
 				{#if value}
 					<Form.Description>species_id: {value}</Form.Description>
@@ -93,20 +99,23 @@
 			</Form.Item>
 		</Form.Field>
 
-		<Form.Field {config} name="linelist" let:setValue let:value>
+		<Form.Field {config} name="linelist" let:setValue let:value let:constraints let:attrs>
 			<Form.Item class="flex flex-col">
 				<Form.Label>linelist</Form.Label>
 				<Svelecte
-					searchable={false}
+					searchable={true}
 					virtualList={false}
 					options={linelist.map((f) => ({
 						id: f.id,
 						label: f.linelist_name
 					}))}
-					on:change={(e) => setValue(e.detail?.id)}
+					on:change={(e) => {
+						setValue(e.detail?.id);
+					}}
 					{value}
+					required
 				/>
-				<Form.Input hidden />
+				<Form.Input hidden {...constraints} {...attrs.input} />
 				<Form.Validation />
 				{#if value}
 					<Form.Description>linelist_id: {value}</Form.Description>
@@ -114,13 +123,14 @@
 			</Form.Item>
 		</Form.Field>
 
-		<Form.Field {config} name="category" let:setValue>
+		<Form.Field {config} name="category" let:setValue let:value>
 			<Form.Item class="flex flex-col">
 				<Form.Label>category</Form.Label>
 				<Svelecte
-					searchable={false}
+					searchable={true}
 					virtualList={false}
 					options={category}
+					{value}
 					on:change={(e) => {
 						const value = e.detail?.value;
 						setValue(value);
@@ -132,6 +142,7 @@
 							return f;
 						});
 					}}
+					required
 				/>
 				<Form.Input hidden />
 				<Form.Validation />
@@ -143,7 +154,7 @@
 			<Form.Item>
 				<Form.Label>hyperfine</Form.Label>
 				<div class="w-full">
-					<Form.Checkbox checked="indeterminate" {...constraints} {...attrs} />
+					<Form.Checkbox {...constraints} {...attrs} />
 					<span>{value}</span>
 				</div>
 				<Form.Validation />
@@ -152,41 +163,21 @@
 	</div>
 
 	<div class="grid-auto-fill">
-		{#each keys as { name, label, description }}
-			<Form.Field {config} {name} let:constraints let:attrs>
-				<Form.Item>
-					<Form.Label>{@html label}</Form.Label>
-					<Form.Input {...constraints} {...attrs} />
-					<Form.Validation />
-					{#if description}
-						<Form.Description>{description}</Form.Description>
-					{/if}
-				</Form.Item>
-			</Form.Field>
+		{#each keys as key}
+			<FormField {config} {...key} />
 		{/each}
 	</div>
-
-	<Form.Field {config} name="notes" let:constraints let:attrs>
-		<Form.Item>
-			<Form.Label>notes</Form.Label>
-			<Form.Textarea {...constraints} {...attrs} />
-			<Form.Validation />
-		</Form.Item>
-	</Form.Field>
+	<FormField {config} name="notes" textarea />
 
 	<div class="flex gap-4 w-full items-baseline">
 		<Form.Field {config} name="qpart_file">
 			<Form.Item class="basis-3/4">
-				<Form.Label>
-					<div class="flex gap-4 items-center">
-						<span>qpart_file</span>
-						<span aria-label="Quantum partition function" data-cooltipz-dir="down">
-							<HelpCircle />
-						</span>
-					</div>
-				</Form.Label>
+				<Form.Label>qpart_file</Form.Label>
 				<Form.Textarea required />
 				<Form.Validation />
+				<Form.Description>
+					Quantum partition function file. Make sure temperature 300 K is present in the list.
+				</Form.Description>
 			</Form.Item>
 		</Form.Field>
 		<div class="grid w-full max-w-sm items-center gap-1.5">

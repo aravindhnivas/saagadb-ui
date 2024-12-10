@@ -8,8 +8,17 @@ export async function CDMS(html_data: string) {
 	if (!html_data) throw new Error('No data provided');
 
 	const $ = cheerio.load(html_data);
-	const ref_element = $('p font[color="#064898"]');
-	const references: string[] = [];
+	// const ref_full = $('p[align="justify"]');
+	// console.log(ref_full.html());
+	// console.log(ref_full.text())
+
+	const ref_element = $('p[align="justify"] font[color="#064898"]');
+
+	const references: string[] = ref_element
+		.text()
+		.split(/\(\d+\)\s/g)
+		.filter((f) => f.trim().length > 0)
+		.map((f) => f.replaceAll('\n', ' ').trim());
 
 	const td_val = $("td[align='right']");
 	const td_parent = td_val.parent();
@@ -29,18 +38,24 @@ export async function CDMS(html_data: string) {
 			} else {
 				value = [endash_str($(el.lastChild).text().trim())];
 			}
+		} else if (key.match(/Q\(\d+\.?\d*?\)/g)) {
+			const qpart_value = endash_str($(el.lastChild).text().trim());
+			const match = qpart_value.match(/^[^\s(]+/);
+			value = match ? match[0] : '';
+			// console.log({ key, value, match });
 		} else {
 			value = endash_str($(el.lastChild).text().trim());
 		}
+		// console.log({ key, value });
 		full_info[endash_str(key)] = value;
 	}
 
-	for (const element of ref_element.toArray()) {
-		let ref = $(element).text();
-		ref = ref.replaceAll(/(\(\d\))/g, '').trim();
-		ref = ref.replaceAll('\n', ' ').replaceAll('  ', ' ');
-		references.push(endash_str(ref));
-	}
+	// for (const element of ref_element.toArray()) {
+	// 	let ref = $(element).text();
+	// 	ref = ref.replaceAll(/(\(\d\))/g, '').trim();
+	// 	ref = ref.replaceAll('\n', ' ').replaceAll('  ', ' ');
+	// 	references.push(endash_str(ref));
+	// }
 
 	const heading = $("caption font:not([color='red'])");
 	const [name_formula, ...name_formula_meta] = heading.text()?.trim()?.split(/[, ]/g);
@@ -166,4 +181,25 @@ export async function JPL(html_data: string = '') {
 
 	console.log('finished fetching JPL data');
 	return { name_meta, ...props, ...qpart, reference, raw_data };
+}
+
+export async function fetch_all_cdms_ref(cdms_html: string) {
+	console.log('fetching CDMS data');
+	// const cdms_tag_url = await url_from_cdms_tag(tag);
+	// console.log(cdms_tag_url);
+	// const res = await axios.get(cdms_tag_url);
+	// const cdms_html = res.data;
+	const $ = cheerio.load(cdms_html);
+
+	const ref_texts = $('font[color="#064898"]').text();
+	// console.log(ref_texts);
+
+	const entries = ref_texts
+		.split(/\(\d+\)\s/g)
+		.filter((f) => f.trim().length > 0)
+		.map((f) => f.replaceAll('\n', ' ').trim());
+	// console.log(entries, entries.length);
+
+	console.log('finished fetching CDMS data');
+	return entries;
 }

@@ -1,5 +1,5 @@
-@import 'cooltipz-css';
-@import 'animate.css';
+@use 'cooltipz-css';
+@use 'animate.css';
 
 .tabulator-header-filter {border: solid 1px;}
 
@@ -21,4 +21,12 @@ button {background: transparent;}
 div[data-cmdk-group] {
 	max-height: 250px;
     overflow: auto;
+}
+
+.tiptap {
+	border: 1px solid #ccc;
+	padding: 1rem;
+	margin-top: 1rem;
+	min-height: 100px;
+	border-radius: 0.5rem;
 }

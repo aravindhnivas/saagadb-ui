@@ -11,7 +11,7 @@
 	<script type="text/javascript" src="https://oss.sheetjs.com/sheetjs/xlsx.full.min.js"></script>
 </svelte:head>
 
-<div class="grid gap-5 content-start">
+<div class="grid gap-5 content-start px-5">
 	<form class="flex gap-2 items-end" method="GET">
 		<label class="form-control w-full max-w-xs">
 			<div class="label">
@@ -49,7 +49,7 @@
 		</div>
 	{:then lines}
 		{#if lines?.length > 0}
-			<AlertBox>
+			<!-- <AlertBox>
 				<svelte:fragment slot="message">
 					The following line informations are derived from the uploaded .cat file using
 					<a href="https://github.com/bmcguir2/molsim" target="_blank" rel="noopener noreferrer">
@@ -57,7 +57,7 @@
 					</a>
 					script
 				</svelte:fragment>
-			</AlertBox>
+			</AlertBox> -->
 			<Linetable {lines} />
 		{:else}
 			<p>No lines found</p>

@@ -3,21 +3,9 @@
 	import { Download } from 'lucide-svelte/icons';
 	import Bibfile from './bibfile.svelte';
 	import { base } from '$app/paths';
-	// import { onMount } from 'svelte';
 
 	export let meta_references: MetaReference[] = [];
 	export let references: Reference[] = [];
-	// console.log(references.map((r) => r.id));
-
-	// let full_bibtex_text = '';
-
-	// onMount(async () => {
-	// 	const ref_ids = references.map((r) => r.id);
-	// 	const res = await fetch(`${base}/api/data/reference/bibtex/?bibtex_ids=${ref_ids.join(',')}`);
-	// 	const blob = new Blob([bibtex_text], { type: 'text/plain' });
-	// 	const bibtex_download_href = URL.createObjectURL(blob);
-	// });
-
 	const cell_padding = 'p-2';
 </script>
 
@@ -35,30 +23,36 @@
 	<Table.Body>
 		<Table.Row>
 			<Table.Cell class={cell_padding}>
-				<a
-					href="{base}/api/data/reference/bibtex/?bibtex_ids={references
-						.map((r) => r.id)
-						.join(',')}"
-					class="flex gap-1 items-center"
-					target="_blank"
-					rel="noopener noreferrer"
-					download
-				>
+				{#if references.length > 0}
+					<a
+						href="{base}/api/data/reference/bibtex/?bibtex_ids={references
+							.map((r) => r.id)
+							.join(',')}"
+						class="flex gap-1 items-center"
+						target="_blank"
+						rel="noopener noreferrer"
+						download
+					>
+						<span>Cite</span>
+						<Download />
+					</a>
+				{:else}
 					<span>Cite</span>
-					<Download />
-				</a>
+				{/if}
 			</Table.Cell>
 			{#each references as ref}
-				<Table.Cell class="text-center {cell_padding}">
-					<Bibfile {ref} />
-				</Table.Cell>
+				{#if ref.bibtex}
+					<Table.Cell class="text-center {cell_padding}">
+						<Bibfile bib_url={ref.bibtex} />
+					</Table.Cell>
+				{/if}
 			{/each}
 		</Table.Row>
 
 		<Table.Row>
 			<Table.Cell class={cell_padding}>Ref. Notes</Table.Cell>
 			{#each references as ref}
-				<Table.Cell class="text-center {cell_padding}">{ref.notes ?? '-'}</Table.Cell>
+				<Table.Cell class="text-center {cell_padding}">{@html ref.notes ?? '-'}</Table.Cell>
 			{/each}
 		</Table.Row>
 
@@ -81,7 +75,7 @@
 		<Table.Row>
 			<Table.Cell class={cell_padding}>Notes</Table.Cell>
 			{#each meta_references as metaref (metaref.id)}
-				<Table.Cell class="text-center {cell_padding}">{metaref.notes ?? '-'}</Table.Cell>
+				<Table.Cell class="text-center {cell_padding}">{@html metaref.notes ?? '-'}</Table.Cell>
 			{/each}
 		</Table.Row>
 	</Table.Body>

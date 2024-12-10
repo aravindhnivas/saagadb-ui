@@ -14,7 +14,7 @@
 	let species_loaded = false;
 	const load_species_metadata = async () => {
 		const { species, meta } = await data.load_species_metadata;
-		console.log({ species, meta });
+		// console.log({ species, meta });
 		if (species?.message)
 			throw new Error(`Species with id ${$page.params.id} - ${species.message}`);
 		if (meta.length === 0) throw new Error('No metadata found');

@@ -4,6 +4,20 @@
 		<meta charset="utf-8" />
 		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<script src="https://unpkg.com/@rdkit/rdkit/dist/RDKit_minimal.js"></script>
+		<script>
+			window
+				.initRDKitModule()
+				.then(function (RDKit) {
+					console.log('RDKit module initialized');
+					console.log('RDKit version: ' + RDKit.version());
+					window.RDKit = RDKit;
+				})
+				.catch(() => {
+					console.error('Failed to initialize RDKit module');
+				});
+		</script>
+		<script src="/saagadb/js/crossref.min.js"></script>
 		%sveltekit.head%
 	</head>
 	<body style="width: 100vw; height: 100vh" data-sveltekit-preload-data="hover">

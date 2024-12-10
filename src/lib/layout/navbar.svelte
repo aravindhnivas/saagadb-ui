@@ -1,42 +1,58 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import { logged_in } from '$lib/utils/stores';
-	import Navitems from './nav/navitems.svelte';
 	import { Button } from '$lib/components/ui/button';
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-	import { LayoutDashboard, LogOut } from 'lucide-svelte/icons';
+	import { LayoutDashboard, LogOut, Menu } from 'lucide-svelte/icons';
+	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
+
+	const nav = [
+		{ name: 'Home', href: base + '/' },
+		{ name: 'Species', href: base + '/species' },
+		{ name: 'Line-query', href: base + '/linequery' }
+	];
+
+	let active_page: string;
+	onMount(() => {
+		active_page = $page.url.pathname;
+	});
 </script>
 
 <div class="navbar">
 	<div class="navbar-start">
 		<div class="dropdown">
-			<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-			<!-- svelte-ignore a11y-label-has-associated-control -->
-			<label tabindex="0" class="btn btn-ghost lg:hidden">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					class="h-5 w-5"
-					fill="none"
-					viewBox="0 0 24 24"
-					stroke="currentColor"
-					><path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M4 6h16M4 12h8m-8 6h16"
-					/></svg
-				>
-			</label>
-			<!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-			<ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow rounded-box w-52">
-				<Navitems />
-			</ul>
+			<!-- display dropdown menu on mobile -->
+			<DropdownMenu.Root>
+				<DropdownMenu.Trigger asChild let:builder>
+					<Button class="lg:hidden" builders={[builder]} variant="outline"
+						><Menu class="mr-2 h-4 w-4" /></Button
+					>
+				</DropdownMenu.Trigger>
+				<DropdownMenu.Content class="w-56">
+					<DropdownMenu.Label>Navigate</DropdownMenu.Label>
+					<DropdownMenu.Separator />
+					{#each nav as { href, name }}
+						<DropdownMenu.Item>
+							<a on:click={() => (active_page = href)} class:active={active_page === href} {href}
+								>{name}</a
+							>
+						</DropdownMenu.Item>
+					{/each}
+				</DropdownMenu.Content>
+			</DropdownMenu.Root>
 		</div>
-		<a href="{base}/" class="btn btn-ghost normal-case text-xl">SAAGAdb</a>
 	</div>
+	<!-- display navbar in larger screen -->
 	<div class="navbar-center hidden lg:flex">
 		<ul class="menu menu-horizontal px-1 gap-2">
-			<Navitems />
+			{#each nav as { href, name }}
+				<li>
+					<a on:click={() => (active_page = href)} class:active={active_page === href} {href}
+						>{name}</a
+					>
+				</li>
+			{/each}
 		</ul>
 	</div>
 	<div class="navbar-end">
@@ -57,7 +73,9 @@
 
 						<DropdownMenu.Item>
 							<LogOut class="mr-2 h-4 w-4" />
-							<a href="{base}/logout">logout</a>
+							<form action="{base}/logout" method="POST">
+								<button type="submit">Logout</button>
+							</form>
 						</DropdownMenu.Item>
 					</DropdownMenu.Content>
 				</DropdownMenu.Root>

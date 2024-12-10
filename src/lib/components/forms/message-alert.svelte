@@ -3,10 +3,10 @@
 	import * as Alert from '$lib/components/ui/alert';
 	import { getForm } from 'formsnap';
 	import { confetti } from '@neoconfetti/svelte';
-
+	export let showModal = true;
 	const { message } = getForm();
 	let modal: HTMLDialogElement;
-	$: if (modal && $message && $message.text && $message.type === 'success') {
+	$: if (showModal && modal && $message && $message.text && $message.type === 'success') {
 		modal.showModal();
 	}
 </script>
@@ -27,7 +27,10 @@
 </dialog>
 
 {#if $message && $message.text && $message.type}
-	<Alert.Root class="my" variant={$message.type === 'error' ? 'destructive' : 'default'}>
+	<Alert.Root
+		class="bg-{$message.type === 'success' ? 'green-100' : 'red'}"
+		variant={$message.type === 'error' ? 'destructive' : 'default'}
+	>
 		{#if $message.type === 'success'}
 			<CheckCheck class="h-4 w-4" />
 		{:else if $message.type === 'warning'}
@@ -35,7 +38,13 @@
 		{:else if $message.type === 'error'}
 			<AlertCircle class="h-4 w-4" />
 		{/if}
-		<Alert.Title>{$message.type}</Alert.Title>
-		<Alert.Description>{@html $message.text}</Alert.Description>
+
+		<Alert.Title>
+			<span>{$message.type.toUpperCase()}</span>
+		</Alert.Title>
+		<Alert.Description class="grid gap-2 select-text">
+			<span>{@html $message.text}</span>
+			<button class="btn btn-sm w-[150px]" on:click={() => ($message = null)}>Okay</button>
+		</Alert.Description>
 	</Alert.Root>
 {/if}

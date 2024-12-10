@@ -2,31 +2,34 @@
 	import { toast } from 'svelte-sonner';
 	import { ArrowBigLeft } from 'lucide-svelte/icons';
 	import type { ActionData, PageData } from './$types';
-	import { base } from '$app/paths';
-	import { setContext } from 'svelte';
 	import ApprovalTab from './approval-tab.svelte';
 	import AlertBox from '$lib/components/utils/alert-box.svelte';
 	import Loader from '$lib/components/utils/loader.svelte';
 	import Button from '$lib/components/ui/button/button.svelte';
-	import { invalidateAll } from '$app/navigation';
+	import { invalidate } from '$app/navigation';
 
 	export let data: PageData;
 	export let form: ActionData;
 
-	setContext('approve_btn', true);
-	$: if (form && form.success) toast.success(form.message);
-	$: if (form && !form.success) toast.error(form.message);
+	$: if (form && form.success) toast.success(form.message || 'Success');
+	$: if (form && !form.success) toast.error(form.message || 'Error');
 </script>
 
 <div class="grid gap-4 px-2">
 	<div class="flex gap-4">
-		<a class="flex gap-4 btn btn-sm btn-dark w-[150px]" href="{base}/admin/dashboard"
-			><ArrowBigLeft /> Go back</a
+		<Button
+			variant="outline"
+			class="w-[150px]"
+			on:click={() => {
+				history.back();
+			}}
 		>
+			<ArrowBigLeft /> Go back
+		</Button>
 		<Button
 			class="w-[200px] ml-auto"
 			on:click={async () => {
-				await invalidateAll();
+				await invalidate('fetch:pending_approval');
 				toast.success('Data re-fetched');
 			}}>Re-fetch data</Button
 		>

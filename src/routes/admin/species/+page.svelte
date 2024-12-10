@@ -7,6 +7,7 @@
 	import AutoFillInchi from './auto-fill-inchi.svelte';
 	import AutoFillName from '../auto-fill-name.svelte';
 	import NameHtml from './name-html.svelte';
+	import FormField from '$lib/components/forms/form-field.svelte';
 
 	export let data: PageData;
 </script>
@@ -23,7 +24,7 @@
 	<Card.Root>
 		<Card.Header>
 			<Card.Title>Upload new species</Card.Title>
-			<Card.Description></Card.Description>
+			<Card.Description>Add new species to the database. Approval not required.</Card.Description>
 		</Card.Header>
 		<Card.Content>
 			<AutoFillName
@@ -48,33 +49,13 @@
 				}}
 			/>
 
-			<Form.Field {config} name="name">
-				<Form.Item>
-					<Form.Label>name</Form.Label>
-					<Form.Input required />
-					<Form.Validation />
-					<Form.Description>Enter comma separated name(s)</Form.Description>
-				</Form.Item>
-			</Form.Field>
-
-			<Form.Field {config} name="iupac_name">
-				<Form.Item>
-					<Form.Label>iupac_name</Form.Label>
-					<Form.Input required />
-					<Form.Validation />
-					<Form.Description
-						>Unique IUPAC name. Tips: enter conformer type, vibrational states within parenthesis</Form.Description
-					>
-				</Form.Item>
-			</Form.Field>
-
-			<Form.Field {config} name="name_formula">
-				<Form.Item>
-					<Form.Label>name_formula</Form.Label>
-					<Form.Input required />
-					<Form.Validation />
-				</Form.Item>
-			</Form.Field>
+			<FormField {config} name="name" description="Enter comma separated name(s)" />
+			<FormField
+				{config}
+				name="iupac_name"
+				description="Unique IUPAC name. Tips: enter conformer type, vibrational states within parenthesis"
+			/>
+			<FormField {config} name="name_formula" />
 
 			<Form.Field {config} name="name_html">
 				<Form.Item>
@@ -84,11 +65,10 @@
 						<NameHtml />
 					</div>
 					<Form.Validation />
-					<Form.Description
-						>Enter symbols in sup or sub tags i.e., {'<sup> + </sup>'} for superscript H<sup>+</sup
-						>and {'<sub> 2 </sub>'}
-						for subscripts H<sub>2</sub>O</Form.Description
-					>
+					<Form.Description>
+						Enter symbols in sup or sub tags i.e., {'<sup>+</sup>'} for superscript H<sup>+</sup>and {'<sub>2</sub>'}
+						for subscripts H<sub>2</sub>O, and {'<i>c</i>-C<sub>3</sub>H<sup>+</sup>'} for {@html '<i>c</i>-C<sub>3</sub>H<sup>+</sup>'}
+					</Form.Description>
 				</Form.Item>
 			</Form.Field>
 
@@ -101,30 +81,31 @@
 				</Form.Item>
 			</Form.Field>
 
-			<Form.Field {config} name="standard_inchi">
-				<Form.Item>
-					<Form.Label>InChI</Form.Label>
-					<Form.Input required />
-					<Form.Validation />
-				</Form.Item>
-			</Form.Field>
-
-			<Form.Field {config} name="standard_inchi_key">
-				<Form.Item>
-					<Form.Label>InChI Key</Form.Label>
-					<Form.Input required />
-					<Form.Validation />
-				</Form.Item>
-			</Form.Field>
-
-			<Form.Field {config} name="notes">
-				<Form.Item>
-					<Form.Label>notes</Form.Label>
-					<Form.Textarea />
-					<Form.Validation />
-					<Form.Description>Enter any notes. Tips: enter electronic state.</Form.Description>
-				</Form.Item>
-			</Form.Field>
+			<FormField {config} name="standard_inchi" label="InChI" />
+			<FormField {config} name="standard_inchi_key" label="InChI Key" />
+			<FormField {config} textarea name="notes">
+				<svelte:fragment slot="name">
+					<br />
+					<div class="flex flex-col gap-1 text-info">
+						<span>
+							<span class="font-bold">NOTE:</span> Only general notes related to species should be entered
+							here like it's electronic state, detected in space, etc.,.
+						</span>
+						<span>
+							Please enter the notes to <span class="font-bold">species-metadata</span> (next step in
+							metadata page) if it is obtained/relevant to the specific database such as CDMS or JPL.
+						</span>
+					</div>
+				</svelte:fragment>
+				<svelte:fragment slot="description">
+					<span>Enter any notes. Tips: enter electronic state.</span>
+					<!-- <span class="text-blue">
+						NOTE: Please enter the notes to species-metadata if it is obtained/relevant to the
+						specific database notes such as CDMS or JPL. Only general notes related to species
+						should be entered here.
+					</span> -->
+				</svelte:fragment>
+			</FormField>
 		</Card.Content>
 		<Card.Footer class="flex gap-4 justify-center">
 			<Form.Button class="w-[150px] flex gap-4" disabled={submitting}>

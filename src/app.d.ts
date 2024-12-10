@@ -7,8 +7,9 @@ declare global {
 			message: string;
 			title?: string;
 		}
-		interface Locals {
-			token: string | null;
+		interface Locals extends TokenDecodedUser {
+			access_token?: string;
+			refresh_token?: string;
 			domain: string;
 		}
 		interface PageState {
@@ -25,6 +26,7 @@ declare global {
 
 	interface Window {
 		RDKit: RDKitModule;
+		CrossRef: any;
 	}
 }
 

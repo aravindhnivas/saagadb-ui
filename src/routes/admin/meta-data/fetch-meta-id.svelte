@@ -1,16 +1,19 @@
 <script lang="ts">
+	import { species_id, linelist_id, hyperfine } from './stores';
 	import { getForm } from 'formsnap';
 	import { Button } from '$lib/components/ui/button';
 	import { toast } from 'svelte-sonner';
 	import { oO } from '@zmotivat0r/o0';
-	import { getContext, tick } from 'svelte';
+	import { getContext } from 'svelte';
 	import { base } from '$app/paths';
 	import Checkbox from '$lib/components/ui/checkbox/checkbox.svelte';
 	import { Label } from '$lib/components/ui/label';
 	import Svelecte from 'svelecte';
 
-	let species_id = 0;
-	let linelist_id = 0;
+	// let species_id = 0;
+	// let linelist_id = 0;
+	// let hyperfine = false;
+
 	const species = getContext('species') as Species[];
 	const linelist = getContext('linelist') as Linelist[];
 
@@ -18,15 +21,15 @@
 
 	async function fetch_meta_id(): Promise<string | number | undefined> {
 		try {
-			if (!(species_id && linelist_id)) {
+			if (!($species_id && $linelist_id)) {
 				toast.error('Please select a species and linelist');
 				return;
 			}
 			fetching_meta_id = true;
-			const url = `${base}/api/data/species-metadata?species=${species_id}&linelist=${linelist_id}&hyperfine=${hyperfine}`;
+			const url = `${base}/api/data/species-metadata?species=${$species_id}&linelist=${$linelist_id}&hyperfine=${$hyperfine}`;
 			const res = await fetch(url);
 			const data = (await res.json()) as Species[];
-			// console.log({ url, species_id, linelist_id, data });
+			// console.log({ url, $species_id, $linelist_id, data });
 			if (data.length === 0) {
 				toast.error('No metadata found for this species and linelist');
 				return;
@@ -39,33 +42,9 @@
 		}
 	}
 	let fetching_meta_id = false;
-	let hyperfine = false;
-
-	let test_value = '';
-	// $: import.meta.env.DEV && console.log({ test_value, species_id, linelist_id });
 </script>
 
 <div class="grid-fit-content items-center">
-	{#if import.meta.env.DEV}
-		<div class="flex flex-col gap-1">
-			<Label>test</Label>
-			<Svelecte
-				class="w-[150px]"
-				virtualList={true}
-				placeholder="test"
-				options={Array(5000)
-					.fill('abc')
-					.map((f, i) => {
-						return {
-							id: `${i}-${Math.random()}`,
-							label: `${f}-${i}`
-						};
-					})}
-				bind:value={test_value}
-			/>
-		</div>
-	{/if}
-
 	<div class="flex flex-col gap-1">
 		<Label>species</Label>
 		<Svelecte
@@ -75,7 +54,7 @@
 				id: f.id,
 				label: f.name_formula
 			}))}
-			bind:value={species_id}
+			bind:value={$species_id}
 		/>
 	</div>
 
@@ -88,12 +67,12 @@
 				id: f.id,
 				label: f.linelist_name
 			}))}
-			bind:value={linelist_id}
+			bind:value={$linelist_id}
 		/>
 	</div>
 
 	<div class="flex items-center space-x-2">
-		<Checkbox id="hyperfine" bind:checked={hyperfine} aria-labelledby="hyperfine-label" />
+		<Checkbox id="hyperfine" bind:checked={$hyperfine} aria-labelledby="hyperfine-label" />
 		<Label
 			id="hyperfine-label"
 			for="hyperfine"
@@ -102,18 +81,24 @@
 			hyperfine
 		</Label>
 	</div>
+
 	<Button
 		variant="outline"
-		on:click={async () => {
+		disabled={fetching_meta_id}
+		on:click={async (e) => {
+			e.preventDefault();
 			const [err, id] = await oO(fetch_meta_id());
 			if (err instanceof Error) return toast.error(err.message);
 			$form.meta = id;
-		}}>Fetch meta_id</Button
+		}}
 	>
-	{#if fetching_meta_id}
-		<div class="flex gap-2 items-center h-10">
-			<span class="loading loading-spinner"></span>
-			<span>Fetching...</span>
-		</div>
-	{/if}
+		{#if fetching_meta_id}
+			<div class="flex gap-2 items-center h-10">
+				<span class="loading loading-spinner"></span>
+				<span>Fetching...</span>
+			</div>
+		{:else}
+			Fetch meta_id
+		{/if}
+	</Button>
 </div>

@@ -6,24 +6,21 @@
 	import MetaTable from './meta-table.svelte';
 
 	export let data: LayoutData;
-	// console.log({ data });
 </script>
 
-<div class="overflow-auto grid">
-	{#await data.load_species_metadata}
-		<Loader />
-	{:then { species, meta }}
-		{#if species?.message}
-			<AlertBox message={species.message} variant="destructive" />
-		{:else if species}
-			<SpeciesData {species} />
-			{#if meta.length > 0}
-				<MetaTable species_metadata={meta} />
-			{:else}
-				<AlertBox message="No metadata available for this species" />
-			{/if}
+{#await data.load_species_metadata}
+	<Loader />
+{:then { species, meta }}
+	{#if species?.message}
+		<AlertBox message={species.message} variant="destructive" />
+	{:else if species}
+		<SpeciesData {species} user={data.user} />
+		{#if meta.length > 0}
+			<MetaTable species_metadata={meta} />
+		{:else}
+			<AlertBox message="No data available for this species" />
 		{/if}
-	{:catch error}
-		<AlertBox {error} />
-	{/await}
-</div>
+	{/if}
+{:catch error}
+	<AlertBox {error} />
+{/await}

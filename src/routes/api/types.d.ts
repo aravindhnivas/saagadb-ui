@@ -13,20 +13,22 @@ interface Species {
 	message?: string;
 	approved: boolean;
 	uploaded_by: number;
+	uploaded_by_name: string;
 }
 
 interface User {
 	id: number;
 	name: string;
 	email: string;
-	password: string;
 	organization: string;
 	is_staff: boolean;
 	is_active: boolean;
 	is_superuser: boolean;
 	is_verified: boolean;
-	approver: boolean;
 	approver_name: string[];
+	password?: string;
+	approver?: number[];
+	// approver: number[];
 }
 
 interface Linelist {
@@ -54,6 +56,9 @@ interface SpeciesMetadata {
 	linelist: number;
 	data_date: string;
 	data_contributor: string;
+	partition_function: {
+		[name: string]: string;
+	};
 	qpart_file: string;
 	int_file: string;
 	var_file: string;
@@ -67,6 +72,10 @@ interface SpeciesMetadata {
 	species_name: string;
 	linelist_name: string;
 	uploaded_by_name: string;
+	vib_qn: string;
+	qn_label_str: string;
+	contains_rovibrational: boolean;
+	cat_file_added: boolean;
 }
 
 interface Reference {
@@ -76,11 +85,12 @@ interface Reference {
 	bibtex: string;
 	notes: string;
 	uploaded_by: string;
+	uploaded_by_name: string;
 	approved: boolean;
 }
 
 interface MetaReference {
-	id: string;
+	id: number;
 	meta: string;
 	ref: string;
 	dipole_moment: boolean;
@@ -88,6 +98,7 @@ interface MetaReference {
 	notes: string;
 	uploaded_by: string;
 	approved: boolean;
+	molecule_tag: number;
 	species_formula: string;
 	species_name: string;
 	linelist_name: string;

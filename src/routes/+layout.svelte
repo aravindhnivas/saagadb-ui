@@ -17,7 +17,7 @@
 	$: if (user) logged_in.set(user.name); // don't delete - this keep the user logged in
 </script>
 
-<svelte:head>
+<!-- <svelte:head>
 	<script src="https://unpkg.com/@rdkit/rdkit/dist/RDKit_minimal.js"></script>
 	<script>
 		window
@@ -31,13 +31,13 @@
 				console.error('Failed to initialize RDKit module');
 			});
 	</script>
-</svelte:head>
+</svelte:head> -->
 
-<Toaster position="bottom-center" richColors closeButton />
+<Toaster position="top-center" richColors closeButton />
 
 <div class="parent h-full w-full">
 	<header><Navbar /></header>
-	<main class="p-5">
+	<main>
 		<slot />
 	</main>
 	<footer><Footer /></footer>

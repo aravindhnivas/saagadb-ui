@@ -7,6 +7,6 @@
 	<AlertBox
 		variant="destructive"
 		message={$page.error?.message}
-		title={$page.error?.title || 'Unauthorized'}
+		title={$page.error?.title || 'Internal Error'}
 	/>
 </div>
