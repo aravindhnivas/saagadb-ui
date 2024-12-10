@@ -4,8 +4,6 @@
 	import * as Card from '$lib/components/ui/card';
 	import { PasswordSchema } from './schema';
 	import { Checkbox } from '$lib/components/ui/checkbox';
-	import { toast } from 'svelte-sonner';
-	import { base } from '$app/paths';
 
 	export let data: PageData;
 	let show_password = false;
