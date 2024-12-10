@@ -12,7 +12,6 @@ export const load: PageLoad = async ({ fetch, depends }) => {
 				message: 'Failed to fetch upload count'
 			});
 		const upload_count = (await res.json()) as UploadCountResponse;
-
 		return upload_count;
 	};
 

@@ -26,20 +26,17 @@ export const handle: Handle = async ({ event, resolve }) => {
 			event.locals.refresh_token = JWT.refresh;
 
 			const decoded = jwtDecode(refresh_token) as TokenDecoded;
-			event.locals.user = decoded.user;
-			event.locals.user_approvers = decoded.user_approvers;
-
+			event.locals.user = { ...decoded.user, approver_name: decoded.user_approvers };
 			console.log('Renewing access token using refresh token');
 			if (!event.locals.user) {
-				console.log('Invalid token found, logging out user...');
+				console.warn('Invalid token found, logging out user...');
 				logged_in.set('');
 				delete_token({ cookies: event.cookies, name: 'JWT-access' });
 				delete_token({ cookies: event.cookies, name: 'JWT-refresh' });
 			}
 		} else if (access_token && !event.locals.user) {
 			const decoded = jwtDecode(refresh_token) as TokenDecoded;
-			event.locals.user = decoded.user;
-			event.locals.user_approvers = decoded.user_approvers;
+			event.locals.user = { ...decoded.user, approver_name: decoded.user_approvers };
 		}
 	}
 
@@ -47,8 +44,6 @@ export const handle: Handle = async ({ event, resolve }) => {
 		if (!event.locals.refresh_token) {
 			let fromUrl = event.url.pathname + event.url.search;
 			fromUrl = fromUrl.replace(`${base}`, '');
-			// console.log('Redirecting to login page');
-			// console.log('fromUrl:', fromUrl);
 			redirect(303, `${base}/login?redirectTo=${fromUrl}`);
 		}
 	}

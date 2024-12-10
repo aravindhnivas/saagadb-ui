@@ -9,6 +9,7 @@ interface TokenDecodedUser {
 		is_superuser: boolean;
 		is_active: boolean;
 		is_verified: boolean;
+		approver_name: string[];
 	};
 }
 
