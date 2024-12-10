@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { logged_in } from '$lib/utils/stores';
 	import type { PageData } from './$types';
-	import { AlertCircle, ShieldCheck } from 'lucide-svelte/icons';
+	import { AlertCircle, ExternalLink, ShieldCheck } from 'lucide-svelte/icons';
 	import UploadStatus from './upload-status.svelte';
 	import { setContext } from 'svelte';
-	import { invalidate } from '$app/navigation';
+	import { goto, invalidate } from '$app/navigation';
+	import { base } from '$app/paths';
 
 	export let data: PageData;
 	setContext('allow_edit', data.user.is_staff || data.user.is_superuser);
@@ -37,6 +38,15 @@
 		</div>
 
 		<div class="grid gap-2">
+			<button
+				class="btn btn-info"
+				on:click={async () => {
+					await goto(`${base}/admin/dashboard/review-data`);
+				}}
+			>
+				Click to review all uploaded data
+				<ExternalLink />
+			</button>
 			<span class="text-lg font-bold">
 				Click on the following titles to EDIT (non-approved; exception to Species) the uploaded data
 			</span>

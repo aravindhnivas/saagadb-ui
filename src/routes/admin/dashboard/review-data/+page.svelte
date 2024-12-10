@@ -29,13 +29,13 @@
 		<Button
 			class="w-[200px] ml-auto"
 			on:click={async () => {
-				await invalidate('fetch:pending_approval');
+				await invalidate('fetch:ref_and_species');
 				toast.success('Data re-fetched');
 			}}>Re-fetch data</Button
 		>
 	</div>
 
-	<h1 class="text-2xl font-bold">Pending approval for {data.user.name}</h1>
+	<h1 class="text-2xl font-bold">Uploaded Species metadata and references by {data.user.name}</h1>
 
 	{#await data.fetch_ref_and_species}
 		<Loader fetching={true} />

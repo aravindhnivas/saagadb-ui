@@ -1,7 +1,26 @@
 import { base } from '$app/paths';
-import { error, type Actions } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
+import { type Actions } from '@sveltejs/kit';
+import type { PageServerLoad } from './[id]/$types';
 import { DB_URL } from '$lib/server';
+
+export const load: PageServerLoad = async ({ fetch, depends, locals }) => {
+	const user = locals.user;
+	const fetch_ref_and_species = async () => {
+		depends('fetch:ref_and_species');
+		const res = await fetch(`${base}/api/data/meta-ref-and-species?uploaded_by=${user.id}`);
+		if (!res.ok) return { MetaReference: [], SpeciesMetadata: [] };
+		const { MetaReference: ref, SpeciesMetadata: species_meta } = (await res.json()) as {
+			MetaReference: MetaReference[];
+			SpeciesMetadata: SpeciesMetadata[];
+		};
+		return {
+			MetaReference: ref,
+			SpeciesMetadata: species_meta.filter((f) => f.cat_file_added)
+		};
+	};
+
+	return { user, fetch_ref_and_species: fetch_ref_and_species() };
+};
 
 const parse_failed_response = async (res: Response) => {
 	const content_type = res.headers.get('content-type');
@@ -27,69 +46,14 @@ const parse_failed_response = async (res: Response) => {
 	return { success: false, message: text };
 };
 
-export const load: PageServerLoad = async ({ fetch, params, depends, locals }) => {
-	if (!locals.user.is_staff || !locals.user.is_superuser) {
-		error(403, {
-			title: 'Forbidden',
-			message: 'You do not have permission to access this page'
-		});
-	}
-	const user_res = await fetch(`${base}/api/user/fetch/${params.id}`);
-	if (!user_res.ok) {
-		error(400, {
-			title: 'User not found',
-			message: 'User not found'
-		});
-	}
-
-	const user = (await user_res.json()) as User;
-
-	if (!user.approver?.includes(locals.user.id)) {
-		error(403, {
-			title: 'You are not the approver for this user',
-			message: 'You do not have permission to approve data for this user.'
-		});
-	}
-
-	// console.log(user.approver, { parent_user, user });
-
-	const fetch_ref_and_species = async () => {
-		depends('fetch:pending_approval');
-
-		const res = await fetch(
-			`${base}/api/data/meta-ref-and-species?uploaded_by=${user.id}&approved=false`
-		);
-
-		if (!res.ok) return { MetaReference: [], SpeciesMetadata: [] };
-
-		const { MetaReference: ref, SpeciesMetadata: species_meta } = (await res.json()) as {
-			MetaReference: MetaReference[];
-			SpeciesMetadata: SpeciesMetadata[];
-		};
-		return {
-			MetaReference: ref,
-			SpeciesMetadata: species_meta.filter((f) => f.cat_file_added)
-		};
-	};
-
-	return { user, fetch_ref_and_species: fetch_ref_and_species() };
-};
-
 export const actions: Actions = {
-	async approve({ fetch, url, request }) {
+	async update({ fetch, url, request }) {
 		const formData = await request.formData();
-		formData.append('approved', 'true');
+		// formData.append('approved', 'true');
 
 		const id = url.searchParams.get('id') as string;
 		const api_key = url.searchParams.get('api_key') as string;
 		const post_url = `${DB_URL}/data/${api_key}/${id}/`;
-
-		// console.log('formData', Object.fromEntries(formData.entries()));
-
-		// return {
-		// 	success: false,
-		// 	message: 'test message'
-		// };
 
 		const formBody = new FormData();
 
@@ -100,13 +64,6 @@ export const actions: Actions = {
 			formBody.append(key, value);
 		}
 
-		// console.log('formBody', Object.fromEntries(formBody.entries()));
-
-		// return {
-		// 	success: false,
-		// 	message: 'test message'
-		// };
-
 		const res = await fetch(post_url, {
 			method: 'PATCH',
 			body: formData
@@ -114,9 +71,10 @@ export const actions: Actions = {
 
 		console.log(res.ok, res.status, res.statusText);
 		if (!res.ok) return parse_failed_response(res);
+
 		return {
 			success: res.ok,
-			message: 'Data approved successfully'
+			message: 'Data saved successfully'
 		};
 	},
 
