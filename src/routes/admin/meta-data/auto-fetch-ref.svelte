@@ -109,10 +109,11 @@
 		// ref_entries.forEach((query, index) => {
 		for (let index = 0; index < ref_entries.length; index++) {
 			const query = ref_entries[index];
-			console.log(`${index} - fetching ref: `, query);
+			console.time('fetching ref');
+			// console.log(`${index} - fetching ref: `, query);
 			window.CrossRef.works({ query }, async (err, obj) => {
 				if (cancel_doi_fetching) return (fetching_doi = false);
-				console.log('CrossRef fetching', query);
+				console.log(`${index} - CrossRef fetching`, query);
 				let doi: string = '';
 				let ref_url: string = '';
 				let bibtex: string = '';
@@ -146,6 +147,7 @@
 			await sleep(2000);
 			await tick();
 			// fetching_doi = false;
+			console.timeEnd('fetching ref');
 		}
 		// });
 	};
