@@ -27,7 +27,7 @@
 	<Resizable.Handle withHandle />
 	<Resizable.Pane defaultSize={80} class="p-4">
 		<div
-			class="grid gap-4 h-full overflow-auto w-full items-start px-5"
+			class="grid gap-4 h-full overflow-auto w-full items-start px-5 justify-center"
 			style="grid-template-rows: auto auto 1fr;"
 		>
 			<slot />
