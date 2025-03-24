@@ -45,7 +45,8 @@ const speciesMetadataScheme = z.object({
 	var_file: z.string().default('').optional(),
 	fit_file: z.string().default('').optional(),
 	lin_file: z.string().default('').optional(),
-	notes: z.string().default('').optional()
+	notes: z.string().default('').optional(),
+	request_immediate_approval: z.boolean().default(false)
 });
 
 const lineScheme = z.object({

@@ -9,6 +9,7 @@
 	import { Label } from '$lib/components/ui/label';
 	import { Input } from '$lib/components/ui/input';
 	import Svelecte from 'svelecte';
+	import AlertBox from '$lib/components/utils/alert-box.svelte';
 	// import { hyperfine, linelist_id, species_id } from './stores';
 
 	export let form: SuperValidated<(typeof Schemas)['species-metadata']>;
@@ -219,4 +220,22 @@
 			</Form.Field>
 		{/each}
 	</div>
+
+	<AlertBox
+		title="Request URGENT Approval [Checkbox below]"
+		class="bg-orange-100 border-l-4 border-orange-500 text-orange-700"
+	>
+		<svelte:fragment slot="message">
+			<Form.Field {config} name="request_immediate_approval" let:constraints let:attrs let:value>
+				<Form.Item>
+					<!-- <Form.Label>request_immediate_approval</Form.Label> -->
+					<div class="flex gap-2 items-center pt-2">
+						<Form.Checkbox {...constraints} {...attrs} />
+						<span>{value}</span>
+					</div>
+					<Form.Validation />
+				</Form.Item>
+			</Form.Field>
+		</svelte:fragment>
+	</AlertBox>
 </FormTabContents>
