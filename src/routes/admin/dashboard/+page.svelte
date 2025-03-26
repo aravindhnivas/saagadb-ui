@@ -12,8 +12,25 @@
 	$: if (data.user?.name) logged_in.set(data.user.name);
 </script>
 
-<div class="p-2 max-w-4xl">
+<div class="p-2 m-auto max-w-6xl">
 	{#if data.user}
+		<div class="w-max m-auto">
+			<h1 class="text-2xl font-bold">Welcome, {data.user.name}</h1>
+			<p class="text-lg">You are logged in as {data.user.email}</p>
+
+			<!-- superuser or staff or regular user -->
+			{#if data.user.is_superuser}
+				<!-- superuser icon -->
+				<p>Superuser</p>
+			{:else if data.user.is_staff}
+				<!-- staff -->
+				<p>Staff</p>
+			{:else}
+				<!-- regular user -->
+				<p>Regular user</p>
+			{/if}
+		</div>
+
 		<button
 			class="btn btn-sm my-5"
 			on:click={async () => {

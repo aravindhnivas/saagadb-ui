@@ -1,6 +1,6 @@
 export const api_fields = {
 	species: [
-		{ name: 'approved', label: 'Approved' },
+		{ name: 'status', label: 'STATUS' },
 		{ name: 'name', label: 'Name', search_field: true },
 		{ name: 'iupac_name', label: 'IUPAC', search_field: true },
 		{ name: 'name_formula', label: 'Molecular formula', search_field: true },
@@ -11,7 +11,7 @@ export const api_fields = {
 		{ name: 'notes', label: 'Notes' }
 	],
 	'species-metadata': [
-		{ name: 'approved', label: 'Approved' },
+		{ name: 'status', label: 'STATUS' },
 		{ name: 'species_smiles', label: 'SMILES', search_field: true, editable: false },
 		{ name: 'species_name', label: 'Species name', search_field: true, editable: false },
 		{ name: 'cat_file', label: 'cat_file', editable: false, link: true, download: true },
@@ -61,13 +61,13 @@ export const api_fields = {
 		{ name: 'notes', label: 'Notes' }
 	],
 	reference: [
-		{ name: 'approved', label: 'Approved' },
+		{ name: 'status', label: 'STATUS' },
 		{ name: 'doi', label: 'DOI', search_field: true },
 		{ name: 'ref_url', label: 'Reference URL', link: true },
 		{ name: 'notes', label: 'Notes' }
 	],
 	'meta-reference': [
-		{ name: 'approved', label: 'Approved' },
+		{ name: 'status', label: 'STATUS' },
 		{ name: 'doi', label: 'DOI', search_field: true },
 		{ name: 'ref_url', label: 'Reference URL', link: true },
 		{ name: 'dipole_moment', label: 'Dipole Moment' },

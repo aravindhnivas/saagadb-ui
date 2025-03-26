@@ -62,7 +62,7 @@
 			checked_row = checked_row.map((f) => ({ ...f, checked: state }));
 		}}
 	/>
-	<Label>Select all to approve</Label>
+	<Label>Select all to approve ({api_key}-id ={obj.id})</Label>
 	<a href={source_link} target="_blank" rel="noopener noreferrer" class="underline">
 		Check {obj.linelist_name.toLocaleUpperCase()} source
 	</a>

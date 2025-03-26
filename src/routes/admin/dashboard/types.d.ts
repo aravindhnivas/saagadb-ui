@@ -14,6 +14,6 @@ interface unapproved_counts {
 
 interface UploadCountResponse {
 	full: UploadCount;
-	approved: UploadCount;
+	pending: UploadCount;
 	unapproved_counts: unapproved_counts[];
 }

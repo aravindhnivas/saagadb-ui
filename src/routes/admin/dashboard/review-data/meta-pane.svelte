@@ -54,10 +54,10 @@
 	<Resizable.Pane defaultSize={75}>
 		{#if active_obj}
 			<div class="flex flex-col p-6">
-				<div class="text-lg {active_obj.approved ? 'text-success' : 'text-blue'}">
-					{active_obj.approved ? 'Approved' : 'Not-Approved yet'}
+				<div class="text-lg {active_obj.status === 'approved' ? 'text-success' : 'text-blue'}">
+					{active_obj.status === 'approved' ? 'Approved' : 'Not-Approved yet'}
 				</div>
-				{#if active_obj.approved}
+				{#if active_obj.status === 'approved'}
 					<span class="text-lg text-blue">Entry already approved. Editting is not allowed.</span>
 				{:else}
 					<div class="flex gap-2 items-center text-sm text-gray">

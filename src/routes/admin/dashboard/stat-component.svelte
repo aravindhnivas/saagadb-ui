@@ -4,9 +4,10 @@
 	import { getContext } from 'svelte';
 
 	export let total: number;
-	export let approved: number;
+	export let pending: number;
 	export let apiName: string;
 
+	const approved = total - pending;
 	$: percent_approved = approved !== undefined && total > 0 ? approved / total : 0;
 	const user = getContext('user') as User;
 </script>

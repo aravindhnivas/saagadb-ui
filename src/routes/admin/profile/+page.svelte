@@ -70,7 +70,7 @@
 				toast.error(data.message);
 			}
 			uploading = false;
-			await update({ reset: false });
+			await update({ reset: true });
 		};
 	};
 </script>

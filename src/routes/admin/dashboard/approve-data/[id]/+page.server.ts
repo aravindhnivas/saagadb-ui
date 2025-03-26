@@ -57,7 +57,7 @@ export const load: PageServerLoad = async ({ fetch, params, depends, locals }) =
 		depends('fetch:pending_approval');
 
 		const res = await fetch(
-			`${base}/api/data/meta-ref-and-species?uploaded_by=${user.id}&approved=false`
+			`${base}/api/data/meta-ref-and-species?uploaded_by=${user.id}&status=pending`
 		);
 
 		if (!res.ok) return { MetaReference: [], SpeciesMetadata: [] };
@@ -78,18 +78,12 @@ export const load: PageServerLoad = async ({ fetch, params, depends, locals }) =
 export const actions: Actions = {
 	async approve({ fetch, url, request }) {
 		const formData = await request.formData();
-		formData.append('approved', 'true');
+		// formData.append('approved', 'true');
+		formData.append('status', 'approved');
 
 		const id = url.searchParams.get('id') as string;
 		const api_key = url.searchParams.get('api_key') as string;
 		const post_url = `${DB_URL}/data/${api_key}/${id}/`;
-
-		// console.log('formData', Object.fromEntries(formData.entries()));
-
-		// return {
-		// 	success: false,
-		// 	message: 'test message'
-		// };
 
 		const formBody = new FormData();
 
@@ -100,19 +94,12 @@ export const actions: Actions = {
 			formBody.append(key, value);
 		}
 
-		// console.log('formBody', Object.fromEntries(formBody.entries()));
-
-		// return {
-		// 	success: false,
-		// 	message: 'test message'
-		// };
-
 		const res = await fetch(post_url, {
 			method: 'PATCH',
 			body: formData
 		});
-
-		console.log(res.ok, res.status, res.statusText);
+		console.log(formData);
+		// console.log(res.ok, res.status, res.statusText);
 		if (!res.ok) return parse_failed_response(res);
 		return {
 			success: res.ok,

@@ -11,7 +11,7 @@ interface Species {
 	selfies: string;
 	notes: string;
 	message?: string;
-	approved: boolean;
+	status: 'pending' | 'approved' | 'rejected';
 	uploaded_by: number;
 	uploaded_by_name: string;
 }
@@ -34,7 +34,7 @@ interface User {
 interface Linelist {
 	id: number;
 	linelist_name: string;
-	approved: boolean;
+	status: 'pending' | 'approved' | 'rejected';
 	uploaded_by: number;
 }
 interface SpeciesMetadata {
@@ -66,7 +66,7 @@ interface SpeciesMetadata {
 	lin_file: string;
 	cat_file: string;
 	notes: string;
-	approved: boolean;
+	status: 'pending' | 'approved' | 'rejected';
 	uploaded_by: number;
 	species_formula: string;
 	species_name: string;
@@ -86,7 +86,7 @@ interface Reference {
 	notes: string;
 	uploaded_by: string;
 	uploaded_by_name: string;
-	approved: boolean;
+	status: 'pending' | 'approved' | 'rejected';
 }
 
 interface MetaReference {
@@ -97,7 +97,7 @@ interface MetaReference {
 	spectrum: boolean;
 	notes: string;
 	uploaded_by: string;
-	approved: boolean;
+	status: 'pending' | 'approved' | 'rejected';
 	molecule_tag: number;
 	species_formula: string;
 	species_name: string;

@@ -11,7 +11,7 @@ export const load: LayoutLoad = async ({ fetch, params }) => {
 		const [species, meta] = await Promise.all([
 			fetch_data<Species>(`${base}/api/data/species/${params.id}`),
 			fetch_data<SpeciesMetadata[]>(
-				`${base}/api/data/species-metadata?species=${params.id}&approved=true`
+				`${base}/api/data/species-metadata?species=${params.id}&status=approved`
 			)
 		]);
 		return { species, meta };

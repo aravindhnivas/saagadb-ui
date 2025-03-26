@@ -57,7 +57,7 @@
 	<a href={source_link} target="_blank" rel="noopener noreferrer" class="underline">
 		Check {obj.linelist_name.toLocaleUpperCase()} source
 	</a>
-	{#if !obj.approved}
+	{#if obj.status !== 'approved'}
 		<Button
 			class="ml-auto"
 			variant="outline"
@@ -95,7 +95,7 @@
 							modified = true;
 						}}
 					>
-						{#if !obj.approved}
+						{#if obj.status !== 'approved'}
 							{#if disabled}
 								<LockKeyhole />
 							{:else}
@@ -143,7 +143,7 @@
 	{#if api_key === 'species-metadata'}
 		<div class="grid">
 			<span>Attached files (Download and check)</span>
-			{#if !obj.approved}
+			{#if obj.status !== 'approved'}
 				<span class="flex gap-4 items-center text-sm text-gray">
 					<UnlockKeyhole />
 					Unlock to upload new files
@@ -163,7 +163,7 @@
 								modified = true;
 							}}
 						>
-							{#if !obj.approved}
+							{#if obj.status !== 'approved'}
 								{#if disabled}
 									<LockKeyhole />
 								{:else}
@@ -229,7 +229,7 @@
 		</div>
 	{/if}
 
-	{#if !obj.approved}
+	{#if obj.status !== 'approved'}
 		<div class="flex gap-4 ml-auto">
 			<DeleteDialog id={obj.id} />
 			{#if api_key === 'species-metadata'}

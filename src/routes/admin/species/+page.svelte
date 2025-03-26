@@ -21,7 +21,7 @@
 	let:submitting
 	debug={import.meta.env.DEV}
 >
-	<Card.Root>
+	<Card.Root class="mb-4">
 		<Card.Header>
 			<Card.Title>Upload new species</Card.Title>
 			<Card.Description>Add new species to the database. Approval not required.</Card.Description>

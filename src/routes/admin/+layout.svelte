@@ -5,6 +5,7 @@
 	import type { LayoutData } from './$types';
 	import AlertBox from '$lib/components/utils/alert-box.svelte';
 	import { onMount } from 'svelte';
+	import { LogOut } from 'lucide-svelte/icons';
 
 	export let data: LayoutData;
 
@@ -81,62 +82,60 @@
 </script>
 
 {#if mounted}
-	<div class="settings__div">
-		<ul class=" menu menu-sm lg:menu-md px-4 py-0 gap-2">
-			<li class="menu-title">Admin panel</li>
-			{#each admin_menu as { href, name, id, preload } (id)}
-				<li>
-					<a
-						data-sveltekit-preload-data={preload ? 'hover' : 'false'}
-						class:active={active_tab === name}
-						{href}
-						on:click={() => {
-							active_tab = name;
-						}}>{name}</a
-					>
-				</li>
-			{/each}
-		</ul>
-		<div class="child">
+	<div class="grid grid-cols-6 gap-xl overflow-hidden">
+		<aside class="col-span-1 bg-gray-800 text-white p-4 flex flex-col">
+			<h2 class="text-lg font-bold mb-4">Admin Panel</h2>
+			<p class="text-sm text-gray-400 mb-4">
+				{data.user.is_superuser ? 'Superuser' : data.user.is_staff ? 'Staff' : 'User'}
+			</p>
+			<ul class="space-y-2">
+				{#each admin_menu as { href, name, id, preload } (id)}
+					<li>
+						<a
+							data-sveltekit-preload-data={preload ? 'hover' : 'false'}
+							class="block px-4 py-2 rounded hover:bg-gray-700"
+							class:font-bold={active_tab === name}
+							{href}
+							on:click={() => {
+								active_tab = name;
+							}}
+						>
+							{name}
+						</a>
+					</li>
+				{/each}
+			</ul>
+			<div class="mt-auto">
+				<form
+					action="{base}/logout"
+					method="POST"
+					class="flex items-center space-x-2 text-red-400 hover:text-red-300"
+				>
+					<LogOut class="h-5 w-5" />
+					<button type="submit">Logout</button>
+				</form>
+			</div>
+		</aside>
+		<main class="col-span-5 overflow-auto">
 			{#if current_page.requires_admin_user && !data.user.is_staff}
-				<AlertBox
-					title="Access denied"
-					message="You do not have the required permission to access this page. Please contact your administrator."
-				/>
+				<AlertBox title="Access Denied" message="You do not have permission to access this page." />
 			{:else if current_page.requires_verified_user && !data.user.is_verified}
-				<AlertBox title="Activation required to POST data">
+				<AlertBox title="Activation Required">
 					<svelte:fragment slot="message">
-						<div class="flex flex-col">
-							<span>Please verify your email to activate your account. </span>
-						</div>
+						<p>Please verify your email to activate your account.</p>
 					</svelte:fragment>
 				</AlertBox>
 			{:else if current_page.requires_super_user && !data.user.is_superuser}
 				<AlertBox title="Forbidden" variant="destructive">
 					<svelte:fragment slot="message">
-						<div class="flex flex-col">
-							<span>Requires superuser permission</span>
-						</div>
+						<p>Requires superuser permission</p>
 					</svelte:fragment>
 				</AlertBox>
 			{:else}
+				<!-- <div class="overflow-auto max-h-screen"> -->
 				<slot />
+				<!-- </div> -->
 			{/if}
-		</div>
+		</main>
 	</div>
 {/if}
-
-<style lang="scss">
-	.settings__div {
-		display: grid;
-		grid-template-columns: auto 1fr;
-		gap: 1rem;
-		overflow: hidden;
-
-		.child {
-			user-select: none;
-			-webkit-user-select: none;
-			overflow: auto;
-		}
-	}
-</style>

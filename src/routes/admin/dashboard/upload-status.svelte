@@ -73,11 +73,7 @@
 				{/if}
 			{/if}
 			<div class="stats stats-vertical shadow-xl px-5">
-				<StatComponent
-					apiName="species"
-					total={value.full.species}
-					approved={value.approved.species}
-				>
+				<StatComponent apiName="species" total={value.full.species} pending={value.pending.species}>
 					<svelte:fragment slot="header">
 						<Atom />
 						<span>Species</span>
@@ -86,7 +82,7 @@
 				<StatComponent
 					apiName="species-metadata"
 					total={value.full.species_metadata}
-					approved={value.approved.species_metadata}
+					pending={value.pending.species_metadata}
 				>
 					<svelte:fragment slot="header">
 						<Atom />
@@ -96,7 +92,7 @@
 				<StatComponent
 					apiName="reference"
 					total={value.full.reference}
-					approved={value.approved.reference}
+					pending={value.pending.reference}
 				>
 					<svelte:fragment slot="header">
 						<BookMarked />
@@ -106,7 +102,7 @@
 				<StatComponent
 					apiName="meta-reference"
 					total={value.full.meta_reference}
-					approved={value.approved.meta_reference}
+					pending={value.pending.meta_reference}
 				>
 					<svelte:fragment slot="header">
 						<BookMarked />

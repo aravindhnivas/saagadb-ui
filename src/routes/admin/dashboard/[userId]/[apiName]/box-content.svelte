@@ -94,7 +94,12 @@
 </script>
 
 <form {id} use:enhance={onSubmit} method="POST" enctype="multipart/form-data">
-	<div class="grid border-solid border-2 border-rounded-2 p-5 gap-1">
+	<div
+		class="grid border-solid border-2 border-rounded-2 p-5 gap-1"
+		class:bg-blue-100={metadata.status === 'approved'}
+		class:bg-orange-100={metadata.status === 'pending'}
+		class:bg-red-100={metadata.status === 'rejected'}
+	>
 		{#if edit}
 			<div class="flex gap-4 items-center w-full">
 				<Button
@@ -136,13 +141,13 @@
 		{/if}
 		{#each fields as { name, label, editable, link, download, file }, ind}
 			<div class="grid grid-cols-4 items-center select-text">
-				{#if name === 'approved'}
-					{#if metadata[name]}
+				{#if name === 'status'}
+					{#if metadata[name] === 'approved'}
 						<div class="text-green-700"><CheckCheck /></div>
-						<div class="col-span-3 text-green-700">APPROVED</div>
+						<div class="col-span-3 text-green-700">{metadata[name].toLocaleUpperCase()}</div>
 					{:else}
 						<div class="text-red"><AlertTriangle /></div>
-						<div class="col-span-3 text-red">PENDING APPROVAL</div>
+						<div class="col-span-3 text-red">{metadata[name].toLocaleUpperCase()}</div>
 					{/if}
 				{:else}
 					<div>{@html label}</div>
@@ -163,7 +168,7 @@
 										{/if}
 									</a>
 								{:else}
-									<span class="text-red">File not uploaded</span>
+									<span class="text-gray">File not uploaded</span>
 								{/if}
 							{:else}
 								{@html metadata[name] ?? '-'}

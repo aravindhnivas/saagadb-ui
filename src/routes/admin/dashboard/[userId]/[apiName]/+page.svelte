@@ -32,8 +32,8 @@
 		})
 		.filter((f) => {
 			if (approved_status === 'all') return true;
-			if (approved_status === 'approved') return f.approved;
-			if (approved_status === 'not-approved') return !f.approved;
+			if (approved_status === 'approved') return f.status === 'approved';
+			if (approved_status === 'pending') return f.status === 'pending';
 		});
 
 	let approved_status = 'all';
@@ -47,15 +47,19 @@
 			label: 'Approved'
 		},
 		{
-			value: 'not-approved',
-			label: 'NOT approved'
+			value: 'pending',
+			label: 'Pending'
+		},
+		{
+			value: 'rejected',
+			label: 'Rejected'
 		}
 	];
 
 	let edit_criteria = (metadata: { [name: string]: string }) => {
 		return (
 			['species', 'reference'].includes($page.params.apiName) ||
-			!metadata.approved ||
+			metadata.status !== 'approved' ||
 			data.user.is_superuser ||
 			(data.user.is_staff && data.user.id === Number($page.params.userId))
 		);
@@ -79,7 +83,7 @@
 
 	<SearchInput bind:searchKey />
 
-	<RadioGroup.Root class="grid-cols-3 w-max" bind:value={approved_status}>
+	<RadioGroup.Root class="grid-cols-4 w-max" bind:value={approved_status}>
 		{#each approved_radio as { label, value }}
 			<div class="flex items-center space-x-2">
 				<RadioGroup.Item {value} id={value} />
