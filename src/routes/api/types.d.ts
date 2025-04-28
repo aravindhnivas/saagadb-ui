@@ -14,6 +14,7 @@ interface Species {
 	status: 'pending' | 'approved' | 'rejected';
 	uploaded_by: number;
 	uploaded_by_name: string;
+	pdb_data: string;
 }
 
 interface User {
