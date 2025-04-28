@@ -125,7 +125,7 @@
 			console.error('Viewport element reference not available on mount.');
 			return;
 		}
-
+		// species.pdb_data = '';
 		console.log('Initializing NGL Stage...');
 		stage = new NGL.Stage(viewportElement, {
 			// Pass the element directly
@@ -137,14 +137,7 @@
 		// Add resize listener
 		window.addEventListener('resize', handleResize);
 
-		// Initial load if data is available
-		if (species && species.smiles && species.pdb_data) {
-			// await loadStructureFromApi(species);
-			load_all_data(); // Load molecular data
-			console.log('Species data loaded successfully.');
-		} else {
-			console.log('No initial species data to load structure.');
-		}
+		load_all_data(); // Load data into the table
 
 		// RDKit specific logic if needed
 		// if (window.RDKit) {
@@ -163,7 +156,7 @@
 	});
 
 	// Reactive statement to reload structure when the species prop changes
-	$: if (stage && species) {
+	$: if (stage && species && species.pdb_data) {
 		console.log('Species prop changed, reloading structure...');
 		loadStructureFromApi(species);
 	}
@@ -228,15 +221,17 @@
 			</Table.Body>
 		</Table.Root>
 	</div>
-	<button
-		class="btn btn-sm"
-		on:click={() => {
-			handleDownloadClick();
-		}}
-	>
-		<span>Download 3D-strucutre (.PDB)</span>
-		<Download />
-	</button>
+	{#if species.pdb_data}
+		<button
+			class="btn btn-sm"
+			on:click={() => {
+				handleDownloadClick();
+			}}
+		>
+			<span>Download 3D-strucutre (.PDB)</span>
+			<Download />
+		</button>
+	{/if}
 {:else}
 	<p>No species found</p>
 {/if}
