@@ -221,6 +221,7 @@
 			</Table.Body>
 		</Table.Root>
 	</div>
+
 	{#if species.pdb_data}
 		<button
 			class="btn btn-sm"
