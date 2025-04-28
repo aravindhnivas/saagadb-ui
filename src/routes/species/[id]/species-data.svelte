@@ -3,6 +3,7 @@
 	import * as Table from '$lib/components/ui/table';
 	import { onDestroy, onMount } from 'svelte';
 	import { Stage } from 'ngl';
+	import type { Component } from 'ngl';
 
 	export let species: Species;
 	export let user: User | null = null;
@@ -33,6 +34,7 @@
 	};
 
 	let stage: Stage | null = null;
+	let component: Component | void;
 
 	// --- Core Loading Function ---
 	async function loadStructureFromApi(species: Species) {
@@ -58,7 +60,7 @@
 			console.log('Loading PDB data into viewer...');
 			// Load the PDB data string into NGL using a Blob
 			const stringBlob = new Blob([pdbData], { type: 'text/plain' });
-			const component = await stage.loadFile(stringBlob, { ext: 'pdb' });
+			component = await stage.loadFile(stringBlob, { ext: 'pdb' });
 			if (!component) {
 				console.error('Failed to load component.');
 				return;
@@ -71,6 +73,7 @@
 				// color: 'element',
 				// radiusScale: 1.5
 			});
+			// component.removeAllRepresentations();
 
 			stage.handleResize();
 
