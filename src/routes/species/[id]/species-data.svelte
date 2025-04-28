@@ -239,6 +239,7 @@
 
 <style>
 	#viewport {
+		cursor: grab;
 		width: 100%;
 		height: 450px;
 		border: 1px solid #ddd;
