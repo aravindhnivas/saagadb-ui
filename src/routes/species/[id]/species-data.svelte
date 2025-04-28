@@ -2,15 +2,14 @@
 	import { Download } from 'lucide-svelte/icons';
 	import * as Table from '$lib/components/ui/table';
 	import { onDestroy, onMount } from 'svelte';
-	import { Stage } from 'ngl';
-	// import type { Component } from 'ngl';
+	// import { Stage } from 'ngl';
+	// import * as NGL from 'ngl';
 
 	export let species: Species;
 	export let user: User | null = null;
 
 	let mol: ReturnType<typeof window.RDKit.get_mol>;
 	let species_metadata_table: { [name: string]: string | number } = {};
-	// console.log({ species });
 
 	const load_all_data = () => {
 		console.log('Loading all data');
@@ -33,7 +32,7 @@
 		console.warn('Species metadata table:', species_metadata_table);
 	};
 
-	let stage: Stage | null = null;
+	let stage: NGL.Stage | null = null;
 
 	// --- Core Loading Function ---
 	async function loadStructureFromApi(species: Species) {
@@ -134,9 +133,8 @@
 
 	const init_ngl = (node: HTMLDivElement) => {
 		console.log('Initializing NGL Stage...');
-
 		stage?.dispose();
-		stage = new Stage(node, {
+		stage = new NGL.Stage(node, {
 			// Pass the element directly
 			backgroundColor: 'white',
 			tooltip: false // Disable NGL's default hover tooltips
