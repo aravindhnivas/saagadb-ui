@@ -91,9 +91,36 @@
 		}
 	}
 
+	// Debounce function to limit resize calls
+	function debounce(func: Function, wait: number) {
+		let timeout: number | undefined;
+		return function executedFunction(...args: any[]) {
+			const later = () => {
+				clearTimeout(timeout);
+				func(...args);
+			};
+			clearTimeout(timeout);
+			timeout = window.setTimeout(later, wait);
+		};
+	}
+
+	// Handle viewport resize
+	const handleResize = debounce(() => {
+		if (stage) {
+			console.log('Handling resize...');
+			stage.handleResize();
+			// Optional: Recenter the first component if it exists
+			const comp = stage.compList[0];
+			if (comp) {
+				comp.autoView(100); // Re-center smoothly
+			}
+		}
+	}, 250); // Debounce resize calls by 250ms
+
 	onMount(async () => {
 		if (window.RDKit) load_all_data();
 		if (!(species && species.smiles)) return;
+		window.addEventListener('resize', handleResize);
 	});
 
 	onDestroy(() => {
@@ -103,6 +130,7 @@
 			stage.dispose(); // Clean up NGL resources
 		}
 		stage = null;
+		window.removeEventListener('resize', handleResize);
 	});
 
 	const init_ngl = (node: HTMLDivElement) => {
