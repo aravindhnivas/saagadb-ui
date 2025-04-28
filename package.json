@@ -34,6 +34,7 @@
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-svelte": "^2.46.1",
 		"lucide-svelte": "^0.338.0",
+		"ngl": "^2.4.0",
 		"prettier": "^3.5.3",
 		"prettier-plugin-svelte": "^3.3.3",
 		"sass": "^1.86.0",

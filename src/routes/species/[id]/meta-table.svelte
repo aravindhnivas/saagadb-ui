@@ -117,7 +117,7 @@
 	};
 </script>
 
-<div class="border-2 border-solid border-gray border-rounded-5 p-4 max-w-4xl">
+<div class="border-2 border-solid border-gray border-rounded-5 p-4">
 	{#if species_metadata.length > 0}
 		<Table.Root>
 			<Table.Caption>Species-metadata</Table.Caption>

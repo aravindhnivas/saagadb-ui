@@ -2,7 +2,7 @@
 	import { Download } from 'lucide-svelte/icons';
 	import * as Table from '$lib/components/ui/table';
 	import { onDestroy, onMount } from 'svelte';
-	import { localWritable } from '@macfja/svelte-persistent-store';
+	import { Stage } from 'ngl';
 
 	export let species: Species;
 	export let user: User | null = null;
@@ -32,7 +32,7 @@
 		console.warn('Species metadata table:', species_metadata_table);
 	};
 
-	let stage: NGL.Stage | null = null;
+	let stage: Stage | null = null;
 
 	// --- Core Loading Function ---
 	async function loadStructureFromApi(species: Species) {
@@ -59,39 +59,24 @@
 			// Load the PDB data string into NGL using a Blob
 			const stringBlob = new Blob([pdbData], { type: 'text/plain' });
 			const component = await stage.loadFile(stringBlob, { ext: 'pdb' });
-
+			if (!component) {
+				console.error('Failed to load component.');
+				return;
+			}
+			console.log('Component loaded:', component);
 			console.log('Structure loaded. Applying representation and centering...');
 
-			// Apply representation (e.g., ball+stick)
-			component.addRepresentation('ball+stick');
-			// component.addRepresentation('cartoon', {
-			// 	aspectRatio: 3.0,
-			// 	scale: 1.5
-			// });
-			// component.addRepresentation('licorice', {
-			// 	sele: 'hetero and not ( water or ion )',
-			// 	multipleBond: true
-			// });
-			// component.addRepresentation('spacefill', {
-			// 	sele: 'water or ion',
-			// 	scale: 0.5
-			// });
+			component.addRepresentation('ball+stick', {
+				// Optional: Customize representation settings here
+				// color: 'element',
+				// radiusScale: 1.5
+			});
 
-			// **Crucial Fixes:**
-			// 1. Ensure NGL knows the viewport's current size
 			stage.handleResize();
-			// 2. Center the view on the loaded component
-			component.autoView();
 
-			// Optional: Add a small delay if centering is still off, might indicate
-			// layout shifts happening after this code runs.
-			// setTimeout(() => {
-			//     if (stage && component) { // Check if still valid
-			//        stage.handleResize();
-			//        component.autoView(100); // Animate centering over 100ms
-			//        console.log("Structure re-centered after delay.");
-			//     }
-			// }, 50); // Short delay (50ms)
+			component.autoView();
+			component.setScale(1.5); // Adjust scale as needed
+			component.setVisibility(true); // Ensure visibility
 
 			console.log(`Successfully loaded and centered structure for ${smiles}.`);
 		} catch (error) {
@@ -102,32 +87,6 @@
 			}
 		}
 	}
-
-	// Debounce function to limit resize calls
-	function debounce(func: Function, wait: number) {
-		let timeout: number | undefined;
-		return function executedFunction(...args: any[]) {
-			const later = () => {
-				clearTimeout(timeout);
-				func(...args);
-			};
-			clearTimeout(timeout);
-			timeout = window.setTimeout(later, wait);
-		};
-	}
-
-	// Handle viewport resize
-	// const handleResize = debounce(() => {
-	// 	if (stage) {
-	// 		console.log('Handling resize...');
-	// 		stage.handleResize();
-	// 		// Optional: Recenter the first component if it exists
-	// 		const comp = stage.compList[0];
-	// 		if (comp) {
-	// 			comp.autoView(100); // Re-center smoothly
-	// 		}
-	// 	}
-	// }, 250); // Debounce resize calls by 250ms
 
 	onMount(async () => {
 		if (window.RDKit) load_all_data();
@@ -147,7 +106,7 @@
 		console.log('Initializing NGL Stage...');
 
 		stage?.dispose();
-		stage = new NGL.Stage(node, {
+		stage = new Stage(node, {
 			// Pass the element directly
 			backgroundColor: 'white',
 			tooltip: false // Disable NGL's default hover tooltips
@@ -161,20 +120,13 @@
 </script>
 
 {#if species}
-	<div class="flex flex-col items-center max-w-4xl">
+	<div class="flex flex-col items-center">
 		<span class="text-2xl">{species.name[0]}</span>
 		{#if species.name.length > 1}
 			<span class="text-md font-300">({species.name.slice(1).join(', ')})</span>
 		{/if}
 	</div>
-	<div class="grid grid-cols-3 gap-4 max-w-4xl">
-		<div class="viewport flex justify-center items-center">
-			{#if mol}
-				<div>{@html mol.get_svg()}</div>
-			{/if}
-		</div>
-		<div class="viewport" use:init_ngl></div>
-
+	<div class="grid grid-cols-3 gap-4">
 		<Table.Root>
 			<Table.Body>
 				{#each Object.keys(species_metadata_table) as key}
@@ -185,22 +137,31 @@
 				{/each}
 			</Table.Body>
 		</Table.Root>
+
+		<div class="viewport" use:init_ngl></div>
+
+		<div class="viewport flex justify-center items-center">
+			{#if mol}
+				<div>{@html mol.get_svg()}</div>
+			{/if}
+		</div>
 	</div>
 
-	<div class="flex-gap">
+	<div class="flex-gap ml-auto">
+		{#if species.pdb_data}
+			{@const blob = new Blob([species.pdb_data], { type: 'text/plain' })}
+			{@const url = URL.createObjectURL(blob)}
+			<a class="btn btn-sm" href={url} download="{species.iupac_name}.pdb">
+				<Download /> 3D (.PDB)
+			</a>
+		{/if}
+
 		{#if mol}
 			{@const svg = mol.get_svg()}
 			{@const blob = new Blob([svg], { type: 'image/svg+xml' })}
 			{@const url = URL.createObjectURL(blob)}
 			<a class="btn btn-sm" href={url} download="{species.iupac_name}.svg">
 				<Download /> 2D (.SVG)
-			</a>
-		{/if}
-		{#if species.pdb_data}
-			{@const blob = new Blob([species.pdb_data], { type: 'text/plain' })}
-			{@const url = URL.createObjectURL(blob)}
-			<a class="btn btn-sm" href={url} download="{species.iupac_name}.pdb">
-				<Download /> 3D (.PDB)
 			</a>
 		{/if}
 	</div>
@@ -211,5 +172,7 @@
 <style>
 	.viewport {
 		cursor: grab;
+		border: solid 1px #ccc;
+		border-radius: 15px;
 	}
 </style>
